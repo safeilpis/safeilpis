@@ -1,0 +1,796 @@
+<!DOCTYPE html><html><head><meta name="x-poe-datastore-behavior" content="local_only"><meta http-equiv="Content-Security-Policy" content="default-src 'self' 'unsafe-inline' 'unsafe-eval' data: blob: https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://code.jquery.com https://unpkg.com https://d3js.org https://threejs.org https://cdn.plot.ly https://stackpath.bootstrapcdn.com https://maps.googleapis.com https://cdn.tailwindcss.com https://ajax.googleapis.com https://kit.fontawesome.com https://cdn.datatables.net https://maxcdn.bootstrapcdn.com https://code.highcharts.com https://tako-static-assets-production.s3.amazonaws.com https://www.youtube.com https://fonts.googleapis.com https://fonts.gstatic.com https://pfst.cf2.poecdn.net https://puc.poecdn.net https://i.imgur.com https://wikimedia.org https://*.icons8.com https://*.giphy.com https://picsum.photos https://images.unsplash.com; frame-src 'self' https://www.youtube.com https://trytako.com; child-src 'self'; manifest-src 'self'; worker-src 'self'; upgrade-insecure-requests; block-all-mixed-content;"><meta http-equiv="x-dns-prefetch-control" content="off"><script src="https://puc.poecdn.net/authenticated_preview_page/standard.3ef2c256959faf5a756d.js"></script>
+    <meta charset="utf-8">
+    <title>Poe</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+  <script src="https://puc.poecdn.net/authenticated_preview_page/disableWebRTC.9710cebe07429a9e8e06.js"></script><meta name="x-poe-allow-downloads" content="true"><meta name="x-poe-datastore-behavior" content="disabled"><script src="https://puc.poecdn.net/authenticated_preview_page/tw.50ec1b0612bf5b0c30a5.js"></script><script src="https://puc.poecdn.net/authenticated_preview_page/deps.faccd16000d314dc16d5.js"></script><script src="https://puc.poecdn.net/authenticated_preview_page/exports.b0f0f482cdeb5302b0b9.js"></script><script src="https://puc.poecdn.net/authenticated_preview_page/renderer.75c73ae6b4235f62945a.js"></script><script>Object.defineProperty(exports, "__esModule", {value: true}); function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; } function _optionalChain(ops) { let lastAccessLHS = undefined; let value = ops[0]; let i = 1; while (i < ops.length) { const op = ops[i]; const fn = ops[i + 1]; i += 2; if ((op === 'optionalAccess' || op === 'optionalCall') && value == null) { return undefined; } if (op === 'access' || op === 'optionalAccess') { lastAccessLHS = value; value = fn(value); } else if (op === 'call' || op === 'optionalCall') { value = fn((...args) => value.call(lastAccessLHS, ...args)); lastAccessLHS = undefined; } } return value; }var _react = require('react'); var _react2 = _interopRequireDefault(_react);
+var _framermotion = require('framer-motion');
+
+
+
+var _lucidereact = require('lucide-react');
+
+const WHATSAPP_NUMBER = '5511998448822';
+const WHATSAPP_LINK = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(
+  'Olá! Vim pelo site da SAFE ILPIS e gostaria de ajuda para encontrar um residencial ideal.'
+)}`;
+
+const REAL_IMAGES = [
+  'https://i.ibb.co/GfZVJMqt/dc0051a4-24ba-4578-9ea6-c187716908e5.jpg',
+  'https://i.ibb.co/HD3qqWxS/b31b4bdf-705c-4073-8dac-5b1430968f5c.jpg',
+  'https://i.ibb.co/xtkRZmv9/2b15f780-cc44-4fe3-9649-49e2e5fd66e7.jpg',
+  'https://i.ibb.co/m508Bj2c/a3056d9b-252d-465e-aaf9-0248a5766269.jpg',
+  'https://i.ibb.co/8nwjBVYT/639bf396-02a6-43b7-9afd-dd0dae0f87ca.jpg'
+];
+
+// Realistic, casual, smartphone-style portraits
+const TESTIMONIAL_PHOTOS = {
+  // Roberto — Brazilian man ~55, brown skin, casual, ordinary home background
+  roberto: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=240&h=240&fit=crop&crop=faces&auto=format&q=70',
+  claudia: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=240&h=240&fit=crop&crop=faces&auto=format&q=75'
+};
+
+// Dynamic quantity of residences based on budget — progressive, realistic, credible
+function getResidenceCount(price) {
+  // anchors: 3000→14, 5000→22, 8000→34, 15000→48, 25000→67
+  const anchors = [
+    [3000, 14],
+    [5000, 22],
+    [8000, 34],
+    [15000, 48],
+    [25000, 67]
+  ];
+  if (price <= anchors[0][0]) return anchors[0][1];
+  if (price >= anchors[anchors.length - 1][0]) return anchors[anchors.length - 1][1];
+  for (let i = 0; i < anchors.length - 1; i++) {
+    const [x1, y1] = anchors[i];
+    const [x2, y2] = anchors[i + 1];
+    if (price >= x1 && price <= x2) {
+      const t = (price - x1) / (x2 - x1);
+      return Math.round(y1 + t * (y2 - y1));
+    }
+  }
+  return 34;
+}
+
+ function SafeIlpisApp() {
+  const [step, setStep] = _react.useState.call(void 0, 'cep');
+  const [cep, setCep] = _react.useState.call(void 0, '');
+  const [dependency, setDependency] = _react.useState.call(void 0, null);
+  const [price, setPrice] = _react.useState.call(void 0, 12000);
+  const [zoom, setZoom] = _react.useState.call(void 0, 1);
+  const [showQualityModal, setShowQualityModal] = _react.useState.call(void 0, false);
+  const [showProfileModal, setShowProfileModal] = _react.useState.call(void 0, false);
+  const [selectedResidence, setSelectedResidence] = _react.useState.call(void 0, null);
+  const [isMobile, setIsMobile] = _react.useState.call(void 0, false);
+  const resultsRef = _react.useRef.call(void 0, null);
+
+  _react.useEffect.call(void 0, () => {
+    const check = () => setIsMobile(window.innerWidth < 768);
+    check();
+    window.addEventListener('resize', check);
+    return () => window.removeEventListener('resize', check);
+  }, []);
+
+  const allMarkers = _react.useMemo.call(void 0, () => {
+    const markers = [];
+    const colors = ['blue', 'blue', 'blue', 'blue', 'black', 'red', 'blue', 'blue'];
+    let id = 0;
+    const push = (xMin, xMax, yMin, yMax) => {
+      markers.push({
+        id: id++,
+        x: xMin + Math.random() * (xMax - xMin),
+        y: yMin + Math.random() * (yMax - yMin),
+        color: colors[Math.floor(Math.random() * colors.length)],
+        delay: Math.random() * 2
+      });
+    };
+
+    if (isMobile) {
+      for (let i = 0; i < 14; i++) push(0, 8, 0, 22);
+      for (let i = 0; i < 18; i++) push(0, 8, 72, 100);
+      for (let i = 0; i < 14; i++) push(92, 100, 0, 22);
+      for (let i = 0; i < 18; i++) push(92, 100, 72, 100);
+      for (let i = 0; i < 8; i++) push(0, 14, 94, 100);
+      for (let i = 0; i < 8; i++) push(86, 100, 94, 100);
+    } else {
+      for (let i = 0; i < 22; i++) push(2, 15, 8, 92);
+      for (let i = 0; i < 22; i++) push(85, 98, 8, 92);
+      for (let i = 0; i < 18; i++) push(15, 85, 2, 10);
+      for (let i = 0; i < 23; i++) push(15, 85, 90, 98);
+    }
+    return markers;
+  }, [isMobile]);
+
+  const visibleMarkers = _react.useMemo.call(void 0, () => {
+    if (step === 'cep') return allMarkers;
+    if (step === 'dependency') return allMarkers.filter((_, i) => i % 2 === 0);
+    if (step === 'price') return allMarkers.filter((_, i) => i % 3 === 0);
+    return allMarkers.filter((_, i) => i % 4 === 0);
+  }, [step, allMarkers]);
+
+  _react.useEffect.call(void 0, () => {
+    if (step === 'cep') setZoom(1);
+    if (step === 'dependency') setZoom(1.3);
+    if (step === 'price') setZoom(1.6);
+    if (step === 'done') setZoom(1.9);
+  }, [step]);
+
+  const handleCepSubmit = (e) => {
+    e.preventDefault();
+    if (cep.length >= 5) setStep('dependency');
+  };
+
+  const handleDependency = (val) => {
+    setDependency(val);
+    setTimeout(() => setStep('price'), 400);
+  };
+
+  const handlePriceDone = () => {
+    setStep('done');
+    setTimeout(() => {
+      _optionalChain([resultsRef, 'access', _2 => _2.current, 'optionalAccess', _3 => _3.scrollIntoView, 'call', _4 => _4({ behavior: 'smooth' })]);
+    }, 600);
+  };
+
+  const scrollToResults = () => {
+    _optionalChain([resultsRef, 'access', _5 => _5.current, 'optionalAccess', _6 => _6.scrollIntoView, 'call', _7 => _7({ behavior: 'smooth' })]);
+  };
+
+  const visibleResidences = _react.useMemo.call(void 0, () => ([
+    {
+      name: 'Residencial 62',
+      neighborhood: 'São Roque, São Paulo',
+      price: 'R$ 5.000,00',
+      distance: '22,4 km',
+      rating: 4.98,
+      level: 'Verificado',
+      img: REAL_IMAGES[0]
+    },
+    {
+      name: 'Residencial 77',
+      neighborhood: 'Granja Vianna, Cotia',
+      price: 'R$ 4.000,00',
+      distance: '8,4 km',
+      rating: 4.96,
+      level: 'Verificado',
+      img: REAL_IMAGES[2]
+    },
+    {
+      name: 'Residencial 290',
+      neighborhood: 'Alto da Lapa',
+      price: 'R$ 4.500,00',
+      distance: '4 km',
+      rating: 4.97,
+      level: 'Verificado',
+      img: REAL_IMAGES[1]
+    },
+    {
+      name: 'Residencial 112',
+      neighborhood: 'Embu das Artes, SP',
+      price: 'R$ 3.500,00',
+      distance: '13 km',
+      rating: 4.92,
+      level: 'Verificado',
+      img: REAL_IMAGES[4]
+    }
+  ]), []);
+
+  const filteredCount = getResidenceCount(price);
+  const remainingCount = Math.max(0, filteredCount - visibleResidences.length);
+
+  return (
+    _react2.default.createElement('div', { className: "min-h-screen bg-white" , style: { fontFamily: 'Montserrat, system-ui, sans-serif' },}
+      , _react2.default.createElement('nav', { className: "fixed top-0 left-0 right-0 z-40 bg-white/80 backdrop-blur-lg border-b border-gray-100"        ,}
+        , _react2.default.createElement('div', { className: "max-w-6xl mx-auto px-5 sm:px-8 h-16 flex items-center justify-between"       ,}
+          , _react2.default.createElement('div', { className: "flex items-center gap-2"  ,}
+            , _react2.default.createElement('div', { className: "w-8 h-8 rounded-lg flex items-center justify-center"     , style: { backgroundColor: '#003C8D' },}
+              , _react2.default.createElement(_lucidereact.Shield, { className: "w-4 h-4 text-white"  ,} )
+            )
+            , _react2.default.createElement('span', { className: "font-bold text-base tracking-tight"  , style: { color: '#003C8D' },}, "SAFE ILPIS"
+
+            )
+          )
+          , _react2.default.createElement('a', { href: WHATSAPP_LINK, target: "_blank", rel: "noreferrer", className: "hidden sm:inline-flex items-center gap-2 text-base font-medium text-gray-700 hover:text-gray-900"       ,}
+            , _react2.default.createElement('span', null, "Fale com um especialista"   )
+          )
+        )
+      )
+
+      , _react2.default.createElement('section', { className: "relative w-full h-screen overflow-hidden pt-16"    , style: { backgroundColor: '#F5F7FA' },}
+        , _react2.default.createElement(_framermotion.motion.div, { className: "absolute inset-0" , animate: { scale: zoom }, transition: { duration: 1.8, ease: [0.16, 1, 0.3, 1] },}
+          , _react2.default.createElement(MapVisual, { markers: visibleMarkers, step: step,} )
+        )
+
+        , _react2.default.createElement('div', { className: "absolute inset-0 pointer-events-none"  , style: { background: 'radial-gradient(ellipse at center, transparent 40%, rgba(245,247,250,0.6) 100%)' },} )
+
+        , _react2.default.createElement('div', { className: "relative z-10 h-full flex flex-col items-center justify-center px-5 sm:px-8"        ,}
+          , _react2.default.createElement(_framermotion.AnimatePresence, { mode: "wait",}
+            , step === 'cep' && (
+              _react2.default.createElement(_framermotion.motion.div, { key: "cep", initial: { opacity: 0, y: 20 }, animate: { opacity: 1, y: 0 }, exit: { opacity: 0, y: -20 }, transition: { duration: 0.6, ease: [0.16, 1, 0.3, 1] }, className: "w-full max-w-lg text-center"  ,}
+                , _react2.default.createElement(_framermotion.motion.div, { initial: { opacity: 0, y: 10 }, animate: { opacity: 1, y: 0 }, transition: { delay: 0.2 }, className: "inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/90 backdrop-blur border border-gray-200 mb-6 shadow-sm"           ,}
+                  , _react2.default.createElement(_lucidereact.Sparkles, { className: "w-3.5 h-3.5" , style: { color: '#003C8D' },} )
+                  , _react2.default.createElement('span', { className: "text-sm font-medium tracking-wide"  , style: { color: '#1F2937' },}, "Assessoria gratuita" )
+                )
+                , _react2.default.createElement('h1', { className: "text-3xl sm:text-5xl font-semibold leading-tight tracking-tight mb-5"     , style: { color: '#1F2937' },}, "Encontre uma casa de repouso qualificada agora"
+
+                )
+                , _react2.default.createElement('p', { className: "text-lg sm:text-xl font-normal mb-8"   , style: { color: '#1F2937', opacity: 0.7 },}, "+ de 300 residenciais credenciados"
+
+                )
+                , _react2.default.createElement('form', { onSubmit: handleCepSubmit, className: "relative",}
+                  , _react2.default.createElement('div', { className: "flex items-center bg-white rounded-full shadow-lg border border-gray-100 overflow-hidden pl-5 pr-1 py-1"          ,}
+                    , _react2.default.createElement(_lucidereact.MapPin, { className: "w-5 h-5 flex-shrink-0"  , style: { color: '#003C8D' },} )
+                    , _react2.default.createElement('input', { type: "text", value: cep, onChange: (e) => setCep(e.target.value.replace(/\D/g, '').slice(0, 8)), placeholder: "Digite seu CEP"  , className: "flex-1 px-3 py-3 bg-transparent outline-none text-base sm:text-lg font-medium min-w-0"        , style: { color: '#1F2937' },} )
+                    , _react2.default.createElement('button', { type: "submit", disabled: cep.length < 5, className: "rounded-full px-4 sm:px-5 py-3 text-white text-base font-semibold transition-all disabled:opacity-40 flex items-center gap-1.5 flex-shrink-0"            , style: { backgroundColor: '#003C8D' },}
+                      , _react2.default.createElement(_lucidereact.Search, { className: "w-4 h-4" ,} )
+                      , _react2.default.createElement('span', { className: "hidden sm:inline" ,}, "Buscar")
+                    )
+                  )
+                )
+                , _react2.default.createElement('button', { onClick: () => setShowQualityModal(true), className: "mt-8 inline-flex items-center gap-1.5 text-sm font-medium hover:opacity-70 transition-opacity"       , style: { color: '#003C8D' },}
+                  , _react2.default.createElement(_lucidereact.Shield, { className: "w-4 h-4" ,} ), "Confira nosso controle de qualidade"
+
+                )
+              )
+            )
+
+            , step === 'dependency' && (
+              _react2.default.createElement(_framermotion.motion.div, { key: "dep", initial: { opacity: 0, y: 20 }, animate: { opacity: 1, y: 0 }, exit: { opacity: 0, y: -20 }, transition: { duration: 0.6, ease: [0.16, 1, 0.3, 1] }, className: "w-full max-w-lg text-center"  ,}
+                , _react2.default.createElement(_framermotion.motion.p, { initial: { opacity: 0 }, animate: { opacity: 0.6 }, transition: { delay: 0.3 }, className: "text-sm font-medium tracking-widest uppercase mb-3"    , style: { color: '#003C8D' },}, "Passo 2 de 3"
+
+                )
+                , _react2.default.createElement('h2', { className: "text-2xl sm:text-4xl font-semibold leading-tight tracking-tight mb-4"     , style: { color: '#1F2937' },}, "Qual o nível de dependência?"
+
+                )
+                , _react2.default.createElement('p', { className: "text-lg sm:text-xl mb-8"  , style: { color: '#1F2937', opacity: 0.7 },}, "Isso nos ajuda a recomendar o cuidado ideal."
+
+                )
+                , _react2.default.createElement('div', { className: "flex flex-col gap-3"  ,}
+                  , ['Independente', 'Semi-dependente', '100% dependente'].map((opt, i) => (
+                    _react2.default.createElement(_framermotion.motion.button, { key: opt, initial: { opacity: 0, y: 10 }, animate: { opacity: 1, y: 0 }, transition: { delay: 0.1 + i * 0.08 }, whileTap: { scale: 0.98 }, onClick: () => handleDependency(opt), className: `w-full py-4 rounded-2xl bg-white border font-medium text-lg transition-all shadow-sm hover:shadow-md ${dependency === opt ? 'border-blue-900' : 'border-gray-200'}`, style: { color: '#1F2937', borderColor: dependency === opt ? '#003C8D' : undefined },}
+                      , opt
+                    )
+                  ))
+                )
+              )
+            )
+
+            , step === 'price' && (
+              _react2.default.createElement(_framermotion.motion.div, { key: "price", initial: { opacity: 0, y: 20 }, animate: { opacity: 1, y: 0 }, exit: { opacity: 0, y: -20 }, transition: { duration: 0.6, ease: [0.16, 1, 0.3, 1] }, className: "w-full max-w-lg text-center"  ,}
+                , _react2.default.createElement(_framermotion.motion.p, { initial: { opacity: 0 }, animate: { opacity: 0.6 }, transition: { delay: 0.3 }, className: "text-sm font-medium tracking-widest uppercase mb-3"    , style: { color: '#003C8D' },}, "Passo 3 de 3"
+
+                )
+                , _react2.default.createElement('h2', { className: "text-2xl sm:text-4xl font-semibold leading-tight tracking-tight mb-4"     , style: { color: '#1F2937' },}, "Qual seu orçamento mensal?"
+
+                )
+                , _react2.default.createElement('p', { className: "text-lg sm:text-xl mb-10"  , style: { color: '#1F2937', opacity: 0.7 },}, "Ajustamos os resultados em tempo real."
+
+                )
+                , _react2.default.createElement('div', { className: "bg-white rounded-3xl shadow-lg border border-gray-100 p-6 sm:p-8"      ,}
+                  , _react2.default.createElement('div', { className: "flex items-baseline justify-center gap-1 mb-6"    ,}
+                    , _react2.default.createElement('span', { className: "text-sm font-medium" , style: { color: '#1F2937', opacity: 0.6 },}, "até")
+                    , _react2.default.createElement('span', { className: "text-3xl sm:text-4xl font-bold tracking-tight"   , style: { color: '#003C8D' },}, "R$ " , price.toLocaleString('pt-BR'))
+                    , _react2.default.createElement('span', { className: "text-sm font-medium" , style: { color: '#1F2937', opacity: 0.6 },}, "/mês")
+                  )
+                  , _react2.default.createElement(PremiumSlider, { value: price, onChange: setPrice, min: 3000, max: 25000, step: 1000,} )
+                  , _react2.default.createElement('div', { className: "flex justify-between mt-3"  ,}
+                    , _react2.default.createElement('span', { className: "text-sm font-medium" , style: { color: '#1F2937', opacity: 0.6 },}, "R$ 3.000" )
+                    , _react2.default.createElement('span', { className: "text-sm font-medium" , style: { color: '#1F2937', opacity: 0.6 },}, "R$ 25.000" )
+                  )
+                  , _react2.default.createElement('button', { onClick: handlePriceDone, className: "mt-8 w-full py-3.5 rounded-full text-white text-base font-semibold transition-all hover:opacity-90"        , style: { backgroundColor: '#003C8D' },}, "Ver residenciais"
+
+                  )
+                )
+              )
+            )
+
+            , step === 'done' && (
+              _react2.default.createElement(_framermotion.motion.div, { key: "done", initial: { opacity: 0, y: 20 }, animate: { opacity: 1, y: 0 }, exit: { opacity: 0 }, transition: { duration: 0.6 }, className: "w-full max-w-md text-center"  ,}
+                , _react2.default.createElement(_framermotion.motion.div, { initial: { scale: 0 }, animate: { scale: 1 }, transition: { type: 'spring', delay: 0.2 }, className: "w-14 h-14 mx-auto rounded-full flex items-center justify-center mb-6 shadow-lg"        , style: { backgroundColor: '#003C8D' },}
+                  , _react2.default.createElement(_lucidereact.Check, { className: "w-6 h-6 text-white"  , strokeWidth: 3,} )
+                )
+                , _react2.default.createElement('h2', { className: "text-2xl sm:text-3xl font-semibold tracking-tight mb-4"    , style: { color: '#1F2937' },}, "Encontramos opções ideais"
+
+                )
+                , _react2.default.createElement('p', { className: "text-lg sm:text-xl mb-8"  , style: { color: '#1F2937', opacity: 0.7 },}, "Confira alguns residenciais credenciados abaixo"
+
+                )
+                , _react2.default.createElement(_framermotion.motion.button, { onClick: scrollToResults, animate: { y: [0, 8, 0] }, transition: { repeat: Infinity, duration: 2, ease: 'easeInOut' }, className: "mx-auto w-12 h-12 rounded-full bg-white shadow-lg border border-gray-100 flex items-center justify-center hover:shadow-xl transition-all"            ,}
+                  , _react2.default.createElement(_lucidereact.ChevronDown, { className: "w-5 h-5" , style: { color: '#003C8D' },} )
+                )
+              )
+            )
+          )
+        )
+      )
+
+      , _react2.default.createElement('section', { ref: resultsRef, className: "py-16 sm:py-24 px-5 sm:px-8 bg-white"    ,}
+        , _react2.default.createElement('div', { className: "max-w-6xl mx-auto" ,}
+          , step === 'done' ? (
+            _react2.default.createElement(SingleLockedCard, { count: filteredCount, images: REAL_IMAGES,} )
+          ) : (
+            _react2.default.createElement(_react2.default.Fragment, null
+              , _react2.default.createElement('div', { className: "mb-10 sm:mb-14" ,}
+                , _react2.default.createElement('p', { className: "text-sm font-semibold tracking-widest uppercase mb-3"    , style: { color: '#003C8D' },}, "Residenciais credenciados"
+
+                )
+                , _react2.default.createElement('h2', { className: "text-2xl sm:text-4xl font-semibold tracking-tight mb-4"    , style: { color: '#1F2937' },}, "Residenciais em destaque"
+
+                )
+                , _react2.default.createElement('p', { className: "text-lg sm:text-xl max-w-xl"  , style: { color: '#1F2937', opacity: 0.7 },}, "Todos inspecionados bimestralmente por nossa equipe técnica."
+
+                )
+              )
+
+              , _react2.default.createElement('div', { className: "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8"     ,}
+                , _react2.default.createElement(_framermotion.AnimatePresence, { mode: "popLayout",}
+                  , visibleResidences.map((r, i) => (
+                    _react2.default.createElement(ResidenceCard, { key: `${step}-${r.name}-${i}`, residence: { ...r, tags: [r.level, 'Verificado'] }, onClick: () => { setSelectedResidence(r); setShowProfileModal(true); },} )
+                  ))
+                )
+              )
+
+              , _react2.default.createElement('div', { className: "mt-12 sm:mt-16 flex justify-center"   ,}
+                , _react2.default.createElement(_framermotion.motion.a, { href: WHATSAPP_LINK, target: "_blank", rel: "noreferrer", whileHover: { y: -2 }, whileTap: { scale: 0.98 }, className: "group inline-flex items-center gap-2 px-6 sm:px-9 py-4 rounded-full text-white text-base sm:text-lg font-semibold shadow-lg hover:shadow-xl transition-all"              , style: { backgroundColor: '#003C8D' },}, "Veja mais "
+                    , Math.max(34, remainingCount), " opções de residenciais"
+                  , _react2.default.createElement(_lucidereact.ArrowRight, { className: "w-4 h-4 group-hover:translate-x-0.5 transition-transform"   ,} )
+                )
+              )
+            )
+          )
+        )
+      )
+
+      , _react2.default.createElement('section', { className: "py-16 sm:py-24 px-5 sm:px-8"   , style: { backgroundColor: '#F5F7FA' },}
+        , _react2.default.createElement('div', { className: "max-w-6xl mx-auto" ,}
+          , _react2.default.createElement('div', { className: "text-center mb-12" ,}
+            , _react2.default.createElement('p', { className: "text-sm font-semibold tracking-widest uppercase mb-3"    , style: { color: '#003C8D' },}, "Por que a SAFE ILPIS"
+
+            )
+            , _react2.default.createElement('h2', { className: "text-2xl sm:text-4xl font-semibold tracking-tight max-w-2xl mx-auto"     , style: { color: '#1F2937' },}, "Segurança e transparência em cada etapa."
+
+            )
+          )
+          , _react2.default.createElement('div', { className: "grid grid-cols-1 sm:grid-cols-3 gap-6 sm:gap-8"    ,}
+            , [
+              { icon: _lucidereact.Shield, title: 'Inspeção bimestral', desc: 'Visitas técnicas regulares em todos os residenciais credenciados.' },
+              { icon: _lucidereact.Check, title: 'Verificação legal', desc: 'Validação de alvarás, licenças e histórico operacional.' },
+              { icon: _lucidereact.Heart, title: 'Cuidado humano', desc: 'Avaliação de satisfação das famílias e qualidade do atendimento.' }
+            ].map((f, i) => (
+              _react2.default.createElement(_framermotion.motion.div, { key: i, initial: { opacity: 0, y: 20 }, whileInView: { opacity: 1, y: 0 }, viewport: { once: true }, transition: { delay: i * 0.1 }, className: "bg-white rounded-2xl p-6 sm:p-8 border border-gray-100"     ,}
+                , _react2.default.createElement('div', { className: "w-11 h-11 rounded-xl flex items-center justify-center mb-5"      , style: { backgroundColor: '#F5F7FA' },}
+                  , _react2.default.createElement(f.icon, { className: "w-5 h-5" , style: { color: '#003C8D' },} )
+                )
+                , _react2.default.createElement('h3', { className: "text-lg font-semibold mb-2"  , style: { color: '#1F2937' },}, f.title)
+                , _react2.default.createElement('p', { className: "text-base leading-relaxed" , style: { color: '#1F2937', opacity: 0.7 },}, f.desc)
+              )
+            ))
+          )
+        )
+      )
+
+      , _react2.default.createElement('section', { className: "py-16 sm:py-24 px-5 sm:px-8 bg-white"    ,}
+        , _react2.default.createElement('div', { className: "max-w-6xl mx-auto" ,}
+          , _react2.default.createElement('div', { className: "text-center mb-12 sm:mb-14"  ,}
+            , _react2.default.createElement('p', { className: "text-sm font-semibold tracking-widest uppercase mb-3"    , style: { color: '#003C8D' },}, "Famílias atendidas"
+
+            )
+            , _react2.default.createElement('h2', { className: "text-2xl sm:text-4xl font-semibold tracking-tight max-w-2xl mx-auto"     , style: { color: '#1F2937' },}, "Histórias reais de quem confiou na nossa assessoria."
+
+            )
+          )
+          , _react2.default.createElement('div', { className: "grid grid-cols-1 sm:grid-cols-3 gap-6 sm:gap-8"    ,}
+            , [
+              { name: 'Cláudia Ferreira', relation: 'Neta da Dona Odete, 88 anos', photo: TESTIMONIAL_PHOTOS.claudia, text: 'Fiquei surpresa com o nível de detalhe das avaliações. Visitamos o residencial juntos e tudo estava exatamente como descrito. Hoje minha avó tem amigas, atividades e carinho.' },
+              { name: 'Roberto Almeida', relation: 'Filho do Sr. Antônio, 79 anos', photo: TESTIMONIAL_PHOTOS.roberto, text: 'O que mais me tocou foi o cuidado humano. Não foi só uma indicação — foi uma assessoria de verdade, gratuita, com informações claras sobre preços, cuidados e qualidade do serviço.' },
+              { name: 'Marina Oliveira', relation: 'Filha da Dona Therezinha, 82 anos', photo: null, text: 'Eu estava perdida e sem saber por onde começar. A equipe da SAFE ILPIS me acolheu, visitou três residenciais comigo e me ajudou a escolher com calma. Minha mãe está feliz e bem cuidada.' }
+            ].map((t, i) => (
+              _react2.default.createElement(_framermotion.motion.div, { key: i, initial: { opacity: 0, y: 20 }, whileInView: { opacity: 1, y: 0 }, viewport: { once: true }, transition: { delay: i * 0.1 }, className: "bg-white rounded-2xl p-6 sm:p-8 border border-gray-100 shadow-sm"      ,}
+                , _react2.default.createElement('div', { className: "flex gap-1 mb-4"  ,}
+                  , [...Array(5)].map((_, k) => (
+                    _react2.default.createElement(_lucidereact.Star, { key: k, className: "w-4 h-4 fill-current"  , style: { color: '#003C8D' },} )
+                  ))
+                )
+                , _react2.default.createElement('p', { className: "text-base leading-relaxed mb-5"  , style: { color: '#1F2937', opacity: 0.85 },}, "“", t.text, "”")
+                , _react2.default.createElement('div', { className: "flex items-center gap-3 pt-4 border-t border-gray-100"     ,}
+                  , t.photo ? (
+                    _react2.default.createElement('img', {
+                      src: t.photo,
+                      alt: t.name,
+                      className: "w-11 h-11 rounded-full object-cover flex-shrink-0 bg-gray-100"     ,
+                      referrerPolicy: "no-referrer",
+                      loading: "lazy",}
+                    )
+                  ) : (
+                    _react2.default.createElement(InitialAvatar, { name: t.name,} )
+                  )
+                  , _react2.default.createElement('div', null
+                    , _react2.default.createElement('p', { className: "text-base font-semibold" , style: { color: '#1F2937' },}, t.name)
+                    , _react2.default.createElement('p', { className: "text-sm", style: { color: '#1F2937', opacity: 0.6 },}, t.relation)
+                  )
+                )
+              )
+            ))
+          )
+        )
+      )
+
+      , _react2.default.createElement('section', { className: "py-16 sm:py-24 px-5 sm:px-8 bg-white"    ,}
+        , _react2.default.createElement('div', { className: "max-w-3xl mx-auto text-center"  ,}
+          , _react2.default.createElement('h2', { className: "text-2xl sm:text-4xl font-semibold tracking-tight mb-4"    , style: { color: '#1F2937' },}, "Precisa de ajuda para escolher?"
+
+          )
+          , _react2.default.createElement('p', { className: "text-lg sm:text-xl mb-8"  , style: { color: '#1F2937', opacity: 0.7 },}, "Fale com nosso especialista e receba uma recomendação personalizada."
+
+          )
+          , _react2.default.createElement('a', { href: WHATSAPP_LINK, target: "_blank", rel: "noreferrer", className: "inline-flex items-center gap-2 px-7 py-3.5 rounded-full text-white text-base font-semibold hover:opacity-90 transition-all shadow-md"           , style: { backgroundColor: '#003C8D' },}
+            , _react2.default.createElement(_lucidereact.MessageCircle, { className: "w-4 h-4" ,} ), "Falar com especialista"
+
+          )
+        )
+      )
+
+      , _react2.default.createElement('footer', { className: "py-10 px-5 sm:px-8 border-t border-gray-100"    ,}
+        , _react2.default.createElement('div', { className: "max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4"       ,}
+          , _react2.default.createElement('div', { className: "flex items-center gap-2"  ,}
+            , _react2.default.createElement('div', { className: "w-6 h-6 rounded-md flex items-center justify-center"     , style: { backgroundColor: '#003C8D' },}
+              , _react2.default.createElement(_lucidereact.Shield, { className: "w-3 h-3 text-white"  ,} )
+            )
+            , _react2.default.createElement('span', { className: "text-sm font-semibold" , style: { color: '#003C8D' },}, "SAFE ILPIS" )
+          )
+          , _react2.default.createElement('p', { className: "text-sm", style: { color: '#1F2937', opacity: 0.55 },}, "© 2026 SAFE ILPIS. Todos os direitos reservados."
+
+          )
+        )
+      )
+
+      , _react2.default.createElement(_framermotion.motion.a, { href: WHATSAPP_LINK, target: "_blank", rel: "noreferrer", initial: { scale: 0 }, animate: { scale: 1 }, transition: { delay: 1.5, type: 'spring' }, whileHover: { scale: 1.05 }, whileTap: { scale: 0.95 }, className: "fixed bottom-5 right-5 z-30 w-14 h-14 rounded-full flex items-center justify-center shadow-xl"          , style: { backgroundColor: '#25D366' }, 'aria-label': "WhatsApp",}
+        , _react2.default.createElement('svg', { viewBox: "0 0 32 32"   , className: "w-7 h-7 fill-white"  ,}
+          , _react2.default.createElement('path', { d: "M16.003 3.2c-7.07 0-12.8 5.73-12.8 12.8 0 2.256.595 4.462 1.724 6.41L3.2 28.8l6.6-1.73a12.73 12.73 0 006.2 1.58h.005c7.066 0 12.8-5.73 12.8-12.8 0-3.42-1.332-6.633-3.75-9.05A12.71 12.71 0 0016.003 3.2zm0 23.27h-.003a10.62 10.62 0 01-5.413-1.48l-.388-.23-3.917 1.027 1.046-3.82-.253-.393a10.63 10.63 0 01-1.63-5.66c0-5.87 4.78-10.65 10.66-10.65 2.846 0 5.52 1.11 7.53 3.12a10.58 10.58 0 013.12 7.53c0 5.87-4.78 10.65-10.65 10.65zm5.846-7.98c-.32-.16-1.893-.934-2.187-1.04-.293-.107-.506-.16-.72.16-.213.32-.826 1.04-1.013 1.253-.187.213-.374.24-.694.08-.32-.16-1.35-.497-2.573-1.587-.95-.847-1.592-1.893-1.78-2.213-.186-.32-.02-.493.14-.653.143-.143.32-.374.48-.56.16-.187.213-.32.32-.534.107-.213.053-.4-.027-.56-.08-.16-.72-1.733-.987-2.373-.26-.624-.524-.54-.72-.55l-.613-.011a1.177 1.177 0 00-.853.4c-.293.32-1.12 1.094-1.12 2.667s1.146 3.093 1.306 3.306c.16.213 2.253 3.44 5.466 4.826.765.33 1.36.527 1.826.674.767.244 1.465.21 2.017.127.615-.092 1.893-.774 2.16-1.52.266-.747.266-1.387.186-1.52-.08-.133-.293-.213-.613-.373z"                                                                  ,} )
+        )
+      )
+
+      , _react2.default.createElement(_framermotion.AnimatePresence, null
+        , showQualityModal && (
+          _react2.default.createElement(Modal, { onClose: () => setShowQualityModal(false),}
+            , _react2.default.createElement('div', { className: "w-14 h-14 mx-auto rounded-2xl flex items-center justify-center mb-5"       , style: { backgroundColor: '#F5F7FA' },}
+              , _react2.default.createElement(_lucidereact.Shield, { className: "w-7 h-7" , style: { color: '#003C8D' },} )
+            )
+            , _react2.default.createElement('h3', { className: "text-xl sm:text-2xl font-semibold tracking-tight text-center mb-4"     , style: { color: '#1F2937' },}, "Nosso controle de qualidade"
+
+            )
+            , _react2.default.createElement('p', { className: "text-base leading-relaxed text-center mb-6"   , style: { color: '#1F2937', opacity: 0.75 },}, "Realizamos inspeções bimestrais em todos os residenciais, verificando licenças operacionais, histórico legal, padrões de higiene, qualidade da alimentação, cuidados clínicos e satisfação das famílias."
+
+            )
+            , _react2.default.createElement('div', { className: "space-y-2.5",}
+              , ['Licenças e alvarás validados', 'Padrões de higiene verificados', 'Qualidade alimentar inspecionada', 'Cuidados clínicos avaliados', 'Satisfação das famílias'].map((item, i) => (
+                _react2.default.createElement('div', { key: i, className: "flex items-center gap-2 text-base"   , style: { color: '#1F2937' },}
+                  , _react2.default.createElement('div', { className: "w-5 h-5 rounded-full flex items-center justify-center flex-shrink-0"      , style: { backgroundColor: '#003C8D' },}
+                    , _react2.default.createElement(_lucidereact.Check, { className: "w-3 h-3 text-white"  , strokeWidth: 3,} )
+                  )
+                  , item
+                )
+              ))
+            )
+          )
+        )
+      )
+
+      , _react2.default.createElement(_framermotion.AnimatePresence, null
+        , showProfileModal && selectedResidence && (
+          _react2.default.createElement(Modal, { onClose: () => setShowProfileModal(false),}
+            , _react2.default.createElement('div', { className: "relative mb-5 overflow-hidden rounded-2xl"   ,}
+              , _react2.default.createElement('img', { src: selectedResidence.img, alt: selectedResidence.name, className: "w-full h-40 object-cover"  , style: { filter: 'blur(10px)' },} )
+              , _react2.default.createElement('div', { className: "absolute inset-0 flex items-center justify-center bg-white/40 backdrop-blur-sm"      ,}
+                , _react2.default.createElement('div', { className: "w-12 h-12 rounded-full bg-white shadow-lg flex items-center justify-center"       ,}
+                  , _react2.default.createElement(_lucidereact.Lock, { className: "w-5 h-5" , style: { color: '#003C8D' },} )
+                )
+              )
+            )
+            , _react2.default.createElement('h3', { className: "text-xl font-semibold tracking-tight text-center mb-3"    , style: { color: '#1F2937' },}, "Perfil bloqueado"
+
+            )
+            , _react2.default.createElement('p', { className: "text-base leading-relaxed text-center mb-6"   , style: { color: '#1F2937', opacity: 0.75 },}, "Fale com um especialista no WhatsApp para desbloquear o perfil completo, fotos, disponibilidade e contato."
+
+            )
+            , _react2.default.createElement('a', { href: `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(`Olá! Tenho interesse em saber mais sobre o ${selectedResidence.name} (${selectedResidence.neighborhood}).`)}`, target: "_blank", rel: "noreferrer", onClick: () => setShowProfileModal(false), className: "w-full py-3.5 rounded-full text-white text-base font-semibold hover:opacity-90 transition-all flex items-center justify-center gap-2"           , style: { backgroundColor: '#25D366' },}
+              , _react2.default.createElement('svg', { viewBox: "0 0 32 32"   , className: "w-4 h-4 fill-white"  ,}
+                , _react2.default.createElement('path', { d: "M16.003 3.2c-7.07 0-12.8 5.73-12.8 12.8 0 2.256.595 4.462 1.724 6.41L3.2 28.8l6.6-1.73a12.73 12.73 0 006.2 1.58h.005c7.066 0 12.8-5.73 12.8-12.8 0-3.42-1.332-6.633-3.75-9.05A12.71 12.71 0 0016.003 3.2z"                      ,} )
+              ), "Falar no WhatsApp"
+
+            )
+          )
+        )
+      )
+    )
+  );
+} exports.default = SafeIlpisApp;
+
+function InitialAvatar({ name }) {
+  const initials = name
+    .split(' ')
+    .filter(Boolean)
+    .slice(0, 2)
+    .map((n) => n[0])
+    .join('')
+    .toUpperCase();
+  return (
+    _react2.default.createElement('div', {
+      className: "w-11 h-11 rounded-full flex-shrink-0 flex items-center justify-center text-base font-semibold"        ,
+      style: {
+        background: 'linear-gradient(135deg, #003C8D 0%, #1e5bb8 100%)',
+        color: '#FFFFFF',
+        letterSpacing: '0.02em'
+      },
+      'aria-label': name,}
+
+      , initials
+    )
+  );
+}
+
+function SingleLockedCard({ count, images }) {
+  return (
+    _react2.default.createElement(_framermotion.motion.div, {
+      initial: { opacity: 0, y: 20 },
+      animate: { opacity: 1, y: 0 },
+      transition: { duration: 0.7, ease: [0.16, 1, 0.3, 1] },
+      className: "relative w-full max-w-3xl mx-auto"   ,}
+
+      , _react2.default.createElement('div', { className: "relative overflow-hidden rounded-3xl shadow-2xl border border-gray-100 bg-white"      ,}
+        , _react2.default.createElement('div', { className: "absolute inset-0" ,}
+          , _react2.default.createElement('div', { className: "grid grid-cols-3 grid-rows-2 w-full h-full"    ,}
+            , [0, 1, 2, 3, 4, 0].map((idx, i) => (
+              _react2.default.createElement('div', { key: i, className: "overflow-hidden",}
+                , _react2.default.createElement('img', {
+                  src: images[idx % images.length],
+                  alt: "",
+                  className: "w-full h-full object-cover scale-125"   ,
+                  style: { filter: 'blur(22px) saturate(1.1)' },}
+                )
+              )
+            ))
+          )
+        )
+
+        , _react2.default.createElement('div', {
+          className: "absolute inset-0" ,
+          style: {
+            background:
+              'linear-gradient(180deg, rgba(0,60,141,0.55) 0%, rgba(0,60,141,0.75) 55%, rgba(15,23,42,0.88) 100%)'
+          },}
+        )
+
+        , _react2.default.createElement('div', { className: "pointer-events-none absolute inset-0 overflow-hidden"   ,}
+          , _react2.default.createElement(_framermotion.motion.div, {
+            className: "absolute inset-y-0 w-1/3 -skew-x-12"   ,
+            style: {
+              background:
+                'linear-gradient(90deg, transparent, rgba(255,255,255,0.18), transparent)'
+            },
+            animate: { x: ['-120%', '260%'] },
+            transition: { repeat: Infinity, duration: 4, ease: 'easeInOut' },}
+          )
+        )
+
+        , _react2.default.createElement('div', { className: "relative px-6 sm:px-14 py-12 sm:py-20 flex flex-col items-center text-center"        ,}
+          , _react2.default.createElement(_framermotion.motion.div, {
+            initial: { scale: 0.6, opacity: 0 },
+            animate: { scale: 1, opacity: 1 },
+            transition: { delay: 0.25, type: 'spring', stiffness: 120 },
+            className: "relative mb-6" ,}
+
+            , _react2.default.createElement('div', { className: "absolute inset-0 rounded-full blur-2xl"   , style: { backgroundColor: 'rgba(255,255,255,0.35)' },} )
+            , _react2.default.createElement('div', { className: "relative w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-white shadow-2xl flex items-center justify-center"          ,}
+              , _react2.default.createElement(_lucidereact.Lock, { className: "w-7 h-7 sm:w-8 sm:h-8"   , style: { color: '#003C8D' },} )
+            )
+          )
+
+          , _react2.default.createElement(_framermotion.motion.div, {
+            key: `badge-${count}`,
+            initial: { opacity: 0, y: 10 },
+            animate: { opacity: 1, y: 0 },
+            transition: { delay: 0.35 },
+            className: "inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/15 backdrop-blur border border-white/25 mb-5"          ,}
+
+            , _react2.default.createElement(_lucidereact.Sparkles, { className: "w-3.5 h-3.5 text-white"  ,} )
+            , _react2.default.createElement('span', { className: "text-sm font-medium tracking-wide text-white"   ,}
+              , count, " residenciais disponíveis"
+            )
+          )
+
+          , _react2.default.createElement(_framermotion.motion.h2, {
+            key: `title-${count}`,
+            initial: { opacity: 0, y: 12 },
+            animate: { opacity: 1, y: 0 },
+            transition: { delay: 0.45 },
+            className: "text-2xl sm:text-4xl font-semibold tracking-tight text-white mb-4 max-w-xl leading-tight"       ,}
+, "Veja os "
+              , count, " residenciais dentro do que você busca"
+          )
+
+          , _react2.default.createElement(_framermotion.motion.p, {
+            initial: { opacity: 0, y: 12 },
+            animate: { opacity: 1, y: 0 },
+            transition: { delay: 0.55 },
+            className: "text-base sm:text-lg text-white/85 leading-relaxed max-w-lg mb-8"     ,}
+, "Encontramos opções compatíveis com sua localização, orçamento e necessidade de cuidado."
+
+          )
+
+          , _react2.default.createElement(_framermotion.motion.a, {
+            href: WHATSAPP_LINK,
+            target: "_blank",
+            rel: "noreferrer",
+            initial: { opacity: 0, y: 12 },
+            animate: { opacity: 1, y: 0 },
+            transition: { delay: 0.65 },
+            whileHover: { y: -2 },
+            whileTap: { scale: 0.98 },
+            className: "group inline-flex items-center gap-2.5 px-6 sm:px-9 py-4 rounded-full text-base sm:text-lg font-semibold shadow-xl transition-all"            ,
+            style: { backgroundColor: '#25D366', color: '#FFFFFF' },}
+
+            , _react2.default.createElement('svg', { viewBox: "0 0 32 32"   , className: "w-5 h-5 fill-white"  ,}
+              , _react2.default.createElement('path', { d: "M16.003 3.2c-7.07 0-12.8 5.73-12.8 12.8 0 2.256.595 4.462 1.724 6.41L3.2 28.8l6.6-1.73a12.73 12.73 0 006.2 1.58h.005c7.066 0 12.8-5.73 12.8-12.8 0-3.42-1.332-6.633-3.75-9.05A12.71 12.71 0 0016.003 3.2z"                      ,} )
+            ), "Desbloquear residenciais no WhatsApp"
+
+            , _react2.default.createElement(_lucidereact.ArrowRight, { className: "w-4 h-4 group-hover:translate-x-0.5 transition-transform"   ,} )
+          )
+
+          , _react2.default.createElement(_framermotion.motion.p, {
+            initial: { opacity: 0 },
+            animate: { opacity: 1 },
+            transition: { delay: 0.8 },
+            className: "text-sm text-white/75 mt-5"  ,}
+, "Atendimento gratuito · Resposta em minutos"
+
+          )
+        )
+      )
+    )
+  );
+}
+
+function MapVisual({ markers, step }) {
+  return (
+    _react2.default.createElement('div', { className: "absolute inset-0" , style: { backgroundColor: '#F5F7FA' },}
+      , _react2.default.createElement('svg', { viewBox: "0 0 100 100"   , preserveAspectRatio: "xMidYMid slice" , className: "absolute inset-0 w-full h-full"   ,}
+        , _react2.default.createElement('defs', null
+          , _react2.default.createElement('linearGradient', { id: "bg", x1: "0", y1: "0", x2: "1", y2: "1",}
+            , _react2.default.createElement('stop', { offset: "0%", stopColor: "#F5F7FA",} )
+            , _react2.default.createElement('stop', { offset: "100%", stopColor: "#E5E7EB",} )
+          )
+        )
+        , _react2.default.createElement('rect', { width: "100", height: "100", fill: "url(#bg)",} )
+        , _react2.default.createElement('circle', { cx: "20", cy: "30", r: "8", fill: "#E5E7EB", opacity: "0.8",} )
+        , _react2.default.createElement('circle', { cx: "75", cy: "65", r: "10", fill: "#E5E7EB", opacity: "0.8",} )
+        , _react2.default.createElement('circle', { cx: "55", cy: "20", r: "6", fill: "#E5E7EB", opacity: "0.6",} )
+        , _react2.default.createElement('circle', { cx: "30", cy: "80", r: "7", fill: "#E5E7EB", opacity: "0.6",} )
+        , _react2.default.createElement('g', { stroke: "#FFFFFF", strokeWidth: "1.2", fill: "none", opacity: "0.9",}
+          , _react2.default.createElement('path', { d: "M 0 25 Q 30 28, 60 22 T 100 20"          ,} )
+          , _react2.default.createElement('path', { d: "M 0 45 Q 25 50, 55 48 T 100 52"          ,} )
+          , _react2.default.createElement('path', { d: "M 0 70 Q 35 68, 65 72 T 100 75"          ,} )
+          , _react2.default.createElement('path', { d: "M 15 0 Q 18 30, 22 60 T 28 100"          ,} )
+          , _react2.default.createElement('path', { d: "M 50 0 Q 52 25, 55 55 T 60 100"          ,} )
+          , _react2.default.createElement('path', { d: "M 80 0 Q 78 35, 82 65 T 85 100"          ,} )
+        )
+        , _react2.default.createElement('g', { stroke: "#FFFFFF", strokeWidth: "0.4", fill: "none", opacity: "0.7",}
+          , _react2.default.createElement('path', { d: "M 0 15 L 100 18"     ,} )
+          , _react2.default.createElement('path', { d: "M 0 35 L 100 38"     ,} )
+          , _react2.default.createElement('path', { d: "M 0 58 L 100 60"     ,} )
+          , _react2.default.createElement('path', { d: "M 0 85 L 100 88"     ,} )
+          , _react2.default.createElement('path', { d: "M 35 0 L 38 100"     ,} )
+          , _react2.default.createElement('path', { d: "M 65 0 L 68 100"     ,} )
+        )
+        , _react2.default.createElement('path', { d: "M 0 100 Q 30 95, 60 98 T 100 95 L 100 100 Z"              , fill: "#003C8D", opacity: "0.08",} )
+      )
+      , _react2.default.createElement('div', { className: "absolute inset-0" ,}
+        , markers.map((m) => (_react2.default.createElement(MapMarker, { key: m.id, marker: m,} )))
+      )
+      , step !== 'cep' && (
+        _react2.default.createElement(_framermotion.motion.div, { initial: { opacity: 0, scale: 0.5 }, animate: { opacity: 1, scale: 1 }, transition: { duration: 1 }, className: "absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none"     ,}
+          , _react2.default.createElement('div', { className: "w-32 h-32 sm:w-48 sm:h-48 rounded-full border-2 animate-pulse"      , style: { borderColor: '#003C8D', opacity: 0.2 },})
+          , _react2.default.createElement('div', { className: "absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-20 h-20 sm:w-32 sm:h-32 rounded-full border"          , style: { borderColor: '#003C8D', opacity: 0.15 },})
+        )
+      )
+    )
+  );
+}
+
+function MapMarker({ marker }) {
+  const colors = { blue: '#003C8D', black: '#1F2937', red: '#DC2626' };
+  const color = colors[marker.color];
+  return (
+    _react2.default.createElement(_framermotion.motion.div, {
+      className: "absolute",
+      style: { left: `${marker.x}%`, top: `${marker.y}%`, transform: 'translate(-50%, -50%)' },
+      initial: { opacity: 0, scale: 0 },
+      animate: { opacity: 1, scale: 1 },
+      exit: { opacity: 0, scale: 0 },
+      transition: { duration: 0.6, delay: marker.delay * 0.3, ease: [0.16, 1, 0.3, 1] },}
+
+      , _react2.default.createElement('div', { className: "relative flex items-center justify-center"   ,}
+        , _react2.default.createElement(_framermotion.motion.div, {
+          className: "absolute w-4 h-4 sm:w-5 sm:h-5 rounded-full"     ,
+          style: { backgroundColor: color },
+          animate: { scale: [1, 2, 1], opacity: [0.25, 0, 0.25] },
+          transition: { repeat: Infinity, duration: 2.5, delay: marker.delay },}
+        )
+        , _react2.default.createElement('div', {
+          className: "relative w-4 h-4 sm:w-5 sm:h-5 rounded-full flex items-center justify-center shadow-md border border-white"           ,
+          style: { backgroundColor: color },}
+
+          , _react2.default.createElement('svg', { viewBox: "0 0 24 24"   , fill: "none", className: "w-2.5 h-2.5 sm:w-3 sm:h-3"   , stroke: "#FFFFFF", strokeWidth: "2.2", strokeLinecap: "round", strokeLinejoin: "round",}
+            , _react2.default.createElement('path', { d: "M3 11l9-8 9 8"   ,} )
+            , _react2.default.createElement('path', { d: "M5 10v10h14V10" ,} )
+            , _react2.default.createElement('path', { d: "M10 20v-6h4v6" ,} )
+          )
+        )
+      )
+    )
+  );
+}
+
+function PremiumSlider({ value, onChange, min, max, step }) {
+  const pct = ((value - min) / (max - min)) * 100;
+  return (
+    _react2.default.createElement('div', { className: "relative w-full" ,}
+      , _react2.default.createElement('div', { className: "relative h-1 rounded-full"  , style: { backgroundColor: '#E5E7EB' },}
+        , _react2.default.createElement('div', { className: "absolute top-0 left-0 h-full rounded-full"    , style: { width: `${pct}%`, backgroundColor: '#003C8D' },})
+        , _react2.default.createElement('div', { className: "absolute top-1/2 w-6 h-6 rounded-full bg-white shadow-lg border-2 -translate-y-1/2 -translate-x-1/2 transition-all"          , style: { left: `${pct}%`, borderColor: '#003C8D' },})
+      )
+      , _react2.default.createElement('input', { type: "range", min: min, max: max, step: step, value: value, onChange: (e) => onChange(Number(e.target.value)), className: "absolute inset-0 w-full h-full opacity-0 cursor-pointer"     ,} )
+    )
+  );
+}
+
+function ResidenceCard({ residence, onClick }) {
+  return (
+    _react2.default.createElement(_framermotion.motion.button, { onClick: onClick, layout: true, initial: { opacity: 0, y: 15 }, animate: { opacity: 1, y: 0 }, exit: { opacity: 0, y: -15 }, whileHover: { y: -4 }, transition: { duration: 0.4 }, className: "group text-left w-full"  ,}
+      , _react2.default.createElement('div', { className: "relative overflow-hidden rounded-2xl mb-3 aspect-[4/3]"    ,}
+        , _react2.default.createElement('img', { src: residence.img, alt: residence.name, className: "w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"     ,} )
+        , _react2.default.createElement('div', { className: "absolute top-3 right-3 w-8 h-8 rounded-full bg-white/95 backdrop-blur flex items-center justify-center shadow-sm"           ,}
+          , _react2.default.createElement(_lucidereact.Heart, { className: "w-4 h-4" , style: { color: '#1F2937' },} )
+        )
+        , _react2.default.createElement('div', { className: "absolute bottom-3 left-3 flex gap-1"    ,}
+          , residence.tags.slice(0, 1).map((t) => (
+            _react2.default.createElement('span', { key: t, className: "px-2.5 py-1 bg-white/95 backdrop-blur rounded-full text-sm font-medium"      , style: { color: '#1F2937' },}, t)
+          ))
+        )
+      )
+      , _react2.default.createElement('div', null
+        , _react2.default.createElement('div', { className: "flex items-start justify-between gap-2 mb-1"    ,}
+          , _react2.default.createElement('h3', { className: "text-base font-semibold truncate"  , style: { color: '#1F2937' },}, residence.name)
+          , _react2.default.createElement('div', { className: "flex items-center gap-1 flex-shrink-0"   ,}
+            , _react2.default.createElement(_lucidereact.Star, { className: "w-3.5 h-3.5 fill-current"  , style: { color: '#1F2937' },} )
+            , _react2.default.createElement('span', { className: "text-base font-medium" , style: { color: '#1F2937' },}, residence.rating)
+          )
+        )
+        , _react2.default.createElement('p', { className: "text-base mb-0.5" , style: { color: '#1F2937', opacity: 0.65 },}, residence.neighborhood)
+        , _react2.default.createElement('p', { className: "text-sm mb-2" , style: { color: '#1F2937', opacity: 0.55 },}, residence.distance, " de distância"  )
+        , _react2.default.createElement('p', { className: "text-base", style: { color: '#1F2937' },}
+          , _react2.default.createElement('span', { className: "font-semibold",}, residence.price)
+        )
+      )
+    )
+  );
+}
+
+function Modal({ children, onClose }) {
+  return (
+    _react2.default.createElement(_framermotion.motion.div, { initial: { opacity: 0 }, animate: { opacity: 1 }, exit: { opacity: 0 }, className: "fixed inset-0 z-50 flex items-center justify-center p-4"      ,}
+      , _react2.default.createElement('div', { className: "absolute inset-0 bg-gray-900/30 backdrop-blur-sm"   , onClick: onClose,})
+      , _react2.default.createElement(_framermotion.motion.div, { initial: { opacity: 0, y: 30, scale: 0.96 }, animate: { opacity: 1, y: 0, scale: 1 }, exit: { opacity: 0, y: 30, scale: 0.96 }, transition: { duration: 0.4, ease: [0.16, 1, 0.3, 1] }, className: "relative w-full max-w-md bg-white rounded-3xl shadow-2xl p-6 sm:p-8 max-h-full overflow-y-auto"         ,}
+        , _react2.default.createElement('button', { onClick: onClose, className: "absolute top-4 right-4 w-8 h-8 rounded-full flex items-center justify-center hover:bg-gray-100 transition-colors"          ,}
+          , _react2.default.createElement(_lucidereact.X, { className: "w-4 h-4" , style: { color: '#1F2937' },} )
+        )
+        , children
+      )
+    )
+  );
+}
+</script></head>
+  <body>
+  
+
+<div id="preview-app"></div></body></html>
