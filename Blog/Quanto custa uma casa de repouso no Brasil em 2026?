@@ -1,0 +1,1895 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+
+<!-- ══════════════════════════════════
+     SEO: META TAGS COMPLETAS
+══════════════════════════════════ -->
+<title>Quanto Custa uma Casa de Repouso no Brasil em 2026? | SAFE ILPIS</title>
+<meta name="description" content="Guia completo com os custos reais de uma casa de repouso em 2026, comparativo com cuidado em casa e como o grau de dependência define o valor. Orientação gratuita da SAFE ILPIS."/>
+<meta name="keywords" content="quanto custa casa de repouso 2026, casa de repouso preço, ILPI custo, residencial sênior São Paulo, cuidado em casa ou residencial"/>
+<meta name="robots" content="index, follow"/>
+<meta name="author" content="SAFE ILPIS"/>
+<link rel="canonical" href="https://safeilpis.com.br/blog/quanto-custa-casa-de-repouso-2026"/>
+
+<!-- Open Graph -->
+<meta property="og:type" content="article"/>
+<meta property="og:title" content="Quanto Custa uma Casa de Repouso no Brasil em 2026?"/>
+<meta property="og:description" content="A análise mais completa e honesta sobre os custos reais de uma ILPI — com simulador interativo, comparativo detalhado e orientação gratuita."/>
+<meta property="og:url" content="https://safeilpis.com.br/blog/quanto-custa-casa-de-repouso-2026"/>
+<meta property="og:image" content="https://safeilpis.com.br/og/casa-repouso-2026.jpg"/>
+<meta property="og:site_name" content="SAFE ILPIS"/>
+<meta property="article:published_time" content="2026-01-01"/>
+<meta property="article:modified_time" content="2026-05-01"/>
+
+<!-- Twitter -->
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:title" content="Quanto Custa uma Casa de Repouso no Brasil em 2026?"/>
+<meta name="twitter:description" content="Análise honesta, simulador interativo e orientação gratuita. SAFE ILPIS."/>
+
+<!-- Article Schema -->
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"Article","headline":"Quanto Custa uma Casa de Repouso no Brasil em 2026?","description":"Guia completo com comparativo real de custos, graus de dependência e simulador interativo.","author":{"@type":"Organization","name":"SAFE ILPIS","url":"https://safeilpis.com.br"},"publisher":{"@type":"Organization","name":"SAFE ILPIS","logo":{"@type":"ImageObject","url":"https://safeilpis.com.br/logo.png"}},"datePublished":"2026-01-01","dateModified":"2026-05-01","mainEntityOfPage":"https://safeilpis.com.br/blog/quanto-custa-casa-de-repouso-2026"}
+</script>
+
+<!-- Breadcrumb Schema -->
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://safeilpis.com.br"},{"@type":"ListItem","position":2,"name":"Blog","item":"https://safeilpis.com.br/blog"},{"@type":"ListItem","position":3,"name":"Quanto custa uma casa de repouso em 2026","item":"https://safeilpis.com.br/blog/quanto-custa-casa-de-repouso-2026"}]}
+</script>
+
+<!-- FAQ Schema -->
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Qual o custo médio de uma casa de repouso no Brasil em 2026?","acceptedAnswer":{"@type":"Answer","text":"O custo médio varia entre R$ 3.000 e R$ 20.000 por mês, dependendo do grau de dependência e da região. Em São Paulo, a média geral fica em torno de R$ 5.000 mensais."}},{"@type":"Question","name":"Cuidar em casa é mais barato do que uma casa de repouso?","acceptedAnswer":{"@type":"Answer","text":"Não necessariamente. Com uma cuidadora registrada, os encargos trabalhistas e os custos de moradia, o cuidado em casa para pessoas com Grau 2 ou 3 de dependência pode ultrapassar R$ 10.000 mensais."}},{"@type":"Question","name":"O que define o preço de uma ILPI?","acceptedAnswer":{"@type":"Answer","text":"O principal fator é o grau de dependência da pessoa: quanto maior a necessidade de assistência, maior a equipe necessária e, portanto, maior o custo da mensalidade."}},{"@type":"Question","name":"A SAFE ILPIS cobra para ajudar na escolha?","acceptedAnswer":{"@type":"Answer","text":"Não. A orientação da SAFE ILPIS é completamente gratuita para as famílias. Nossa remuneração vem dos residenciais parceiros, o que garante total isenção na indicação."}}]}
+</script>
+
+<!-- Fontes -->
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,400&display=swap" rel="stylesheet"/>
+
+<style>
+/* ══════════════════════════════════════════════════
+   DESIGN SYSTEM
+══════════════════════════════════════════════════ */
+:root{
+  --navy:       #081A58;
+  --navy-90:    rgba(8,26,88,.9);
+  --navy-mid:   #0d2575;
+  --navy-soft:  #1a3a8a;
+  --tint:       #f0f3fc;
+  --tint2:      #e8edf8;
+  --white:      #ffffff;
+  --off:        #f7f8fc;
+  --gray-1:     #f2f4fa;
+  --gray-2:     #e0e5f2;
+  --gray-3:     #b8c0db;
+  --gray-4:     #6b7499;
+  --gray-5:     #3d4568;
+  --text:       #18213d;
+  --text-2:     #4a5278;
+  --green:      #18a96a;
+  --green-d:    #129055;
+  --amber:      #d97706;
+  --red:        #c93535;
+  --accent:     #2b5ce6;
+  --accent-h:   #1a48d4;
+
+  --f:          'Montserrat',sans-serif;
+  --r-s:  8px;
+  --r:   14px;
+  --r-l: 22px;
+  --r-xl:32px;
+  --sh-s: 0 2px 14px rgba(8,26,88,.07);
+  --sh:   0 8px 40px rgba(8,26,88,.11);
+  --sh-l: 0 20px 70px rgba(8,26,88,.16);
+  --tr: .25s cubic-bezier(.4,0,.2,1);
+}
+
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{font-family:var(--f);font-size:17px;line-height:1.78;color:var(--text);background:var(--white);-webkit-font-smoothing:antialiased;overflow-x:hidden}
+img{max-width:100%;display:block}
+a{color:var(--accent);text-decoration:none;transition:color var(--tr)}
+a:hover{color:var(--navy)}
+strong{font-weight:700;color:var(--text)}
+
+/* CONTAINERS */
+.wrap     {width:100%;max-width:800px;margin:0 auto;padding:0 24px}
+.wrap-wide{width:100%;max-width:1100px;margin:0 auto;padding:0 24px}
+.wrap-narrow{width:100%;max-width:640px;margin:0 auto;padding:0 24px}
+
+/* TIPOGRAFIA */
+h1,h2,h3,h4{font-weight:800;line-height:1.22;letter-spacing:-.02em;color:var(--navy)}
+h1{font-size:clamp(28px,5.5vw,52px);margin-bottom:24px}
+h2{font-size:clamp(22px,4vw,34px);margin-bottom:18px}
+h3{font-size:clamp(18px,2.8vw,24px);font-weight:700;margin-bottom:14px}
+p{color:var(--text-2);margin-bottom:1.3em}
+p:last-child{margin-bottom:0}
+
+/* OVERLINE / EYEBROW */
+.eye{display:inline-block;font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);margin-bottom:14px}
+.eye-white{color:rgba(255,255,255,.55)}
+
+/* SEÇÕES */
+.sec{padding:88px 0}
+.sec-sm{padding:56px 0}
+.sec-dark{background:var(--navy);color:var(--white)}
+.sec-dark h1,.sec-dark h2,.sec-dark h3{color:var(--white)}
+.sec-dark p{color:rgba(255,255,255,.68)}
+.sec-alt{background:var(--off)}
+.sec-tint{background:var(--tint)}
+
+/* DIVISOR */
+.sep{height:1px;background:var(--gray-2);margin:0 24px}
+.sep-wide{height:1px;background:var(--gray-2)}
+
+/* ══════════════════════════════════════════════════
+   HEADER
+══════════════════════════════════════════════════ */
+.site-nav{
+  position:sticky;top:0;z-index:200;
+  background:rgba(255,255,255,.95);
+  backdrop-filter:blur(14px) saturate(1.6);
+  border-bottom:1px solid var(--gray-2);
+  padding:15px 0;
+}
+.nav-inner{display:flex;align-items:center;justify-content:space-between;gap:16px}
+.logo{font-size:17px;font-weight:900;color:var(--navy);letter-spacing:-.03em;text-decoration:none}
+.logo em{color:var(--accent);font-style:normal}
+.nav-cta{
+  display:inline-flex;align-items:center;gap:8px;
+  background:var(--green);color:#fff;
+  font-weight:700;font-size:13px;padding:9px 18px;border-radius:40px;
+  white-space:nowrap;
+  box-shadow:0 4px 16px rgba(24,169,106,.3);
+  transition:all var(--tr);
+  text-decoration:none;
+}
+.nav-cta:hover{color:#fff;transform:translateY(-1px);box-shadow:0 6px 22px rgba(24,169,106,.4)}
+.nav-cta svg{width:15px;height:15px}
+
+/* BREADCRUMB */
+.bc{padding:12px 0;font-size:13px;color:var(--gray-3);border-bottom:1px solid var(--gray-2)}
+.bc a{color:var(--gray-3);transition:color var(--tr)}
+.bc a:hover{color:var(--navy)}
+.bc span{margin:0 7px;opacity:.5}
+
+/* ══════════════════════════════════════════════════
+   HERO
+══════════════════════════════════════════════════ */
+.hero{
+  padding:80px 0 72px;
+  position:relative;
+  overflow:hidden;
+}
+.hero::after{
+  content:'';
+  position:absolute;inset:0;
+  background:
+    radial-gradient(ellipse 60% 60% at 90% 20%, rgba(43,92,230,.055) 0%,transparent 70%),
+    radial-gradient(ellipse 50% 80% at -10% 80%, rgba(8,26,88,.04) 0%,transparent 60%);
+  pointer-events:none;
+}
+.hero-kicker{
+  display:flex;align-items:center;gap:12px;
+  margin-bottom:28px;flex-wrap:wrap;
+}
+.hero-tag{
+  font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;
+  background:var(--tint);color:var(--accent);
+  padding:5px 13px;border-radius:40px;
+}
+.hero-date{font-size:13px;color:var(--gray-3)}
+
+.hero h1{
+  max-width:720px;
+  animation:fadeUp .7s ease both;
+}
+.hero h1 .accent-span{
+  color:var(--accent);
+  position:relative;
+}
+.hero-sub{
+  font-size:19px;line-height:1.7;color:var(--text-2);
+  max-width:600px;margin-bottom:44px;
+  animation:fadeUp .7s .12s ease both;
+}
+
+/* Trust bar */
+.trust-bar{
+  display:flex;align-items:center;gap:24px;
+  flex-wrap:wrap;
+  animation:fadeUp .7s .22s ease both;
+}
+.trust-item{
+  display:flex;align-items:center;gap:8px;
+  font-size:14px;font-weight:600;color:var(--gray-5);
+}
+.trust-item svg{color:var(--green);flex-shrink:0}
+
+/* ══════════════════════════════════════════════════
+   HERO IMAGE BLOCK
+══════════════════════════════════════════════════ */
+.hero-img-wrap{
+  max-width:800px;margin:0 auto;
+  border-radius:var(--r-l);overflow:hidden;
+  aspect-ratio:16/7;
+  background:linear-gradient(135deg,#dde3f4,#c8d2ed);
+  display:flex;align-items:center;justify-content:center;
+  margin-bottom:0;
+  box-shadow:var(--sh-l);
+  position:relative;
+}
+.img-ph{text-align:center;color:var(--gray-3);font-size:13px;font-weight:500;padding:20px}
+.img-ph svg{width:36px;height:36px;margin:0 auto 10px;opacity:.4;display:block}
+
+/* ══════════════════════════════════════════════════
+   INTRO
+══════════════════════════════════════════════════ */
+.pull-quote{
+  font-size:clamp(20px,3vw,28px);font-weight:700;
+  color:var(--navy);line-height:1.4;
+  border-left:5px solid var(--accent);
+  padding:4px 0 4px 24px;
+  margin:40px 0 32px;
+}
+
+/* NOTE / CALLOUT */
+.callout{
+  background:var(--tint);
+  border:1.5px solid var(--gray-2);
+  border-left:4px solid var(--accent);
+  border-radius:0 var(--r) var(--r) 0;
+  padding:20px 24px;margin:32px 0;
+}
+.callout p{font-size:15px;color:var(--text);margin:0}
+
+/* ══════════════════════════════════════════════════
+   CTA PREMIUM CARD
+══════════════════════════════════════════════════ */
+.cta-premium{
+  background:linear-gradient(135deg,var(--navy) 0%,var(--navy-soft) 100%);
+  border-radius:var(--r-xl);
+  padding:48px 44px;
+  position:relative;overflow:hidden;
+  box-shadow:var(--sh-l);
+  margin:64px 0;
+}
+.cta-premium::before{
+  content:'';position:absolute;
+  top:-60px;right:-60px;
+  width:280px;height:280px;
+  border-radius:50%;
+  background:radial-gradient(circle,rgba(255,255,255,.06) 0%,transparent 70%);
+  pointer-events:none;
+}
+.cta-premium::after{
+  content:'';position:absolute;
+  bottom:-80px;left:-40px;
+  width:240px;height:240px;
+  border-radius:50%;
+  background:radial-gradient(circle,rgba(43,92,230,.15) 0%,transparent 70%);
+  pointer-events:none;
+}
+.cta-premium__inner{position:relative;z-index:1}
+.cta-premium h3{color:#fff;font-size:clamp(19px,3vw,26px);margin-bottom:10px}
+.cta-premium p{color:rgba(255,255,255,.72);font-size:16px;margin-bottom:0}
+.cta-premium__row{
+  display:flex;align-items:center;justify-content:space-between;
+  flex-wrap:wrap;gap:28px;
+  margin-top:32px;
+}
+.discount-badge{
+  display:flex;align-items:center;gap:16px;
+  background:rgba(255,255,255,.09);
+  border:1px solid rgba(255,255,255,.16);
+  border-radius:var(--r);
+  padding:16px 22px;
+}
+.discount-badge__num{
+  font-size:32px;font-weight:900;color:#fff;line-height:1;
+  white-space:nowrap;
+}
+.discount-badge__txt{font-size:14px;color:rgba(255,255,255,.65);line-height:1.4;max-width:180px}
+.btn-wa{
+  display:inline-flex;align-items:center;gap:10px;
+  background:var(--green);color:#fff;
+  font-weight:700;font-size:16px;
+  padding:15px 30px;border-radius:40px;
+  box-shadow:0 6px 24px rgba(24,169,106,.4);
+  transition:all var(--tr);
+  white-space:nowrap;
+  text-decoration:none;
+}
+.btn-wa:hover{color:#fff;transform:translateY(-2px);box-shadow:0 10px 32px rgba(24,169,106,.5)}
+.btn-wa svg{width:20px;height:20px}
+
+/* ══════════════════════════════════════════════════
+   COST COMPARISON CARDS
+══════════════════════════════════════════════════ */
+.cost-cards{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:20px;
+  margin-top:40px;
+}
+.cc{
+  border-radius:var(--r-l);
+  overflow:hidden;
+  box-shadow:var(--sh);
+  transition:transform var(--tr),box-shadow var(--tr);
+}
+.cc:hover{transform:translateY(-4px);box-shadow:var(--sh-l)}
+.cc__head{padding:22px 24px;font-weight:800;font-size:15px;color:#fff;line-height:1.3}
+.cc__head small{display:block;font-weight:400;font-size:12px;opacity:.7;margin-top:3px}
+.cc--solo .cc__head{background:var(--gray-5)}
+.cc--home .cc__head{background:var(--amber)}
+.cc--resi .cc__head{background:var(--navy)}
+.cc__body{background:var(--white);padding:20px 24px}
+.cc__row{
+  display:flex;justify-content:space-between;align-items:baseline;
+  padding:9px 0;border-bottom:1px solid var(--gray-1);
+  font-size:14px;gap:12px;
+}
+.cc__row:last-of-type{border-bottom:none}
+.cc__row span:first-child{color:var(--text-2)}
+.cc__row span:last-child{font-weight:700;color:var(--navy);white-space:nowrap}
+.cc__row.included span:last-child{color:var(--green)}
+.cc__foot{
+  border-top:2px solid var(--navy);
+  padding:14px 0 0;margin:14px 0 0;
+  display:flex;justify-content:space-between;align-items:baseline;
+  font-weight:900;font-size:18px;color:var(--navy);
+}
+.cc__foot small{font-size:13px;font-weight:500;color:var(--gray-4)}
+
+/* Subtabela de encargos */
+.subtable{
+  width:100%;margin:28px 0;
+  border-collapse:collapse;font-size:14px;
+  border-radius:var(--r);overflow:hidden;
+  box-shadow:var(--sh-s);
+}
+.subtable caption{
+  text-align:left;font-size:12px;font-weight:700;
+  letter-spacing:.08em;text-transform:uppercase;
+  color:var(--gray-4);padding-bottom:10px;
+}
+.subtable th{
+  background:var(--navy);color:#fff;
+  font-size:12px;letter-spacing:.05em;
+  padding:11px 16px;text-align:left;
+}
+.subtable td{
+  padding:11px 16px;border-bottom:1px solid var(--gray-1);
+  color:var(--text);
+}
+.subtable tr:last-child td{border-bottom:none}
+.subtable tr:nth-child(even) td{background:var(--gray-1)}
+.subtable .row-total td{
+  font-weight:800;color:var(--navy);
+  background:var(--tint)!important;
+  font-size:15px;
+}
+.subtable .row-warn td{color:var(--amber);font-weight:700}
+
+/* INLINE LINK */
+.il{
+  color:var(--accent);
+  text-decoration:underline;
+  text-decoration-thickness:1px;
+  text-underline-offset:3px;
+  font-weight:500;
+}
+
+/* ══════════════════════════════════════════════════
+   GRAUS DE DEPENDÊNCIA
+══════════════════════════════════════════════════ */
+.grau-cards{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:20px;margin-top:36px;
+}
+.gc{
+  border-radius:var(--r-l);padding:28px 26px;
+  position:relative;overflow:hidden;
+  transition:transform var(--tr);
+}
+.gc:hover{transform:translateY(-3px)}
+.gc--0{background:#eef5ee;border:2px solid #c8e8cc}
+.gc--1{background:#eef5ee;border:2px solid #b2e0c0}
+.gc--2{background:#fef8ec;border:2px solid #f4d9a0}
+.gc--3{background:#fdf0f0;border:2px solid #f0b8b8}
+
+.gc__num{
+  position:absolute;top:14px;right:20px;
+  font-size:56px;font-weight:900;
+  line-height:1;opacity:.08;color:var(--navy);
+  pointer-events:none;
+}
+.gc__pill{
+  display:inline-block;
+  font-size:11px;font-weight:700;
+  text-transform:uppercase;letter-spacing:.1em;
+  padding:4px 13px;border-radius:40px;
+  margin-bottom:14px;
+}
+.gc--0 .gc__pill,.gc--1 .gc__pill{background:var(--green);color:#fff}
+.gc--2 .gc__pill{background:var(--amber);color:#fff}
+.gc--3 .gc__pill{background:var(--red);color:#fff}
+.gc h3{font-size:17px;margin-bottom:8px;color:var(--navy)}
+.gc p{font-size:14px;color:var(--text-2);margin-bottom:20px}
+.gc__ratio{
+  font-size:13px;font-weight:600;
+  color:var(--navy);margin-bottom:16px;
+  padding:8px 12px;border-radius:var(--r-s);
+  background:rgba(8,26,88,.06);
+  display:inline-block;
+}
+.gc__prices{display:flex;gap:12px;flex-wrap:wrap}
+.gc__price-item{flex:1;min-width:100px;border-radius:var(--r-s);padding:12px 14px;text-align:center}
+.gc__price-item--home{background:rgba(217,119,6,.1)}
+.gc__price-item--resi{background:rgba(8,26,88,.07)}
+.gc__price-label{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;margin-bottom:5px;color:var(--gray-4)}
+.gc__price-val{font-size:18px;font-weight:900;color:var(--navy)}
+
+/* ══════════════════════════════════════════════════
+   SIMULADOR PREMIUM
+══════════════════════════════════════════════════ */
+.sim-wrap{
+  background:var(--navy);
+  border-radius:var(--r-xl);
+  padding:52px 48px;
+  box-shadow:var(--sh-l);
+  position:relative;overflow:hidden;
+}
+.sim-wrap::before{
+  content:'';position:absolute;
+  top:-120px;right:-120px;
+  width:400px;height:400px;
+  border-radius:50%;
+  background:radial-gradient(circle,rgba(43,92,230,.2) 0%,transparent 70%);
+  pointer-events:none;
+}
+.sim-wrap h2{color:#fff;margin-bottom:6px}
+.sim-wrap>.sim-sub{color:rgba(255,255,255,.6);font-size:15px;margin-bottom:40px}
+
+/* Tabs */
+.sim-tabs{
+  display:flex;gap:8px;flex-wrap:wrap;
+  margin-bottom:36px;
+}
+.sim-tab{
+  flex:1;min-width:110px;
+  padding:13px 10px;
+  border-radius:var(--r);
+  border:2px solid rgba(255,255,255,.15);
+  background:transparent;
+  color:rgba(255,255,255,.55);
+  font-family:var(--f);font-weight:700;font-size:14px;
+  cursor:pointer;text-align:center;
+  transition:all var(--tr);
+  line-height:1.3;
+}
+.sim-tab:hover:not(.active){border-color:rgba(255,255,255,.35);color:rgba(255,255,255,.8)}
+.sim-tab.active{
+  border-color:var(--accent);
+  background:rgba(43,92,230,.25);
+  color:#fff;
+}
+.sim-tab__num{
+  display:block;font-size:20px;font-weight:900;
+  margin-bottom:3px;color:inherit;
+}
+.sim-tab__lbl{font-size:11px;font-weight:600;opacity:.8}
+
+/* Painel */
+.sim-panel{display:none}
+.sim-panel.active{display:block}
+.sim-panel__desc{
+  background:rgba(255,255,255,.07);
+  border-radius:var(--r);
+  padding:20px 22px;
+  margin-bottom:28px;
+  font-size:15px;
+  color:rgba(255,255,255,.75);
+  border-left:3px solid rgba(255,255,255,.2);
+}
+.sim-panel__desc strong{color:#fff}
+
+.sim-cards{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:20px}
+.sim-card{border-radius:var(--r);padding:28px 24px;text-align:center}
+.sim-card--home{background:rgba(217,119,6,.15);border:1.5px solid rgba(217,119,6,.35)}
+.sim-card--resi{background:rgba(43,92,230,.2);border:1.5px solid rgba(79,124,255,.4)}
+.sim-card__icon{font-size:24px;margin-bottom:10px}
+.sim-card__lbl{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:rgba(255,255,255,.5);margin-bottom:8px}
+.sim-card__val{font-size:34px;font-weight:900;color:#fff;margin-bottom:4px;line-height:1}
+.sim-card__sub{font-size:12px;color:rgba(255,255,255,.45)}
+
+.sim-verdict{
+  border-radius:var(--r);padding:18px 22px;
+  text-align:center;margin-top:4px;
+}
+.sim-verdict--save{background:rgba(24,169,106,.15);border:1.5px solid rgba(24,169,106,.35)}
+.sim-verdict--tie {background:rgba(255,255,255,.07);border:1.5px solid rgba(255,255,255,.15)}
+.sim-verdict--home{background:rgba(217,119,6,.12);border:1.5px solid rgba(217,119,6,.3)}
+.sim-verdict__lbl{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:rgba(255,255,255,.5);margin-bottom:5px}
+.sim-verdict__txt{font-size:16px;font-weight:700;color:#fff}
+
+.sim-note-foot{
+  margin-top:22px;padding:14px 18px;
+  border-radius:var(--r-s);
+  background:rgba(255,255,255,.05);
+  font-size:13px;color:rgba(255,255,255,.45);
+  text-align:center;
+}
+
+/* ══════════════════════════════════════════════════
+   REGIÕES
+══════════════════════════════════════════════════ */
+.region-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(230px,1fr));
+  gap:16px;margin-top:36px;
+}
+.rg{
+  background:var(--white);
+  border:1.5px solid var(--gray-2);
+  border-radius:var(--r);
+  padding:22px 20px;
+  transition:all var(--tr);
+  text-decoration:none;
+  display:block;
+}
+.rg:hover{border-color:var(--accent);box-shadow:var(--sh);transform:translateY(-2px)}
+.rg__tag{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--accent);margin-bottom:7px}
+.rg h3{font-size:17px;color:var(--navy);margin-bottom:6px}
+.rg p{font-size:14px;color:var(--text-2);margin:0}
+
+/* ══════════════════════════════════════════════════
+   SERVICE GRID
+══════════════════════════════════════════════════ */
+.svc-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(200px,1fr));
+  gap:16px;margin-top:32px;
+}
+.svc{
+  background:var(--tint);
+  border-radius:var(--r);
+  padding:22px 20px;
+  border:1.5px solid var(--gray-2);
+  transition:all var(--tr);
+}
+.svc:hover{background:var(--white);box-shadow:var(--sh);border-color:var(--gray-2)}
+.svc__icon{font-size:26px;margin-bottom:12px}
+.svc h4{font-size:15px;color:var(--navy);margin-bottom:6px}
+.svc p{font-size:13px;color:var(--text-2);margin:0}
+
+/* ══════════════════════════════════════════════════
+   CHECKLIST
+══════════════════════════════════════════════════ */
+.check-list{list-style:none;margin:20px 0}
+.check-list li{
+  display:flex;align-items:flex-start;gap:12px;
+  padding:12px 0;border-bottom:1px solid var(--gray-1);
+  font-size:15px;color:var(--text-2);
+}
+.check-list li:last-child{border-bottom:none}
+.check-list li::before{
+  content:'✓';
+  flex-shrink:0;
+  width:22px;height:22px;
+  background:var(--green);
+  color:#fff;border-radius:50%;
+  font-size:12px;font-weight:800;
+  display:flex;align-items:center;justify-content:center;
+  margin-top:2px;
+}
+
+/* ══════════════════════════════════════════════════
+   RELATED ARTICLES
+══════════════════════════════════════════════════ */
+.related-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(240px,1fr));
+  gap:20px;margin-top:36px;
+}
+.rel-card{
+  border:1.5px solid var(--gray-2);
+  border-radius:var(--r);
+  overflow:hidden;
+  transition:all var(--tr);
+  text-decoration:none;
+  display:block;
+}
+.rel-card:hover{border-color:var(--accent);box-shadow:var(--sh);transform:translateY(-2px)}
+.rel-card__img{
+  aspect-ratio:16/8;
+  background:linear-gradient(135deg,var(--tint2),var(--gray-2));
+  display:flex;align-items:center;justify-content:center;
+  font-size:30px;
+}
+.rel-card__body{padding:18px 16px}
+.rel-card__cat{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--accent);margin-bottom:8px}
+.rel-card h4{font-size:15px;color:var(--navy);line-height:1.35;margin:0}
+
+/* ══════════════════════════════════════════════════
+   FAQ
+══════════════════════════════════════════════════ */
+.faq-list{margin-top:36px}
+.faq-item{border-top:1px solid var(--gray-2)}
+.faq-item:last-child{border-bottom:1px solid var(--gray-2)}
+.faq-q{
+  width:100%;background:none;border:none;
+  font-family:var(--f);font-size:16px;font-weight:600;
+  color:var(--navy);cursor:pointer;
+  display:flex;justify-content:space-between;align-items:center;
+  gap:16px;padding:20px 0;text-align:left;
+}
+.faq-q svg{flex-shrink:0;width:20px;height:20px;color:var(--accent);transition:transform var(--tr)}
+.faq-item.open .faq-q svg{transform:rotate(45deg)}
+.faq-a{display:none;padding-bottom:20px;font-size:15px;line-height:1.75;color:var(--text-2)}
+.faq-item.open .faq-a{display:block}
+
+/* ══════════════════════════════════════════════════
+   STICKY WHATSAPP BUTTON
+══════════════════════════════════════════════════ */
+.sticky-wa{
+  position:fixed;bottom:28px;right:28px;z-index:999;
+  display:flex;align-items:center;gap:12px;
+  background:var(--green);color:#fff;
+  font-family:var(--f);font-weight:700;font-size:14px;
+  padding:14px 22px 14px 18px;
+  border-radius:50px;
+  box-shadow:0 8px 30px rgba(24,169,106,.45);
+  text-decoration:none;
+  transition:all var(--tr);
+  animation:popIn .6s 1.5s cubic-bezier(.34,1.56,.64,1) both;
+}
+.sticky-wa:hover{color:#fff;transform:translateY(-3px) scale(1.02);box-shadow:0 12px 40px rgba(24,169,106,.55)}
+.sticky-wa svg{width:22px;height:22px;flex-shrink:0}
+.sticky-wa__text{line-height:1.2}
+.sticky-wa__text small{display:block;font-size:11px;font-weight:500;opacity:.8}
+
+@keyframes popIn{from{opacity:0;transform:scale(.7) translateY(20px)}to{opacity:1;transform:scale(1) translateY(0)}}
+
+/* ══════════════════════════════════════════════════
+   DARK QUOTE SECTION
+══════════════════════════════════════════════════ */
+.dark-quote{
+  background:var(--navy);
+  padding:80px 0;
+  text-align:center;
+  position:relative;overflow:hidden;
+}
+.dark-quote::before{
+  content:'"';
+  position:absolute;
+  font-size:400px;font-weight:900;
+  line-height:.8;
+  color:rgba(255,255,255,.025);
+  top:-30px;left:50%;transform:translateX(-50%);
+  font-family:Georgia,serif;
+  pointer-events:none;
+}
+.dark-quote blockquote{
+  font-size:clamp(20px,3.5vw,30px);font-weight:700;
+  color:#fff;line-height:1.45;
+  max-width:660px;margin:0 auto 20px;
+  position:relative;z-index:1;
+}
+.dark-quote cite{font-size:14px;color:rgba(255,255,255,.45);font-style:normal}
+
+/* ══════════════════════════════════════════════════
+   ABOUT SAFE ILPIS
+══════════════════════════════════════════════════ */
+.about-grid{
+  display:grid;grid-template-columns:1fr 1fr;gap:48px;
+  align-items:center;margin-top:24px;
+}
+.about-img{
+  aspect-ratio:4/3;
+  border-radius:var(--r-l);
+  background:linear-gradient(135deg,#dde3f4,#c8d2ed);
+  display:flex;align-items:center;justify-content:center;
+  box-shadow:var(--sh);
+}
+.stat-cards{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:24px}
+.stat-card{
+  background:var(--tint);border:1.5px solid var(--gray-2);
+  border-radius:var(--r);padding:20px 18px;text-align:center;
+}
+.stat-card__num{font-size:28px;font-weight:900;color:var(--navy)}
+.stat-card__lbl{font-size:13px;color:var(--text-2)}
+
+/* FINAL CTA */
+.final-cta{
+  background:linear-gradient(135deg,var(--navy) 0%,var(--navy-soft) 100%);
+  border-radius:var(--r-xl);
+  padding:60px 48px;text-align:center;
+  position:relative;overflow:hidden;
+  box-shadow:var(--sh-l);
+}
+.final-cta::before{
+  content:'';position:absolute;inset:0;
+  background:radial-gradient(ellipse 70% 80% at 50% 0%,rgba(43,92,230,.25) 0%,transparent 60%);
+  pointer-events:none;
+}
+.final-cta h2{color:#fff;font-size:clamp(22px,4vw,34px);margin-bottom:12px}
+.final-cta p{color:rgba(255,255,255,.68);max-width:500px;margin:0 auto 32px}
+.final-cta .btn-wa{font-size:17px;padding:17px 36px}
+
+/* ══════════════════════════════════════════════════
+   FOOTER
+══════════════════════════════════════════════════ */
+.site-footer{background:var(--navy);padding:64px 0 32px}
+.footer-grid{
+  display:grid;
+  grid-template-columns:2.2fr 1fr 1fr 1fr;
+  gap:40px;
+  padding-bottom:48px;
+  border-bottom:1px solid rgba(255,255,255,.08);
+}
+.footer-brand .logo{color:#fff;font-size:20px;margin-bottom:14px;display:block}
+.footer-brand p{font-size:14px;color:rgba(255,255,255,.45);line-height:1.7}
+.footer-contact{margin-top:18px;display:flex;flex-direction:column;gap:8px}
+.footer-contact a{font-size:14px;color:rgba(255,255,255,.65);display:flex;align-items:center;gap:8px}
+.footer-contact a:hover{color:#fff}
+.footer-contact svg{width:15px;height:15px;flex-shrink:0}
+.footer-col h5{
+  font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;
+  color:rgba(255,255,255,.35);margin-bottom:16px;
+}
+.footer-col ul{list-style:none}
+.footer-col li{margin-bottom:10px}
+.footer-col a{font-size:14px;color:rgba(255,255,255,.6);transition:color var(--tr)}
+.footer-col a:hover{color:#fff}
+.footer-bottom{
+  padding-top:28px;display:flex;
+  justify-content:space-between;align-items:center;
+  flex-wrap:wrap;gap:12px;
+  font-size:13px;color:rgba(255,255,255,.3);
+}
+.footer-bottom a{color:rgba(255,255,255,.3);transition:color var(--tr)}
+.footer-bottom a:hover{color:rgba(255,255,255,.6)}
+
+/* ══════════════════════════════════════════════════
+   ANIMAÇÕES
+══════════════════════════════════════════════════ */
+@keyframes fadeUp{
+  from{opacity:0;transform:translateY(28px)}
+  to{opacity:1;transform:translateY(0)}
+}
+.reveal{
+  opacity:0;transform:translateY(24px);
+  transition:opacity .6s ease,transform .6s ease;
+}
+.reveal.visible{opacity:1;transform:translateY(0)}
+
+/* ══════════════════════════════════════════════════
+   RESPONSIVO
+══════════════════════════════════════════════════ */
+@media(max-width:900px){
+  .cost-cards{grid-template-columns:1fr}
+  .grau-cards{grid-template-columns:1fr}
+  .about-grid{grid-template-columns:1fr}
+  .footer-grid{grid-template-columns:1fr 1fr}
+  .sim-cards{grid-template-columns:1fr}
+}
+@media(max-width:680px){
+  .sec{padding:60px 0}
+  .hero{padding:52px 0 60px}
+  .sim-wrap{padding:30px 22px}
+  .sim-tabs{gap:6px}
+  .sim-tab{min-width:80px;padding:10px 6px;font-size:12px}
+  .cta-premium{padding:30px 24px}
+  .cta-premium__row{flex-direction:column}
+  .discount-badge{flex-direction:column;text-align:center}
+  .final-cta{padding:40px 24px}
+  .footer-grid{grid-template-columns:1fr}
+  .sticky-wa .sticky-wa__text{display:none}
+  .sticky-wa{padding:14px}
+}
+</style>
+</head>
+<body>
+
+<!-- ══════════════════════════════════
+     STICKY WHATSAPP
+══════════════════════════════════ -->
+<a href="https://wa.me/5511998448822?text=Olá!%20Gostaria%20de%20orientação%20gratuita%20sobre%20casas%20de%20repouso."
+   class="sticky-wa" target="_blank" rel="noopener"
+   aria-label="Falar com especialista no WhatsApp">
+  <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+    <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347zM12 0C5.373 0 0 5.373 0 12c0 2.127.558 4.122 1.532 5.852L.057 23.535a.5.5 0 00.609.608l5.765-1.511A11.955 11.955 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22c-1.891 0-3.66-.51-5.184-1.4l-.37-.222-3.835 1.006 1.023-3.738-.24-.383A9.972 9.972 0 012 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10z"/>
+  </svg>
+  <span class="sticky-wa__text">
+    Falar com especialista
+    <small>Orientação gratuita</small>
+  </span>
+</a>
+
+<!-- ══════════════════════════════════
+     NAVEGAÇÃO
+══════════════════════════════════ -->
+<header class="site-nav" role="banner">
+  <div class="wrap-wide">
+    <div class="nav-inner">
+      <a href="https://safeilpis.com.br/" class="logo">SAFE <em>ILPIS</em></a>
+      <a href="https://wa.me/5511998448822" class="nav-cta" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347zM12 0C5.373 0 0 5.373 0 12c0 2.127.558 4.122 1.532 5.852L.057 23.535a.5.5 0 00.609.608l5.765-1.511A11.955 11.955 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22c-1.891 0-3.66-.51-5.184-1.4l-.37-.222-3.835 1.006 1.023-3.738-.24-.383A9.972 9.972 0 012 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10z"/></svg>
+        Orientação gratuita
+      </a>
+    </div>
+  </div>
+</header>
+
+<!-- BREADCRUMB -->
+<nav class="bc" aria-label="Breadcrumb">
+  <div class="wrap">
+    <a href="https://safeilpis.com.br/">Home</a><span aria-hidden="true">›</span>
+    <a href="/blog">Blog</a><span aria-hidden="true">›</span>
+    <span aria-current="page">Quanto custa uma casa de repouso em 2026</span>
+  </div>
+</nav>
+
+<!-- ══════════════════════════════════
+     HERO
+══════════════════════════════════ -->
+<section class="hero" aria-labelledby="h1">
+  <div class="wrap">
+    <div class="hero-kicker">
+      <span class="hero-tag">Guia completo · 2026</span>
+      <span class="hero-date">📖 14 min de leitura</span>
+    </div>
+
+    <!-- H1 único -->
+    <h1 id="h1">
+      Quanto custa uma casa de repouso<br>
+      <span class="accent-span">no Brasil em 2026?</span>
+    </h1>
+
+    <p class="hero-sub">
+      Uma análise honesta — com números reais, comparativos detalhados
+      e a pergunta que nenhuma família deveria ter medo de fazer.
+    </p>
+
+    <div class="trust-bar" role="list">
+      <div class="trust-item" role="listitem">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
+        Mais de 300 residenciais avaliados
+      </div>
+      <div class="trust-item" role="listitem">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
+        Orientação 100% gratuita
+      </div>
+      <div class="trust-item" role="listitem">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
+        Descontos exclusivos até R$&nbsp;500/mês
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- IMAGE SECTION: Premium residential senior living — warm natural light, elegant architecture, spacious hallway with handrails, soft and humanized, cinematic editorial style -->
+<div class="wrap" style="margin-bottom:80px">
+  <div class="hero-img-wrap" role="img" aria-label="Ambiente acolhedor de residencial sênior moderno, com luz natural e arquitetura elegante">
+    <img
+      src="/images/safe-ilpis-residencial-corredor-acolhedor.webp"
+      alt="Corredor de residencial sênior com luz natural suave, arquitetura moderna e ambiente acolhedor"
+      width="800" height="350"
+      loading="eager"
+      decoding="async"
+      style="width:100%;height:100%;object-fit:cover;object-position:center"
+      onerror="this.style.display='none';this.parentElement.querySelector('.img-ph-fallback').style.display='flex'"
+    />
+    <div class="img-ph img-ph-fallback" style="display:none;width:100%;height:100%;position:absolute;top:0;left:0">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+      Residencial sênior — ambiente acolhedor, luz natural, arquitetura moderna
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════
+     INTRODUÇÃO EMOCIONAL
+══════════════════════════════════ -->
+<section class="sec-sm" style="padding-top:0" aria-labelledby="intro-h">
+  <div class="wrap">
+
+    <span class="eye">A conversa que toda família precisa ter</span>
+
+    <p>
+      Existe um momento que muitas famílias conhecem bem. Um momento silencioso,
+      cheio de culpa que ninguém pediu para sentir. Quando a realidade chega antes
+      da gente estar pronto para ela.
+    </p>
+
+    <p>
+      Uma queda. Um diagnóstico. Uma noite em que você percebe que não consegue
+      estar em dois lugares ao mesmo tempo — e que a pessoa que você mais ama
+      precisa de um cuidado que vai além do que você pode dar sozinho.
+    </p>
+
+    <p>
+      E aí vem a pergunta. Tímida. Quase envergonhada.
+      <em>"Quanto custa uma casa de repouso?"</em>
+    </p>
+
+    <div class="pull-quote" id="intro-h">
+      A pergunta certa não é quanto custa uma casa de repouso.<br>
+      É: quanto custa — de verdade — cuidar de alguém com segurança?
+    </div>
+
+    <p>
+      Essa diferença muda tudo. Porque quando as famílias somam os custos reais do
+      cuidado em casa — com rigor e honestidade — a conta quase sempre surpreende.
+      E não do jeito que elas esperavam.
+    </p>
+
+    <p>
+      Este guia existe para fazer essa análise com você. Sem omissões, sem romantismo
+      e sem pressão de nenhum tipo.
+    </p>
+
+  </div>
+</section>
+
+<!-- ══════════════════════════════════
+     CTA PREMIUM CARD
+══════════════════════════════════ -->
+<section style="padding:0 0 72px">
+  <div class="wrap">
+    <div class="cta-premium reveal" aria-label="Proposta de valor SAFE ILPIS">
+      <div class="cta-premium__inner">
+        <h3>Antes de você calcular sozinho, saiba disso</h3>
+        <p style="margin-bottom:16px">O preço médio de uma casa de repouso no Brasil pode variar entre <strong style="color:#fff">R$&nbsp;3.000 e R$&nbsp;20.000 por mês</strong>, dependendo do grau de dependência, da localização e da estrutura do residencial.</p>
+        <p>A SAFE ILPIS consegue um <strong style="color:#fff">desconto exclusivo de R$&nbsp;500/mês</strong> para você em mais de 300 residenciais credenciados e qualificados — todos avaliados pela nossa equipe.</p>
+        <div class="cta-premium__row">
+          <div class="discount-badge">
+            <div class="discount-badge__num">R$&nbsp;500<span style="font-size:16px;font-weight:600">/mês</span></div>
+            <div class="discount-badge__txt">desconto exclusivo em +300 residenciais credenciados e qualificados em São Paulo</div>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:12px;align-items:flex-start">
+            <a href="https://wa.me/5511998448822?text=Olá!%20Quero%20liberar%20meu%20desconto%20exclusivo%20em%20um%20residencial%20qualificado." class="btn-wa" target="_blank" rel="noopener">
+              <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347zM12 0C5.373 0 0 5.373 0 12c0 2.127.558 4.122 1.532 5.852L.057 23.535a.5.5 0 00.609.608l5.765-1.511A11.955 11.955 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22c-1.891 0-3.66-.51-5.184-1.4l-.37-.222-3.835 1.006 1.023-3.738-.24-.383A9.972 9.972 0 012 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10z"/></svg>
+              Liberar meu desconto exclusivo
+            </a>
+            <span style="font-size:13px;color:rgba(255,255,255,.45);padding-left:4px">✓ Gratuito para famílias &nbsp;·&nbsp; ✓ Sem compromisso</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════
+     O QUE O CUIDADO EM CASA REALMENTE CUSTA
+══════════════════════════════════ -->
+<section class="sec sec-alt" aria-labelledby="custo-h">
+  <div class="wrap">
+
+    <span class="eye">Análise de custo honesta</span>
+    <h2 id="custo-h">O que o cuidado em casa realmente custa em 2026</h2>
+
+    <p>
+      A maioria das famílias subestima o custo real do cuidado domiciliar porque
+      conta apenas a cuidadora. Mas a conta completa inclui moradia, encargos trabalhistas,
+      alimentação, adaptações e — o fator que mais pesa — os turnos descobertos.
+    </p>
+
+    <p>
+      Vamos montar os três cenários mais comuns, com os valores atualizados para 2026:
+    </p>
+
+    <!-- IMAGE SECTION: Authentic family moment — adult child and elderly mother having warm conversation at kitchen table, soft morning light, Brazilian home, emotional and real -->
+    <div style="aspect-ratio:16/6;border-radius:var(--r-l);margin:32px 0;overflow:hidden;position:relative;background:linear-gradient(135deg,#dde3f4,#c8d2ed)">
+      <img
+        src="/images/safe-ilpis-familia-conversa-cuidado.webp"
+        alt="Filha adulta e mãe em conversa afetuosa à mesa da cozinha — momento familiar autêntico com luz natural matinal"
+        width="800" height="300"
+        loading="lazy"
+        decoding="async"
+        style="width:100%;height:100%;object-fit:cover;object-position:center top"
+      />
+    </div>
+
+    <div class="cost-cards" role="list">
+
+      <!-- CARD 1: Mora sozinha -->
+      <div class="cc cc--solo reveal" role="listitem">
+        <div class="cc__head">
+          Mora sozinha
+          <small>Sem cuidadora — Grau 0</small>
+        </div>
+        <div class="cc__body">
+          <div class="cc__row"><span>Aluguel médio</span><span>R$&nbsp;2.000</span></div>
+          <div class="cc__row"><span>Alimentação</span><span>R$&nbsp;600</span></div>
+          <div class="cc__row"><span>Água, luz, gás</span><span>R$&nbsp;150</span></div>
+          <div class="cc__row" style="color:var(--red);font-weight:600"><span>Risco de emergências sem suporte</span><span>alto</span></div>
+          <div class="cc__foot">
+            <span>Total estimado</span>
+            <span>R$&nbsp;2.800<small>/mês</small></span>
+          </div>
+        </div>
+      </div>
+
+      <!-- CARD 2: Com cuidadora -->
+      <div class="cc cc--home reveal" role="listitem">
+        <div class="cc__head">
+          Cuidado em casa
+          <small>Cuidadora 8h/dia, Seg–Sex — Grau 1</small>
+        </div>
+        <div class="cc__body">
+          <div class="cc__row"><span>Aluguel + condomínio</span><span>R$&nbsp;2.000</span></div>
+          <div class="cc__row"><span>Alimentação</span><span>R$&nbsp;600</span></div>
+          <div class="cc__row"><span>Água, luz, gás</span><span>R$&nbsp;150</span></div>
+          <div class="cc__row"><span>Piso salarial cuidadora</span><span>R$&nbsp;1.900</span></div>
+          <div class="cc__row"><span>Cesta básica</span><span>R$&nbsp;150</span></div>
+          <div class="cc__row"><span>FGTS + INSS + encargos</span><span>R$&nbsp;396</span></div>
+          <div class="cc__row"><span>Férias + 13.º (prov.)</span><span>R$&nbsp;348</span></div>
+          <div class="cc__row"><span>Vale-transporte</span><span>R$&nbsp;220</span></div>
+          <div class="cc__row" style="color:var(--amber);font-weight:600"><span>Noites e fins de semana: descobertos</span><span>⚠️</span></div>
+          <div class="cc__foot">
+            <span>Total estimado</span>
+            <span>R$&nbsp;6.300<small>/mês</small></span>
+          </div>
+        </div>
+      </div>
+
+      <!-- CARD 3: Residencial -->
+      <div class="cc cc--resi reveal" role="listitem">
+        <div class="cc__head">
+          Residencial sênior
+          <small>Grau 1 — São Paulo · tudo incluso</small>
+        </div>
+        <div class="cc__body">
+          <div class="cc__row included"><span>Moradia adaptada</span><span>incluso</span></div>
+          <div class="cc__row included"><span>Alimentação completa</span><span>incluso</span></div>
+          <div class="cc__row included"><span>Cuidadores e técnicos 24h</span><span>incluso</span></div>
+          <div class="cc__row included"><span>Faxina diária</span><span>incluso</span></div>
+          <div class="cc__row included"><span>Atividades e recreação</span><span>incluso</span></div>
+          <div class="cc__row included"><span>Supervisão médica</span><span>incluso</span></div>
+          <div class="cc__row" style="font-size:13px;color:var(--gray-4)"><span>Opções disponíveis</span><span>R$&nbsp;3k – R$&nbsp;20k</span></div>
+          <div class="cc__foot">
+            <span>Mensalidade média</span>
+            <span>R$&nbsp;5.000<small>/mês</small></span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <h3 style="margin-top:56px">O custo real de uma cuidadora registrada</h3>
+
+    <p>
+      Contratar uma cuidadora parece simples. Mas quando a contratação é legal —
+      e ela deve ser — os encargos trabalhistas mudam a conta significativamente.
+      Abaixo, o cálculo real com base no piso salarial da categoria em São Paulo em 2026:
+    </p>
+
+    <div style="overflow-x:auto">
+      <table class="subtable reveal" aria-label="Cálculo de encargos trabalhistas de cuidadora domiciliar">
+        <caption>Custo mensal real de cuidadora domiciliar CLT — Referência 2026</caption>
+        <thead>
+          <tr>
+            <th scope="col">Item</th>
+            <th scope="col">Referência</th>
+            <th scope="col">Valor estimado</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>Piso salarial cuidadora SP</td><td>Convenção coletiva 2026</td><td>R$&nbsp;1.900</td></tr>
+          <tr><td>Cesta básica</td><td>Benefício da categoria</td><td>R$&nbsp;150</td></tr>
+          <tr><td>INSS patronal (20%)</td><td>CLT Art. 22</td><td>R$&nbsp;380</td></tr>
+          <tr><td>FGTS (8%)</td><td>Lei 8.036/90</td><td>R$&nbsp;152</td></tr>
+          <tr><td>13.º salário (prov.)</td><td>1/12 ao mês</td><td>R$&nbsp;158</td></tr>
+          <tr><td>Férias + 1/3 (prov.)</td><td>CLT Art. 129</td><td>R$&nbsp;211</td></tr>
+          <tr><td>Vale-transporte</td><td>Estimativa SP</td><td>R$&nbsp;220</td></tr>
+          <tr class="row-warn"><td colspan="2">⚠️ Noites, fins de semana e feriados: não cobertos</td><td>Custo extra</td></tr>
+          <tr class="row-total"><td colspan="2"><strong>Total operacional estimado (cuidadora)</strong></td><td><strong>R$&nbsp;3.180</strong></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="callout">
+      <p>
+        <strong>Atenção:</strong> os valores acima consideram apenas o turno diurno, de segunda a sexta.
+        Fins de semana, noites e feriados exigem cuidadoras adicionais ou
+        escala 12×36 — o que pode dobrar ou triplicar esse custo.
+        Veja o comparativo completo em
+        <a href="/blog/quanto-custa-cuidadora-em-casa" class="il">Quanto custa uma cuidadora em casa em 2026</a>.
+      </p>
+    </div>
+
+  </div>
+</section>
+
+<!-- ══════════════════════════════════
+     POR QUE OS RESIDENCIAIS SÃO MAL COMPREENDIDOS
+══════════════════════════════════ -->
+<div class="dark-quote" role="region" aria-label="Reflexão sobre residenciais sênior">
+  <div class="wrap">
+    <blockquote>
+      "Escolher um residencial não é abandonar alguém.<br>
+      É reconhecer que cuidado de verdade exige estrutura<br>
+      que nenhuma família consegue replicar sozinha."
+    </blockquote>
+    <cite>— SAFE ILPIS, equipe de orientação familiar</cite>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════
+     GRAUS DE DEPENDÊNCIA
+══════════════════════════════════ -->
+<section class="sec" aria-labelledby="grau-h">
+  <div class="wrap">
+
+    <span class="eye">O que define o valor</span>
+    <h2 id="grau-h">Entenda o que realmente define o preço</h2>
+
+    <p>
+      O principal equívoco ao pesquisar preços de residenciais é comparar
+      valores sem considerar o que muda entre eles. A mensalidade não sobe
+      por "luxo" — sobe pela complexidade do cuidado necessário.
+    </p>
+
+    <p>
+      A <strong>RDC 283/2005 da Anvisa</strong> define três graus de dependência para pessoas
+      em ILPIs. Nós incluímos o Grau 0 para ilustrar a realidade de quem ainda
+      não precisa de cuidado intensivo — mas que, em isolamento, corre riscos.
+      Para entender em qual grau seu familiar se enquadra, acesse
+      <a href="/blog/como-saber-grau-de-dependencia" class="il">Como avaliar o grau de dependência de uma pessoa</a>.
+    </p>
+
+    <div class="grau-cards" role="list">
+
+      <!-- GRAU 0 -->
+      <div class="gc gc--0 reveal" role="listitem">
+        <div class="gc__num" aria-hidden="true">0</div>
+        <span class="gc__pill">Grau 0</span>
+        <h3>Independência total</h3>
+        <p>Pessoa 100% independente e lúcida. Conduz a própria vida com segurança — dirige, sai sozinha, gerencia sua rotina sem necessidade de suporte externo.</p>
+        <div class="gc__ratio">Ratio: sem necessidade de cuidadora exclusiva</div>
+        <div class="gc__prices">
+          <div class="gc__price-item gc__price-item--home">
+            <div class="gc__price-label">Casa</div>
+            <div class="gc__price-val">R$ 2.800</div>
+          </div>
+          <div class="gc__price-item gc__price-item--resi">
+            <div class="gc__price-label">Residencial</div>
+            <div class="gc__price-val">R$ 3.000</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- GRAU 1 -->
+      <div class="gc gc--1 reveal" role="listitem">
+        <div class="gc__num" aria-hidden="true">1</div>
+        <span class="gc__pill">Grau 1</span>
+        <h3>Assistência parcial</h3>
+        <p>Precisa de supervisão e auxílio parcial. Apresenta algum risco cognitivo ou de mobilidade — necessita de acompanhamento durante o dia para medicações, alimentação ou locomoção segura.</p>
+        <div class="gc__ratio">Ratio: 1 cuidadora para cada 5 moradores</div>
+        <div class="gc__prices">
+          <div class="gc__price-item gc__price-item--home">
+            <div class="gc__price-label">Casa</div>
+            <div class="gc__price-val">R$ 6.300</div>
+          </div>
+          <div class="gc__price-item gc__price-item--resi">
+            <div class="gc__price-label">Residencial</div>
+            <div class="gc__price-val">R$ 3.500</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- GRAU 2 -->
+      <div class="gc gc--2 reveal" role="listitem">
+        <div class="gc__num" aria-hidden="true">2</div>
+        <span class="gc__pill">Grau 2</span>
+        <h3>Assistência integral 24h</h3>
+        <p>Necessita de assistência contínua. Pode fazer uso de cadeira de rodas, apresentar incontinência e precisar de apoio direto na higiene, alimentação e rotina diária. Não pode ficar sem acompanhamento.</p>
+        <div class="gc__ratio">Ratio: 1 cuidadora para cada 2,5 moradores</div>
+        <div class="gc__prices">
+          <div class="gc__price-item gc__price-item--home">
+            <div class="gc__price-label">Casa</div>
+            <div class="gc__price-val">R$ 10.200</div>
+          </div>
+          <div class="gc__price-item gc__price-item--resi">
+            <div class="gc__price-label">Residencial</div>
+            <div class="gc__price-val">R$ 4.500</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- GRAU 3 -->
+      <div class="gc gc--3 reveal" role="listitem">
+        <div class="gc__num" aria-hidden="true">3</div>
+        <span class="gc__pill">Grau 3</span>
+        <h3>Cuidado intensivo e complexo</h3>
+        <p>Perfil acamado com necessidades clínicas complexas. Pode incluir uso de sonda de alimentação, bolsa de colostomia ou cuidados com lesões por pressão. Exige técnico de enfermagem, assistência intensiva e monitoramento multidisciplinar.</p>
+        <div class="gc__ratio">Ratio: 4 cuidadoras + técnicos para cada 6 moradores</div>
+        <div class="gc__prices">
+          <div class="gc__price-item gc__price-item--home">
+            <div class="gc__price-label">Casa</div>
+            <div class="gc__price-val">R$ 18.000</div>
+          </div>
+          <div class="gc__price-item gc__price-item--resi">
+            <div class="gc__price-label">Residencial</div>
+            <div class="gc__price-val">R$ 7.500</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- IMAGE SECTION: Professional caregiver helping elderly woman with morning routine — warm and dignified, premium residential environment, natural light, authentic care -->
+    <div style="aspect-ratio:21/9;border-radius:var(--r-l);margin-top:44px;overflow:hidden;background:linear-gradient(135deg,#dde3f4,#c8d2ed)">
+      <img
+        src="/images/safe-ilpis-cuidadora-cuidado-digno.webp"
+        alt="Cuidadora auxiliando moradora de residencial sênior com gentileza — luz natural, ambiente acolhedor e digno"
+        width="800" height="340"
+        loading="lazy"
+        decoding="async"
+        style="width:100%;height:100%;object-fit:cover;object-position:center"
+      />
+    </div>
+
+  </div>
+</section>
+
+<!-- ══════════════════════════════════
+     SIMULADOR INTERATIVO
+══════════════════════════════════ -->
+<section class="sec sec-tint" aria-labelledby="sim-h">
+  <div class="wrap">
+
+    <span class="eye" style="display:block;text-align:center">Simulador interativo</span>
+
+    <div class="sim-wrap reveal" aria-labelledby="sim-h">
+      <h2 id="sim-h">Compare os custos na sua situação</h2>
+      <p class="sim-sub">Selecione o grau de dependência e veja a comparação estimada em tempo real. <strong style="color:rgba(255,255,255,.8)">Todos os valores são médias estimadas</strong> e podem variar conforme a região, o perfil clínico, a estrutura do residencial e a complexidade do cuidado.</p>
+
+      <!-- Tabs de grau -->
+      <div class="sim-tabs" role="tablist" aria-label="Selecione o grau de dependência">
+        <button class="sim-tab active" role="tab" aria-selected="true" aria-controls="panel-0" data-panel="0">
+          <span class="sim-tab__num">0</span>
+          <span class="sim-tab__lbl">Independente</span>
+        </button>
+        <button class="sim-tab" role="tab" aria-selected="false" aria-controls="panel-1" data-panel="1">
+          <span class="sim-tab__num">1</span>
+          <span class="sim-tab__lbl">Supervisão</span>
+        </button>
+        <button class="sim-tab" role="tab" aria-selected="false" aria-controls="panel-2" data-panel="2">
+          <span class="sim-tab__num">2</span>
+          <span class="sim-tab__lbl">Cadeira de rodas</span>
+        </button>
+        <button class="sim-tab" role="tab" aria-selected="false" aria-controls="panel-3" data-panel="3">
+          <span class="sim-tab__num">3</span>
+          <span class="sim-tab__lbl">Acamada</span>
+        </button>
+      </div>
+
+      <!-- Painel 0 -->
+      <div class="sim-panel active" id="panel-0" role="tabpanel">
+        <div class="sim-panel__desc">
+          <strong>Grau 0 — Pessoa 100% independente.</strong> Lúcida, ativa, capaz de viver com plena segurança de forma autônoma. Não necessita de cuidadora. Procura um residencial pelo convívio social, estrutura e tranquilidade familiar.
+        </div>
+        <div class="sim-cards">
+          <div class="sim-card sim-card--home">
+            <div class="sim-card__icon" aria-hidden="true">🏘️</div>
+            <div class="sim-card__lbl">Cuidado em casa</div>
+            <div class="sim-card__val">R$&nbsp;2.800</div>
+            <div class="sim-card__sub">estimativa mensal (sem cuidadora)</div>
+          </div>
+          <div class="sim-card sim-card--resi">
+            <div class="sim-card__icon" aria-hidden="true">🏡</div>
+            <div class="sim-card__lbl">Residencial sênior</div>
+            <div class="sim-card__val">R$&nbsp;3.000</div>
+            <div class="sim-card__sub">estimativa mensal (all-inclusive)</div>
+          </div>
+        </div>
+        <div class="sim-verdict sim-verdict--tie">
+          <div class="sim-verdict__lbl">Análise</div>
+          <div class="sim-verdict__txt">Custos equivalentes. O residencial oferece convívio, segurança e estrutura pelo mesmo valor que a vida solo.</div>
+        </div>
+      </div>
+
+      <!-- Painel 1 -->
+      <div class="sim-panel" id="panel-1" role="tabpanel">
+        <div class="sim-panel__desc">
+          <strong>Grau 1 — Assistência parcial.</strong> Apresenta algum risco cognitivo ou de mobilidade. Precisa de supervisão e apoio durante o dia — medicações, alimentação ou locomoção. Requer cuidadora de segunda a sexta em período integral.
+        </div>
+        <div class="sim-cards">
+          <div class="sim-card sim-card--home">
+            <div class="sim-card__icon" aria-hidden="true">🏘️</div>
+            <div class="sim-card__lbl">Cuidado em casa</div>
+            <div class="sim-card__val">R$&nbsp;6.300</div>
+            <div class="sim-card__sub">moradia + cuidadora + encargos</div>
+          </div>
+          <div class="sim-card sim-card--resi">
+            <div class="sim-card__icon" aria-hidden="true">🏡</div>
+            <div class="sim-card__lbl">Residencial sênior</div>
+            <div class="sim-card__val">R$&nbsp;3.500</div>
+            <div class="sim-card__sub">tudo incluso, 24h de cobertura</div>
+          </div>
+        </div>
+        <div class="sim-verdict sim-verdict--save">
+          <div class="sim-verdict__lbl">Diferença estimada</div>
+          <div class="sim-verdict__txt">O residencial pode ser R$&nbsp;2.800 mais acessível por mês — e ainda cobre noites e fins de semana.</div>
+        </div>
+      </div>
+
+      <!-- Painel 2 -->
+      <div class="sim-panel" id="panel-2" role="tabpanel">
+        <div class="sim-panel__desc">
+          <strong>Grau 2 — Assistência integral 24 horas.</strong> Pode fazer uso de cadeira de rodas, apresentar incontinência e precisar de apoio direto na higiene e rotina. Não pode ficar sem acompanhamento em nenhum momento do dia ou da noite.
+        </div>
+        <div class="sim-cards">
+          <div class="sim-card sim-card--home">
+            <div class="sim-card__icon" aria-hidden="true">🏘️</div>
+            <div class="sim-card__lbl">Cuidado em casa</div>
+            <div class="sim-card__val">R$&nbsp;10.200</div>
+            <div class="sim-card__sub">escala 24h + moradia + encargos</div>
+          </div>
+          <div class="sim-card sim-card--resi">
+            <div class="sim-card__icon" aria-hidden="true">🏡</div>
+            <div class="sim-card__lbl">Residencial sênior</div>
+            <div class="sim-card__val">R$&nbsp;4.500</div>
+            <div class="sim-card__sub">tudo incluso + equipe especializada</div>
+          </div>
+        </div>
+        <div class="sim-verdict sim-verdict--save">
+          <div class="sim-verdict__lbl">Diferença estimada</div>
+          <div class="sim-verdict__txt">O residencial representa uma economia de R$&nbsp;5.700 por mês — com mais qualidade, segurança e cobertura integral.</div>
+        </div>
+      </div>
+
+      <!-- Painel 3 -->
+      <div class="sim-panel" id="panel-3" role="tabpanel">
+        <div class="sim-panel__desc">
+          <strong>Grau 3 — Cuidado intensivo e complexo.</strong> Perfil acamado com necessidades clínicas que podem incluir sonda de alimentação, bolsa de colostomia ou cuidados com lesões por pressão. Exige técnicos de enfermagem, assistência intensiva e monitoramento multidisciplinar contínuo.
+        </div>
+        <div class="sim-cards">
+          <div class="sim-card sim-card--home">
+            <div class="sim-card__icon" aria-hidden="true">🏘️</div>
+            <div class="sim-card__lbl">Cuidado em casa</div>
+            <div class="sim-card__val">R$&nbsp;18.000</div>
+            <div class="sim-card__sub">equipe especializada + moradia + insumos clínicos</div>
+          </div>
+          <div class="sim-card sim-card--resi">
+            <div class="sim-card__icon" aria-hidden="true">🏡</div>
+            <div class="sim-card__lbl">Residencial sênior</div>
+            <div class="sim-card__val">R$&nbsp;7.500</div>
+            <div class="sim-card__sub">equipe treinada + protocolo clínico completo</div>
+          </div>
+        </div>
+        <div class="sim-verdict sim-verdict--save">
+          <div class="sim-verdict__lbl">Diferença estimada</div>
+          <div class="sim-verdict__txt">O residencial especializado pode representar R$&nbsp;10.500 de economia mensal — com protocolos que reduzem reinternações e complicações clínicas.</div>
+        </div>
+      </div>
+
+      <div class="sim-note-foot">
+        ⚠️ <strong style="color:rgba(255,255,255,.65)">Valores estimados com base em médias regionais de São Paulo.</strong> Podem variar conforme região, perfil clínico, estrutura do residencial e complexidade do cuidado. A SAFE ILPIS faz uma análise personalizada e gratuita para a sua família.
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ══════════════════════════════════
+     REGIÕES
+══════════════════════════════════ -->
+<section class="sec" aria-labelledby="reg-h">
+  <div class="wrap">
+
+    <span class="eye">Onde encontrar</span>
+    <h2 id="reg-h">Regiões com melhor custo-benefício em São Paulo</h2>
+
+    <p>
+      A localização de um residencial importa — mas não da maneira que as famílias costumam
+      pensar. Residenciais em regiões com menor custo operacional conseguem oferecer mais espaço,
+      áreas externas e estrutura ampliada pelo mesmo valor que, na capital central, compraria
+      apenas um quarto reduzido.
+    </p>
+
+    <div class="region-grid" role="list">
+
+      <a href="/casas-de-repouso/osasco" class="rg" role="listitem">
+        <div class="rg__tag">Grande SP Oeste</div>
+        <h3>Osasco</h3>
+        <p>Estrutura urbana completa, excelente mobilidade e residenciais com boa relação entre custo e qualidade de atendimento.</p>
+      </a>
+
+      <a href="/casas-de-repouso/alto-da-lapa" class="rg" role="listitem">
+        <div class="rg__tag">Zona Oeste — Capital</div>
+        <h3>Alto da Lapa</h3>
+        <p>Bairro tranquilo dentro da capital, com fácil acesso para familiares e opções de residenciais bem estruturados.</p>
+      </a>
+
+      <a href="/casas-de-repouso/cotia" class="rg" role="listitem">
+        <div class="rg__tag">Grande SP Oeste</div>
+        <h3>Cotia</h3>
+        <p>Espaço amplo, jardins e áreas verdes. Ótimo custo-benefício sem abrir mão da proximidade com a capital.</p>
+      </a>
+
+      <a href="/casas-de-repouso/embu-das-artes" class="rg" role="listitem">
+        <div class="rg__tag">Grande SP Sudoeste</div>
+        <h3>Embu das Artes</h3>
+        <p>Natureza preservada, ar mais limpo e residenciais que oferecem mais espaço com mensalidades acessíveis.</p>
+      </a>
+
+      <a href="/casas-de-repouso/butanta" class="rg" role="listitem">
+        <div class="rg__tag">Zona Oeste — Capital</div>
+        <h3>Butantã</h3>
+        <p>Próximo ao polo universitário e hospitalar, com boa cobertura de saúde e residenciais bem equipados.</p>
+      </a>
+
+      <a href="/casas-de-repouso/vargem-grande-paulista" class="rg" role="listitem">
+        <div class="rg__tag">Grande SP Oeste</div>
+        <h3>Vargem Grande Paulista</h3>
+        <p>Opção crescente para famílias que buscam tranquilidade, espaço e custo operacional mais equilibrado.</p>
+      </a>
+
+    </div>
+
+    <div style="text-align:center;margin-top:28px">
+      <a href="/casas-de-repouso" class="il" style="font-size:15px">
+        → Ver mais 13 regiões atendidas pela SAFE ILPIS
+      </a>
+    </div>
+
+  </div>
+</section>
+
+<!-- ══════════════════════════════════
+     COMO ESCOLHER CORRETAMENTE
+══════════════════════════════════ -->
+<section class="sec sec-alt" aria-labelledby="escolha-h">
+  <div class="wrap">
+
+    <span class="eye">Antes de decidir</span>
+    <h2 id="escolha-h">O que verificar antes de assinar qualquer contrato</h2>
+
+    <p>
+      Existe uma diferença enorme entre residenciais no Brasil. Alguns são bem estruturados,
+      têm equipe treinada, protocolos claros e relatórios frequentes para a família.
+      Outros funcionam na informalidade — sem registro adequado, sem profissionais habilitados,
+      sem qualquer fiscalização.
+    </p>
+
+    <p>
+      <strong>Escolher pelo menor preço, sem verificar o que está por trás, é um dos erros
+      mais comuns e mais perigosos</strong> que as famílias cometem nesse momento.
+    </p>
+
+    <p>
+      Use nosso <a href="/blog/checklist-visitar-casa-de-repouso" class="il">Checklist completo para visitar uma casa de repouso</a>
+      antes de qualquer decisão. De forma resumida, os pontos críticos são:
+    </p>
+
+    <ul class="check-list reveal" aria-label="Lista de verificação para escolha de residencial">
+      <li>Registro ativo na Vigilância Sanitária municipal</li>
+      <li>Responsável técnico enfermeiro ou médico presente</li>
+      <li>Ratio legal de cuidadoras por morador (conforme grau de dependência)</li>
+      <li>Contrato com todas as cláusulas de reajuste, inclusões e saída claras</li>
+      <li>Comunicação regular e documentada com a família</li>
+      <li>Visitas não agendadas permitidas — ambientes sérios não temem transparência</li>
+      <li>Cardápio supervisionado por nutricionista</li>
+      <li>Plano de emergências documentado e equipe treinada</li>
+    </ul>
+
+    <p style="margin-top:24px">
+      Veja também: <a href="/blog/diferenca-asilo-casa-de-repouso" class="il">Diferença entre asilo e casa de repouso moderna</a>
+      — um artigo que desfaz os principais mitos sobre os residenciais sênior de hoje.
+    </p>
+
+  </div>
+</section>
+
+<!-- ══════════════════════════════════
+     SOBRE A SAFE ILPIS
+══════════════════════════════════ -->
+<section class="sec" aria-labelledby="safe-h">
+  <div class="wrap">
+
+    <span class="eye">Quem faz esse conteúdo</span>
+    <h2 id="safe-h">A SAFE ILPIS e como trabalhamos</h2>
+
+    <div class="about-grid">
+
+      <div>
+        <p>
+          A SAFE ILPIS nasceu para resolver um problema concreto: famílias que precisam
+          de orientação especializada, no momento mais difícil — mas não sabem a quem recorrer
+          sem ter que pagar por isso.
+        </p>
+        <p>
+          Construímos uma rede de mais de 300 residenciais parceiros em São Paulo e Grande SP,
+          todos avaliados presencialmente. Conhecemos os espaços, as equipes e os processos
+          antes de indicar qualquer um deles.
+        </p>
+        <p>
+          Quando uma família nos contata, fazemos uma análise do perfil — grau de dependência,
+          localização desejada, faixa de orçamento e necessidades clínicas — e apresentamos
+          as opções que fazem sentido para aquela situação específica.
+        </p>
+        <p style="margin-bottom:0">
+          <strong>Não cobramos nada das famílias.</strong>
+          Nossa remuneração vem dos residenciais parceiros,
+          o que garante total isenção na indicação.
+        </p>
+
+        <div class="stat-cards" style="margin-top:28px">
+          <div class="stat-card">
+            <div class="stat-card__num">+300</div>
+            <div class="stat-card__lbl">Residenciais parceiros avaliados</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-card__num">R$500</div>
+            <div class="stat-card__lbl">Desconto mensal exclusivo</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-card__num">100%</div>
+            <div class="stat-card__lbl">Gratuito para famílias</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-card__num">24h</div>
+            <div class="stat-card__lbl">Suporte no processo de escolha</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- IMAGE SECTION: SAFE ILPIS team — professional, warm, consultative environment, humans helping humans, authentic office or meeting setting -->
+      <div class="about-img" role="img" aria-label="Equipe SAFE ILPIS em atendimento consultivo">
+        <img
+          src="/images/safe-ilpis-equipe-atendimento.webp"
+          alt="Equipe SAFE ILPIS em atendimento consultivo — profissionais acolhedores ajudando famílias na escolha do residencial ideal"
+          width="520" height="390"
+          loading="lazy"
+          decoding="async"
+          style="width:100%;height:100%;object-fit:cover;border-radius:var(--r-l)"
+        />
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════
+     SERVIÇOS
+══════════════════════════════════ -->
+<section class="sec sec-tint" aria-labelledby="svc-h">
+  <div class="wrap">
+    <span class="eye">O que encontramos para você</span>
+    <h2 id="svc-h">Serviços disponíveis na rede SAFE ILPIS</h2>
+
+    <div class="svc-grid" role="list">
+      <div class="svc" role="listitem">
+        <div class="svc__icon" aria-hidden="true">🏠</div>
+        <h4>Hospedagem em casas de repouso</h4>
+        <p>Moradia permanente com cuidado contínuo adaptado ao perfil da pessoa.</p>
+      </div>
+      <div class="svc" role="listitem">
+        <div class="svc__icon" aria-hidden="true">⭐</div>
+        <h4>Residenciais sênior</h4>
+        <p>Ambientes modernos com equipe especializada e programação de atividades.</p>
+      </div>
+      <div class="svc" role="listitem">
+        <div class="svc__icon" aria-hidden="true">🌿</div>
+        <h4>Hospedagem por temporada</h4>
+        <p>Para períodos de recuperação, descanso da família ou adaptação ao modelo.</p>
+      </div>
+      <div class="svc" role="listitem">
+        <div class="svc__icon" aria-hidden="true">☀️</div>
+        <h4>Day Use</h4>
+        <p>Dia completo no residencial — atividades, alimentação e cuidado durante o expediente.</p>
+      </div>
+      <div class="svc" role="listitem">
+        <div class="svc__icon" aria-hidden="true">👩‍⚕️</div>
+        <h4>Cuidadoras em casa</h4>
+        <p>Indicação de profissionais qualificadas para atendimento domiciliar.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════
+     FAQ
+══════════════════════════════════ -->
+<section class="sec" aria-labelledby="faq-h">
+  <div class="wrap">
+
+    <span class="eye">Dúvidas frequentes</span>
+    <h2 id="faq-h">Perguntas que toda família faz</h2>
+
+    <div class="faq-list" role="list">
+
+      <div class="faq-item" role="listitem" itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
+        <button class="faq-q" aria-expanded="false">
+          <span itemprop="name">Qual o custo médio de uma casa de repouso no Brasil em 2026?</span>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        </button>
+        <div class="faq-a" itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
+          <span itemprop="text">O custo médio varia entre R$ 3.000 e R$ 20.000 por mês, dependendo do grau de dependência e da região. Em São Paulo, a média geral para Grau 1 fica em torno de R$ 3.500 a R$ 5.000. Para Grau 2 e 3, os valores sobem pela necessidade de equipes maiores e mais especializadas.</span>
+        </div>
+      </div>
+
+      <div class="faq-item" role="listitem" itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
+        <button class="faq-q" aria-expanded="false">
+          <span itemprop="name">Cuidar em casa é mais barato do que um residencial?</span>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        </button>
+        <div class="faq-a" itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
+          <span itemprop="text">Não necessariamente. Para Grau 0, os custos são similares. A partir do Grau 1, com cuidadora registrada, os encargos trabalhistas e custos de moradia elevam a conta do cuidado domiciliar acima dos residenciais. Para Grau 2 e 3, a diferença pode ultrapassar R$ 5.000 por mês — com menos segurança e menos estrutura em casa.</span>
+        </div>
+      </div>
+
+      <div class="faq-item" role="listitem" itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
+        <button class="faq-q" aria-expanded="false">
+          <span itemprop="name">O que define o preço de uma ILPI?</span>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        </button>
+        <div class="faq-a" itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
+          <span itemprop="text">O principal fator é o grau de dependência da pessoa. Quanto maior a necessidade de assistência, maior a equipe necessária — e, portanto, maior a mensalidade. Outros fatores incluem: localização, infraestrutura do residencial, especialidades médicas disponíveis e serviços adicionais.</span>
+        </div>
+      </div>
+
+      <div class="faq-item" role="listitem" itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
+        <button class="faq-q" aria-expanded="false">
+          <span itemprop="name">O plano de saúde cobre a mensalidade do residencial?</span>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        </button>
+        <div class="faq-a" itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
+          <span itemprop="text">Geralmente não. Planos de saúde cobrem procedimentos médicos e hospitalares, mas não a hospedagem em residenciais sênior ou ILPIs. Medicamentos prescritos e fisioterapias podem ter cobertura parcial. Para casos de alta complexidade clínica, vale consultar o contrato do plano com detalhes.</span>
+        </div>
+      </div>
+
+      <div class="faq-item" role="listitem" itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
+        <button class="faq-q" aria-expanded="false">
+          <span itemprop="name">A SAFE ILPIS cobra para ajudar na escolha?</span>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        </button>
+        <div class="faq-a" itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
+          <span itemprop="text">Não. A orientação da SAFE ILPIS é 100% gratuita para as famílias. Nossa remuneração vem dos residenciais parceiros, o que garante total isenção na indicação. Indicamos o que é certo para cada caso — não o que nos dá maior comissão.</span>
+        </div>
+      </div>
+
+      <div class="faq-item" role="listitem" itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
+        <button class="faq-q" aria-expanded="false">
+          <span itemprop="name">Como funciona o desconto de R$ 500 que a SAFE ILPIS oferece?</span>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        </button>
+        <div class="faq-a" itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
+          <span itemprop="text">Por sermos parceiros de mais de 300 residenciais, negociamos condições exclusivas para as famílias que chegam por meio da SAFE ILPIS. Em muitos casos, conseguimos até R$ 500 de desconto na mensalidade — um valor que se acumula ao longo dos meses e representa economia real para a família.</span>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+</section>
+
+<!-- ══════════════════════════════════
+     ARTIGOS RELACIONADOS
+══════════════════════════════════ -->
+<section class="sec sec-alt" aria-labelledby="related-h">
+  <div class="wrap">
+    <span class="eye">Continue lendo</span>
+    <h2 id="related-h">Artigos que vão ajudar na sua decisão</h2>
+
+    <div class="related-grid" role="list">
+      <a href="/blog/como-saber-grau-de-dependencia" class="rel-card" role="listitem">
+        <div class="rel-card__img" aria-hidden="true">🩺</div>
+        <div class="rel-card__body">
+          <div class="rel-card__cat">Avaliação</div>
+          <h4>Como saber o grau de dependência de uma pessoa idosa</h4>
+        </div>
+      </a>
+      <a href="/blog/diferenca-asilo-casa-de-repouso" class="rel-card" role="listitem">
+        <div class="rel-card__img" aria-hidden="true">🏡</div>
+        <div class="rel-card__body">
+          <div class="rel-card__cat">Guia</div>
+          <h4>Diferença entre asilo e casa de repouso moderna</h4>
+        </div>
+      </a>
+      <a href="/blog/como-escolher-casa-de-repouso" class="rel-card" role="listitem">
+        <div class="rel-card__img" aria-hidden="true">✅</div>
+        <div class="rel-card__body">
+          <div class="rel-card__cat">Decisão</div>
+          <h4>Como escolher uma casa de repouso corretamente</h4>
+        </div>
+      </a>
+      <a href="/blog/quanto-custa-cuidadora-em-casa" class="rel-card" role="listitem">
+        <div class="rel-card__img" aria-hidden="true">👩‍⚕️</div>
+        <div class="rel-card__body">
+          <div class="rel-card__cat">Comparativo</div>
+          <h4>Quanto custa uma cuidadora em casa em 2026</h4>
+        </div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════
+     CTA FINAL
+══════════════════════════════════ -->
+<section class="sec" style="padding-bottom:100px">
+  <div class="wrap">
+    <div class="final-cta reveal">
+      <h2>Pronto para encontrar o lugar certo?</h2>
+      <p>
+        Conte para a gente o que a sua família precisa.<br>
+        Não há pressa. Não há custo. Só orientação honesta.
+      </p>
+      <div style="display:flex;gap:14px;justify-content:center;flex-wrap:wrap">
+        <a href="https://wa.me/5511998448822?text=Olá!%20Gostaria%20de%20orientação%20para%20encontrar%20um%20residencial%20sênior." class="btn-wa" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347zM12 0C5.373 0 0 5.373 0 12c0 2.127.558 4.122 1.532 5.852L.057 23.535a.5.5 0 00.609.608l5.765-1.511A11.955 11.955 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22c-1.891 0-3.66-.51-5.184-1.4l-.37-.222-3.835 1.006 1.023-3.738-.24-.383A9.972 9.972 0 012 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10z"/></svg>
+          Falar no WhatsApp
+        </a>
+        <a href="mailto:safeilpis@hotmail.com"
+           style="display:inline-flex;align-items:center;gap:10px;background:rgba(255,255,255,.1);color:#fff;font-weight:700;font-size:16px;padding:15px 28px;border-radius:40px;border:2px solid rgba(255,255,255,.25);transition:all .25s;text-decoration:none"
+           onmouseover="this.style.background='rgba(255,255,255,.18)'"
+           onmouseout="this.style.background='rgba(255,255,255,.1)'">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20" aria-hidden="true"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+          Enviar e-mail
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════
+     RODAPÉ
+══════════════════════════════════ -->
+<footer class="site-footer" role="contentinfo">
+  <div class="wrap-wide">
+    <div class="footer-grid">
+
+      <!-- Marca -->
+      <div class="footer-brand">
+        <a href="https://safeilpis.com.br/" class="logo">SAFE <em>ILPIS</em></a>
+        <p>Ajudamos famílias a encontrar o residencial certo — com orientação gratuita, rede avaliada e descontos exclusivos em São Paulo.</p>
+        <div class="footer-contact">
+          <a href="https://wa.me/5511998448822" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347zM12 0C5.373 0 0 5.373 0 12c0 2.127.558 4.122 1.532 5.852L.057 23.535a.5.5 0 00.609.608l5.765-1.511A11.955 11.955 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22c-1.891 0-3.66-.51-5.184-1.4l-.37-.222-3.835 1.006 1.023-3.738-.24-.383A9.972 9.972 0 012 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10z"/></svg>
+            (11) 9&nbsp;9844-8822
+          </a>
+          <a href="mailto:safeilpis@hotmail.com">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+            safeilpis@hotmail.com
+          </a>
+        </div>
+      </div>
+
+      <!-- Institucional -->
+      <nav class="footer-col" aria-label="Institucional">
+        <h5>Institucional</h5>
+        <ul>
+          <li><a href="https://safeilpis.com.br/">Home</a></li>
+          <li><a href="/sobre">Sobre nós</a></li>
+          <li><a href="/blog">Blog</a></li>
+          <li><a href="/faq">Dúvidas frequentes</a></li>
+          <li><a href="/contato">Contato</a></li>
+        </ul>
+      </nav>
+
+      <!-- Regiões -->
+      <nav class="footer-col" aria-label="Regiões">
+        <h5>Regiões</h5>
+        <ul>
+          <li><a href="/casas-de-repouso/osasco">Osasco</a></li>
+          <li><a href="/casas-de-repouso/alto-da-lapa">Alto da Lapa</a></li>
+          <li><a href="/casas-de-repouso/cotia">Cotia</a></li>
+          <li><a href="/casas-de-repouso/embu-das-artes">Embu das Artes</a></li>
+          <li><a href="/casas-de-repouso/butanta">Butantã</a></li>
+          <li><a href="/casas-de-repouso/vargem-grande-paulista">Vargem Grande Paulista</a></li>
+          <li><a href="/casas-de-repouso">→ Ver mais 13 regiões</a></li>
+        </ul>
+      </nav>
+
+      <!-- Serviços -->
+      <nav class="footer-col" aria-label="Serviços">
+        <h5>Serviços</h5>
+        <ul>
+          <li><a href="/servicos/hospedagem">Hospedagem</a></li>
+          <li><a href="/servicos/residencial-senior">Residencial sênior</a></li>
+          <li><a href="/servicos/temporada">Hospedagem por temporada</a></li>
+          <li><a href="/servicos/day-use">Day Use</a></li>
+          <li><a href="/servicos/cuidadoras">Cuidadoras em casa</a></li>
+        </ul>
+      </nav>
+
+    </div>
+
+    <div class="footer-bottom">
+      <span>© 2026 SAFE ILPIS. Todos os direitos reservados.</span>
+      <div style="display:flex;gap:20px">
+        <a href="/privacidade">Privacidade</a>
+        <a href="/termos">Termos de uso</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<!-- ══════════════════════════════════
+     JAVASCRIPT
+══════════════════════════════════ -->
+<script>
+/* ─────────────────────────────────────────
+   SIMULADOR — TAB SYSTEM
+───────────────────────────────────────── */
+(function(){
+  var tabs   = document.querySelectorAll('.sim-tab');
+  var panels = document.querySelectorAll('.sim-panel');
+
+  tabs.forEach(function(tab){
+    tab.addEventListener('click',function(){
+      var idx = tab.dataset.panel;
+
+      // reset tabs
+      tabs.forEach(function(t){
+        t.classList.remove('active');
+        t.setAttribute('aria-selected','false');
+      });
+      // reset panels
+      panels.forEach(function(p){ p.classList.remove('active'); });
+
+      // activate
+      tab.classList.add('active');
+      tab.setAttribute('aria-selected','true');
+      var panel = document.getElementById('panel-'+idx);
+      if(panel) panel.classList.add('active');
+    });
+  });
+})();
+
+/* ─────────────────────────────────────────
+   FAQ ACCORDION
+───────────────────────────────────────── */
+(function(){
+  document.querySelectorAll('.faq-q').forEach(function(btn){
+    btn.addEventListener('click',function(){
+      var item   = btn.closest('.faq-item');
+      var isOpen = item.classList.contains('open');
+
+      document.querySelectorAll('.faq-item').forEach(function(i){
+        i.classList.remove('open');
+        i.querySelector('.faq-q').setAttribute('aria-expanded','false');
+      });
+
+      if(!isOpen){
+        item.classList.add('open');
+        btn.setAttribute('aria-expanded','true');
+      }
+    });
+  });
+})();
+
+/* ─────────────────────────────────────────
+   REVEAL ON SCROLL (Intersection Observer)
+───────────────────────────────────────── */
+(function(){
+  if(!('IntersectionObserver' in window)) {
+    document.querySelectorAll('.reveal').forEach(function(el){
+      el.style.opacity='1';el.style.transform='none';
+    });
+    return;
+  }
+  var obs = new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+      if(e.isIntersecting){
+        e.target.classList.add('visible');
+        obs.unobserve(e.target);
+      }
+    });
+  },{threshold:.12,rootMargin:'0px 0px -40px 0px'});
+
+  document.querySelectorAll('.reveal').forEach(function(el){ obs.observe(el); });
+})();
+</script>
+
+</body>
+</html>
