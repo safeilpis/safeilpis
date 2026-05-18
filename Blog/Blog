@@ -11,7 +11,7 @@ blog/index.html
     <meta property="og:description" content="Guias para famílias em busca de residencial para idosos">
     <meta property="og:type" content="website">
     <meta name="robots" content="index, follow">
-    <link rel="canonical" href="https://safeilpis.github.io/blog/">
+    <link rel="canonical" href="https://safeilpis.com.br/blog/">
     
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
