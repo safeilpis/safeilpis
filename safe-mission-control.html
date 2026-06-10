@@ -1,0 +1,1229 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>SAFE Mission Control</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+/* ============================================================
+   SAFE MISSION CONTROL — Design System
+   Brand: navy #081A58 · clean · calm · premium
+   ============================================================ */
+:root{
+  --navy:#081A58;
+  --navy-soft:#1B2E7A;
+  --bg:#FFFFFF;
+  --surface:#F5F7FA;
+  --text:#1A1A1A;
+  --muted:#5B6472;
+  --line:#E6EAF0;
+  --success:#16A34A;
+  --success-bg:#EAF7EF;
+  --warning:#F59E0B;
+  --warning-bg:#FEF5E3;
+  --danger:#DC2626;
+  --danger-bg:#FCEAEA;
+  --info-bg:#EEF1FB;
+  --r-sm:12px;
+  --r-md:16px;
+  --r-lg:20px;
+  --shadow:0 1px 2px rgba(8,26,88,.05),0 4px 16px rgba(8,26,88,.06);
+  --shadow-lg:0 8px 40px rgba(8,26,88,.14);
+  --nav-h:64px;
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html{font-size:16px}
+body{
+  font-family:'Inter','SF Pro Display',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+  background:var(--surface);
+  color:var(--text);
+  font-size:1rem;
+  line-height:1.55;
+  -webkit-font-smoothing:antialiased;
+  min-height:100dvh;
+}
+button{font:inherit;cursor:pointer;border:none;background:none;color:inherit}
+input,select,textarea{font:inherit;color:inherit}
+::selection{background:var(--navy);color:#fff}
+
+/* ---------- App shell ---------- */
+.app{display:flex;min-height:100dvh}
+.sidebar{display:none}
+.main{flex:1;min-width:0;padding:20px 16px calc(var(--nav-h) + 32px + env(safe-area-inset-bottom));max-width:1100px;margin:0 auto;width:100%}
+@media(min-width:1024px){
+  .sidebar{
+    display:flex;flex-direction:column;gap:4px;
+    width:248px;flex-shrink:0;position:sticky;top:0;height:100dvh;
+    background:#fff;border-right:1px solid var(--line);padding:28px 16px;
+  }
+  .main{padding:40px 48px 64px}
+  .bottomnav{display:none}
+}
+.brand{display:flex;align-items:center;gap:12px;padding:8px 12px 28px}
+.brand-mark{
+  width:40px;height:40px;border-radius:12px;background:var(--navy);
+  display:flex;align-items:center;justify-content:center;
+  color:#fff;font-weight:800;font-size:1rem;letter-spacing:.02em;
+}
+.brand-name{font-weight:700;font-size:1.05rem;color:var(--navy);line-height:1.2}
+.brand-sub{font-size:.8rem;color:var(--muted);font-weight:500}
+.side-link{
+  display:flex;align-items:center;gap:12px;padding:12px 14px;border-radius:12px;
+  font-weight:600;font-size:.97rem;color:var(--muted);width:100%;text-align:left;
+  transition:background .15s,color .15s;
+}
+.side-link svg{flex-shrink:0}
+.side-link:hover{background:var(--surface)}
+.side-link.active{background:var(--info-bb, var(--info-bg));color:var(--navy)}
+.side-foot{margin-top:auto;padding:12px;font-size:.8rem;color:var(--muted)}
+
+/* ---------- Bottom nav (mobile) ---------- */
+.bottomnav{
+  position:fixed;bottom:0;left:0;right:0;z-index:50;
+  background:rgba(255,255,255,.92);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);
+  border-top:1px solid var(--line);
+  display:flex;height:calc(var(--nav-h) + env(safe-area-inset-bottom));
+  padding-bottom:env(safe-area-inset-bottom);
+}
+.bn-item{
+  flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;
+  font-size:.7rem;font-weight:600;color:var(--muted);transition:color .15s;
+}
+.bn-item.active{color:var(--navy)}
+.bn-item svg{width:24px;height:24px}
+
+/* ---------- Page header ---------- */
+.page-head{margin-bottom:24px}
+.page-title{font-size:1.7rem;font-weight:800;letter-spacing:-.02em;color:var(--navy)}
+.page-sub{color:var(--muted);margin-top:4px;font-size:1rem}
+@media(min-width:1024px){.page-title{font-size:2rem}}
+
+/* ---------- Cards ---------- */
+.card{
+  background:#fff;border-radius:var(--r-md);box-shadow:var(--shadow);
+  padding:20px;margin-bottom:16px;
+}
+.card-lg{border-radius:var(--r-lg);padding:24px}
+.card h3{font-size:1.05rem;font-weight:700;margin-bottom:14px;letter-spacing:-.01em}
+.section-label{
+  font-size:.78rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;
+  color:var(--muted);margin:28px 0 12px;
+}
+
+/* ---------- Hero (Dashboard) ---------- */
+.hero{
+  background:var(--navy);color:#fff;border-radius:var(--r-lg);
+  padding:28px 24px;margin-bottom:16px;box-shadow:var(--shadow);
+  position:relative;overflow:hidden;
+}
+.hero::after{
+  content:"";position:absolute;right:-80px;top:-80px;width:260px;height:260px;border-radius:50%;
+  background:radial-gradient(circle,rgba(255,255,255,.10),transparent 70%);
+}
+.hero-label{font-size:.8rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;opacity:.75}
+.hero-big{display:flex;align-items:baseline;gap:10px;margin:8px 0 2px}
+.hero-pct{font-size:3.4rem;font-weight:800;letter-spacing:-.03em;line-height:1}
+.hero-units{font-size:1rem;font-weight:600;opacity:.85}
+.unit-track{display:flex;gap:6px;margin:18px 0 14px}
+.unit-cell{
+  flex:1;height:12px;border-radius:6px;background:rgba(255,255,255,.16);
+  transition:background .3s;
+}
+.unit-cell.open{background:#5EE39A}
+.unit-cell.partial{background:linear-gradient(90deg,#5EE39A var(--p,0%),rgba(255,255,255,.16) var(--p,0%))}
+.hero-meta{display:flex;flex-wrap:wrap;gap:16px;font-size:.9rem}
+.hero-meta span{opacity:.78}
+.hero-meta strong{font-weight:700}
+
+/* ---------- Stat grid ---------- */
+.grid{display:grid;gap:12px;grid-template-columns:repeat(2,1fr)}
+@media(min-width:680px){.grid{grid-template-columns:repeat(3,1fr)}}
+@media(min-width:1024px){.grid{grid-template-columns:repeat(4,1fr);gap:16px}}
+.stat{
+  background:#fff;border-radius:var(--r-md);box-shadow:var(--shadow);padding:18px;
+  display:flex;flex-direction:column;gap:4px;min-height:104px;
+}
+.stat-label{font-size:.82rem;font-weight:600;color:var(--muted)}
+.stat-value{font-size:1.65rem;font-weight:800;letter-spacing:-.02em;color:var(--navy)}
+.stat-note{font-size:.8rem;color:var(--muted)}
+.stat-value.good{color:var(--success)}
+.stat-value.warn{color:var(--warning)}
+.stat-value.bad{color:var(--danger)}
+
+/* ---------- Progress bars ---------- */
+.pbar{height:8px;border-radius:6px;background:var(--surface);overflow:hidden}
+.pbar>i{display:block;height:100%;border-radius:6px;background:var(--navy);transition:width .4s ease}
+.pbar.green>i{background:var(--success)}
+.pbar.amber>i{background:var(--warning)}
+.pbar.red>i{background:var(--danger)}
+.pbar-row{display:flex;align-items:center;gap:12px}
+.pbar-row .pbar{flex:1}
+.pbar-pct{font-size:.85rem;font-weight:700;color:var(--navy);min-width:42px;text-align:right}
+
+/* ---------- Badges ---------- */
+.badge{
+  display:inline-flex;align-items:center;gap:6px;padding:4px 10px;border-radius:99px;
+  font-size:.78rem;font-weight:700;white-space:nowrap;
+}
+.badge::before{content:"";width:7px;height:7px;border-radius:50%;background:currentColor}
+.b-grey{background:var(--surface);color:var(--muted)}
+.b-blue{background:var(--info-bg);color:var(--navy)}
+.b-green{background:var(--success-bg);color:var(--success)}
+.b-amber{background:var(--warning-bg);color:#B45309}
+.b-red{background:var(--danger-bg);color:var(--danger)}
+.prio-Alta{background:var(--danger-bg);color:var(--danger)}
+.prio-Média{background:var(--warning-bg);color:#B45309}
+.prio-Baixa{background:var(--info-bg);color:var(--navy)}
+
+/* ---------- Milestones ---------- */
+.ms{background:#fff;border-radius:var(--r-md);box-shadow:var(--shadow);margin-bottom:14px;overflow:hidden}
+.ms-head{display:flex;align-items:flex-start;gap:14px;padding:18px 18px 16px;cursor:pointer}
+.ms-num{
+  width:38px;height:38px;border-radius:12px;background:var(--info-bg);color:var(--navy);
+  display:flex;align-items:center;justify-content:center;font-weight:800;font-size:.95rem;flex-shrink:0;
+}
+.ms.done .ms-num{background:var(--success-bg);color:var(--success)}
+.ms-title{font-weight:700;font-size:1.02rem;letter-spacing:-.01em}
+.ms-desc{font-size:.88rem;color:var(--muted);margin-top:2px}
+.ms-badges{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+.ms-prog{padding:0 18px 16px}
+.ms-body{border-top:1px solid var(--line);padding:16px 18px;display:none}
+.ms.open-body .ms-body{display:block}
+.ms-dates{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-bottom:16px}
+@media(min-width:680px){.ms-dates{grid-template-columns:repeat(4,1fr)}}
+.dt{background:var(--surface);border-radius:12px;padding:10px 12px}
+.dt b{display:block;font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--muted)}
+.dt span{font-size:.94rem;font-weight:600}
+.dt.red span{color:var(--danger)}
+.chev{margin-left:auto;flex-shrink:0;color:var(--muted);transition:transform .2s;align-self:center}
+.ms.open-body .chev{transform:rotate(180deg)}
+
+/* ---------- Subtasks ---------- */
+.sub{display:flex;align-items:flex-start;gap:12px;padding:12px 0;border-bottom:1px solid var(--line)}
+.sub:last-of-type{border-bottom:none}
+.sub-check{
+  width:28px;height:28px;border-radius:9px;border:2px solid var(--line);flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;color:#fff;transition:.15s;margin-top:2px;
+}
+.sub-check.on{background:var(--success);border-color:var(--success)}
+.sub-name{font-weight:600;font-size:.97rem}
+.sub.done-sub .sub-name{text-decoration:line-through;color:var(--muted)}
+.sub-meta{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px;font-size:.8rem;color:var(--muted);align-items:center}
+.sub-main{flex:1;min-width:0}
+
+/* ---------- Buttons ---------- */
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:8px;
+  min-height:48px;padding:0 20px;border-radius:14px;font-weight:700;font-size:.97rem;
+  transition:.15s;border:none;
+}
+.btn-primary{background:var(--navy);color:#fff}
+.btn-primary:hover{background:var(--navy-soft)}
+.btn-soft{background:var(--info-bg);color:var(--navy)}
+.btn-soft:hover{background:#E2E8F8}
+.btn-ghost{background:transparent;color:var(--muted);min-height:40px;padding:0 12px;font-weight:600}
+.btn-ghost:hover{background:var(--surface);color:var(--text)}
+.btn-danger{background:var(--danger-bg);color:var(--danger)}
+.btn-sm{min-height:38px;padding:0 14px;font-size:.88rem;border-radius:11px}
+.btn-block{width:100%}
+.btn-row{display:flex;gap:10px;flex-wrap:wrap}
+.icon-btn{
+  width:42px;height:42px;border-radius:12px;display:inline-flex;align-items:center;justify-content:center;
+  color:var(--muted);transition:.15s;flex-shrink:0;
+}
+.icon-btn:hover{background:var(--surface);color:var(--navy)}
+
+/* ---------- Forms / modal ---------- */
+.overlay{
+  position:fixed;inset:0;background:rgba(8,26,88,.35);backdrop-filter:blur(3px);
+  z-index:100;display:flex;align-items:flex-end;justify-content:center;
+  opacity:0;pointer-events:none;transition:opacity .2s;
+}
+@media(min-width:680px){.overlay{align-items:center;padding:24px}}
+.overlay.show{opacity:1;pointer-events:auto}
+.modal{
+  background:#fff;border-radius:24px 24px 0 0;width:100%;max-width:560px;
+  max-height:90dvh;overflow-y:auto;padding:24px 20px calc(24px + env(safe-area-inset-bottom));
+  box-shadow:var(--shadow-lg);transform:translateY(24px);transition:transform .25s;
+}
+@media(min-width:680px){.modal{border-radius:24px;padding:28px}}
+.overlay.show .modal{transform:translateY(0)}
+.modal-title{font-size:1.25rem;font-weight:800;color:var(--navy);margin-bottom:18px;letter-spacing:-.01em}
+.field{margin-bottom:16px}
+.field label{display:block;font-size:.85rem;font-weight:700;margin-bottom:6px;color:var(--text)}
+.field input,.field select,.field textarea{
+  width:100%;min-height:50px;border:1.5px solid var(--line);border-radius:13px;
+  padding:12px 14px;font-size:1rem;background:#fff;outline:none;transition:border .15s;
+}
+.field textarea{min-height:84px;resize:vertical}
+.field input:focus,.field select:focus,.field textarea:focus{border-color:var(--navy)}
+.field-hint{font-size:.82rem;color:var(--muted);margin-top:6px}
+.field-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.calc-pill{
+  background:var(--info-bg);color:var(--navy);border-radius:13px;padding:12px 14px;
+  font-size:.92rem;font-weight:600;display:flex;align-items:center;gap:8px;margin-bottom:16px;
+}
+
+/* ---------- Habits ---------- */
+.habit{display:flex;align-items:center;gap:14px;background:#fff;border-radius:var(--r-md);box-shadow:var(--shadow);padding:16px 18px;margin-bottom:10px}
+.habit-check{
+  width:52px;height:52px;border-radius:16px;border:2.5px solid var(--line);flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;color:#fff;transition:.18s;
+}
+.habit-check.on{background:var(--success);border-color:var(--success);transform:scale(1.02)}
+.habit-name{font-weight:700;font-size:1rem}
+.habit-stats{font-size:.82rem;color:var(--muted);margin-top:2px;display:flex;gap:10px;flex-wrap:wrap}
+.streak{color:var(--warning);font-weight:700}
+.habit-main{flex:1;min-width:0}
+
+/* ---------- Hoje ---------- */
+.day-banner{border-radius:var(--r-lg);padding:22px;margin-bottom:16px;color:#fff;box-shadow:var(--shadow)}
+.day-banner.forte{background:linear-gradient(135deg,#0E7A3B,#16A34A)}
+.day-banner.medio{background:linear-gradient(135deg,#B45309,#F59E0B)}
+.day-banner.fraco{background:linear-gradient(135deg,#991B1B,#DC2626)}
+.day-banner h2{font-size:1.4rem;font-weight:800;letter-spacing:-.01em}
+.day-banner p{opacity:.92;margin-top:4px;font-size:.95rem}
+.task-pick{display:flex;gap:12px;align-items:flex-start;padding:14px 0;border-bottom:1px solid var(--line)}
+.task-pick:last-child{border-bottom:none}
+.tp-rank{
+  width:30px;height:30px;border-radius:10px;background:var(--navy);color:#fff;font-weight:800;font-size:.9rem;
+  display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px;
+}
+.impact-note{
+  background:var(--info-bg);border-radius:var(--r-md);padding:16px 18px;color:var(--navy);
+  font-weight:600;font-size:.95rem;line-height:1.5;
+}
+
+/* ---------- Sliders (daily log) ---------- */
+.scale-row{display:flex;gap:8px;margin-top:6px}
+.scale-dot{
+  flex:1;min-height:50px;border-radius:13px;border:1.5px solid var(--line);
+  font-weight:700;font-size:1rem;color:var(--muted);transition:.15s;background:#fff;
+}
+.scale-dot.sel{background:var(--navy);border-color:var(--navy);color:#fff}
+
+/* ---------- Charts ---------- */
+.chart-wrap{overflow-x:auto}
+.legend{display:flex;gap:16px;font-size:.8rem;color:var(--muted);margin-top:10px;flex-wrap:wrap}
+.legend i{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:6px}
+
+/* ---------- Misc ---------- */
+.empty{
+  text-align:center;color:var(--muted);padding:36px 20px;font-size:.95rem;
+  background:#fff;border-radius:var(--r-md);box-shadow:var(--shadow);
+}
+.list-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:14px}
+.toast{
+  position:fixed;left:50%;transform:translateX(-50%) translateY(20px);bottom:calc(var(--nav-h) + 20px + env(safe-area-inset-bottom));
+  background:var(--navy);color:#fff;padding:13px 22px;border-radius:14px;font-weight:600;font-size:.93rem;
+  box-shadow:var(--shadow-lg);opacity:0;pointer-events:none;transition:.25s;z-index:200;white-space:nowrap;
+}
+@media(min-width:1024px){.toast{bottom:32px}}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+.view{display:none;animation:fade .25s ease}
+.view.active{display:block}
+@keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+.divider{height:1px;background:var(--line);margin:16px 0}
+.muted{color:var(--muted)}
+.small{font-size:.85rem}
+</style>
+</head>
+<body>
+<div class="app">
+
+  <!-- Sidebar (iPad/Desktop) -->
+  <aside class="sidebar">
+    <div class="brand">
+      <div class="brand-mark">S+</div>
+      <div>
+        <div class="brand-name">SAFE</div>
+        <div class="brand-sub">Mission Control</div>
+      </div>
+    </div>
+    <button class="side-link" data-nav="dashboard"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="9" rx="1.5"/><rect x="14" y="3" width="7" height="5" rx="1.5"/><rect x="14" y="12" width="7" height="9" rx="1.5"/><rect x="3" y="16" width="7" height="5" rx="1.5"/></svg>Dashboard</button>
+    <button class="side-link" data-nav="roadmap"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="6" cy="5" r="2.4"/><circle cx="18" cy="12" r="2.4"/><circle cx="6" cy="19" r="2.4"/><path d="M8.4 5h6a3 3 0 0 1 0 7H9a3 3 0 0 0 0 7h6.6"/></svg>Roadmap</button>
+    <button class="side-link" data-nav="hoje"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="4.5"/><circle cx="12" cy="12" r="1" fill="currentColor"/></svg>Hoje</button>
+    <button class="side-link" data-nav="rotina"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12.5l2 2 4.5-5"/><rect x="3.5" y="4" width="17" height="17" rx="3"/><path d="M8 2.5v3M16 2.5v3"/></svg>Rotina</button>
+    <button class="side-link" data-nav="kpis"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20V10M10 20V4M16 20v-7M21 20H3"/></svg>KPIs</button>
+    <div class="side-foot">Meta: 10 Unidades SAFE Plus</div>
+  </aside>
+
+  <!-- Main content -->
+  <main class="main">
+    <div id="view-dashboard" class="view"></div>
+    <div id="view-roadmap" class="view"></div>
+    <div id="view-hoje" class="view"></div>
+    <div id="view-rotina" class="view"></div>
+    <div id="view-kpis" class="view"></div>
+  </main>
+</div>
+
+<!-- Bottom navigation (mobile) -->
+<nav class="bottomnav">
+  <button class="bn-item" data-nav="dashboard"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="9" rx="1.5"/><rect x="14" y="3" width="7" height="5" rx="1.5"/><rect x="14" y="12" width="7" height="9" rx="1.5"/><rect x="3" y="16" width="7" height="5" rx="1.5"/></svg>Dashboard</button>
+  <button class="bn-item" data-nav="roadmap"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="6" cy="5" r="2.4"/><circle cx="18" cy="12" r="2.4"/><circle cx="6" cy="19" r="2.4"/><path d="M8.4 5h6a3 3 0 0 1 0 7H9a3 3 0 0 0 0 7h6.6"/></svg>Roadmap</button>
+  <button class="bn-item" data-nav="hoje"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="4.5"/><circle cx="12" cy="12" r="1" fill="currentColor"/></svg>Hoje</button>
+  <button class="bn-item" data-nav="rotina"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12.5l2 2 4.5-5"/><rect x="3.5" y="4" width="17" height="17" rx="3"/><path d="M8 2.5v3M16 2.5v3"/></svg>Rotina</button>
+  <button class="bn-item" data-nav="kpis"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20V10M10 20V4M16 20v-7M21 20H3"/></svg>KPIs</button>
+</nav>
+
+<div class="overlay" id="overlay"><div class="modal" id="modal"></div></div>
+<div class="toast" id="toast"></div>
+
+<script>
+/* ============================================================
+   ARCHITECTURE
+   Layer 1 — Storage (adapter pattern, Supabase-ready)
+   Layer 2 — Business logic (scheduling, scoring, projection)
+   Layer 3 — UI (pure rendering from state)
+   ============================================================ */
+
+/* ================= LAYER 1 — STORAGE ================= */
+/* StorageAdapter abstracts persistence. To migrate to Supabase,
+   implement the same 3-method interface (load/save/clear) and
+   swap the adapter — no other code changes required. */
+
+const StorageAdapter = (() => {
+  const KEY = 'safe-mission-control-v1';
+  let memory = null; // last-resort fallback (session only)
+
+  const hasClaudeStorage = typeof window !== 'undefined' && window.storage && typeof window.storage.get === 'function';
+  const hasLocalStorage = (() => {
+    try { localStorage.setItem('__t','1'); localStorage.removeItem('__t'); return true; }
+    catch(e){ return false; }
+  })();
+
+  async function load(){
+    if (hasClaudeStorage){
+      try { const r = await window.storage.get(KEY); if (r && r.value) return JSON.parse(r.value); } catch(e){}
+    }
+    if (hasLocalStorage){
+      try { const r = localStorage.getItem(KEY); if (r) return JSON.parse(r); } catch(e){}
+    }
+    return memory;
+  }
+  async function save(state){
+    const json = JSON.stringify(state);
+    memory = state;
+    if (hasClaudeStorage){ try { await window.storage.set(KEY, json); } catch(e){} }
+    if (hasLocalStorage){ try { localStorage.setItem(KEY, json); } catch(e){} }
+  }
+  return { load, save };
+})();
+
+/* Debounced auto-save: persists after every mutation, never manual */
+let _saveTimer = null;
+function persist(){
+  clearTimeout(_saveTimer);
+  _saveTimer = setTimeout(() => StorageAdapter.save(S), 250);
+}
+
+/* ================= DATE UTILITIES ================= */
+const DAY = 86400000;
+function todayISO(){ const d=new Date(); return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0'); }
+function pISO(iso){ const [y,m,d]=iso.split('-').map(Number); return new Date(y,m-1,d); }
+function addDays(iso,n){ const d=pISO(iso); d.setDate(d.getDate()+n); return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0'); }
+function diffDays(a,b){ return Math.round((pISO(b)-pISO(a))/DAY); } // b - a in days
+function fmt(iso){ if(!iso) return '—'; const [y,m,d]=iso.split('-'); return `${d}/${m}/${y}`; }
+function fmtLong(iso){
+  const meses=['janeiro','fevereiro','março','abril','maio','junho','julho','agosto','setembro','outubro','novembro','dezembro'];
+  const dias=['domingo','segunda-feira','terça-feira','quarta-feira','quinta-feira','sexta-feira','sábado'];
+  const d=pISO(iso); return `${dias[d.getDay()]}, ${d.getDate()} de ${meses[d.getMonth()]} de ${d.getFullYear()}`;
+}
+const uid = () => Math.random().toString(36).slice(2,10) + Date.now().toString(36);
+
+/* ================= DEFAULT STATE ================= */
+function defaultState(){
+  const start = todayISO();
+  const defs = [
+    ['Finalizar Instagram','Perfil, destaques e linha editorial concluídos',14],
+    ['Finalizar Site','Site institucional no ar e otimizado',21],
+    ['Finalizar Aplicativo','App SAFE funcional para clínicas parceiras',30],
+    ['Vender e gravar com 10 a 50 clínicas','Primeiras parcerias ativas e conteúdo gravado',60],
+    ['Vender para 100 clínicas','Escala comercial: 100 clínicas na base',90],
+    ['Vender para 350 clínicas','Domínio de mercado: 350 clínicas na base',180],
+    ['Abrir Unidade Plus 1','Primeira Unidade SAFE Plus em operação',120],
+    ['Abrir mais 2 Unidades Plus','Unidades 2 e 3 em operação',180],
+    ['Abrir mais 3 Unidades Plus','Unidades 4, 5 e 6 em operação',240],
+    ['Abrir mais 4 Unidades Plus','Unidades 7, 8, 9 e 10 em operação',300],
+  ];
+  let cursor = start;
+  const milestones = defs.map(([name,description,dur]) => {
+    const m = {
+      id: uid(), name, description, status:'Não iniciada',
+      plannedDuration: dur, startDate: cursor,
+      originalEnd: addDays(cursor, dur), actualEnd: null,
+      notes:'', subtasks: []
+    };
+    cursor = m.originalEnd;
+    return m;
+  });
+  const habits = ['Acordar às 04:15','Meditar às 04:40','Treinar às 05:00','Trabalhar às 06:00','Duolingo 15 minutos','Trabalhar 8 horas','Ler às 19:00','Dormir às 19:20']
+    .map(name => ({ id: uid(), name, history:{} }));
+  return {
+    createdAt: start,
+    targetUnits: 10,
+    milestones, habits,
+    dailyLogs: {},   // 'YYYY-MM-DD' -> {energy,focus,mood,deepWork,notes}
+  };
+}
+
+/* ================= LAYER 2 — BUSINESS LOGIC ================= */
+
+/* ---- Subtask engine ---- */
+function subExpectedEnd(st){ return st.startDate ? addDays(st.startDate, Number(st.plannedDuration)||0) : null; }
+function subDelay(st){
+  const end = subExpectedEnd(st);
+  if (!end || st.status === 'Concluída') return 0;
+  return Math.max(0, diffDays(end, todayISO()));
+}
+function subEffectiveStatus(st){
+  if (st.status === 'Concluída') return 'Concluída';
+  if (subDelay(st) > 0) return 'Atrasada';
+  return st.status;
+}
+
+/* ---- Milestone engine ---- */
+function msProgress(m){
+  if (m.status === 'Concluída') return 100;
+  if (!m.subtasks.length) return m.status === 'Em andamento' ? 10 : 0;
+  const done = m.subtasks.filter(s => s.status==='Concluída').length;
+  return Math.round(done / m.subtasks.length * 100);
+}
+function msDelay(m){
+  if (m.status === 'Concluída') return 0;
+  const own = Math.max(0, diffDays(m.originalEnd, todayISO()));
+  const subs = m.subtasks.map(subDelay);
+  return Math.max(own, ...(subs.length ? subs : [0]));
+}
+function msProjectedEnd(m){
+  if (m.status === 'Concluída') return m.actualEnd || m.originalEnd;
+  return addDays(m.originalEnd, msDelay(m));
+}
+function msEffectiveStatus(m){
+  if (m.status === 'Concluída') return 'Concluída';
+  if (msDelay(m) > 0) return 'Atrasada';
+  return m.status;
+}
+
+/* ---- Global roadmap engine ---- */
+function engine(){
+  const M = S.milestones;
+  const total = M.length;
+  const done = M.filter(m => m.status==='Concluída').length;
+  const progress = total ? Math.round(done/total*100) : 0;
+
+  const originalEnd = M.length ? M.reduce((a,m)=> m.originalEnd > a ? m.originalEnd : a, M[0].originalEnd) : todayISO();
+  const totalDelay = M.reduce((a,m)=> a + msDelay(m), 0);
+  const projectedEnd = addDays(originalEnd, totalDelay);
+  const drift = diffDays(originalEnd, projectedEnd); // >0 = behind
+
+  // Units opened (derived from completed "Abrir" milestones)
+  const unitMap = [['Abrir Unidade Plus 1',1],['Abrir mais 2 Unidades Plus',2],['Abrir mais 3 Unidades Plus',3],['Abrir mais 4 Unidades Plus',4]];
+  let units = 0;
+  M.forEach(m => { const hit = unitMap.find(u => m.name===u[0]); if (hit && m.status==='Concluída') units += hit[1]; });
+
+  // First unit projection
+  const firstUnitMs = M.find(m => /unidade plus 1/i.test(m.name)) || M[6];
+  const firstUnitDate = firstUnitMs ? (firstUnitMs.status==='Concluída' ? firstUnitMs.actualEnd : projectedEndOfChain(firstUnitMs)) : null;
+
+  // Pace engine
+  const elapsed = Math.max(1, diffDays(S.createdAt, todayISO()));
+  const pace = done / elapsed; // milestones per day
+  const remaining = total - done;
+  let paceDate = null;
+  if (done > 0 && remaining > 0) paceDate = addDays(todayISO(), Math.ceil(remaining / pace));
+  else if (remaining === 0) paceDate = todayISO();
+  const plannedDays = Math.max(1, diffDays(S.createdAt, originalEnd));
+  const requiredPace = remaining / Math.max(1, diffDays(todayISO(), originalEnd) > 0 ? diffDays(todayISO(), originalEnd) : 1);
+
+  // Tasks stats
+  const allSubs = M.flatMap(m => m.subtasks);
+  const weekAgo = addDays(todayISO(), -7), monthAgo = addDays(todayISO(), -30);
+  const doneWeek = allSubs.filter(s => s.completedAt && s.completedAt >= weekAgo).length;
+  const doneMonth = allSubs.filter(s => s.completedAt && s.completedAt >= monthAgo).length;
+  const overdue = allSubs.filter(s => subEffectiveStatus(s)==='Atrasada').length
+                + M.filter(m => msEffectiveStatus(m)==='Atrasada').length;
+  const overdueSubs = allSubs.filter(s => subEffectiveStatus(s)==='Atrasada').length;
+
+  return { total, done, progress, originalEnd, projectedEnd, drift, totalDelay, units,
+           firstUnitDate, pace, paceDate, requiredPace, doneWeek, doneMonth, overdue, overdueSubs, remaining };
+}
+
+/* projected end of a milestone accounting for cumulative delay of itself + predecessors */
+function projectedEndOfChain(target){
+  let delay = 0;
+  for (const m of S.milestones){
+    delay += msDelay(m);
+    if (m.id === target.id) return addDays(m.originalEnd, delay);
+  }
+  return msProjectedEnd(target);
+}
+
+/* ---- Habits engine ---- */
+function habitStats(h){
+  const t = todayISO();
+  let streak = 0, d = t;
+  if (!h.history[t]) d = addDays(t,-1); // streak may continue if today not yet done
+  while (h.history[d]){ streak++; d = addDays(d,-1); }
+  // best streak
+  const days = Object.keys(h.history).filter(k=>h.history[k]).sort();
+  let best = 0, run = 0, prev = null;
+  for (const day of days){
+    run = (prev && diffDays(prev, day)===1) ? run+1 : 1;
+    best = Math.max(best, run); prev = day;
+  }
+  const range = (n) => { let c=0; for(let i=0;i<n;i++){ if(h.history[addDays(t,-i)]) c++; } return Math.round(c/n*100); };
+  return { streak, best, week: range(7), month: range(30), doneToday: !!h.history[t] };
+}
+function disciplineToday(){
+  if (!S.habits.length) return 0;
+  const t = todayISO();
+  const done = S.habits.filter(h => h.history[t]).length;
+  return Math.round(done / S.habits.length * 100);
+}
+function disciplineRange(n){
+  if (!S.habits.length) return 0;
+  const t = todayISO(); let sum = 0;
+  for (const h of S.habits){ let c=0; for(let i=0;i<n;i++){ if(h.history[addDays(t,-i)]) c++; } sum += c/n; }
+  return Math.round(sum / S.habits.length * 100);
+}
+
+/* ---- SAFE Execution Score (0–100) ---- */
+function safeScore(){
+  const e = engine();
+  const disc = Math.round(disciplineToday() * 0.30);                 // 30 pts
+  const strat = Math.round(e.progress * 0.40);                       // 40 pts
+  const onTime = e.overdue === 0 ? 20 : Math.max(0, 20 - e.overdue*4); // 20 pts
+  const review = S.dailyLogs[todayISO()] ? 10 : 0;                   // 10 pts
+  return { total: disc+strat+onTime+review, disc, strat, onTime, review };
+}
+
+/* ---- Daily focus ---- */
+function topTasks(){
+  const pr = {'Alta':3,'Média':2,'Baixa':1};
+  const pool = [];
+  S.milestones.forEach(m => m.subtasks.forEach(s => {
+    if (s.status !== 'Concluída') pool.push({ s, m, delay: subDelay(s), end: subExpectedEnd(s) || '9999-12-31' });
+  }));
+  pool.sort((a,b) => (b.delay - a.delay) || ((pr[b.s.priority]||0)-(pr[a.s.priority]||0)) || a.end.localeCompare(b.end));
+  return pool.slice(0,3);
+}
+function bottleneck(){
+  let worst = null, wd = -1;
+  S.milestones.forEach(m => { const d = msDelay(m); if (d > wd && m.status!=='Concluída'){ wd = d; worst = m; } });
+  if (worst && wd > 0) return { m: worst, delay: wd };
+  const active = S.milestones.find(m => m.status==='Em andamento') || S.milestones.find(m => m.status!=='Concluída');
+  return active ? { m: active, delay: 0 } : null;
+}
+function avgLog(field, n=30){
+  const t = todayISO(); let sum=0, c=0;
+  for(let i=0;i<n;i++){ const l = S.dailyLogs[addDays(t,-i)]; if (l && l[field]!=null){ sum+=Number(l[field]); c++; } }
+  return c ? (sum/c) : null;
+}
+/* ================= LAYER 3 — UI ================= */
+let S = null;
+let currentView = 'dashboard';
+const $ = sel => document.querySelector(sel);
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+
+function toast(msg){
+  const t = $('#toast'); t.textContent = msg; t.classList.add('show');
+  clearTimeout(t._h); t._h = setTimeout(()=>t.classList.remove('show'), 2200);
+}
+
+/* ---------- shared widgets ---------- */
+function pbar(pct, cls=''){ return `<div class="pbar-row"><div class="pbar ${cls}"><i style="width:${pct}%"></i></div><span class="pbar-pct">${pct}%</span></div>`; }
+function statusBadge(st){
+  const map = {'Não iniciada':'b-grey','Em andamento':'b-blue','Concluída':'b-green','Atrasada':'b-red'};
+  return `<span class="badge ${map[st]||'b-grey'}">${st}</span>`;
+}
+
+/* ---------- DASHBOARD ---------- */
+function renderDashboard(){
+  const e = engine(), sc = safeScore(), bn = bottleneck(), tasks = topTasks();
+  const driftTxt = e.drift > 0 ? `<strong style="color:#FCA5A5">${e.drift} dias atrasado</strong>`
+                 : e.drift < 0 ? `<strong style="color:#5EE39A">${-e.drift} dias adiantado</strong>`
+                 : `<strong style="color:#5EE39A">No prazo</strong>`;
+  const cells = Array.from({length: S.targetUnits}, (_,i) => {
+    if (i < e.units) return '<div class="unit-cell open"></div>';
+    if (i === e.units && e.progress > 0 && e.units < S.targetUnits){
+      const partial = Math.round(msProgress(S.milestones.find(m=>m.status!=='Concluída') || S.milestones[0]) || 0);
+      return `<div class="unit-cell partial" style="--p:${partial}%"></div>`;
+    }
+    return '<div class="unit-cell"></div>';
+  }).join('');
+
+  $('#view-dashboard').innerHTML = `
+    <div class="page-head">
+      <div class="page-title">Mission Control</div>
+      <div class="page-sub">${fmtLong(todayISO())}</div>
+    </div>
+
+    <div class="hero">
+      <div class="hero-label">Meta · 10 Unidades SAFE Plus</div>
+      <div class="hero-big">
+        <span class="hero-pct">${e.progress}%</span>
+        <span class="hero-units">${e.units} de ${S.targetUnits} unidades abertas</span>
+      </div>
+      <div class="unit-track">${cells}</div>
+      <div class="hero-meta">
+        <span>Prazo original: <strong>${fmt(e.originalEnd)}</strong></span>
+        <span>Projeção atual: <strong>${fmt(e.projectedEnd)}</strong></span>
+        <span>${driftTxt}</span>
+      </div>
+    </div>
+
+    <div class="grid">
+      <div class="stat"><span class="stat-label">SAFE Score</span><span class="stat-value ${sc.total>=70?'good':sc.total>=40?'warn':'bad'}">${sc.total}</span><span class="stat-note">de 100 pontos</span></div>
+      <div class="stat"><span class="stat-label">Disciplina hoje</span><span class="stat-value">${disciplineToday()}%</span><span class="stat-note">${S.habits.filter(h=>h.history[todayISO()]).length} de ${S.habits.length} hábitos</span></div>
+      <div class="stat"><span class="stat-label">Tarefas na semana</span><span class="stat-value">${e.doneWeek}</span><span class="stat-note">concluídas em 7 dias</span></div>
+      <div class="stat"><span class="stat-label">Tarefas atrasadas</span><span class="stat-value ${e.overdue?'bad':'good'}">${e.overdue}</span><span class="stat-note">${e.totalDelay} dias de atraso total</span></div>
+    </div>
+
+    <div class="section-label">Próxima tarefa crítica</div>
+    ${tasks.length ? `
+      <div class="card">
+        <div style="display:flex;gap:14px;align-items:flex-start">
+          <div class="tp-rank">1</div>
+          <div style="flex:1">
+            <div class="sub-name">${esc(tasks[0].s.name)}</div>
+            <div class="sub-meta">
+              <span>${esc(tasks[0].m.name)}</span>
+              <span class="badge prio-${tasks[0].s.priority}">${tasks[0].s.priority}</span>
+              ${tasks[0].delay>0 ? `<span class="badge b-red">Atrasada em ${tasks[0].delay} ${tasks[0].delay===1?'dia':'dias'}</span>` : tasks[0].end!=='9999-12-31' ? `<span>Prazo: ${fmt(tasks[0].end)}</span>` : ''}
+            </div>
+          </div>
+        </div>
+      </div>` : `<div class="empty">Nenhuma tarefa pendente. Adicione subtarefas no Roadmap para gerar prioridades.</div>`}
+
+    <div class="section-label">Maior gargalo</div>
+    ${bn ? `
+      <div class="card">
+        <div class="sub-name">${esc(bn.m.name)}</div>
+        <div class="sub-meta" style="margin-top:4px">
+          ${bn.delay>0 ? `<span class="badge b-red">Atrasado em ${bn.delay} ${bn.delay===1?'dia':'dias'}</span>` : `<span class="badge b-blue">Marco ativo</span>`}
+          <span>Projeção: ${fmt(msProjectedEnd(bn.m))}</span>
+        </div>
+        <div style="margin-top:12px">${pbar(msProgress(bn.m), bn.delay>0?'red':'')}</div>
+      </div>` : `<div class="empty">Roadmap concluído.</div>`}
+
+    <div class="section-label">Composição do SAFE Score</div>
+    <div class="card">
+      ${[['Disciplina diária',sc.disc,30],['Tarefas estratégicas',sc.strat,40],['Sem atrasos',sc.onTime,20],['Revisão diária',sc.review,10]].map(([l,v,max])=>`
+        <div style="display:flex;align-items:center;gap:12px;margin-bottom:10px">
+          <span style="flex:0 0 152px;font-size:.88rem;font-weight:600">${l}</span>
+          <div class="pbar" style="flex:1"><i style="width:${v/max*100}%"></i></div>
+          <span class="pbar-pct">${v}/${max}</span>
+        </div>`).join('')}
+    </div>
+
+    <div class="btn-row" style="margin-top:20px">
+      <button class="btn btn-soft btn-sm" onclick="exportBackup()">Exportar backup</button>
+      <button class="btn btn-soft btn-sm" onclick="$('#importFile').click()">Importar backup</button>
+      <input type="file" id="importFile" accept=".json" style="display:none" onchange="importBackup(this)">
+    </div>`;
+}
+
+/* ---------- ROADMAP ---------- */
+const openBodies = new Set();
+function renderRoadmap(){
+  const e = engine();
+  $('#view-roadmap').innerHTML = `
+    <div class="page-head">
+      <div class="page-title">Roadmap Estratégico</div>
+      <div class="page-sub">${e.done} de ${e.total} marcos concluídos · ${e.remaining} restantes</div>
+    </div>
+    <div class="card card-lg">
+      <h3>Progresso geral do projeto</h3>
+      ${pbar(e.progress, e.drift>0?'amber':'green')}
+      <div class="sub-meta" style="margin-top:12px">
+        <span>Prazo original: <b>${fmt(e.originalEnd)}</b></span>
+        <span>Projeção: <b>${fmt(e.projectedEnd)}</b></span>
+        ${e.drift>0?`<span class="badge b-red">${e.drift} dias de desvio</span>`:`<span class="badge b-green">No prazo</span>`}
+      </div>
+    </div>
+    <div class="list-head">
+      <div class="section-label" style="margin:0">Marcos</div>
+      <button class="btn btn-primary btn-sm" onclick="openMilestoneForm()">+ Novo marco</button>
+    </div>
+    ${S.milestones.map((m,i)=>renderMilestone(m,i)).join('') || '<div class="empty">Nenhum marco criado. Comece adicionando o primeiro.</div>'}`;
+}
+
+function renderMilestone(m, i){
+  const prog = msProgress(m), st = msEffectiveStatus(m), delay = msDelay(m);
+  const open = openBodies.has(m.id);
+  return `
+  <div class="ms ${st==='Concluída'?'done':''} ${open?'open-body':''}" id="ms-${m.id}">
+    <div class="ms-head" onclick="toggleMs('${m.id}')">
+      <div class="ms-num">${st==='Concluída'?'✓':i+1}</div>
+      <div style="flex:1;min-width:0">
+        <div class="ms-title">${esc(m.name)}</div>
+        ${m.description?`<div class="ms-desc">${esc(m.description)}</div>`:''}
+        <div class="ms-badges">
+          ${statusBadge(st)}
+          ${delay>0?`<span class="badge b-red">Atrasado em ${delay} ${delay===1?'dia':'dias'}</span>`:''}
+          <span class="badge b-grey" style="background:var(--surface)">${m.subtasks.filter(s=>s.status==='Concluída').length}/${m.subtasks.length} subtarefas</span>
+        </div>
+      </div>
+      <svg class="chev" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
+    </div>
+    <div class="ms-prog">${pbar(prog, st==='Atrasada'?'red':st==='Concluída'?'green':'')}</div>
+    <div class="ms-body">
+      <div class="ms-dates">
+        <div class="dt"><b>Início</b><span>${fmt(m.startDate)}</span></div>
+        <div class="dt"><b>Prazo original</b><span>${fmt(m.originalEnd)}</span></div>
+        <div class="dt ${delay>0?'red':''}"><b>Projeção</b><span>${fmt(msProjectedEnd(m))}</span></div>
+        <div class="dt"><b>Conclusão real</b><span>${fmt(m.actualEnd)}</span></div>
+      </div>
+      ${m.notes?`<div class="calc-pill" style="background:var(--surface);color:var(--text);font-weight:500">📝 ${esc(m.notes)}</div>`:''}
+      <div class="list-head">
+        <strong style="font-size:.95rem">Subtarefas</strong>
+        <button class="btn btn-soft btn-sm" onclick="openSubtaskForm('${m.id}')">+ Subtarefa</button>
+      </div>
+      ${m.subtasks.map(s=>renderSubtask(m,s)).join('') || '<div class="muted small" style="padding:8px 0 14px">Nenhuma subtarefa ainda.</div>'}
+      <div class="divider"></div>
+      <div class="btn-row">
+        ${m.status!=='Concluída'
+          ? `<button class="btn btn-primary btn-sm" onclick="completeMilestone('${m.id}')">Concluir marco</button>
+             ${m.status==='Não iniciada'?`<button class="btn btn-soft btn-sm" onclick="startMilestone('${m.id}')">Iniciar</button>`:''}`
+          : `<button class="btn btn-soft btn-sm" onclick="reopenMilestone('${m.id}')">Reabrir</button>`}
+        <button class="btn btn-ghost btn-sm" onclick="openMilestoneForm('${m.id}')">Editar</button>
+        <button class="btn btn-ghost btn-sm" style="color:var(--danger)" onclick="deleteMilestone('${m.id}')">Excluir</button>
+      </div>
+    </div>
+  </div>`;
+}
+
+function renderSubtask(m, s){
+  const st = subEffectiveStatus(s), d = subDelay(s), end = subExpectedEnd(s);
+  return `
+  <div class="sub ${s.status==='Concluída'?'done-sub':''}">
+    <button class="sub-check ${s.status==='Concluída'?'on':''}" onclick="toggleSubtask('${m.id}','${s.id}')" aria-label="Concluir subtarefa">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13l4 4L19 7"/></svg>
+    </button>
+    <div class="sub-main">
+      <div class="sub-name">${esc(s.name)}</div>
+      <div class="sub-meta">
+        ${statusBadge(st)}
+        <span class="badge prio-${s.priority}">${s.priority}</span>
+        ${s.startDate?`<span>Início ${fmt(s.startDate)}</span>`:''}
+        ${end?`<span>· Previsão ${fmt(end)}</span>`:''}
+        ${d>0?`<span class="badge b-red">Atrasada em ${d} ${d===1?'dia':'dias'}</span>`:''}
+      </div>
+      ${s.description?`<div class="muted small" style="margin-top:4px">${esc(s.description)}</div>`:''}
+    </div>
+    <button class="icon-btn" onclick="openSubtaskForm('${m.id}','${s.id}')" aria-label="Editar">
+      <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 3a2.8 2.8 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5z"/></svg>
+    </button>
+  </div>`;
+}
+
+function toggleMs(id){ openBodies.has(id) ? openBodies.delete(id) : openBodies.add(id); render(); }
+
+/* ---------- HOJE ---------- */
+function renderHoje(){
+  const sc = safeScore(), e = engine(), bn = bottleneck(), tasks = topTasks();
+  const cls = sc.total>=70?'forte':sc.total>=40?'medio':'fraco';
+  const lbl = {forte:'Dia Forte',medio:'Dia Médio',fraco:'Dia Fraco'}[cls];
+  const risk = e.totalDelay===0?['Baixo','b-green']:e.totalDelay<=7?['Médio','b-amber']:['Alto','b-red'];
+  $('#view-hoje').innerHTML = `
+    <div class="page-head">
+      <div class="page-title">Por que hoje importa?</div>
+      <div class="page-sub">${fmtLong(todayISO())}</div>
+    </div>
+
+    <div class="day-banner ${cls}">
+      <h2>${lbl} · SAFE Score ${sc.total}</h2>
+      <p>${cls==='forte'?'Execução acima do padrão. Mantenha o ritmo.':cls==='medio'?'Há espaço para subir o nível hoje. Foque nas prioridades.':'Dia de recuperação. Comece pela tarefa nº 1 e marque os hábitos.'}</p>
+    </div>
+
+    <div class="card card-lg">
+      <h3>Top 3 prioridades de hoje</h3>
+      ${tasks.length ? tasks.map((t,i)=>`
+        <div class="task-pick">
+          <div class="tp-rank">${i+1}</div>
+          <div style="flex:1;min-width:0">
+            <div class="sub-name">${esc(t.s.name)}</div>
+            <div class="sub-meta">
+              <span>${esc(t.m.name)}</span>
+              <span class="badge prio-${t.s.priority}">${t.s.priority}</span>
+              ${t.delay>0?`<span class="badge b-red">Atrasada em ${t.delay} ${t.delay===1?'dia':'dias'}</span>`:''}
+            </div>
+          </div>
+          <button class="sub-check" style="margin-top:0" onclick="toggleSubtask('${t.m.id}','${t.s.id}')" aria-label="Concluir">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13l4 4L19 7"/></svg>
+          </button>
+        </div>`).join('') : '<div class="muted">Nenhuma tarefa pendente — adicione subtarefas no Roadmap.</div>'}
+    </div>
+
+    <div class="grid" style="grid-template-columns:1fr 1fr">
+      <div class="stat">
+        <span class="stat-label">Gargalo atual</span>
+        <span style="font-weight:700;font-size:1rem;margin-top:2px">${bn?esc(bn.m.name):'—'}</span>
+        ${bn&&bn.delay>0?`<span class="stat-note" style="color:var(--danger);font-weight:600">+${bn.delay} dias de atraso</span>`:'<span class="stat-note">Marco em andamento</span>'}
+      </div>
+      <div class="stat">
+        <span class="stat-label">Risco de cronograma</span>
+        <span class="stat-value" style="font-size:1.3rem"><span class="badge ${risk[1]}" style="font-size:.95rem">${risk[0]}</span></span>
+        <span class="stat-note">${e.totalDelay} dias de atraso acumulado</span>
+      </div>
+    </div>
+
+    <div class="impact-note" style="margin-top:4px">
+      Se você concluir as prioridades de hoje, reduz o atraso projetado e se aproxima da sua primeira Unidade SAFE Plus${e.firstUnitDate?` — prevista para <u>${fmt(e.firstUnitDate)}</u>`:''}.
+    </div>
+
+    <div class="section-label">Registro do dia</div>
+    ${renderLogCard()}
+
+    <div class="section-label">Projeção de meta</div>
+    <div class="card">
+      ${e.firstUnitDate?`<div style="font-size:1.05rem;font-weight:700;color:var(--navy);margin-bottom:14px">Primeira Unidade Plus prevista para ${fmt(e.firstUnitDate)}</div>`:''}
+      <div class="grid" style="grid-template-columns:repeat(3,1fr);gap:10px">
+        <div class="dt"><b>Ritmo atual</b><span>${e.paceDate?fmt(e.paceDate):'Sem dados'}</span></div>
+        <div class="dt"><b>Melhor ritmo</b><span>${fmt(e.originalEnd)}</span></div>
+        <div class="dt"><b>Ritmo exigido</b><span>${e.requiredPace>0?e.requiredPace.toFixed(2)+' marcos/dia':'—'}</span></div>
+      </div>
+      <div class="field-hint" style="margin-top:10px">O ritmo atual usa a velocidade real de conclusão de marcos. A projeção é recalculada automaticamente todos os dias.</div>
+    </div>`;
+}
+
+function renderLogCard(){
+  const t = todayISO(), log = S.dailyLogs[t] || {};
+  const scale = (f) => [1,2,3,4,5].map(v=>`<button class="scale-dot ${log[f]===v?'sel':''}" onclick="setLog('${f}',${v})">${v}</button>`).join('');
+  return `
+  <div class="card card-lg">
+    <div class="field"><label>Energia</label><div class="scale-row">${scale('energy')}</div></div>
+    <div class="field"><label>Foco</label><div class="scale-row">${scale('focus')}</div></div>
+    <div class="field"><label>Humor</label><div class="scale-row">${scale('mood')}</div></div>
+    <div class="field-row">
+      <div class="field"><label>Horas de trabalho profundo</label>
+        <input type="number" min="0" max="16" step="0.5" value="${log.deepWork??''}" placeholder="0" onchange="setLog('deepWork',this.value)"></div>
+      <div class="field"><label>&nbsp;</label>
+        <div class="calc-pill" style="margin:0;min-height:50px">${log.energy&&log.focus&&log.mood?'✓ Revisão de hoje concluída (+10 no SAFE Score)':'Complete energia, foco e humor'}</div></div>
+    </div>
+    <div class="field"><label>Notas do dia</label>
+      <textarea placeholder="O que moveu a SAFE hoje?" onchange="setLog('notes',this.value)">${esc(log.notes||'')}</textarea></div>
+  </div>`;
+}
+
+/* ---------- ROTINA ---------- */
+function renderRotina(){
+  $('#view-rotina').innerHTML = `
+    <div class="page-head">
+      <div class="page-title">Rotina</div>
+      <div class="page-sub">Disciplina hoje: ${disciplineToday()}% · Semana: ${disciplineRange(7)}% · Mês: ${disciplineRange(30)}%</div>
+    </div>
+    <div class="card card-lg" style="margin-bottom:20px">
+      <h3>Disciplina de hoje</h3>
+      ${pbar(disciplineToday(), disciplineToday()>=80?'green':disciplineToday()>=50?'':'amber')}
+    </div>
+    <div class="list-head">
+      <div class="section-label" style="margin:0">Hábitos</div>
+      <button class="btn btn-primary btn-sm" onclick="openHabitForm()">+ Novo hábito</button>
+    </div>
+    ${S.habits.map(h=>{
+      const st = habitStats(h);
+      return `
+      <div class="habit">
+        <button class="habit-check ${st.doneToday?'on':''}" onclick="toggleHabit('${h.id}')" aria-label="Concluir hábito">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13l4 4L19 7"/></svg>
+        </button>
+        <div class="habit-main">
+          <div class="habit-name">${esc(h.name)}</div>
+          <div class="habit-stats">
+            <span class="streak">🔥 ${st.streak} ${st.streak===1?'dia':'dias'}</span>
+            <span>Recorde: ${st.best}</span>
+            <span>Semana: ${st.week}%</span>
+            <span>Mês: ${st.month}%</span>
+          </div>
+        </div>
+        <button class="icon-btn" onclick="openHabitForm('${h.id}')" aria-label="Editar hábito">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 3a2.8 2.8 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5z"/></svg>
+        </button>
+      </div>`;
+    }).join('') || '<div class="empty">Nenhum hábito. Crie o primeiro para começar a medir sua disciplina.</div>'}`;
+}
+
+/* ---------- KPIs ---------- */
+function renderKpis(){
+  const e = engine();
+  const bestStreak = Math.max(0, ...S.habits.map(h=>habitStats(h).best));
+  const curStreak = Math.max(0, ...S.habits.map(h=>habitStats(h).streak));
+  const fmtAvg = v => v==null ? '—' : v.toFixed(1);
+  const cards = [
+    ['Progresso do projeto', e.progress+'%', e.done+' de '+e.total+' marcos'],
+    ['SAFE Score', safeScore().total, 'de 100 pontos'],
+    ['Disciplina hoje', disciplineToday()+'%', S.habits.length+' hábitos ativos'],
+    ['Tarefas na semana', e.doneWeek, 'concluídas em 7 dias'],
+    ['Tarefas no mês', e.doneMonth, 'concluídas em 30 dias'],
+    ['Tarefas atrasadas', e.overdue, e.overdue?'exigem ação imediata':'tudo em dia', e.overdue?'bad':'good'],
+    ['Atraso total', e.totalDelay+' dias', 'acumulado no roadmap', e.totalDelay?'warn':'good'],
+    ['Streak atual', curStreak+' dias', 'melhor hábito ativo'],
+    ['Melhor streak', bestStreak+' dias', 'recorde histórico'],
+    ['Disciplina semanal', disciplineRange(7)+'%', 'média dos últimos 7 dias'],
+    ['Disciplina mensal', disciplineRange(30)+'%', 'média dos últimos 30 dias'],
+    ['Foco médio', fmtAvg(avgLog('focus')), 'últimos 30 dias (1–5)'],
+    ['Energia média', fmtAvg(avgLog('energy')), 'últimos 30 dias (1–5)'],
+    ['Humor médio', fmtAvg(avgLog('mood')), 'últimos 30 dias (1–5)'],
+  ];
+  $('#view-kpis').innerHTML = `
+    <div class="page-head">
+      <div class="page-title">KPIs</div>
+      <div class="page-sub">Indicadores de execução da missão</div>
+    </div>
+    <div class="grid">
+      ${cards.map(([l,v,n,cls])=>`<div class="stat"><span class="stat-label">${l}</span><span class="stat-value ${cls||''}">${v}</span><span class="stat-note">${n}</span></div>`).join('')}
+    </div>
+    <div class="section-label">Evolução · últimos 14 dias</div>
+    <div class="card card-lg chart-wrap">${renderChart()}</div>`;
+}
+
+function renderChart(){
+  const t = todayISO(), days = [];
+  for(let i=13;i>=0;i--) days.push(addDays(t,-i));
+  const series = [['energy','#081A58','Energia'],['focus','#16A34A','Foco'],['mood','#F59E0B','Humor']];
+  const W=640,H=200,P=28, x=i=>P+i*(W-2*P)/13, y=v=>H-P-(v-0)*(H-2*P)/5;
+  let svg = `<svg viewBox="0 0 ${W} ${H+30}" style="width:100%;min-width:480px;height:auto">`;
+  for(let g=1;g<=5;g++) svg += `<line x1="${P}" y1="${y(g)}" x2="${W-P}" y2="${y(g)}" stroke="#E6EAF0"/><text x="${P-8}" y="${y(g)+4}" font-size="10" fill="#5B6472" text-anchor="end">${g}</text>`;
+  days.forEach((d,i)=>{ if(i%2===0) svg += `<text x="${x(i)}" y="${H+18}" font-size="10" fill="#5B6472" text-anchor="middle">${d.slice(8)}/${d.slice(5,7)}</text>`; });
+  let hasData = false;
+  for(const [f,color,label] of series){
+    const pts = days.map((d,i)=>{ const l=S.dailyLogs[d]; return l&&l[f]!=null?[x(i),y(Number(l[f]))]:null; });
+    let path='', pen=false;
+    pts.forEach(p=>{ if(p){ path += (pen?'L':'M')+p[0]+' '+p[1]+' '; pen=true; hasData=true; } else pen=false; });
+    if(path) svg += `<path d="${path}" fill="none" stroke="${color}" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>`;
+    pts.forEach(p=>{ if(p) svg += `<circle cx="${p[0]}" cy="${p[1]}" r="3.4" fill="${color}"/>`; });
+  }
+  svg += '</svg>';
+  if(!hasData) return '<div class="muted" style="text-align:center;padding:24px">Registre energia, foco e humor na aba <b>Hoje</b> para gerar o gráfico.</div>';
+  return svg + `<div class="legend">${series.map(([f,c,l])=>`<span><i style="background:${c}"></i>${l}</span>`).join('')}</div>`;
+}
+/* ---------- ACTIONS ---------- */
+function mutate(fn){ fn(); persist(); render(); }
+
+function toggleSubtask(mid, sid){
+  mutate(()=>{
+    const m = S.milestones.find(x=>x.id===mid); if(!m) return;
+    const s = m.subtasks.find(x=>x.id===sid); if(!s) return;
+    if (s.status === 'Concluída'){ s.status = 'Em andamento'; s.completedAt = null; }
+    else { s.status = 'Concluída'; s.completedAt = todayISO(); if (m.status==='Não iniciada') m.status='Em andamento'; }
+  });
+}
+function startMilestone(id){ mutate(()=>{ const m=S.milestones.find(x=>x.id===id); if(m) m.status='Em andamento'; }); toast('Marco iniciado'); }
+function completeMilestone(id){
+  mutate(()=>{ const m=S.milestones.find(x=>x.id===id); if(!m) return;
+    m.status='Concluída'; m.actualEnd=todayISO();
+    m.subtasks.forEach(s=>{ if(s.status!=='Concluída'){ s.status='Concluída'; s.completedAt=todayISO(); } });
+  });
+  toast('Marco concluído 🎉');
+}
+function reopenMilestone(id){ mutate(()=>{ const m=S.milestones.find(x=>x.id===id); if(m){ m.status='Em andamento'; m.actualEnd=null; } }); }
+function deleteMilestone(id){
+  const m = S.milestones.find(x=>x.id===id);
+  if (!confirm(`Excluir o marco "${m.name}" e todas as suas subtarefas?`)) return;
+  mutate(()=>{ S.milestones = S.milestones.filter(x=>x.id!==id); });
+  toast('Marco excluído');
+}
+function toggleHabit(id){
+  mutate(()=>{ const h=S.habits.find(x=>x.id===id); if(!h) return;
+    const t=todayISO(); h.history[t] ? delete h.history[t] : h.history[t]=true; });
+}
+function setLog(field, value){
+  mutate(()=>{
+    const t=todayISO();
+    if(!S.dailyLogs[t]) S.dailyLogs[t]={};
+    S.dailyLogs[t][field] = field==='notes' ? value : Number(value);
+  });
+}
+
+/* ---------- MODALS ---------- */
+function openModal(html){ $('#modal').innerHTML = html; $('#overlay').classList.add('show'); }
+function closeModal(){ $('#overlay').classList.remove('show'); }
+$('#overlay').addEventListener('click', e=>{ if(e.target.id==='overlay') closeModal(); });
+
+function openMilestoneForm(id){
+  const m = id ? S.milestones.find(x=>x.id===id) : null;
+  openModal(`
+    <div class="modal-title">${m?'Editar marco':'Novo marco'}</div>
+    <div class="field"><label>Nome</label><input id="f-name" value="${m?esc(m.name):''}" placeholder="Ex.: Abrir Unidade Plus 1"></div>
+    <div class="field"><label>Descrição</label><input id="f-desc" value="${m?esc(m.description):''}" placeholder="Resultado esperado"></div>
+    <div class="field-row">
+      <div class="field"><label>Data de início</label><input id="f-start" type="date" value="${m?m.startDate:todayISO()}" onchange="msCalc()"></div>
+      <div class="field"><label>Duração (dias)</label><input id="f-dur" type="number" min="1" value="${m?m.plannedDuration:30}" onchange="msCalc()" oninput="msCalc()"></div>
+    </div>
+    <div class="calc-pill" id="f-calc">📅 Conclusão prevista: —</div>
+    <div class="field"><label>Status</label>
+      <select id="f-status">
+        ${['Não iniciada','Em andamento','Concluída','Atrasada'].map(s=>`<option ${m&&m.status===s?'selected':''}>${s}</option>`).join('')}
+      </select></div>
+    <div class="field"><label>Notas</label><textarea id="f-notes" placeholder="Contexto, riscos, decisões">${m?esc(m.notes):''}</textarea></div>
+    <div class="btn-row">
+      <button class="btn btn-primary btn-block" onclick="saveMilestone('${id||''}')">${m?'Salvar alterações':'Criar marco'}</button>
+    </div>
+    <button class="btn btn-ghost btn-block" style="margin-top:8px" onclick="closeModal()">Cancelar</button>`);
+  msCalc();
+}
+function msCalc(){
+  const s = $('#f-start').value, d = Number($('#f-dur').value)||0;
+  $('#f-calc').textContent = s ? `📅 Conclusão prevista: ${fmt(addDays(s,d))}` : '📅 Conclusão prevista: —';
+}
+function saveMilestone(id){
+  const name = $('#f-name').value.trim();
+  if(!name){ toast('Informe o nome do marco'); return; }
+  const start = $('#f-start').value || todayISO();
+  const dur = Math.max(1, Number($('#f-dur').value)||1);
+  mutate(()=>{
+    if(id){
+      const m = S.milestones.find(x=>x.id===id);
+      Object.assign(m, { name, description:$('#f-desc').value.trim(), startDate:start,
+        plannedDuration:dur, originalEnd:addDays(start,dur), status:$('#f-status').value, notes:$('#f-notes').value.trim() });
+      if (m.status==='Concluída' && !m.actualEnd) m.actualEnd = todayISO();
+      if (m.status!=='Concluída') m.actualEnd = null;
+    } else {
+      S.milestones.push({ id:uid(), name, description:$('#f-desc').value.trim(), status:$('#f-status').value,
+        plannedDuration:dur, startDate:start, originalEnd:addDays(start,dur), actualEnd:null,
+        notes:$('#f-notes').value.trim(), subtasks:[] });
+    }
+  });
+  closeModal(); toast(id?'Marco atualizado':'Marco criado');
+}
+
+function openSubtaskForm(mid, sid){
+  const m = S.milestones.find(x=>x.id===mid);
+  const s = sid ? m.subtasks.find(x=>x.id===sid) : null;
+  openModal(`
+    <div class="modal-title">${s?'Editar subtarefa':'Nova subtarefa'} · <span class="muted" style="font-weight:600;font-size:.95rem">${esc(m.name)}</span></div>
+    <div class="field"><label>Nome</label><input id="f-name" value="${s?esc(s.name):''}" placeholder="Ex.: Gravar vídeo com a clínica X"></div>
+    <div class="field"><label>Descrição</label><input id="f-desc" value="${s?esc(s.description):''}" placeholder="Detalhes da execução"></div>
+    <div class="field-row">
+      <div class="field"><label>Data de início</label><input id="f-start" type="date" value="${s?s.startDate:todayISO()}" onchange="msCalc()"></div>
+      <div class="field"><label>Duração (dias)</label><input id="f-dur" type="number" min="1" value="${s?s.plannedDuration:3}" onchange="msCalc()" oninput="msCalc()"></div>
+    </div>
+    <div class="calc-pill" id="f-calc">📅 Conclusão prevista: —</div>
+    <div class="field-row">
+      <div class="field"><label>Prioridade</label>
+        <select id="f-prio">${['Alta','Média','Baixa'].map(p=>`<option ${s&&s.priority===p?'selected':(!s&&p==='Média'?'selected':'')}>${p}</option>`).join('')}</select></div>
+      <div class="field"><label>Status</label>
+        <select id="f-status">${['Não iniciada','Em andamento','Concluída','Atrasada'].map(x=>`<option ${s&&s.status===x?'selected':''}>${x}</option>`).join('')}</select></div>
+    </div>
+    <div class="field"><label>Notas</label><textarea id="f-notes" placeholder="Observações">${s?esc(s.notes||''):''}</textarea></div>
+    <div class="btn-row">
+      <button class="btn btn-primary btn-block" onclick="saveSubtask('${mid}','${sid||''}')">${s?'Salvar alterações':'Criar subtarefa'}</button>
+    </div>
+    ${s?`<button class="btn btn-danger btn-block" style="margin-top:8px" onclick="deleteSubtask('${mid}','${sid}')">Excluir subtarefa</button>`:''}
+    <button class="btn btn-ghost btn-block" style="margin-top:8px" onclick="closeModal()">Cancelar</button>`);
+  msCalc();
+}
+function saveSubtask(mid, sid){
+  const name = $('#f-name').value.trim();
+  if(!name){ toast('Informe o nome da subtarefa'); return; }
+  const start = $('#f-start').value || todayISO();
+  const dur = Math.max(1, Number($('#f-dur').value)||1);
+  mutate(()=>{
+    const m = S.milestones.find(x=>x.id===mid);
+    const data = { name, description:$('#f-desc').value.trim(), startDate:start, plannedDuration:dur,
+      priority:$('#f-prio').value, status:$('#f-status').value, notes:$('#f-notes').value.trim() };
+    if(sid){
+      const s = m.subtasks.find(x=>x.id===sid);
+      const wasDone = s.status==='Concluída';
+      Object.assign(s, data);
+      if (s.status==='Concluída' && !wasDone) s.completedAt = todayISO();
+      if (s.status!=='Concluída') s.completedAt = null;
+    } else {
+      m.subtasks.push({ id:uid(), ...data, completedAt: data.status==='Concluída'?todayISO():null });
+      if (m.status==='Não iniciada' && data.status!=='Não iniciada') m.status='Em andamento';
+    }
+  });
+  closeModal(); toast(sid?'Subtarefa atualizada':'Subtarefa criada');
+}
+function deleteSubtask(mid, sid){
+  if(!confirm('Excluir esta subtarefa?')) return;
+  mutate(()=>{ const m=S.milestones.find(x=>x.id===mid); m.subtasks = m.subtasks.filter(x=>x.id!==sid); });
+  closeModal(); toast('Subtarefa excluída');
+}
+
+function openHabitForm(id){
+  const h = id ? S.habits.find(x=>x.id===id) : null;
+  openModal(`
+    <div class="modal-title">${h?'Editar hábito':'Novo hábito'}</div>
+    <div class="field"><label>Nome do hábito</label><input id="f-name" value="${h?esc(h.name):''}" placeholder="Ex.: Acordar às 04:15"></div>
+    <div class="btn-row">
+      <button class="btn btn-primary btn-block" onclick="saveHabit('${id||''}')">${h?'Salvar':'Criar hábito'}</button>
+    </div>
+    ${h?`<button class="btn btn-danger btn-block" style="margin-top:8px" onclick="deleteHabit('${id}')">Excluir hábito</button>`:''}
+    <button class="btn btn-ghost btn-block" style="margin-top:8px" onclick="closeModal()">Cancelar</button>`);
+}
+function saveHabit(id){
+  const name = $('#f-name').value.trim();
+  if(!name){ toast('Informe o nome do hábito'); return; }
+  mutate(()=>{
+    if(id){ S.habits.find(x=>x.id===id).name = name; }
+    else S.habits.push({ id:uid(), name, history:{} });
+  });
+  closeModal(); toast(id?'Hábito atualizado':'Hábito criado');
+}
+function deleteHabit(id){
+  if(!confirm('Excluir este hábito e todo o histórico dele?')) return;
+  mutate(()=>{ S.habits = S.habits.filter(x=>x.id!==id); });
+  closeModal(); toast('Hábito excluído');
+}
+
+/* ---------- BACKUP ---------- */
+function exportBackup(){
+  const blob = new Blob([JSON.stringify(S, null, 2)], {type:'application/json'});
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = `safe-mission-control-backup-${todayISO()}.json`;
+  a.click(); URL.revokeObjectURL(a.href);
+  toast('Backup exportado');
+}
+function importBackup(input){
+  const file = input.files[0]; if(!file) return;
+  const reader = new FileReader();
+  reader.onload = () => {
+    try {
+      const data = JSON.parse(reader.result);
+      if (!data.milestones || !data.habits) throw new Error('estrutura inválida');
+      if (!confirm('Importar este backup substituirá todos os dados atuais. Continuar?')) return;
+      S = data; persist(); render(); toast('Backup restaurado com sucesso');
+    } catch(e){ toast('Arquivo de backup inválido'); }
+  };
+  reader.readAsText(file);
+  input.value = '';
+}
+
+/* ---------- NAVIGATION & RENDER ---------- */
+function nav(view){
+  currentView = view;
+  document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
+  $('#view-'+view).classList.add('active');
+  document.querySelectorAll('[data-nav]').forEach(b=>b.classList.toggle('active', b.dataset.nav===view));
+  window.scrollTo({top:0});
+  render();
+}
+document.querySelectorAll('[data-nav]').forEach(b=>b.addEventListener('click', ()=>nav(b.dataset.nav)));
+
+function render(){
+  ({ dashboard:renderDashboard, roadmap:renderRoadmap, hoje:renderHoje, rotina:renderRotina, kpis:renderKpis })[currentView]();
+}
+
+/* Re-evaluate schedule drift automatically at every day change */
+let _lastDay = todayISO();
+setInterval(()=>{ const t = todayISO(); if (t !== _lastDay){ _lastDay = t; render(); } }, 60000);
+
+/* ---------- INIT ---------- */
+(async function init(){
+  const saved = await StorageAdapter.load();
+  S = saved || defaultState();
+  if (!saved) persist();
+  nav('dashboard');
+})();
+</script>
+</body>
+</html>
