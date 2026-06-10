@@ -330,6 +330,55 @@ input,select,textarea{font:inherit;color:inherit}
 .divider{height:1px;background:var(--line);margin:16px 0}
 .muted{color:var(--muted)}
 .small{font-size:.85rem}
+
+/* ---------- Countdown (v2) ---------- */
+.countdown{background:#fff;border-radius:var(--r-lg);box-shadow:var(--shadow);padding:22px 20px;margin-bottom:16px}
+.cd-head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:14px;flex-wrap:wrap}
+.cd-title{font-size:.78rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--muted)}
+.cd-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;text-align:center}
+@media(min-width:680px){.cd-grid{grid-template-columns:repeat(4,1fr)}}
+.cd-cell{background:var(--surface);border-radius:14px;padding:12px 6px}
+.cd-num{font-size:1.3rem;font-weight:800;color:var(--navy);letter-spacing:-.02em;font-variant-numeric:tabular-nums;line-height:1.2}
+@media(min-width:680px){.cd-num{font-size:1.55rem}}
+.cd-lbl{font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);margin-top:2px}
+.countdown.over .cd-num{color:var(--danger)}
+.cd-over{font-weight:800;color:var(--danger);font-size:1.05rem;margin-bottom:10px}
+
+/* ---------- Journey (v2) ---------- */
+.journey{background:#fff;border-radius:var(--r-lg);box-shadow:var(--shadow);padding:22px 20px 16px;margin-bottom:16px}
+.journey-cap{font-size:.97rem;font-weight:600;color:var(--navy);margin-top:6px;text-align:center}
+
+/* ---------- Nested subtasks (v2) ---------- */
+.sub-tree{border-left:2px solid var(--line);margin-left:13px;padding-left:14px;margin-top:8px}
+.sub .sub{border-bottom:none;padding:10px 0 2px}
+.mini-add{width:36px;height:36px;border-radius:10px;color:var(--muted);display:inline-flex;align-items:center;justify-content:center;flex-shrink:0}
+.mini-add:hover{background:var(--info-bg);color:var(--navy)}
+.sub-pbar{margin-top:8px;max-width:320px}
+
+/* ---------- Reorder (v2) ---------- */
+.move-row{display:flex;gap:6px;flex-wrap:wrap;align-items:center}
+.move-btn{min-height:40px;padding:0 13px;border-radius:10px;background:var(--surface);color:var(--muted);font-weight:700;font-size:.85rem;display:inline-flex;align-items:center;gap:6px}
+.move-btn:hover{background:var(--info-bg);color:var(--navy)}
+
+/* ---------- Necessary daily tasks (v2) ---------- */
+.ntask{display:flex;align-items:flex-start;gap:12px;padding:12px 0;border-bottom:1px solid var(--line)}
+.ntask:last-of-type{border-bottom:none}
+.justified-note{background:var(--warning-bg);border-radius:var(--r-md);padding:14px 16px;color:#7C4A03;font-weight:600;font-size:.92rem;margin-top:12px;display:flex;gap:10px;align-items:flex-start;line-height:1.45}
+
+/* ---------- KPI visuals (v2) ---------- */
+.kpi-hero{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:4px}
+.kpi-circle{background:#fff;border-radius:var(--r-md);box-shadow:var(--shadow);padding:18px 10px;display:flex;flex-direction:column;align-items:center;gap:10px;text-align:center}
+.trend{font-size:.8rem;font-weight:700;display:inline-flex;align-items:center;gap:4px}
+.trend.up{color:var(--success)}
+.trend.down{color:var(--danger)}
+.trend.flat{color:var(--muted)}
+.delay-stack{display:flex;height:14px;border-radius:7px;overflow:hidden;background:var(--surface)}
+.delay-stack i{display:block;height:100%}
+.tl-bars{display:flex;align-items:flex-end;gap:8px;height:120px}
+.tl-col{flex:1;display:flex;flex-direction:column;align-items:center;gap:6px;height:100%;justify-content:flex-end}
+.tl-bar{width:100%;max-width:36px;border-radius:8px 8px 4px 4px;background:var(--navy);min-height:4px;transition:height .3s}
+.tl-lbl{font-size:.7rem;font-weight:600;color:var(--muted)}
+.tl-val{font-size:.78rem;font-weight:700;color:var(--navy)}
 </style>
 </head>
 <body>
@@ -465,34 +514,110 @@ function defaultState(){
   const habits = ['Acordar às 04:15','Meditar às 04:40','Treinar às 05:00','Trabalhar às 06:00','Duolingo 15 minutos','Trabalhar 8 horas','Ler às 19:00','Dormir às 19:20']
     .map(name => ({ id: uid(), name, history:{} }));
   return {
+    version: 2,
     createdAt: start,
     targetUnits: 10,
+    targetDate: cursor,              // final mission deadline (user-editable)
     milestones, habits,
+    dailyTasks: [],                  // necessary daily business obligations
     dailyLogs: {},   // 'YYYY-MM-DD' -> {energy,focus,mood,deepWork,notes}
   };
 }
 
+/* ================= MIGRATION (v1 -> v2) ================= */
+/* Upgrades old saved data in place. Existing user data is never erased:
+   missing fields get safe defaults. */
+function migrate(s){
+  if (!s) return s;
+  if (!s.version || s.version < 2){
+    s.dailyTasks = Array.isArray(s.dailyTasks) ? s.dailyTasks : [];
+    const fixTask = t => {
+      if (!Array.isArray(t.children)) t.children = [];
+      if (!t.expectedEnd && t.startDate) t.expectedEnd = addDays(t.startDate, Number(t.plannedDuration)||0);
+      t.children.forEach(fixTask);
+    };
+    (s.milestones||[]).forEach(m => { m.subtasks = Array.isArray(m.subtasks) ? m.subtasks : []; m.subtasks.forEach(fixTask); });
+    if (!s.targetDate){
+      s.targetDate = (s.milestones && s.milestones.length)
+        ? s.milestones.reduce((a,m)=> m.originalEnd > a ? m.originalEnd : a, s.milestones[0].originalEnd)
+        : addDays(todayISO(), 365);
+    }
+    s.version = 2;
+  }
+  return s;
+}
+
 /* ================= LAYER 2 — BUSINESS LOGIC ================= */
 
-/* ---- Subtask engine ---- */
-function subExpectedEnd(st){ return st.startDate ? addDays(st.startDate, Number(st.plannedDuration)||0) : null; }
-function subDelay(st){
-  const end = subExpectedEnd(st);
-  if (!end || st.status === 'Concluída') return 0;
-  return Math.max(0, diffDays(end, todayISO()));
+/* ---- Task tree engine (unlimited nested subtasks) ---- */
+function taskExpectedEnd(t){
+  if (t.expectedEnd) return t.expectedEnd;
+  return t.startDate ? addDays(t.startDate, Number(t.plannedDuration)||0) : null;
 }
-function subEffectiveStatus(st){
-  if (st.status === 'Concluída') return 'Concluída';
-  if (subDelay(st) > 0) return 'Atrasada';
-  return st.status;
+function taskPlannedDays(t){
+  if (t.plannedDuration != null && t.plannedDuration !== '') return Number(t.plannedDuration)||0;
+  const end = taskExpectedEnd(t);
+  return (t.startDate && end) ? Math.max(0, diffDays(t.startDate, end)) : 0;
 }
+/* overdue only if: not completed AND today is after expected completion date */
+function taskDelay(t){
+  let own = 0;
+  if (t.status !== 'Concluída'){
+    const end = taskExpectedEnd(t);
+    if (end) own = Math.max(0, diffDays(end, todayISO()));
+  }
+  const kids = (t.children||[]).map(taskDelay);
+  return Math.max(own, ...(kids.length ? kids : [0]));
+}
+/* recursive progress: with children -> average of children; leaf -> own completion */
+function taskProgress(t){
+  if (t.status === 'Concluída') return 100;
+  const kids = t.children||[];
+  if (kids.length) return Math.round(kids.reduce((a,k)=>a+taskProgress(k),0)/kids.length);
+  return 0;
+}
+function taskEffectiveStatus(t){
+  if (t.status === 'Concluída') return 'Concluída';
+  if (taskDelay(t) > 0) return 'Atrasada';
+  return t.status;
+}
+function flattenTasks(list, out=[]){ for (const t of (list||[])){ out.push(t); flattenTasks(t.children, out); } return out; }
+function findTask(list, id){
+  for (const t of (list||[])){
+    if (t.id === id) return { node:t, siblings:list };
+    const r = findTask(t.children, id); if (r) return r;
+  }
+  return null;
+}
+function removeTask(list, id){
+  const i = (list||[]).findIndex(t=>t.id===id);
+  if (i >= 0){ list.splice(i,1); return true; }
+  return (list||[]).some(t => removeTask(t.children||[], id));
+}
+function setTaskDone(t, done){
+  t.status = done ? 'Concluída' : 'Em andamento';
+  t.completedAt = done ? todayISO() : null;
+  if (done) (t.children||[]).forEach(k => setTaskDone(k, true));
+}
+/* keep parent status consistent with children (post-order sweep) */
+function syncTaskTree(list){
+  for (const t of (list||[])){
+    syncTaskTree(t.children);
+    const kids = t.children||[];
+    if (!kids.length) continue;
+    const allDone = kids.every(k => k.status==='Concluída');
+    if (allDone && t.status !== 'Concluída'){ t.status = 'Concluída'; t.completedAt = t.completedAt || todayISO(); }
+    if (!allDone && t.status === 'Concluída'){ t.status = 'Em andamento'; t.completedAt = null; }
+  }
+}
+/* legacy aliases (v1 names used across the codebase) */
+const subExpectedEnd = taskExpectedEnd, subDelay = taskDelay, subEffectiveStatus = taskEffectiveStatus;
 
 /* ---- Milestone engine ---- */
 function msProgress(m){
   if (m.status === 'Concluída') return 100;
   if (!m.subtasks.length) return m.status === 'Em andamento' ? 10 : 0;
-  const done = m.subtasks.filter(s => s.status==='Concluída').length;
-  return Math.round(done / m.subtasks.length * 100);
+  return Math.round(m.subtasks.reduce((a,s)=>a+taskProgress(s),0)/m.subtasks.length);
 }
 function msDelay(m){
   if (m.status === 'Concluída') return 0;
@@ -510,6 +635,21 @@ function msEffectiveStatus(m){
   return m.status;
 }
 
+/* ---- Necessary-day engine (justified vs real delay) ---- */
+function dayNecessaryHours(d){ return (S.dailyTasks||[]).filter(t=>t.date===d).reduce((a,t)=>a+(Number(t.hours)||0),0); }
+/* a day counts as "justified" when the operation consumed it:
+   4h+ of necessary tasks, or 2+ necessary tasks logged */
+function isJustifiedDay(d){
+  const ts = (S.dailyTasks||[]).filter(t=>t.date===d);
+  if (!ts.length) return false;
+  return dayNecessaryHours(d) >= 4 || ts.length >= 2;
+}
+function countJustifiedDays(fromISO, toISO){
+  let n = 0;
+  for (let d = fromISO; d < toISO; d = addDays(d,1)) if (isJustifiedDay(d)) n++;
+  return n;
+}
+
 /* ---- Global roadmap engine ---- */
 function engine(){
   const M = S.milestones;
@@ -518,7 +658,14 @@ function engine(){
   const progress = total ? Math.round(done/total*100) : 0;
 
   const originalEnd = M.length ? M.reduce((a,m)=> m.originalEnd > a ? m.originalEnd : a, M[0].originalEnd) : todayISO();
-  const totalDelay = M.reduce((a,m)=> a + msDelay(m), 0);
+  let totalDelay = 0, justifiedDelay = 0;
+  M.forEach(m => {
+    const d = msDelay(m);
+    if (!d) return;
+    totalDelay += d;
+    justifiedDelay += Math.min(d, countJustifiedDays(addDays(todayISO(), -d), todayISO()));
+  });
+  const realDelay = totalDelay - justifiedDelay;
   const projectedEnd = addDays(originalEnd, totalDelay);
   const drift = diffDays(originalEnd, projectedEnd); // >0 = behind
 
@@ -542,7 +689,7 @@ function engine(){
   const requiredPace = remaining / Math.max(1, diffDays(todayISO(), originalEnd) > 0 ? diffDays(todayISO(), originalEnd) : 1);
 
   // Tasks stats
-  const allSubs = M.flatMap(m => m.subtasks);
+  const allSubs = M.flatMap(m => flattenTasks(m.subtasks));
   const weekAgo = addDays(todayISO(), -7), monthAgo = addDays(todayISO(), -30);
   const doneWeek = allSubs.filter(s => s.completedAt && s.completedAt >= weekAgo).length;
   const doneMonth = allSubs.filter(s => s.completedAt && s.completedAt >= monthAgo).length;
@@ -550,8 +697,9 @@ function engine(){
                 + M.filter(m => msEffectiveStatus(m)==='Atrasada').length;
   const overdueSubs = allSubs.filter(s => subEffectiveStatus(s)==='Atrasada').length;
 
-  return { total, done, progress, originalEnd, projectedEnd, drift, totalDelay, units,
-           firstUnitDate, pace, paceDate, requiredPace, doneWeek, doneMonth, overdue, overdueSubs, remaining };
+  return { total, done, progress, originalEnd, projectedEnd, drift, totalDelay, realDelay, justifiedDelay, units,
+           firstUnitDate, pace, paceDate, requiredPace, doneWeek, doneMonth, overdue, overdueSubs, remaining,
+           hasNecessaryToday: (S.dailyTasks||[]).some(t => t.date === todayISO()) };
 }
 
 /* projected end of a milestone accounting for cumulative delay of itself + predecessors */
@@ -607,9 +755,15 @@ function safeScore(){
 function topTasks(){
   const pr = {'Alta':3,'Média':2,'Baixa':1};
   const pool = [];
-  S.milestones.forEach(m => m.subtasks.forEach(s => {
-    if (s.status !== 'Concluída') pool.push({ s, m, delay: subDelay(s), end: subExpectedEnd(s) || '9999-12-31' });
-  }));
+  const walk = (m, list) => {
+    for (const t of (list||[])){
+      const pendingKids = (t.children||[]).some(k => flattenTasks([k]).some(x => x.status !== 'Concluída'));
+      if (t.status !== 'Concluída' && !pendingKids)
+        pool.push({ s:t, m, delay: taskDelay(t), end: taskExpectedEnd(t) || '9999-12-31' });
+      walk(m, t.children);
+    }
+  };
+  S.milestones.forEach(m => walk(m, m.subtasks));
   pool.sort((a,b) => (b.delay - a.delay) || ((pr[b.s.priority]||0)-(pr[a.s.priority]||0)) || a.end.localeCompare(b.end));
   return pool.slice(0,3);
 }
@@ -644,6 +798,39 @@ function statusBadge(st){
 }
 
 /* ---------- DASHBOARD ---------- */
+/* Strategic journey: avatar walks an elegant path toward the SAFE Plus goal */
+function journeySVG(pct){
+  const W=600, pad=36, n=Math.max(1, S.milestones.length);
+  const p = Math.min(100, Math.max(0, pct));
+  const yOf = x => 86 - 20*Math.sin((x-pad)/(W-2*pad)*Math.PI);
+  const px = pad + (W-2*pad)*p/100, py = yOf(px);
+  let base='', prog='';
+  for (let x=pad; x<=W-pad; x+=8) base += (x===pad?'M':'L')+x.toFixed(1)+' '+yOf(x).toFixed(1)+' ';
+  for (let x=pad; x<=px; x+=8) prog += (x===pad?'M':'L')+x.toFixed(1)+' '+yOf(x).toFixed(1)+' ';
+  if (px>pad) prog += 'L'+px.toFixed(1)+' '+py.toFixed(1);
+  let dots='';
+  S.milestones.forEach((m,i)=>{
+    const fx = pad + (W-2*pad)*((i+1)/n), fy = yOf(fx), on = m.status==='Concluída';
+    dots += `<circle cx="${fx.toFixed(1)}" cy="${fy.toFixed(1)}" r="5" fill="${on?'#16A34A':'#fff'}" stroke="${on?'#16A34A':'#C7CEDC'}" stroke-width="2"><title>${esc(m.name)}</title></circle>`;
+  });
+  const gx=W-pad, gy=yOf(gx);
+  return `<svg viewBox="0 0 ${W} 134" style="width:100%;height:auto" role="img" aria-label="Jornada até as 10 Unidades Plus">
+    <path d="${base}" fill="none" stroke="#E6EAF0" stroke-width="4" stroke-linecap="round"/>
+    ${prog?`<path d="${prog}" fill="none" stroke="#081A58" stroke-width="4" stroke-linecap="round"/>`:''}
+    ${dots}
+    <g transform="translate(${gx-10},${(gy-42).toFixed(1)})">
+      <rect x="0" y="6" width="20" height="30" rx="4" fill="#081A58"/>
+      <rect x="4" y="11" width="4.5" height="4.5" rx="1" fill="#fff" opacity=".9"/><rect x="11.5" y="11" width="4.5" height="4.5" rx="1" fill="#fff" opacity=".9"/>
+      <rect x="4" y="19" width="4.5" height="4.5" rx="1" fill="#fff" opacity=".9"/><rect x="11.5" y="19" width="4.5" height="4.5" rx="1" fill="#fff" opacity=".9"/>
+      <rect x="7.5" y="27" width="5" height="9" rx="1.5" fill="#fff" opacity=".9"/>
+    </g>
+    <g transform="translate(${px.toFixed(1)},${(py-12).toFixed(1)})">
+      <circle cx="0" cy="-8" r="5.5" fill="#081A58"/>
+      <path d="M-8 11 C-8 -2 8 -2 8 11 Z" fill="#081A58"/>
+    </g>
+  </svg>`;
+}
+
 function renderDashboard(){
   const e = engine(), sc = safeScore(), bn = bottleneck(), tasks = topTasks();
   const driftTxt = e.drift > 0 ? `<strong style="color:#FCA5A5">${e.drift} dias atrasado</strong>`
@@ -678,11 +865,50 @@ function renderDashboard(){
       </div>
     </div>
 
+    <div class="journey">
+      <div class="cd-title" style="margin-bottom:4px">Jornada estratégica</div>
+      ${journeySVG(e.progress)}
+      <div class="journey-cap">Você está ${e.progress}% do caminho até as 10 Unidades Plus.</div>
+    </div>
+
+    <div class="countdown" id="countdown">
+      <div class="cd-head">
+        <span class="cd-title">Prazo final da missão · ${fmt(S.targetDate)}</span>
+        <button class="btn btn-ghost btn-sm" onclick="openTargetForm()">Editar prazo</button>
+      </div>
+      <div class="cd-over" id="cd-over" style="display:none">Prazo final ultrapassado</div>
+      <div class="cd-grid">
+        <div class="cd-cell"><div class="cd-num" id="cd-d">—</div><div class="cd-lbl">dias</div></div>
+        <div class="cd-cell"><div class="cd-num" id="cd-h">—</div><div class="cd-lbl">horas</div></div>
+        <div class="cd-cell"><div class="cd-num" id="cd-m">—</div><div class="cd-lbl">minutos</div></div>
+        <div class="cd-cell"><div class="cd-num" id="cd-s">—</div><div class="cd-lbl">segundos</div></div>
+      </div>
+      <div class="field-hint" id="cd-hint" style="margin-top:10px">Tempo restante até o prazo final da missão.</div>
+    </div>
+
     <div class="grid">
       <div class="stat"><span class="stat-label">SAFE Score</span><span class="stat-value ${sc.total>=70?'good':sc.total>=40?'warn':'bad'}">${sc.total}</span><span class="stat-note">de 100 pontos</span></div>
       <div class="stat"><span class="stat-label">Disciplina hoje</span><span class="stat-value">${disciplineToday()}%</span><span class="stat-note">${S.habits.filter(h=>h.history[todayISO()]).length} de ${S.habits.length} hábitos</span></div>
       <div class="stat"><span class="stat-label">Tarefas na semana</span><span class="stat-value">${e.doneWeek}</span><span class="stat-note">concluídas em 7 dias</span></div>
-      <div class="stat"><span class="stat-label">Tarefas atrasadas</span><span class="stat-value ${e.overdue?'bad':'good'}">${e.overdue}</span><span class="stat-note">${e.totalDelay} dias de atraso total</span></div>
+      <div class="stat"><span class="stat-label">Tarefas atrasadas</span><span class="stat-value ${e.overdue?'bad':'good'}">${e.overdue}</span><span class="stat-note">${e.realDelay} dias reais · ${e.justifiedDelay} justificados</span></div>
+    </div>
+
+    <div class="section-label">Análise de atraso</div>
+    <div class="card">
+      <div class="ms-dates" style="margin-bottom:12px">
+        <div class="dt ${e.realDelay?'red':''}"><b>Dias de atraso real</b><span>${e.realDelay}</span></div>
+        <div class="dt"><b>Atraso justificado</b><span style="color:#B45309">${e.justifiedDelay}</span></div>
+        <div class="dt"><b>Atraso total projetado</b><span>${e.totalDelay} dias</span></div>
+        <div class="dt"><b>Projeção final</b><span>${fmt(e.projectedEnd)}</span></div>
+      </div>
+      ${e.totalDelay ? `
+        <div class="delay-stack">
+          <i style="width:${(e.realDelay/e.totalDelay*100).toFixed(1)}%;background:var(--danger)"></i>
+          <i style="width:${(e.justifiedDelay/e.totalDelay*100).toFixed(1)}%;background:var(--warning)"></i>
+        </div>
+        <div class="legend"><span><i style="background:var(--danger)"></i>Atraso real do plano</span><span><i style="background:var(--warning)"></i>Justificado por tarefas necessárias</span></div>`
+      : `<div class="muted small">Nenhum atraso acumulado. Execução no prazo.</div>`}
+      ${e.hasNecessaryToday ? `<div class="justified-note">⚠️ Hoje houve tarefas necessárias da operação. Parte do atraso foi justificada.</div>` : ''}
     </div>
 
     <div class="section-label">Próxima tarefa crítica</div>
@@ -727,6 +953,7 @@ function renderDashboard(){
       <button class="btn btn-soft btn-sm" onclick="$('#importFile').click()">Importar backup</button>
       <input type="file" id="importFile" accept=".json" style="display:none" onchange="importBackup(this)">
     </div>`;
+  tickCountdown();
 }
 
 /* ---------- ROADMAP ---------- */
@@ -756,6 +983,7 @@ function renderRoadmap(){
 
 function renderMilestone(m, i){
   const prog = msProgress(m), st = msEffectiveStatus(m), delay = msDelay(m);
+  const all = flattenTasks(m.subtasks);
   const open = openBodies.has(m.id);
   return `
   <div class="ms ${st==='Concluída'?'done':''} ${open?'open-body':''}" id="ms-${m.id}">
@@ -767,7 +995,7 @@ function renderMilestone(m, i){
         <div class="ms-badges">
           ${statusBadge(st)}
           ${delay>0?`<span class="badge b-red">Atrasado em ${delay} ${delay===1?'dia':'dias'}</span>`:''}
-          <span class="badge b-grey" style="background:var(--surface)">${m.subtasks.filter(s=>s.status==='Concluída').length}/${m.subtasks.length} subtarefas</span>
+          <span class="badge b-grey" style="background:var(--surface)">${all.filter(s=>s.status==='Concluída').length}/${all.length} subtarefas</span>
         </div>
       </div>
       <svg class="chev" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
@@ -775,18 +1003,27 @@ function renderMilestone(m, i){
     <div class="ms-prog">${pbar(prog, st==='Atrasada'?'red':st==='Concluída'?'green':'')}</div>
     <div class="ms-body">
       <div class="ms-dates">
-        <div class="dt"><b>Início</b><span>${fmt(m.startDate)}</span></div>
-        <div class="dt"><b>Prazo original</b><span>${fmt(m.originalEnd)}</span></div>
+        <div class="dt"><b>Data inicial</b><span>${fmt(m.startDate)}</span></div>
+        <div class="dt"><b>Data prevista</b><span>${fmt(m.originalEnd)}</span></div>
+        <div class="dt"><b>Dias planejados</b><span>${m.plannedDuration || Math.max(0, diffDays(m.startDate, m.originalEnd))} dias</span></div>
+        <div class="dt ${delay>0?'red':''}"><b>Dias de atraso</b><span>${delay>0 ? delay+' '+(delay===1?'dia':'dias') : '—'}</span></div>
         <div class="dt ${delay>0?'red':''}"><b>Projeção</b><span>${fmt(msProjectedEnd(m))}</span></div>
         <div class="dt"><b>Conclusão real</b><span>${fmt(m.actualEnd)}</span></div>
       </div>
       ${m.notes?`<div class="calc-pill" style="background:var(--surface);color:var(--text);font-weight:500">📝 ${esc(m.notes)}</div>`:''}
       <div class="list-head">
         <strong style="font-size:.95rem">Subtarefas</strong>
-        <button class="btn btn-soft btn-sm" onclick="openSubtaskForm('${m.id}')">+ Subtarefa</button>
+        <button class="btn btn-soft btn-sm" onclick="openSubtaskForm('${m.id}','','')">+ Subtarefa</button>
       </div>
-      ${m.subtasks.map(s=>renderSubtask(m,s)).join('') || '<div class="muted small" style="padding:8px 0 14px">Nenhuma subtarefa ainda.</div>'}
+      ${m.subtasks.map(s=>renderSubtask(m,s,0)).join('') || '<div class="muted small" style="padding:8px 0 14px">Nenhuma subtarefa ainda.</div>'}
       <div class="divider"></div>
+      <div class="move-row" style="margin-bottom:12px">
+        <span class="small muted">Reordenar:</span>
+        <button class="move-btn" onclick="moveMilestone('${m.id}','up')">↑ Subir</button>
+        <button class="move-btn" onclick="moveMilestone('${m.id}','down')">↓ Descer</button>
+        <button class="move-btn" onclick="moveMilestone('${m.id}','top')">⇤ Início</button>
+        <button class="move-btn" onclick="moveMilestone('${m.id}','end')">⇥ Fim</button>
+      </div>
       <div class="btn-row">
         ${m.status!=='Concluída'
           ? `<button class="btn btn-primary btn-sm" onclick="completeMilestone('${m.id}')">Concluir marco</button>
@@ -799,8 +1036,11 @@ function renderMilestone(m, i){
   </div>`;
 }
 
-function renderSubtask(m, s){
-  const st = subEffectiveStatus(s), d = subDelay(s), end = subExpectedEnd(s);
+/* recursive subtask renderer — unlimited nesting */
+function renderSubtask(m, s, depth){
+  const st = taskEffectiveStatus(s), d = taskDelay(s), end = taskExpectedEnd(s);
+  const kids = s.children || [];
+  const prog = taskProgress(s);
   return `
   <div class="sub ${s.status==='Concluída'?'done-sub':''}">
     <button class="sub-check ${s.status==='Concluída'?'on':''}" onclick="toggleSubtask('${m.id}','${s.id}')" aria-label="Concluir subtarefa">
@@ -813,11 +1053,17 @@ function renderSubtask(m, s){
         <span class="badge prio-${s.priority}">${s.priority}</span>
         ${s.startDate?`<span>Início ${fmt(s.startDate)}</span>`:''}
         ${end?`<span>· Previsão ${fmt(end)}</span>`:''}
+        ${taskPlannedDays(s)?`<span>· ${taskPlannedDays(s)} dias planejados</span>`:''}
         ${d>0?`<span class="badge b-red">Atrasada em ${d} ${d===1?'dia':'dias'}</span>`:''}
       </div>
       ${s.description?`<div class="muted small" style="margin-top:4px">${esc(s.description)}</div>`:''}
+      ${kids.length?`<div class="sub-pbar">${pbar(prog, st==='Atrasada'?'red':s.status==='Concluída'?'green':'')}</div>`:''}
+      ${kids.length?`<div class="sub-tree">${kids.map(k=>renderSubtask(m,k,depth+1)).join('')}</div>`:''}
     </div>
-    <button class="icon-btn" onclick="openSubtaskForm('${m.id}','${s.id}')" aria-label="Editar">
+    <button class="mini-add" onclick="openSubtaskForm('${m.id}','${s.id}','')" aria-label="Adicionar subtarefa aninhada" title="Adicionar subtarefa dentro desta">
+      <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
+    </button>
+    <button class="icon-btn" onclick="openSubtaskForm('${m.id}','','${s.id}')" aria-label="Editar">
       <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 3a2.8 2.8 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5z"/></svg>
     </button>
   </div>`;
@@ -878,6 +1124,9 @@ function renderHoje(){
       Se você concluir as prioridades de hoje, reduz o atraso projetado e se aproxima da sua primeira Unidade SAFE Plus${e.firstUnitDate?` — prevista para <u>${fmt(e.firstUnitDate)}</u>`:''}.
     </div>
 
+    <div class="section-label">Tarefa necessária do dia</div>
+    ${renderDailyTasksCard()}
+
     <div class="section-label">Registro do dia</div>
     ${renderLogCard()}
 
@@ -891,6 +1140,38 @@ function renderHoje(){
       </div>
       <div class="field-hint" style="margin-top:10px">O ritmo atual usa a velocidade real de conclusão de marcos. A projeção é recalculada automaticamente todos os dias.</div>
     </div>`;
+}
+
+/* necessary daily tasks card (Hoje) */
+function renderDailyTasksCard(){
+  const t = todayISO();
+  const list = (S.dailyTasks||[]).filter(x => x.date === t);
+  return `
+  <div class="card card-lg">
+    <div class="list-head">
+      <h3 style="margin:0">Obrigações de hoje</h3>
+      <button class="btn btn-soft btn-sm" onclick="openDailyTaskForm()">+ Tarefa</button>
+    </div>
+    <div class="muted small" style="margin-bottom:6px">Obrigações reais da operação. Elas justificam atraso — não contam como falha pessoal.</div>
+    ${list.length ? list.map(x => `
+      <div class="ntask">
+        <button class="sub-check ${x.done?'on':''}" onclick="toggleDailyTask('${x.id}')" aria-label="Concluir tarefa necessária">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13l4 4L19 7"/></svg>
+        </button>
+        <div class="sub-main">
+          <div class="sub-name" style="${x.done?'text-decoration:line-through;color:var(--muted)':''}">${esc(x.name)}</div>
+          <div class="sub-meta">
+            ${x.hours?`<span>${x.hours}h estimadas</span>`:''}
+            ${x.notes?`<span>· ${esc(x.notes)}</span>`:''}
+          </div>
+        </div>
+        <button class="icon-btn" onclick="openDailyTaskForm('${x.id}')" aria-label="Editar tarefa necessária">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 3a2.8 2.8 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5z"/></svg>
+        </button>
+      </div>`).join('') : '<div class="muted small" style="padding:6px 0">Nenhuma tarefa necessária registrada hoje.</div>'}
+    ${isJustifiedDay(t) ? `<div class="justified-note">⚠️ Hoje houve tarefas necessárias da operação. Parte do atraso foi justificada.</div>` : ''}
+    <div class="field-hint" style="margin-top:10px">Regra: dias com 4h+ de tarefas necessárias (ou 2+ tarefas) entram como atraso justificado, não real.</div>
+  </div>`;
 }
 
 function renderLogCard(){
@@ -951,35 +1232,129 @@ function renderRotina(){
 }
 
 /* ---------- KPIs ---------- */
+function donutSVG(pct, color, size, stroke, label, sub){
+  const p = Math.min(100, Math.max(0, pct));
+  const r = (size-stroke)/2, circ = 2*Math.PI*r, off = circ*(1-p/100);
+  return `<svg width="${size}" height="${size}" viewBox="0 0 ${size} ${size}" role="img">
+    <circle cx="${size/2}" cy="${size/2}" r="${r}" fill="none" stroke="#EEF1FB" stroke-width="${stroke}"/>
+    <circle cx="${size/2}" cy="${size/2}" r="${r}" fill="none" stroke="${color}" stroke-width="${stroke}" stroke-linecap="round"
+      stroke-dasharray="${circ.toFixed(1)}" stroke-dashoffset="${off.toFixed(1)}" transform="rotate(-90 ${size/2} ${size/2})"/>
+    <text x="50%" y="${size/2 + (sub?3:8)}" text-anchor="middle" font-size="${Math.round(size/4.6)}" font-weight="800" fill="#081A58" font-family="Inter,sans-serif">${label}</text>
+    ${sub?`<text x="50%" y="${size/2+20}" text-anchor="middle" font-size="10.5" font-weight="600" fill="#5B6472" font-family="Inter,sans-serif">${sub}</text>`:''}
+  </svg>`;
+}
+function tasksDoneOn(d){
+  let n = 0;
+  S.milestones.forEach(m => flattenTasks(m.subtasks).forEach(s => { if (s.completedAt === d) n++; }));
+  return n;
+}
+function trendBadge(cur, prev, suffix){
+  if (cur > prev) return `<span class="trend up">▲ +${cur-prev}${suffix||''} vs semana anterior</span>`;
+  if (cur < prev) return `<span class="trend down">▼ ${cur-prev}${suffix||''} vs semana anterior</span>`;
+  return `<span class="trend flat">— estável vs semana anterior</span>`;
+}
+function disciplineWindow(offset, n){
+  if (!S.habits.length) return 0;
+  const t = todayISO(); let sum = 0;
+  for (const h of S.habits){ let k=0; for(let i=offset;i<offset+n;i++){ if(h.history[addDays(t,-i)]) k++; } sum += k/n; }
+  return Math.round(sum / S.habits.length * 100);
+}
+function weekTimeline(){
+  const t = todayISO(), labels = ['Dom','Seg','Ter','Qua','Qui','Sex','Sáb'];
+  const days = []; for (let i=6;i>=0;i--) days.push(addDays(t,-i));
+  const vals = days.map(tasksDoneOn);
+  const max = Math.max(1, ...vals);
+  return `<div class="tl-bars">${days.map((d,i)=>`
+    <div class="tl-col">
+      <span class="tl-val">${vals[i]||''}</span>
+      <div class="tl-bar" style="height:${Math.max(4, vals[i]/max*78)}px;${d===t?'':'opacity:.55'}"></div>
+      <span class="tl-lbl">${labels[pISO(d).getDay()]}</span>
+    </div>`).join('')}</div>`;
+}
+
 function renderKpis(){
-  const e = engine();
+  const e = engine(), sc = safeScore();
   const bestStreak = Math.max(0, ...S.habits.map(h=>habitStats(h).best));
   const curStreak = Math.max(0, ...S.habits.map(h=>habitStats(h).streak));
   const fmtAvg = v => v==null ? '—' : v.toFixed(1);
-  const cards = [
-    ['Progresso do projeto', e.progress+'%', e.done+' de '+e.total+' marcos'],
-    ['SAFE Score', safeScore().total, 'de 100 pontos'],
-    ['Disciplina hoje', disciplineToday()+'%', S.habits.length+' hábitos ativos'],
-    ['Tarefas na semana', e.doneWeek, 'concluídas em 7 dias'],
-    ['Tarefas no mês', e.doneMonth, 'concluídas em 30 dias'],
-    ['Tarefas atrasadas', e.overdue, e.overdue?'exigem ação imediata':'tudo em dia', e.overdue?'bad':'good'],
-    ['Atraso total', e.totalDelay+' dias', 'acumulado no roadmap', e.totalDelay?'warn':'good'],
-    ['Streak atual', curStreak+' dias', 'melhor hábito ativo'],
-    ['Melhor streak', bestStreak+' dias', 'recorde histórico'],
-    ['Disciplina semanal', disciplineRange(7)+'%', 'média dos últimos 7 dias'],
-    ['Disciplina mensal', disciplineRange(30)+'%', 'média dos últimos 30 dias'],
-    ['Foco médio', fmtAvg(avgLog('focus')), 'últimos 30 dias (1–5)'],
-    ['Energia média', fmtAvg(avgLog('energy')), 'últimos 30 dias (1–5)'],
-    ['Humor médio', fmtAvg(avgLog('mood')), 'últimos 30 dias (1–5)'],
-  ];
+  const t = todayISO(), weekAgo = addDays(t,-7), twoWeeks = addDays(t,-14);
+  let prevWeek = 0;
+  S.milestones.forEach(m => flattenTasks(m.subtasks).forEach(s => {
+    if (s.completedAt && s.completedAt >= twoWeeks && s.completedAt < weekAgo) prevWeek++;
+  }));
+  const discNow = disciplineWindow(0,7), discPrev = disciplineWindow(7,7);
+  const scColor = sc.total>=70 ? '#16A34A' : sc.total>=40 ? '#F59E0B' : '#DC2626';
+
   $('#view-kpis').innerHTML = `
     <div class="page-head">
       <div class="page-title">KPIs</div>
       <div class="page-sub">Indicadores de execução da missão</div>
     </div>
-    <div class="grid">
-      ${cards.map(([l,v,n,cls])=>`<div class="stat"><span class="stat-label">${l}</span><span class="stat-value ${cls||''}">${v}</span><span class="stat-note">${n}</span></div>`).join('')}
+
+    <div class="kpi-hero">
+      <div class="kpi-circle">
+        ${donutSVG(e.progress, '#081A58', 116, 11, e.progress+'%', e.done+'/'+e.total+' marcos')}
+        <span class="stat-label">Progresso do projeto</span>
+      </div>
+      <div class="kpi-circle">
+        ${donutSVG(disciplineToday(), '#16A34A', 116, 11, disciplineToday()+'%', 'hoje')}
+        <span class="stat-label">Disciplina</span>
+      </div>
+      <div class="kpi-circle">
+        ${donutSVG(sc.total, scColor, 116, 11, String(sc.total), 'de 100')}
+        <span class="stat-label">SAFE Score</span>
+      </div>
     </div>
+
+    <div class="section-label">Tendências</div>
+    <div class="grid" style="grid-template-columns:1fr 1fr">
+      <div class="stat">
+        <span class="stat-label">Tarefas na semana</span>
+        <span class="stat-value">${e.doneWeek}</span>
+        ${trendBadge(e.doneWeek, prevWeek)}
+      </div>
+      <div class="stat">
+        <span class="stat-label">Disciplina semanal</span>
+        <span class="stat-value">${discNow}%</span>
+        ${trendBadge(discNow, discPrev, ' pts')}
+      </div>
+    </div>
+
+    <div class="section-label">Linha do tempo semanal</div>
+    <div class="card card-lg">
+      <h3>Tarefas concluídas por dia</h3>
+      ${weekTimeline()}
+    </div>
+
+    <div class="section-label">Análise de atraso</div>
+    <div class="card">
+      <div class="ms-dates" style="margin-bottom:12px">
+        <div class="dt ${e.realDelay?'red':''}"><b>Atraso real</b><span>${e.realDelay} dias</span></div>
+        <div class="dt"><b>Justificado</b><span style="color:#B45309">${e.justifiedDelay} dias</span></div>
+        <div class="dt"><b>Total projetado</b><span>${e.totalDelay} dias</span></div>
+        <div class="dt"><b>Tarefas atrasadas</b><span style="${e.overdue?'color:var(--danger)':''}">${e.overdue}</span></div>
+      </div>
+      ${e.totalDelay ? `
+        <div class="delay-stack">
+          <i style="width:${(e.realDelay/e.totalDelay*100).toFixed(1)}%;background:var(--danger)"></i>
+          <i style="width:${(e.justifiedDelay/e.totalDelay*100).toFixed(1)}%;background:var(--warning)"></i>
+        </div>
+        <div class="legend"><span><i style="background:var(--danger)"></i>Atraso real do plano</span><span><i style="background:var(--warning)"></i>Justificado por tarefas necessárias</span></div>`
+      : `<div class="muted small">Nenhum atraso acumulado.</div>`}
+    </div>
+
+    <div class="section-label">Hábitos e bem-estar</div>
+    <div class="grid">
+      <div class="stat"><span class="stat-label">Tarefas no mês</span><span class="stat-value">${e.doneMonth}</span><span class="stat-note">concluídas em 30 dias</span></div>
+      <div class="stat"><span class="stat-label">Streak atual</span><span class="stat-value">${curStreak}</span><span class="stat-note">dias · melhor hábito ativo</span></div>
+      <div class="stat"><span class="stat-label">Melhor streak</span><span class="stat-value">${bestStreak}</span><span class="stat-note">dias · recorde histórico</span></div>
+      <div class="stat"><span class="stat-label">Disciplina mensal</span><span class="stat-value">${disciplineRange(30)}%</span><span class="stat-note">média de 30 dias</span></div>
+      <div class="stat"><span class="stat-label">Foco médio</span><span class="stat-value">${fmtAvg(avgLog('focus'))}</span><span class="stat-note">últimos 30 dias (1–5)</span></div>
+      <div class="stat"><span class="stat-label">Energia média</span><span class="stat-value">${fmtAvg(avgLog('energy'))}</span><span class="stat-note">últimos 30 dias (1–5)</span></div>
+      <div class="stat"><span class="stat-label">Humor médio</span><span class="stat-value">${fmtAvg(avgLog('mood'))}</span><span class="stat-note">últimos 30 dias (1–5)</span></div>
+      <div class="stat"><span class="stat-label">SAFE Score</span><span class="stat-value ${sc.total>=70?'good':sc.total>=40?'warn':'bad'}">${sc.total}</span><span class="stat-note">composição no Dashboard</span></div>
+    </div>
+
     <div class="section-label">Evolução · últimos 14 dias</div>
     <div class="card card-lg chart-wrap">${renderChart()}</div>`;
 }
@@ -1010,16 +1385,17 @@ function mutate(fn){ fn(); persist(); render(); }
 function toggleSubtask(mid, sid){
   mutate(()=>{
     const m = S.milestones.find(x=>x.id===mid); if(!m) return;
-    const s = m.subtasks.find(x=>x.id===sid); if(!s) return;
-    if (s.status === 'Concluída'){ s.status = 'Em andamento'; s.completedAt = null; }
-    else { s.status = 'Concluída'; s.completedAt = todayISO(); if (m.status==='Não iniciada') m.status='Em andamento'; }
+    const r = findTask(m.subtasks, sid); if(!r) return;
+    setTaskDone(r.node, r.node.status !== 'Concluída');
+    syncTaskTree(m.subtasks);
+    if (m.status==='Não iniciada' && r.node.status==='Concluída') m.status='Em andamento';
   });
 }
 function startMilestone(id){ mutate(()=>{ const m=S.milestones.find(x=>x.id===id); if(m) m.status='Em andamento'; }); toast('Marco iniciado'); }
 function completeMilestone(id){
   mutate(()=>{ const m=S.milestones.find(x=>x.id===id); if(!m) return;
     m.status='Concluída'; m.actualEnd=todayISO();
-    m.subtasks.forEach(s=>{ if(s.status!=='Concluída'){ s.status='Concluída'; s.completedAt=todayISO(); } });
+    m.subtasks.forEach(s=>setTaskDone(s, true));
   });
   toast('Marco concluído 🎉');
 }
@@ -1042,6 +1418,77 @@ function setLog(field, value){
   });
 }
 
+/* ---- reorder milestones ---- */
+function moveMilestone(id, action){
+  mutate(()=>{
+    const i = S.milestones.findIndex(m=>m.id===id); if (i < 0) return;
+    const [m] = S.milestones.splice(i,1);
+    if (action==='up') S.milestones.splice(Math.max(0, i-1), 0, m);
+    else if (action==='down') S.milestones.splice(Math.min(S.milestones.length, i+1), 0, m);
+    else if (action==='top') S.milestones.unshift(m);
+    else S.milestones.push(m);
+  });
+}
+
+/* ---- necessary daily tasks ---- */
+function toggleDailyTask(id){
+  mutate(()=>{ const t = S.dailyTasks.find(x=>x.id===id); if (t) t.done = !t.done; });
+}
+function deleteDailyTask(id){
+  if (!confirm('Excluir esta tarefa necessária?')) return;
+  mutate(()=>{ S.dailyTasks = S.dailyTasks.filter(x=>x.id!==id); });
+  closeModal(); toast('Tarefa necessária excluída');
+}
+function openDailyTaskForm(id){
+  const t = id ? S.dailyTasks.find(x=>x.id===id) : null;
+  openModal(`
+    <div class="modal-title">${t?'Editar tarefa necessária':'Tarefa necessária do dia'}</div>
+    <div class="field"><label>Nome</label><input id="f-name" value="${t?esc(t.name):''}" placeholder="Ex.: Visitar clínica, resolver entrega"></div>
+    <div class="field-row">
+      <div class="field"><label>Data</label><input id="f-date" type="date" value="${t?t.date:todayISO()}"></div>
+      <div class="field"><label>Horas estimadas</label><input id="f-hours" type="number" min="0" max="24" step="0.5" value="${t&&t.hours!=null?t.hours:''}" placeholder="0"></div>
+    </div>
+    <div class="field"><label>Notas</label><textarea id="f-notes" placeholder="Contexto da obrigação">${t?esc(t.notes||''):''}</textarea></div>
+    <div class="btn-row">
+      <button class="btn btn-primary btn-block" onclick="saveDailyTask('${id||''}')">${t?'Salvar alterações':'Registrar tarefa'}</button>
+    </div>
+    ${t?`<button class="btn btn-danger btn-block" style="margin-top:8px" onclick="deleteDailyTask('${id}')">Excluir</button>`:''}
+    <button class="btn btn-ghost btn-block" style="margin-top:8px" onclick="closeModal()">Cancelar</button>`);
+}
+function saveDailyTask(id){
+  const name = $('#f-name').value.trim();
+  if (!name){ toast('Informe o nome da tarefa'); return; }
+  const data = {
+    name,
+    date: $('#f-date').value || todayISO(),
+    hours: Number($('#f-hours').value) || 0,
+    notes: $('#f-notes').value.trim()
+  };
+  mutate(()=>{
+    if (id){ Object.assign(S.dailyTasks.find(x=>x.id===id), data); }
+    else S.dailyTasks.push({ id: uid(), done: false, ...data });
+  });
+  closeModal(); toast(id?'Tarefa atualizada':'Tarefa necessária registrada');
+}
+
+/* ---- final mission deadline ---- */
+function openTargetForm(){
+  openModal(`
+    <div class="modal-title">Prazo final da missão</div>
+    <div class="field"><label>Data-alvo para as 10 Unidades Plus</label><input id="f-target" type="date" value="${S.targetDate||''}"></div>
+    <div class="field-hint" style="margin-bottom:16px">A contagem regressiva do Dashboard usa esta data, atualizada em tempo real.</div>
+    <div class="btn-row">
+      <button class="btn btn-primary btn-block" onclick="saveTarget()">Salvar prazo</button>
+    </div>
+    <button class="btn btn-ghost btn-block" style="margin-top:8px" onclick="closeModal()">Cancelar</button>`);
+}
+function saveTarget(){
+  const v = $('#f-target').value;
+  if (!v){ toast('Informe a data'); return; }
+  mutate(()=>{ S.targetDate = v; });
+  closeModal(); toast('Prazo final atualizado');
+}
+
 /* ---------- MODALS ---------- */
 function openModal(html){ $('#modal').innerHTML = html; $('#overlay').classList.add('show'); }
 function closeModal(){ $('#overlay').classList.remove('show'); }
@@ -1049,15 +1496,28 @@ $('#overlay').addEventListener('click', e=>{ if(e.target.id==='overlay') closeMo
 
 function openMilestoneForm(id){
   const m = id ? S.milestones.find(x=>x.id===id) : null;
+  const endVal = m ? m.originalEnd : addDays(todayISO(), 30);
   openModal(`
     <div class="modal-title">${m?'Editar marco':'Novo marco'}</div>
     <div class="field"><label>Nome</label><input id="f-name" value="${m?esc(m.name):''}" placeholder="Ex.: Abrir Unidade Plus 1"></div>
     <div class="field"><label>Descrição</label><input id="f-desc" value="${m?esc(m.description):''}" placeholder="Resultado esperado"></div>
+    <div class="field"><label>Data inicial</label><input id="f-start" type="date" value="${m?m.startDate:todayISO()}" onchange="calcDates('start')"></div>
     <div class="field-row">
-      <div class="field"><label>Data de início</label><input id="f-start" type="date" value="${m?m.startDate:todayISO()}" onchange="msCalc()"></div>
-      <div class="field"><label>Duração (dias)</label><input id="f-dur" type="number" min="1" value="${m?m.plannedDuration:30}" onchange="msCalc()" oninput="msCalc()"></div>
+      <div class="field"><label>Dias planejados</label><input id="f-dur" type="number" min="0" value="${m?m.plannedDuration:30}" oninput="calcDates('dur')"></div>
+      <div class="field"><label>Data prevista</label><input id="f-end" type="date" value="${endVal}" onchange="calcDates('end')"></div>
     </div>
-    <div class="calc-pill" id="f-calc">📅 Conclusão prevista: —</div>
+    <div class="calc-pill" id="f-calc">📅 —</div>
+    <div class="field-hint" style="margin-top:-8px;margin-bottom:16px">Edite os dias planejados ou a data prevista — o outro campo é recalculado automaticamente.</div>
+    ${!m ? `
+    <div class="field"><label>Posição no roadmap</label>
+      <select id="f-pos" onchange="document.getElementById('f-pos-ref-wrap').style.display=(this.value==='after'||this.value==='before')?'block':'none'">
+        <option value="end">No fim</option>
+        <option value="start">No início</option>
+        <option value="after">Depois de um marco…</option>
+        <option value="before">Antes de um marco…</option>
+      </select></div>
+    <div class="field" id="f-pos-ref-wrap" style="display:none"><label>Marco de referência</label>
+      <select id="f-pos-ref">${S.milestones.map(x=>`<option value="${x.id}">${esc(x.name)}</option>`).join('')}</select></div>` : ''}
     <div class="field"><label>Status</label>
       <select id="f-status">
         ${['Não iniciada','Em andamento','Concluída','Atrasada'].map(s=>`<option ${m&&m.status===s?'selected':''}>${s}</option>`).join('')}
@@ -1067,45 +1527,72 @@ function openMilestoneForm(id){
       <button class="btn btn-primary btn-block" onclick="saveMilestone('${id||''}')">${m?'Salvar alterações':'Criar marco'}</button>
     </div>
     <button class="btn btn-ghost btn-block" style="margin-top:8px" onclick="closeModal()">Cancelar</button>`);
-  msCalc();
+  calcDates('dur');
 }
-function msCalc(){
-  const s = $('#f-start').value, d = Number($('#f-dur').value)||0;
-  $('#f-calc').textContent = s ? `📅 Conclusão prevista: ${fmt(addDays(s,d))}` : '📅 Conclusão prevista: —';
+
+/* two-way date math: duration <-> expected date (works in any task form) */
+function calcDates(changed){
+  const sEl=$('#f-start'), dEl=$('#f-dur'), eEl=$('#f-end'), pill=$('#f-calc');
+  if (!sEl || !dEl || !eEl) return;
+  const s = sEl.value;
+  if (!s){ if (pill) pill.textContent = '📅 Defina a data inicial'; return; }
+  if (changed === 'end' && eEl.value){
+    dEl.value = Math.max(0, diffDays(s, eEl.value));
+  } else {
+    eEl.value = addDays(s, Math.max(0, Number(dEl.value)||0));
+  }
+  if (pill) pill.textContent = `📅 Data prevista: ${fmt(eEl.value)} · ${Number(dEl.value)||0} dias planejados`;
 }
+
 function saveMilestone(id){
   const name = $('#f-name').value.trim();
   if(!name){ toast('Informe o nome do marco'); return; }
   const start = $('#f-start').value || todayISO();
-  const dur = Math.max(1, Number($('#f-dur').value)||1);
+  const dur = Math.max(0, Number($('#f-dur').value)||0);
+  const end = $('#f-end').value || addDays(start, dur);
   mutate(()=>{
     if(id){
       const m = S.milestones.find(x=>x.id===id);
       Object.assign(m, { name, description:$('#f-desc').value.trim(), startDate:start,
-        plannedDuration:dur, originalEnd:addDays(start,dur), status:$('#f-status').value, notes:$('#f-notes').value.trim() });
+        plannedDuration:dur, originalEnd:end, status:$('#f-status').value, notes:$('#f-notes').value.trim() });
       if (m.status==='Concluída' && !m.actualEnd) m.actualEnd = todayISO();
       if (m.status!=='Concluída') m.actualEnd = null;
     } else {
-      S.milestones.push({ id:uid(), name, description:$('#f-desc').value.trim(), status:$('#f-status').value,
-        plannedDuration:dur, startDate:start, originalEnd:addDays(start,dur), actualEnd:null,
-        notes:$('#f-notes').value.trim(), subtasks:[] });
+      const m2 = { id:uid(), name, description:$('#f-desc').value.trim(), status:$('#f-status').value,
+        plannedDuration:dur, startDate:start, originalEnd:end, actualEnd:null,
+        notes:$('#f-notes').value.trim(), subtasks:[] };
+      if (m2.status==='Concluída') m2.actualEnd = todayISO();
+      let idx = S.milestones.length;
+      const posEl = $('#f-pos');
+      const pos = posEl ? posEl.value : 'end';
+      if (pos === 'start') idx = 0;
+      else if (pos === 'after' || pos === 'before'){
+        const ri = S.milestones.findIndex(x=>x.id===$('#f-pos-ref').value);
+        idx = ri < 0 ? S.milestones.length : (pos==='after' ? ri+1 : ri);
+      }
+      S.milestones.splice(idx, 0, m2);
     }
   });
   closeModal(); toast(id?'Marco atualizado':'Marco criado');
 }
 
-function openSubtaskForm(mid, sid){
+/* nested subtask form — parentId: create inside this task; sid: edit this task */
+function openSubtaskForm(mid, parentId, sid){
   const m = S.milestones.find(x=>x.id===mid);
-  const s = sid ? m.subtasks.find(x=>x.id===sid) : null;
+  const parent = parentId ? (findTask(m.subtasks, parentId)||{}).node : null;
+  const s = sid ? (findTask(m.subtasks, sid)||{}).node : null;
+  const ctx = parent ? esc(parent.name) : esc(m.name);
+  const endVal = s ? (taskExpectedEnd(s)||'') : addDays(todayISO(), 3);
   openModal(`
-    <div class="modal-title">${s?'Editar subtarefa':'Nova subtarefa'} · <span class="muted" style="font-weight:600;font-size:.95rem">${esc(m.name)}</span></div>
-    <div class="field"><label>Nome</label><input id="f-name" value="${s?esc(s.name):''}" placeholder="Ex.: Gravar vídeo com a clínica X"></div>
+    <div class="modal-title">${s?'Editar subtarefa':'Nova subtarefa'}<div class="muted" style="font-weight:600;font-size:.9rem;margin-top:2px">em ${ctx}</div></div>
+    <div class="field"><label>Nome</label><input id="f-name" value="${s?esc(s.name):''}" placeholder="Ex.: Destaque Como Funciona"></div>
     <div class="field"><label>Descrição</label><input id="f-desc" value="${s?esc(s.description):''}" placeholder="Detalhes da execução"></div>
+    <div class="field"><label>Data inicial</label><input id="f-start" type="date" value="${s?s.startDate:todayISO()}" onchange="calcDates('start')"></div>
     <div class="field-row">
-      <div class="field"><label>Data de início</label><input id="f-start" type="date" value="${s?s.startDate:todayISO()}" onchange="msCalc()"></div>
-      <div class="field"><label>Duração (dias)</label><input id="f-dur" type="number" min="1" value="${s?s.plannedDuration:3}" onchange="msCalc()" oninput="msCalc()"></div>
+      <div class="field"><label>Dias planejados</label><input id="f-dur" type="number" min="0" value="${s?s.plannedDuration:3}" oninput="calcDates('dur')"></div>
+      <div class="field"><label>Data prevista</label><input id="f-end" type="date" value="${endVal}" onchange="calcDates('end')"></div>
     </div>
-    <div class="calc-pill" id="f-calc">📅 Conclusão prevista: —</div>
+    <div class="calc-pill" id="f-calc">📅 —</div>
     <div class="field-row">
       <div class="field"><label>Prioridade</label>
         <select id="f-prio">${['Alta','Média','Baixa'].map(p=>`<option ${s&&s.priority===p?'selected':(!s&&p==='Média'?'selected':'')}>${p}</option>`).join('')}</select></div>
@@ -1114,37 +1601,48 @@ function openSubtaskForm(mid, sid){
     </div>
     <div class="field"><label>Notas</label><textarea id="f-notes" placeholder="Observações">${s?esc(s.notes||''):''}</textarea></div>
     <div class="btn-row">
-      <button class="btn btn-primary btn-block" onclick="saveSubtask('${mid}','${sid||''}')">${s?'Salvar alterações':'Criar subtarefa'}</button>
+      <button class="btn btn-primary btn-block" onclick="saveSubtask('${mid}','${parentId||''}','${sid||''}')">${s?'Salvar alterações':'Criar subtarefa'}</button>
     </div>
-    ${s?`<button class="btn btn-danger btn-block" style="margin-top:8px" onclick="deleteSubtask('${mid}','${sid}')">Excluir subtarefa</button>`:''}
+    ${s?`<button class="btn btn-danger btn-block" style="margin-top:8px" onclick="deleteSubtask('${mid}','${sid}')">Excluir subtarefa (e aninhadas)</button>`:''}
     <button class="btn btn-ghost btn-block" style="margin-top:8px" onclick="closeModal()">Cancelar</button>`);
-  msCalc();
+  calcDates(s && taskExpectedEnd(s) ? 'end' : 'dur');
 }
-function saveSubtask(mid, sid){
+function saveSubtask(mid, parentId, sid){
   const name = $('#f-name').value.trim();
   if(!name){ toast('Informe o nome da subtarefa'); return; }
   const start = $('#f-start').value || todayISO();
-  const dur = Math.max(1, Number($('#f-dur').value)||1);
+  const dur = Math.max(0, Number($('#f-dur').value)||0);
+  const end = $('#f-end').value || addDays(start, dur);
   mutate(()=>{
     const m = S.milestones.find(x=>x.id===mid);
     const data = { name, description:$('#f-desc').value.trim(), startDate:start, plannedDuration:dur,
-      priority:$('#f-prio').value, status:$('#f-status').value, notes:$('#f-notes').value.trim() };
-    if(sid){
-      const s = m.subtasks.find(x=>x.id===sid);
-      const wasDone = s.status==='Concluída';
+      expectedEnd:end, priority:$('#f-prio').value, status:$('#f-status').value, notes:$('#f-notes').value.trim() };
+    if (sid){
+      const s = (findTask(m.subtasks, sid)||{}).node; if (!s) return;
+      const wasDone = s.status === 'Concluída';
       Object.assign(s, data);
-      if (s.status==='Concluída' && !wasDone) s.completedAt = todayISO();
+      if (s.status==='Concluída' && !wasDone) setTaskDone(s, true);
       if (s.status!=='Concluída') s.completedAt = null;
     } else {
-      m.subtasks.push({ id:uid(), ...data, completedAt: data.status==='Concluída'?todayISO():null });
+      const t = { id:uid(), ...data, children:[], completedAt: data.status==='Concluída' ? todayISO() : null };
+      if (parentId){
+        const p = (findTask(m.subtasks, parentId)||{}).node;
+        if (p){ p.children = p.children||[]; p.children.push(t); }
+        else m.subtasks.push(t);
+      } else m.subtasks.push(t);
       if (m.status==='Não iniciada' && data.status!=='Não iniciada') m.status='Em andamento';
     }
+    syncTaskTree(m.subtasks);
   });
   closeModal(); toast(sid?'Subtarefa atualizada':'Subtarefa criada');
 }
 function deleteSubtask(mid, sid){
-  if(!confirm('Excluir esta subtarefa?')) return;
-  mutate(()=>{ const m=S.milestones.find(x=>x.id===mid); m.subtasks = m.subtasks.filter(x=>x.id!==sid); });
+  if(!confirm('Excluir esta subtarefa e todas as subtarefas aninhadas dela?')) return;
+  mutate(()=>{
+    const m = S.milestones.find(x=>x.id===mid);
+    removeTask(m.subtasks, sid);
+    syncTaskTree(m.subtasks);
+  });
   closeModal(); toast('Subtarefa excluída');
 }
 
@@ -1191,7 +1689,7 @@ function importBackup(input){
       const data = JSON.parse(reader.result);
       if (!data.milestones || !data.habits) throw new Error('estrutura inválida');
       if (!confirm('Importar este backup substituirá todos os dados atuais. Continuar?')) return;
-      S = data; persist(); render(); toast('Backup restaurado com sucesso');
+      S = migrate(data); persist(); render(); toast('Backup restaurado com sucesso');
     } catch(e){ toast('Arquivo de backup inválido'); }
   };
   reader.readAsText(file);
@@ -1217,10 +1715,30 @@ function render(){
 let _lastDay = todayISO();
 setInterval(()=>{ const t = todayISO(); if (t !== _lastDay){ _lastDay = t; render(); } }, 60000);
 
+/* ---------- LIVE COUNTDOWN (real-time seconds) ---------- */
+function tickCountdown(){
+  if (!S || !S.targetDate) return;
+  const elD = document.getElementById('cd-d');
+  if (!elD) return; // countdown only lives on the Dashboard
+  const target = pISO(S.targetDate); target.setHours(23,59,59,999);
+  let ms = target - Date.now();
+  const over = ms < 0; if (over) ms = -ms;
+  const f = n => Math.floor(n).toLocaleString('pt-BR');
+  elD.textContent = f(ms/86400000);
+  document.getElementById('cd-h').textContent = f(ms/3600000);
+  document.getElementById('cd-m').textContent = f(ms/60000);
+  document.getElementById('cd-s').textContent = f(ms/1000);
+  const ov = document.getElementById('cd-over'), cd = document.getElementById('countdown'), hint = document.getElementById('cd-hint');
+  if (ov) ov.style.display = over ? 'block' : 'none';
+  if (cd) cd.classList.toggle('over', over);
+  if (hint) hint.textContent = over ? 'Tempo decorrido desde o prazo final da missão.' : 'Tempo restante até o prazo final da missão.';
+}
+setInterval(tickCountdown, 1000);
+
 /* ---------- INIT ---------- */
 (async function init(){
   const saved = await StorageAdapter.load();
-  S = saved || defaultState();
+  S = migrate(saved) || defaultState();
   if (!saved) persist();
   nav('dashboard');
 })();
