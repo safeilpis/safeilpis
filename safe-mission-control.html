@@ -379,6 +379,24 @@ input,select,textarea{font:inherit;color:inherit}
 .tl-bar{width:100%;max-width:36px;border-radius:8px 8px 4px 4px;background:var(--navy);min-height:4px;transition:height .3s}
 .tl-lbl{font-size:.7rem;font-weight:600;color:var(--muted)}
 .tl-val{font-size:.78rem;font-weight:700;color:var(--navy)}
+
+/* ---------- Inline creation (v3) ---------- */
+.inline-add{display:flex;gap:8px;align-items:center;margin-top:10px}
+.inline-add input{min-height:48px;border:1.5px solid var(--line);border-radius:12px;padding:0 14px;font-size:1rem;background:#fff;outline:none}
+.inline-add input:focus{border-color:var(--navy)}
+.inline-add .ia-name{flex:1;min-width:0}
+.inline-add .ia-days{width:96px;text-align:center}
+.inline-add .btn{flex-shrink:0}
+.ia-hint{font-size:.74rem;color:var(--muted);margin-top:6px}
+
+/* ---------- Delay status colors (v3): blue on time, orange <=30d, red >30d ---------- */
+.dt.amber span{color:#B45309}
+.dt.blue span{color:var(--navy)}
+
+/* ---------- Single-line countdown (v4) ---------- */
+.cd-line{font-size:1.35rem;font-weight:800;color:var(--navy);text-align:center;font-variant-numeric:tabular-nums;letter-spacing:-.01em;background:var(--surface);border-radius:14px;padding:18px 12px;line-height:1.35}
+@media(min-width:680px){.cd-line{font-size:1.7rem}}
+.countdown.over .cd-line{color:var(--danger)}
 </style>
 </head>
 <body>
@@ -438,7 +456,18 @@ input,select,textarea{font:inherit;color:inherit}
 
 const StorageAdapter = (() => {
   const KEY = 'safe-mission-control-v1';
-  let memory = null; // last-resort fallback (session only)
+
+  /* ---- Supabase cloud config ---- */
+  /* The publishable key is designed to be public (it only grants RLS-bound access). */
+  const SUPABASE_URL = 'https://jyrggvyrowtkwbigqgwy.supabase.co';
+  const SUPABASE_KEY = 'sb_publishable_87jT94783e5GDyKFER4BOQ_GA3DmzV7';
+  const WORKSPACE_ID = 'lucas-main';   // single shared workspace → all devices read/write the same row
+  const TABLE = 'mission_state';
+
+  let memory = null;        // last-resort fallback (session only)
+  let sb = null;            // supabase client (null until/unless cloud is reachable)
+  let cloudReady = false;
+  let lastSeen = null;      // last remote updated_at we applied (for cross-device pull)
 
   const hasClaudeStorage = typeof window !== 'undefined' && window.storage && typeof window.storage.get === 'function';
   const hasLocalStorage = (() => {
@@ -446,29 +475,93 @@ const StorageAdapter = (() => {
     catch(e){ return false; }
   })();
 
+  function localGet(){
+    if (!hasLocalStorage) return null;
+    try { const r = localStorage.getItem(KEY); return r ? JSON.parse(r) : null; } catch(e){ return null; }
+  }
+  function localSet(json){
+    if (hasLocalStorage){ try { localStorage.setItem(KEY, json); } catch(e){} }
+  }
+
+  /* Loads the Supabase client from a CDN at runtime. Fully optional:
+     if it fails (offline, blocked, sandbox), the app keeps working on local storage. */
+  async function initCloud(){
+    if (cloudReady) return true;
+    try {
+      const mod = await import('https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm');
+      sb = mod.createClient(SUPABASE_URL, SUPABASE_KEY, { auth: { persistSession: false } });
+      cloudReady = true;
+    } catch(e){ sb = null; cloudReady = false; }
+    return cloudReady;
+  }
+
+  async function cloudGet(){
+    if (!sb) return null;
+    try {
+      const { data, error } = await sb.from(TABLE).select('data, updated_at').eq('id', WORKSPACE_ID).maybeSingle();
+      if (error || !data) return null;
+      lastSeen = data.updated_at || null;
+      return data.data || null;
+    } catch(e){ return null; }
+  }
+  async function cloudPut(state){
+    if (!sb) return false;
+    try {
+      const nowISO = new Date().toISOString();
+      const { error } = await sb.from(TABLE).upsert({ id: WORKSPACE_ID, data: state, updated_at: nowISO }, { onConflict: 'id' });
+      if (error) return false;
+      lastSeen = nowISO;
+      return true;
+    } catch(e){ return false; }
+  }
+
   async function load(){
+    /* 1) Cloud is the source of truth across devices */
+    if (cloudReady){
+      const remote = await cloudGet();
+      if (remote){ localSet(JSON.stringify(remote)); return remote; }
+      /* cloud empty → one-time migration: push whatever is on this device up */
+      const local = localGet();
+      if (local){ await cloudPut(local); return local; }
+      return null;
+    }
+    /* 2) Offline / sandbox fallback: Claude storage → localStorage → memory */
     if (hasClaudeStorage){
       try { const r = await window.storage.get(KEY); if (r && r.value) return JSON.parse(r.value); } catch(e){}
     }
-    if (hasLocalStorage){
-      try { const r = localStorage.getItem(KEY); if (r) return JSON.parse(r); } catch(e){}
-    }
+    const l = localGet(); if (l) return l;
     return memory;
   }
+
   async function save(state){
     const json = JSON.stringify(state);
     memory = state;
     if (hasClaudeStorage){ try { await window.storage.set(KEY, json); } catch(e){} }
-    if (hasLocalStorage){ try { localStorage.setItem(KEY, json); } catch(e){} }
+    localSet(json);
+    cloudPut(state); /* best-effort, non-blocking */
   }
-  return { load, save };
+
+  /* Returns fresh remote state only if another device wrote something newer. */
+  async function pullIfNewer(){
+    if (!cloudReady || !sb) return null;
+    try {
+      const { data } = await sb.from(TABLE).select('data, updated_at').eq('id', WORKSPACE_ID).maybeSingle();
+      if (data && data.updated_at && data.updated_at !== lastSeen){
+        lastSeen = data.updated_at;
+        return data.data || null;
+      }
+    } catch(e){}
+    return null;
+  }
+
+  return { load, save, initCloud, pullIfNewer, isCloud: () => cloudReady };
 })();
 
 /* Debounced auto-save: persists after every mutation, never manual */
 let _saveTimer = null;
 function persist(){
   clearTimeout(_saveTimer);
-  _saveTimer = setTimeout(() => StorageAdapter.save(S), 250);
+  _saveTimer = setTimeout(() => { _saveTimer = null; StorageAdapter.save(S); }, 250);
 }
 
 /* ================= DATE UTILITIES ================= */
@@ -506,15 +599,23 @@ function defaultState(){
       id: uid(), name, description, status:'Não iniciada',
       plannedDuration: dur, startDate: cursor,
       originalEnd: addDays(cursor, dur), actualEnd: null,
-      notes:'', subtasks: []
+      notes:'', subtasks: [],
+      priority:'Média', bottleneck:false, difficulty:null
     };
     cursor = m.originalEnd;
     return m;
   });
   const habits = ['Acordar às 04:15','Meditar às 04:40','Treinar às 05:00','Trabalhar às 06:00','Duolingo 15 minutos','Trabalhar 8 horas','Ler às 19:00','Dormir às 19:20']
     .map(name => ({ id: uid(), name, history:{} }));
+  milestones.unshift({
+    id: uid(), name: 'Tarefas do dia a dia',
+    description: 'Tarefas recorrentes e operacionais — fora da sequência da missão',
+    status: 'Em andamento', plannedDuration: 0, startDate: start, originalEnd: start,
+    actualEnd: null, notes: '', subtasks: [], pinned: true,
+    priority: 'Média', bottleneck: false, difficulty: null
+  });
   return {
-    version: 2,
+    version: 4,
     createdAt: start,
     targetUnits: 10,
     targetDate: cursor,              // final mission deadline (user-editable)
@@ -544,6 +645,45 @@ function migrate(s){
     }
     s.version = 2;
   }
+  if (s.version < 3){
+    /* v3: Tarefas do Dia passam a usar impacto em dias (substitui a regra de horas).
+       Conversão dos dados antigos: dia com 4h+ valia 1 dia justificado. */
+    (s.dailyTasks||[]).forEach(t => {
+      if (t.impactDays == null) t.impactDays = (Number(t.hours)||0) >= 4 ? 1 : 0;
+    });
+    s.version = 3;
+  }
+  if (s.version < 4){
+    /* v4: pinned "Tarefas do dia a dia", prioridade em marcos, gargalo manual, dificuldade */
+    const fixV4 = t => {
+      if (t.priority == null) t.priority = 'Média';
+      if (t.bottleneck == null) t.bottleneck = false;
+      if (t.difficulty === undefined) t.difficulty = null;
+      (t.children||[]).forEach(fixV4);
+    };
+    s.milestones = s.milestones || [];
+    s.milestones.forEach(m => {
+      if (m.priority == null) m.priority = 'Média';
+      if (m.bottleneck == null) m.bottleneck = false;
+      if (m.difficulty === undefined) m.difficulty = null;
+      if (m.pinned == null) m.pinned = false;
+      (m.subtasks||[]).forEach(fixV4);
+    });
+    const pi = s.milestones.findIndex(m => m.pinned);
+    if (pi < 0){
+      s.milestones.unshift({
+        id: uid(), name: 'Tarefas do dia a dia',
+        description: 'Tarefas recorrentes e operacionais — fora da sequência da missão',
+        status: 'Em andamento', plannedDuration: 0, startDate: todayISO(), originalEnd: todayISO(),
+        actualEnd: null, notes: '', subtasks: [], pinned: true,
+        priority: 'Média', bottleneck: false, difficulty: null
+      });
+    } else if (pi > 0){
+      const [p] = s.milestones.splice(pi, 1);
+      s.milestones.unshift(p);
+    }
+    s.version = 4;
+  }
   return s;
 }
 
@@ -559,12 +699,17 @@ function taskPlannedDays(t){
   const end = taskExpectedEnd(t);
   return (t.startDate && end) ? Math.max(0, diffDays(t.startDate, end)) : 0;
 }
-/* overdue only if: not completed AND today is after expected completion date */
+/* delay rules (v3):
+   - pending + past expected date  -> provisional delay (today - expected); returns to 0 if finished on time
+   - completed after expected date -> PERMANENT real delay (completedAt - expected)
+   - completed on or before time   -> 0 */
 function taskDelay(t){
   let own = 0;
-  if (t.status !== 'Concluída'){
-    const end = taskExpectedEnd(t);
-    if (end) own = Math.max(0, diffDays(end, todayISO()));
+  const end = taskExpectedEnd(t);
+  if (t.status === 'Concluída'){
+    if (end && t.completedAt) own = Math.max(0, diffDays(end, t.completedAt));
+  } else if (end){
+    own = Math.max(0, diffDays(end, todayISO()));
   }
   const kids = (t.children||[]).map(taskDelay);
   return Math.max(own, ...(kids.length ? kids : [0]));
@@ -620,7 +765,9 @@ function msProgress(m){
   return Math.round(m.subtasks.reduce((a,s)=>a+taskProgress(s),0)/m.subtasks.length);
 }
 function msDelay(m){
-  if (m.status === 'Concluída') return 0;
+  if (m.status === 'Concluída'){
+    return m.actualEnd ? Math.max(0, diffDays(m.originalEnd, m.actualEnd)) : 0;
+  }
   const own = Math.max(0, diffDays(m.originalEnd, todayISO()));
   const subs = m.subtasks.map(subDelay);
   return Math.max(own, ...(subs.length ? subs : [0]));
@@ -635,47 +782,95 @@ function msEffectiveStatus(m){
   return m.status;
 }
 
-/* ---- Necessary-day engine (justified vs real delay) ---- */
-function dayNecessaryHours(d){ return (S.dailyTasks||[]).filter(t=>t.date===d).reduce((a,t)=>a+(Number(t.hours)||0),0); }
-/* a day counts as "justified" when the operation consumed it:
-   4h+ of necessary tasks, or 2+ necessary tasks logged */
-function isJustifiedDay(d){
-  const ts = (S.dailyTasks||[]).filter(t=>t.date===d);
-  if (!ts.length) return false;
-  return dayNecessaryHours(d) >= 4 || ts.length >= 2;
+/* ---- Tarefas do Dia engine (v3) ----
+   Each daily task carries an explicit impact in days. The sum is the
+   JUSTIFIED delay: it pushes the projected deadline but is never real delay. */
+function justifiedTotal(){ return (S.dailyTasks||[]).reduce((a,t)=>a+(Number(t.impactDays)||0),0); }
+function dayImpactDays(d){ return (S.dailyTasks||[]).filter(t=>t.date===d).reduce((a,t)=>a+(Number(t.impactDays)||0),0); }
+
+/* ---- Sequential chain engine (v3) ----
+   The mission is sequential: each task starts when the previous one ends.
+   Completed items are FROZEN — history is never re-dated by the cascade. */
+function chainKids(node){
+  let cursor = node.startDate;
+  for (const k of (node.children||[])){
+    if (k.status !== 'Concluída'){
+      k.startDate = cursor;
+      k.expectedEnd = addDays(cursor, Math.max(0, Number(k.plannedDuration)||0));
+      chainKids(k);
+    }
+    cursor = taskExpectedEnd(k) || cursor;
+  }
 }
-function countJustifiedDays(fromISO, toISO){
-  let n = 0;
-  for (let d = fromISO; d < toISO; d = addDays(d,1)) if (isJustifiedDay(d)) n++;
-  return n;
+function rechainSiblings(list, fromIdx){
+  for (let j = Math.max(0, fromIdx); j < (list||[]).length; j++){
+    const t = list[j];
+    if (t.status !== 'Concluída'){
+      if (j > fromIdx) t.startDate = taskExpectedEnd(list[j-1]) || t.startDate; /* edited task keeps its start */
+      t.expectedEnd = addDays(t.startDate, Math.max(0, Number(t.plannedDuration)||0));
+      chainKids(t);
+    }
+  }
+}
+function rechainMilestones(fromIdx){
+  const M = S.milestones;
+  let prev = null; /* last mission milestone seen (pinned container never anchors the chain) */
+  for (let i = 0; i < M.length; i++){
+    const m = M[i];
+    if (m.pinned) continue; /* fixed container: outside the sequential chain */
+    if (i >= Math.max(0, fromIdx) && m.status !== 'Concluída'){
+      if (prev && i > fromIdx) m.startDate = prev.originalEnd;
+      m.originalEnd = addDays(m.startDate, Math.max(0, Number(m.plannedDuration)||0));
+      chainKids({ startDate: m.startDate, children: m.subtasks });
+    }
+    prev = m;
+  }
+}
+
+/* ---- Visual status rule (v3): on time -> light blue · real delay <=30d -> orange · >30d -> red ---- */
+function delayClass(days){ return days <= 0 ? 'b-blue' : days <= 30 ? 'b-amber' : 'b-red'; }
+function delayDtClass(days){ return days <= 0 ? 'blue' : days <= 30 ? 'amber' : 'red'; }
+
+/* ---- Weighted mission progress (v4) ----
+   Each milestone contributes its recursive progress weighted by planned days.
+   Concluding subtasks moves the central % — the pinned container is excluded. */
+function missionProgress(){
+  const R = S.milestones.filter(m => !m.pinned);
+  let wsum = 0, acc = 0;
+  for (const m of R){
+    const w = Math.max(1, Number(m.plannedDuration)||1);
+    wsum += w; acc += msProgress(m) * w;
+  }
+  return wsum ? Math.round(acc / wsum) : 0;
+}
+function clearBottlenecks(){
+  S.milestones.forEach(m => { m.bottleneck = false; flattenTasks(m.subtasks).forEach(t => t.bottleneck = false); });
 }
 
 /* ---- Global roadmap engine ---- */
 function engine(){
   const M = S.milestones;
-  const total = M.length;
-  const done = M.filter(m => m.status==='Concluída').length;
-  const progress = total ? Math.round(done/total*100) : 0;
+  const R = M.filter(m => !m.pinned);                        // mission milestones (pinned container excluded)
+  const total = R.length;
+  const done = R.filter(m => m.status==='Concluída').length;
+  const progress = missionProgress();                        // weighted granular progress (v4)
 
-  const originalEnd = M.length ? M.reduce((a,m)=> m.originalEnd > a ? m.originalEnd : a, M[0].originalEnd) : todayISO();
-  let totalDelay = 0, justifiedDelay = 0;
-  M.forEach(m => {
-    const d = msDelay(m);
-    if (!d) return;
-    totalDelay += d;
-    justifiedDelay += Math.min(d, countJustifiedDays(addDays(todayISO(), -d), todayISO()));
-  });
-  const realDelay = totalDelay - justifiedDelay;
-  const projectedEnd = addDays(originalEnd, totalDelay);
+  const originalEnd = R.length ? R.reduce((a,m)=> m.originalEnd > a ? m.originalEnd : a, R[0].originalEnd) : todayISO();
+  const rawDelay = R.reduce((a,m)=> a + msDelay(m), 0);     // observed schedule slippage
+  const justifiedDelay = justifiedTotal();                   // Tarefas do Dia impact (days)
+  const realDelay = Math.max(0, rawDelay - justifiedDelay);  // remainder is real delay
+  const totalDelay = realDelay + justifiedDelay;
+  const projectedRealEnd = addDays(originalEnd, realDelay);  // original + real delay only
+  const projectedEnd = addDays(originalEnd, totalDelay);     // original + real + justified
   const drift = diffDays(originalEnd, projectedEnd); // >0 = behind
 
   // Units opened (derived from completed "Abrir" milestones)
   const unitMap = [['Abrir Unidade Plus 1',1],['Abrir mais 2 Unidades Plus',2],['Abrir mais 3 Unidades Plus',3],['Abrir mais 4 Unidades Plus',4]];
   let units = 0;
-  M.forEach(m => { const hit = unitMap.find(u => m.name===u[0]); if (hit && m.status==='Concluída') units += hit[1]; });
+  R.forEach(m => { const hit = unitMap.find(u => m.name===u[0]); if (hit && m.status==='Concluída') units += hit[1]; });
 
   // First unit projection
-  const firstUnitMs = M.find(m => /unidade plus 1/i.test(m.name)) || M[6];
+  const firstUnitMs = R.find(m => /unidade plus 1/i.test(m.name)) || R[6];
   const firstUnitDate = firstUnitMs ? (firstUnitMs.status==='Concluída' ? firstUnitMs.actualEnd : projectedEndOfChain(firstUnitMs)) : null;
 
   // Pace engine
@@ -693,11 +888,17 @@ function engine(){
   const weekAgo = addDays(todayISO(), -7), monthAgo = addDays(todayISO(), -30);
   const doneWeek = allSubs.filter(s => s.completedAt && s.completedAt >= weekAgo).length;
   const doneMonth = allSubs.filter(s => s.completedAt && s.completedAt >= monthAgo).length;
-  const overdue = allSubs.filter(s => subEffectiveStatus(s)==='Atrasada').length
-                + M.filter(m => msEffectiveStatus(m)==='Atrasada').length;
-  const overdueSubs = allSubs.filter(s => subEffectiveStatus(s)==='Atrasada').length;
+  const realSubs = R.flatMap(m => flattenTasks(m.subtasks)); // pinned tasks never count as overdue
+  const overdue = realSubs.filter(s => subEffectiveStatus(s)==='Atrasada').length
+                + R.filter(m => msEffectiveStatus(m)==='Atrasada').length;
+  const overdueSubs = realSubs.filter(s => subEffectiveStatus(s)==='Atrasada').length;
 
-  return { total, done, progress, originalEnd, projectedEnd, drift, totalDelay, realDelay, justifiedDelay, units,
+  const plannedSpanDays = R.length ? Math.max(1, diffDays(R[0].startDate, originalEnd)) : 1;
+  const dts = S.dailyTasks||[];
+  const dtDone = dts.filter(t=>t.done).length;
+
+  return { total, done, progress, originalEnd, projectedEnd, projectedRealEnd, drift, totalDelay, rawDelay, realDelay, justifiedDelay, units,
+           plannedSpanDays, dtDone, dtPending: dts.length - dtDone, dtCount: dts.length,
            firstUnitDate, pace, paceDate, requiredPace, doneWeek, doneMonth, overdue, overdueSubs, remaining,
            hasNecessaryToday: (S.dailyTasks||[]).some(t => t.date === todayISO()) };
 }
@@ -768,10 +969,16 @@ function topTasks(){
   return pool.slice(0,3);
 }
 function bottleneck(){
+  /* manually flagged bottleneck wins (only one can exist at a time) */
+  for (const m of S.milestones){
+    if (m.bottleneck && !m.pinned) return { m, delay: msDelay(m), manual: true };
+    const hit = flattenTasks(m.subtasks).find(t => t.bottleneck);
+    if (hit) return { m: hit, delay: taskDelay(hit), manual: true, host: m };
+  }
   let worst = null, wd = -1;
-  S.milestones.forEach(m => { const d = msDelay(m); if (d > wd && m.status!=='Concluída'){ wd = d; worst = m; } });
+  S.milestones.forEach(m => { const d = msDelay(m); if (!m.pinned && d > wd && m.status!=='Concluída'){ wd = d; worst = m; } });
   if (worst && wd > 0) return { m: worst, delay: wd };
-  const active = S.milestones.find(m => m.status==='Em andamento') || S.milestones.find(m => m.status!=='Concluída');
+  const active = S.milestones.find(m => !m.pinned && m.status==='Em andamento') || S.milestones.find(m => !m.pinned && m.status!=='Concluída');
   return active ? { m: active, delay: 0 } : null;
 }
 function avgLog(field, n=30){
@@ -800,7 +1007,8 @@ function statusBadge(st){
 /* ---------- DASHBOARD ---------- */
 /* Strategic journey: avatar walks an elegant path toward the SAFE Plus goal */
 function journeySVG(pct){
-  const W=600, pad=36, n=Math.max(1, S.milestones.length);
+  const R = S.milestones.filter(m => !m.pinned); /* the fixed container is not part of the journey */
+  const W=600, pad=36, n=Math.max(1, R.length);
   const p = Math.min(100, Math.max(0, pct));
   const yOf = x => 86 - 20*Math.sin((x-pad)/(W-2*pad)*Math.PI);
   const px = pad + (W-2*pad)*p/100, py = yOf(px);
@@ -809,7 +1017,7 @@ function journeySVG(pct){
   for (let x=pad; x<=px; x+=8) prog += (x===pad?'M':'L')+x.toFixed(1)+' '+yOf(x).toFixed(1)+' ';
   if (px>pad) prog += 'L'+px.toFixed(1)+' '+py.toFixed(1);
   let dots='';
-  S.milestones.forEach((m,i)=>{
+  R.forEach((m,i)=>{
     const fx = pad + (W-2*pad)*((i+1)/n), fy = yOf(fx), on = m.status==='Concluída';
     dots += `<circle cx="${fx.toFixed(1)}" cy="${fy.toFixed(1)}" r="5" fill="${on?'#16A34A':'#fff'}" stroke="${on?'#16A34A':'#C7CEDC'}" stroke-width="2"><title>${esc(m.name)}</title></circle>`;
   });
@@ -833,13 +1041,13 @@ function journeySVG(pct){
 
 function renderDashboard(){
   const e = engine(), sc = safeScore(), bn = bottleneck(), tasks = topTasks();
-  const driftTxt = e.drift > 0 ? `<strong style="color:#FCA5A5">${e.drift} dias atrasado</strong>`
-                 : e.drift < 0 ? `<strong style="color:#5EE39A">${-e.drift} dias adiantado</strong>`
-                 : `<strong style="color:#5EE39A">No prazo</strong>`;
+  const driftTxt = e.realDelay > 30 ? `<strong style="color:#FCA5A5">${e.realDelay} dias de atraso real</strong>`
+                 : e.realDelay > 0 ? `<strong style="color:#FCD34D">${e.realDelay} dias de atraso real</strong>`
+                 : `<strong style="color:#9DC4FF">Dentro do prazo operacional</strong>`;
   const cells = Array.from({length: S.targetUnits}, (_,i) => {
     if (i < e.units) return '<div class="unit-cell open"></div>';
     if (i === e.units && e.progress > 0 && e.units < S.targetUnits){
-      const partial = Math.round(msProgress(S.milestones.find(m=>m.status!=='Concluída') || S.milestones[0]) || 0);
+      const partial = Math.round(msProgress(S.milestones.find(m=>!m.pinned && m.status!=='Concluída') || S.milestones.find(m=>!m.pinned) || S.milestones[0]) || 0);
       return `<div class="unit-cell partial" style="--p:${partial}%"></div>`;
     }
     return '<div class="unit-cell"></div>';
@@ -877,12 +1085,7 @@ function renderDashboard(){
         <button class="btn btn-ghost btn-sm" onclick="openTargetForm()">Editar prazo</button>
       </div>
       <div class="cd-over" id="cd-over" style="display:none">Prazo final ultrapassado</div>
-      <div class="cd-grid">
-        <div class="cd-cell"><div class="cd-num" id="cd-d">—</div><div class="cd-lbl">dias</div></div>
-        <div class="cd-cell"><div class="cd-num" id="cd-h">—</div><div class="cd-lbl">horas</div></div>
-        <div class="cd-cell"><div class="cd-num" id="cd-m">—</div><div class="cd-lbl">minutos</div></div>
-        <div class="cd-cell"><div class="cd-num" id="cd-s">—</div><div class="cd-lbl">segundos</div></div>
-      </div>
+      <div class="cd-line" id="cd-line">—</div>
       <div class="field-hint" id="cd-hint" style="margin-top:10px">Tempo restante até o prazo final da missão.</div>
     </div>
 
@@ -896,17 +1099,19 @@ function renderDashboard(){
     <div class="section-label">Análise de atraso</div>
     <div class="card">
       <div class="ms-dates" style="margin-bottom:12px">
-        <div class="dt ${e.realDelay?'red':''}"><b>Dias de atraso real</b><span>${e.realDelay}</span></div>
-        <div class="dt"><b>Atraso justificado</b><span style="color:#B45309">${e.justifiedDelay}</span></div>
-        <div class="dt"><b>Atraso total projetado</b><span>${e.totalDelay} dias</span></div>
-        <div class="dt"><b>Projeção final</b><span>${fmt(e.projectedEnd)}</span></div>
+        <div class="dt blue"><b>Prazo original</b><span>${fmt(e.originalEnd)}</span></div>
+        <div class="dt ${delayDtClass(e.realDelay)}"><b>Prazo projetado real</b><span>${fmt(e.projectedRealEnd)}</span></div>
+        <div class="dt blue"><b>Projetado com Tarefas do Dia</b><span>${fmt(e.projectedEnd)}</span></div>
+        <div class="dt ${delayDtClass(e.realDelay)}"><b>Atraso real</b><span>${e.realDelay} ${e.realDelay===1?'dia':'dias'}</span></div>
+        <div class="dt blue"><b>Atraso por Tarefas do Dia</b><span>${e.justifiedDelay} ${e.justifiedDelay===1?'dia':'dias'}</span></div>
+        <div class="dt"><b>Status</b><span>${e.realDelay>0?`<span class="badge ${delayClass(e.realDelay)}">${e.realDelay} ${e.realDelay===1?'dia':'dias'} de atraso real</span>`:`<span class="badge b-blue">Dentro do prazo operacional</span>`}</span></div>
       </div>
       ${e.totalDelay ? `
         <div class="delay-stack">
           <i style="width:${(e.realDelay/e.totalDelay*100).toFixed(1)}%;background:var(--danger)"></i>
           <i style="width:${(e.justifiedDelay/e.totalDelay*100).toFixed(1)}%;background:var(--warning)"></i>
         </div>
-        <div class="legend"><span><i style="background:var(--danger)"></i>Atraso real do plano</span><span><i style="background:var(--warning)"></i>Justificado por tarefas necessárias</span></div>`
+        <div class="legend"><span><i style="background:var(--danger)"></i>Atraso real do plano</span><span><i style="background:var(--warning)"></i>Justificado por Tarefas do Dia</span></div>`
       : `<div class="muted small">Nenhum atraso acumulado. Execução no prazo.</div>`}
       ${e.hasNecessaryToday ? `<div class="justified-note">⚠️ Hoje houve tarefas necessárias da operação. Parte do atraso foi justificada.</div>` : ''}
     </div>
@@ -932,10 +1137,11 @@ function renderDashboard(){
       <div class="card">
         <div class="sub-name">${esc(bn.m.name)}</div>
         <div class="sub-meta" style="margin-top:4px">
-          ${bn.delay>0 ? `<span class="badge b-red">Atrasado em ${bn.delay} ${bn.delay===1?'dia':'dias'}</span>` : `<span class="badge b-blue">Marco ativo</span>`}
-          <span>Projeção: ${fmt(msProjectedEnd(bn.m))}</span>
+          ${bn.manual?`<span class="badge b-red">Gargalo marcado</span>`:''}
+          ${bn.delay>0 ? `<span class="badge ${delayClass(bn.delay)}">Atrasado em ${bn.delay} ${bn.delay===1?'dia':'dias'}</span>` : `<span class="badge b-blue">${bn.manual?'No prazo':'Marco ativo'}</span>`}
+          <span>Projeção: ${fmt(bn.host ? taskExpectedEnd(bn.m) : msProjectedEnd(bn.m))}</span>
         </div>
-        <div style="margin-top:12px">${pbar(msProgress(bn.m), bn.delay>0?'red':'')}</div>
+        <div style="margin-top:12px">${pbar(bn.host ? taskProgress(bn.m) : msProgress(bn.m), bn.delay>0?'red':'')}</div>
       </div>` : `<div class="empty">Roadmap concluído.</div>`}
 
     <div class="section-label">Composição do SAFE Score</div>
@@ -967,70 +1173,89 @@ function renderRoadmap(){
     </div>
     <div class="card card-lg">
       <h3>Progresso geral do projeto</h3>
-      ${pbar(e.progress, e.drift>0?'amber':'green')}
+      ${pbar(e.progress, e.realDelay>0?(e.realDelay<=30?'amber':'red'):'green')}
       <div class="sub-meta" style="margin-top:12px">
         <span>Prazo original: <b>${fmt(e.originalEnd)}</b></span>
-        <span>Projeção: <b>${fmt(e.projectedEnd)}</b></span>
-        ${e.drift>0?`<span class="badge b-red">${e.drift} dias de desvio</span>`:`<span class="badge b-green">No prazo</span>`}
+        <span>Projeção real: <b>${fmt(e.projectedRealEnd)}</b></span>
+        <span>Projeção total: <b>${fmt(e.projectedEnd)}</b></span>
+        ${e.realDelay>0?`<span class="badge ${delayClass(e.realDelay)}">${e.realDelay} dias de atraso real</span>`:`<span class="badge b-blue">Dentro do prazo operacional</span>`}
+        ${e.justifiedDelay>0?`<span class="badge b-blue">+${e.justifiedDelay}d por Tarefas do Dia</span>`:''}
       </div>
     </div>
-    <div class="list-head">
-      <div class="section-label" style="margin:0">Marcos</div>
-      <button class="btn btn-primary btn-sm" onclick="openMilestoneForm()">+ Novo marco</button>
-    </div>
-    ${S.milestones.map((m,i)=>renderMilestone(m,i)).join('') || '<div class="empty">Nenhum marco criado. Comece adicionando o primeiro.</div>'}`;
+    <div class="section-label">Marcos</div>
+    ${S.milestones.map((m,i)=>renderMilestone(m,i)).join('') || '<div class="empty">Nenhum marco criado. Crie o primeiro abaixo.</div>'}
+    <div class="card">
+      <strong style="font-size:.95rem">Novo marco</strong>
+      <div class="inline-add">
+        <input class="ia-name" id="ia-ms-name" type="text" placeholder="Nome do marco" onkeydown="if(event.key==='Enter')inlineCreateMilestone()">
+        <input class="ia-days" id="ia-ms-days" type="number" min="1" placeholder="dias" onkeydown="if(event.key==='Enter')inlineCreateMilestone()">
+        <button class="btn btn-primary btn-sm" onclick="inlineCreateMilestone()">+ Criar</button>
+      </div>
+      <div class="ia-hint">Sequencial: o novo marco começa quando o anterior termina. Demais detalhes pelo botão Editar.</div>
+    </div>`;
 }
 
 function renderMilestone(m, i){
-  const prog = msProgress(m), st = msEffectiveStatus(m), delay = msDelay(m);
+  const prog = msProgress(m), st = msEffectiveStatus(m), delay = m.pinned ? 0 : msDelay(m);
   const all = flattenTasks(m.subtasks);
   const open = openBodies.has(m.id);
+  const num = m.pinned ? '📌' : (S.milestones.slice(0, i).filter(x=>!x.pinned).length + 1);
   return `
-  <div class="ms ${st==='Concluída'?'done':''} ${open?'open-body':''}" id="ms-${m.id}">
+  <div class="ms ${!m.pinned && st==='Concluída'?'done':''} ${open?'open-body':''}" id="ms-${m.id}">
     <div class="ms-head" onclick="toggleMs('${m.id}')">
-      <div class="ms-num">${st==='Concluída'?'✓':i+1}</div>
+      <div class="ms-num">${!m.pinned && st==='Concluída'?'✓':num}</div>
       <div style="flex:1;min-width:0">
         <div class="ms-title">${esc(m.name)}</div>
         ${m.description?`<div class="ms-desc">${esc(m.description)}</div>`:''}
         <div class="ms-badges">
-          ${statusBadge(st)}
-          ${delay>0?`<span class="badge b-red">Atrasado em ${delay} ${delay===1?'dia':'dias'}</span>`:''}
+          ${m.pinned?`<span class="badge b-blue">Fixo · fora da sequência</span>`:statusBadge(st)}
+          ${!m.pinned?`<span class="badge prio-${m.priority||'Média'}">${m.priority||'Média'}</span>`:''}
+          ${m.bottleneck?`<span class="badge b-red">Gargalo</span>`:''}
+          ${m.difficulty?`<span class="badge b-grey">Dificuldade ${m.difficulty}/5</span>`:''}
+          ${!m.pinned && delay>0 && st!=='Concluída'?`<span class="badge ${delayClass(delay)}">Atrasado em ${delay} ${delay===1?'dia':'dias'}</span>`:''}
+          ${!m.pinned && delay>0 && st==='Concluída'?`<span class="badge ${delayClass(delay)}">Concluído com ${delay} ${delay===1?'dia':'dias'} de atraso</span>`:''}
           <span class="badge b-grey" style="background:var(--surface)">${all.filter(s=>s.status==='Concluída').length}/${all.length} subtarefas</span>
         </div>
       </div>
       <svg class="chev" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
     </div>
-    <div class="ms-prog">${pbar(prog, st==='Atrasada'?'red':st==='Concluída'?'green':'')}</div>
+    <div class="ms-prog">${pbar(prog, !m.pinned && st==='Atrasada'?'red':st==='Concluída'&&!m.pinned?'green':'')}</div>
     <div class="ms-body">
-      <div class="ms-dates">
+      ${m.pinned?'':`<div class="ms-dates">
         <div class="dt"><b>Data inicial</b><span>${fmt(m.startDate)}</span></div>
         <div class="dt"><b>Data prevista</b><span>${fmt(m.originalEnd)}</span></div>
         <div class="dt"><b>Dias planejados</b><span>${m.plannedDuration || Math.max(0, diffDays(m.startDate, m.originalEnd))} dias</span></div>
-        <div class="dt ${delay>0?'red':''}"><b>Dias de atraso</b><span>${delay>0 ? delay+' '+(delay===1?'dia':'dias') : '—'}</span></div>
-        <div class="dt ${delay>0?'red':''}"><b>Projeção</b><span>${fmt(msProjectedEnd(m))}</span></div>
+        <div class="dt ${delay>0?delayDtClass(delay):'blue'}"><b>Dias de atraso</b><span>${delay>0 ? delay+' '+(delay===1?'dia':'dias') : 'No prazo'}</span></div>
+        <div class="dt ${delay>0?delayDtClass(delay):''}"><b>Projeção</b><span>${fmt(msProjectedEnd(m))}</span></div>
         <div class="dt"><b>Conclusão real</b><span>${fmt(m.actualEnd)}</span></div>
-      </div>
+      </div>`}
       ${m.notes?`<div class="calc-pill" style="background:var(--surface);color:var(--text);font-weight:500">📝 ${esc(m.notes)}</div>`:''}
       <div class="list-head">
-        <strong style="font-size:.95rem">Subtarefas</strong>
-        <button class="btn btn-soft btn-sm" onclick="openSubtaskForm('${m.id}','','')">+ Subtarefa</button>
+        <strong style="font-size:.95rem">${m.pinned?'Tarefas recorrentes':'Subtarefas'}</strong>
       </div>
-      ${m.subtasks.map(s=>renderSubtask(m,s,0)).join('') || '<div class="muted small" style="padding:8px 0 14px">Nenhuma subtarefa ainda.</div>'}
+      ${m.subtasks.map(s=>renderSubtask(m,s,0)).join('') || '<div class="muted small" style="padding:8px 0 4px">Nenhuma subtarefa ainda. Crie a primeira abaixo.</div>'}
+      <div class="inline-add">
+        <input class="ia-name" id="ia-name-${m.id}" type="text" placeholder="Nova subtarefa" onkeydown="if(event.key==='Enter')inlineCreateSubtask('${m.id}','')">
+        <input class="ia-days" id="ia-days-${m.id}" type="number" min="1" placeholder="dias" onkeydown="if(event.key==='Enter')inlineCreateSubtask('${m.id}','')">
+        <button class="btn btn-soft btn-sm" onclick="inlineCreateSubtask('${m.id}','')" aria-label="Criar subtarefa">+</button>
+      </div>
       <div class="divider"></div>
-      <div class="move-row" style="margin-bottom:12px">
+      ${m.pinned?'':`<div class="move-row" style="margin-bottom:12px">
         <span class="small muted">Reordenar:</span>
         <button class="move-btn" onclick="moveMilestone('${m.id}','up')">↑ Subir</button>
         <button class="move-btn" onclick="moveMilestone('${m.id}','down')">↓ Descer</button>
         <button class="move-btn" onclick="moveMilestone('${m.id}','top')">⇤ Início</button>
         <button class="move-btn" onclick="moveMilestone('${m.id}','end')">⇥ Fim</button>
-      </div>
+      </div>`}
       <div class="btn-row">
-        ${m.status!=='Concluída'
-          ? `<button class="btn btn-primary btn-sm" onclick="completeMilestone('${m.id}')">Concluir marco</button>
-             ${m.status==='Não iniciada'?`<button class="btn btn-soft btn-sm" onclick="startMilestone('${m.id}')">Iniciar</button>`:''}`
-          : `<button class="btn btn-soft btn-sm" onclick="reopenMilestone('${m.id}')">Reabrir</button>`}
-        <button class="btn btn-ghost btn-sm" onclick="openMilestoneForm('${m.id}')">Editar</button>
-        <button class="btn btn-ghost btn-sm" style="color:var(--danger)" onclick="deleteMilestone('${m.id}')">Excluir</button>
+        ${m.pinned
+          ? `<button class="btn btn-ghost btn-sm" onclick="openMilestoneForm('${m.id}')">Editar</button>`
+          : `${m.status!=='Concluída'
+              ? `<button class="btn btn-primary btn-sm" onclick="completeMilestone('${m.id}')">Concluir marco</button>
+                 ${m.status==='Não iniciada'?`<button class="btn btn-soft btn-sm" onclick="startMilestone('${m.id}')">Iniciar</button>`:''}`
+              : `<button class="btn btn-soft btn-sm" onclick="reopenMilestone('${m.id}')">Reabrir</button>`}
+             <button class="btn btn-ghost btn-sm" onclick="openMilestoneForm('${m.id}')">Editar</button>
+             <button class="btn btn-ghost btn-sm" style="color:var(--danger)" onclick="deleteMilestone('${m.id}')">Excluir</button>`}
       </div>
     </div>
   </div>`;
@@ -1051,16 +1276,24 @@ function renderSubtask(m, s, depth){
       <div class="sub-meta">
         ${statusBadge(st)}
         <span class="badge prio-${s.priority}">${s.priority}</span>
+        ${s.bottleneck?`<span class="badge b-red">Gargalo</span>`:''}
+        ${s.difficulty?`<span class="badge b-grey">Dificuldade ${s.difficulty}/5</span>`:''}
         ${s.startDate?`<span>Início ${fmt(s.startDate)}</span>`:''}
         ${end?`<span>· Previsão ${fmt(end)}</span>`:''}
         ${taskPlannedDays(s)?`<span>· ${taskPlannedDays(s)} dias planejados</span>`:''}
-        ${d>0?`<span class="badge b-red">Atrasada em ${d} ${d===1?'dia':'dias'}</span>`:''}
+        ${d>0 && s.status!=='Concluída'?`<span class="badge ${delayClass(d)}">Atrasada em ${d} ${d===1?'dia':'dias'}</span>`:''}
+        ${d>0 && s.status==='Concluída'?`<span class="badge ${delayClass(d)}">Concluída com ${d}d de atraso</span>`:''}
       </div>
       ${s.description?`<div class="muted small" style="margin-top:4px">${esc(s.description)}</div>`:''}
       ${kids.length?`<div class="sub-pbar">${pbar(prog, st==='Atrasada'?'red':s.status==='Concluída'?'green':'')}</div>`:''}
-      ${kids.length?`<div class="sub-tree">${kids.map(k=>renderSubtask(m,k,depth+1)).join('')}</div>`:''}
+      ${(kids.length || inlineOpen.has(s.id))?`<div class="sub-tree">${kids.map(k=>renderSubtask(m,k,depth+1)).join('')}${inlineOpen.has(s.id)?`
+        <div class="inline-add">
+          <input class="ia-name" id="ia-name-${s.id}" type="text" placeholder="Nova subtarefa aninhada" onkeydown="if(event.key==='Enter')inlineCreateSubtask('${m.id}','${s.id}')">
+          <input class="ia-days" id="ia-days-${s.id}" type="number" min="1" placeholder="dias" onkeydown="if(event.key==='Enter')inlineCreateSubtask('${m.id}','${s.id}')">
+          <button class="btn btn-soft btn-sm" onclick="inlineCreateSubtask('${m.id}','${s.id}')" aria-label="Criar subtarefa aninhada">+</button>
+        </div>`:''}</div>`:''}
     </div>
-    <button class="mini-add" onclick="openSubtaskForm('${m.id}','${s.id}','')" aria-label="Adicionar subtarefa aninhada" title="Adicionar subtarefa dentro desta">
+    <button class="mini-add" onclick="toggleInline('${s.id}')" aria-label="Adicionar subtarefa aninhada" title="Adicionar subtarefa dentro desta">
       <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
     </button>
     <button class="icon-btn" onclick="openSubtaskForm('${m.id}','','${s.id}')" aria-label="Editar">
@@ -1076,7 +1309,7 @@ function renderHoje(){
   const sc = safeScore(), e = engine(), bn = bottleneck(), tasks = topTasks();
   const cls = sc.total>=70?'forte':sc.total>=40?'medio':'fraco';
   const lbl = {forte:'Dia Forte',medio:'Dia Médio',fraco:'Dia Fraco'}[cls];
-  const risk = e.totalDelay===0?['Baixo','b-green']:e.totalDelay<=7?['Médio','b-amber']:['Alto','b-red'];
+  const risk = e.realDelay===0?['Dentro do prazo','b-blue']:e.realDelay<=30?['Atenção','b-amber']:['Crítico','b-red'];
   $('#view-hoje').innerHTML = `
     <div class="page-head">
       <div class="page-title">Por que hoje importa?</div>
@@ -1111,12 +1344,12 @@ function renderHoje(){
       <div class="stat">
         <span class="stat-label">Gargalo atual</span>
         <span style="font-weight:700;font-size:1rem;margin-top:2px">${bn?esc(bn.m.name):'—'}</span>
-        ${bn&&bn.delay>0?`<span class="stat-note" style="color:var(--danger);font-weight:600">+${bn.delay} dias de atraso</span>`:'<span class="stat-note">Marco em andamento</span>'}
+        ${bn&&bn.delay>0?`<span class="stat-note" style="color:var(--danger);font-weight:600">+${bn.delay} dias de atraso</span>`:'<span class="stat-note">'+(bn&&bn.manual?'Gargalo marcado manualmente':'Marco em andamento')+'</span>'}
       </div>
       <div class="stat">
         <span class="stat-label">Risco de cronograma</span>
         <span class="stat-value" style="font-size:1.3rem"><span class="badge ${risk[1]}" style="font-size:.95rem">${risk[0]}</span></span>
-        <span class="stat-note">${e.totalDelay} dias de atraso acumulado</span>
+        <span class="stat-note">${e.realDelay} dias reais · ${e.justifiedDelay} justificados</span>
       </div>
     </div>
 
@@ -1124,7 +1357,7 @@ function renderHoje(){
       Se você concluir as prioridades de hoje, reduz o atraso projetado e se aproxima da sua primeira Unidade SAFE Plus${e.firstUnitDate?` — prevista para <u>${fmt(e.firstUnitDate)}</u>`:''}.
     </div>
 
-    <div class="section-label">Tarefa necessária do dia</div>
+    <div class="section-label">Tarefas do Dia</div>
     ${renderDailyTasksCard()}
 
     <div class="section-label">Registro do dia</div>
@@ -1149,7 +1382,7 @@ function renderDailyTasksCard(){
   return `
   <div class="card card-lg">
     <div class="list-head">
-      <h3 style="margin:0">Obrigações de hoje</h3>
+      <h3 style="margin:0">Tarefas do Dia</h3>
       <button class="btn btn-soft btn-sm" onclick="openDailyTaskForm()">+ Tarefa</button>
     </div>
     <div class="muted small" style="margin-bottom:6px">Obrigações reais da operação. Elas justificam atraso — não contam como falha pessoal.</div>
@@ -1161,7 +1394,7 @@ function renderDailyTasksCard(){
         <div class="sub-main">
           <div class="sub-name" style="${x.done?'text-decoration:line-through;color:var(--muted)':''}">${esc(x.name)}</div>
           <div class="sub-meta">
-            ${x.hours?`<span>${x.hours}h estimadas</span>`:''}
+            ${Number(x.impactDays)?`<span>Impacto: ${x.impactDays} ${Number(x.impactDays)===1?'dia':'dias'}</span>`:''}
             ${x.notes?`<span>· ${esc(x.notes)}</span>`:''}
           </div>
         </div>
@@ -1169,8 +1402,8 @@ function renderDailyTasksCard(){
           <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 3a2.8 2.8 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5z"/></svg>
         </button>
       </div>`).join('') : '<div class="muted small" style="padding:6px 0">Nenhuma tarefa necessária registrada hoje.</div>'}
-    ${isJustifiedDay(t) ? `<div class="justified-note">⚠️ Hoje houve tarefas necessárias da operação. Parte do atraso foi justificada.</div>` : ''}
-    <div class="field-hint" style="margin-top:10px">Regra: dias com 4h+ de tarefas necessárias (ou 2+ tarefas) entram como atraso justificado, não real.</div>
+    ${list.length ? `<div class="justified-note">⚠️ Hoje houve tarefas necessárias da operação. Parte do atraso foi justificada.</div>` : ''}
+    <div class="field-hint" style="margin-top:10px">O impacto em dias de cada Tarefa do Dia empurra o prazo projetado como atraso justificado (azul) — nunca vira atraso real (laranja/vermelho).</div>
   </div>`;
 }
 
@@ -1272,11 +1505,27 @@ function weekTimeline(){
     </div>`).join('')}</div>`;
 }
 
+/* pie chart (v4) — used for delay composition */
+function pieSVG(parts, size){
+  const total = parts.reduce((a,p)=>a+p.value,0);
+  if (!total) return '';
+  const cx=size/2, cy=size/2, r=size/2-2;
+  const vis = parts.filter(p=>p.value>0);
+  if (vis.length === 1) return `<svg width="${size}" height="${size}" viewBox="0 0 ${size} ${size}"><circle cx="${cx}" cy="${cy}" r="${r}" fill="${vis[0].color}"/></svg>`;
+  let a0 = -Math.PI/2, svg = `<svg width="${size}" height="${size}" viewBox="0 0 ${size} ${size}" role="img">`;
+  for (const p of parts){
+    if (!p.value) continue;
+    const a1 = a0 + p.value/total*2*Math.PI;
+    const x0=cx+r*Math.cos(a0), y0=cy+r*Math.sin(a0), x1=cx+r*Math.cos(a1), y1=cy+r*Math.sin(a1);
+    const large = (a1-a0) > Math.PI ? 1 : 0;
+    svg += `<path d="M${cx} ${cy} L${x0.toFixed(1)} ${y0.toFixed(1)} A${r} ${r} 0 ${large} 1 ${x1.toFixed(1)} ${y1.toFixed(1)} Z" fill="${p.color}"/>`;
+    a0 = a1;
+  }
+  return svg + '</svg>';
+}
+
 function renderKpis(){
   const e = engine(), sc = safeScore();
-  const bestStreak = Math.max(0, ...S.habits.map(h=>habitStats(h).best));
-  const curStreak = Math.max(0, ...S.habits.map(h=>habitStats(h).streak));
-  const fmtAvg = v => v==null ? '—' : v.toFixed(1);
   const t = todayISO(), weekAgo = addDays(t,-7), twoWeeks = addDays(t,-14);
   let prevWeek = 0;
   S.milestones.forEach(m => flattenTasks(m.subtasks).forEach(s => {
@@ -1284,6 +1533,7 @@ function renderKpis(){
   }));
   const discNow = disciplineWindow(0,7), discPrev = disciplineWindow(7,7);
   const scColor = sc.total>=70 ? '#16A34A' : sc.total>=40 ? '#F59E0B' : '#DC2626';
+  const impactPct = Math.min(100, +(e.justifiedDelay / e.plannedSpanDays * 100).toFixed(1));
 
   $('#view-kpis').innerHTML = `
     <div class="page-head">
@@ -1294,7 +1544,7 @@ function renderKpis(){
     <div class="kpi-hero">
       <div class="kpi-circle">
         ${donutSVG(e.progress, '#081A58', 116, 11, e.progress+'%', e.done+'/'+e.total+' marcos')}
-        <span class="stat-label">Progresso do projeto</span>
+        <span class="stat-label">Progresso da missão</span>
       </div>
       <div class="kpi-circle">
         ${donutSVG(disciplineToday(), '#16A34A', 116, 11, disciplineToday()+'%', 'hoje')}
@@ -1306,56 +1556,39 @@ function renderKpis(){
       </div>
     </div>
 
-    <div class="section-label">Tendências</div>
-    <div class="grid" style="grid-template-columns:1fr 1fr">
-      <div class="stat">
-        <span class="stat-label">Tarefas na semana</span>
-        <span class="stat-value">${e.doneWeek}</span>
-        ${trendBadge(e.doneWeek, prevWeek)}
-      </div>
-      <div class="stat">
-        <span class="stat-label">Disciplina semanal</span>
-        <span class="stat-value">${discNow}%</span>
-        ${trendBadge(discNow, discPrev, ' pts')}
+    <div class="card" style="display:flex;gap:8px 24px;flex-wrap:wrap;align-items:center;margin-top:12px">
+      <span style="font-weight:700;font-size:.9rem">Semana:</span>
+      <span class="small"><b>${e.doneWeek}</b> tarefas · ${trendBadge(e.doneWeek, prevWeek)}</span>
+      <span class="small">Disciplina <b>${discNow}%</b> · ${trendBadge(discNow, discPrev, ' pts')}</span>
+    </div>
+
+    <div class="section-label">Composição do atraso</div>
+    <div class="card" style="display:flex;gap:22px;align-items:center;flex-wrap:wrap">
+      ${e.totalDelay ? pieSVG([{value:e.realDelay,color:'#DC2626'},{value:e.justifiedDelay,color:'#F59E0B'}], 140) : ''}
+      <div style="flex:1;min-width:220px">
+        ${e.totalDelay ? `
+          <div class="legend" style="flex-direction:column;align-items:flex-start;gap:9px;margin-top:0">
+            <span><i style="background:#DC2626"></i>Atraso real: <b>${e.realDelay} ${e.realDelay===1?'dia':'dias'}</b> (${Math.round(e.realDelay/e.totalDelay*100)}%)</span>
+            <span><i style="background:#F59E0B"></i>Justificado por Tarefas do Dia: <b>${e.justifiedDelay} ${e.justifiedDelay===1?'dia':'dias'}</b> (${Math.round(e.justifiedDelay/e.totalDelay*100)}%)</span>
+            <span class="muted small">Total projetado: ${e.totalDelay} dias · novo prazo ${fmt(e.projectedEnd)}</span>
+          </div>`
+        : `<span class="badge b-blue">Dentro do prazo operacional</span>
+           <div class="muted small" style="margin-top:8px">Nenhum atraso acumulado até hoje. Prazo original: ${fmt(e.originalEnd)}.</div>`}
       </div>
     </div>
 
-    <div class="section-label">Linha do tempo semanal</div>
+    <div class="section-label">Tarefas concluídas por dia</div>
     <div class="card card-lg">
-      <h3>Tarefas concluídas por dia</h3>
       ${weekTimeline()}
     </div>
 
-    <div class="section-label">Análise de atraso</div>
+    <div class="section-label">Tarefas do Dia · impacto operacional</div>
     <div class="card">
-      <div class="ms-dates" style="margin-bottom:12px">
-        <div class="dt ${e.realDelay?'red':''}"><b>Atraso real</b><span>${e.realDelay} dias</span></div>
-        <div class="dt"><b>Justificado</b><span style="color:#B45309">${e.justifiedDelay} dias</span></div>
-        <div class="dt"><b>Total projetado</b><span>${e.totalDelay} dias</span></div>
-        <div class="dt"><b>Tarefas atrasadas</b><span style="${e.overdue?'color:var(--danger)':''}">${e.overdue}</span></div>
-      </div>
-      ${e.totalDelay ? `
-        <div class="delay-stack">
-          <i style="width:${(e.realDelay/e.totalDelay*100).toFixed(1)}%;background:var(--danger)"></i>
-          <i style="width:${(e.justifiedDelay/e.totalDelay*100).toFixed(1)}%;background:var(--warning)"></i>
-        </div>
-        <div class="legend"><span><i style="background:var(--danger)"></i>Atraso real do plano</span><span><i style="background:var(--warning)"></i>Justificado por tarefas necessárias</span></div>`
-      : `<div class="muted small">Nenhum atraso acumulado.</div>`}
+      ${pbar(impactPct, 'amber')}
+      <div class="muted small" style="margin-top:10px">${e.justifiedDelay} ${e.justifiedDelay===1?'dia':'dias'} consumidos pela operação de ${e.plannedSpanDays} planejados · ${e.dtDone} concluídas · ${e.dtPending} pendentes</div>
     </div>
 
-    <div class="section-label">Hábitos e bem-estar</div>
-    <div class="grid">
-      <div class="stat"><span class="stat-label">Tarefas no mês</span><span class="stat-value">${e.doneMonth}</span><span class="stat-note">concluídas em 30 dias</span></div>
-      <div class="stat"><span class="stat-label">Streak atual</span><span class="stat-value">${curStreak}</span><span class="stat-note">dias · melhor hábito ativo</span></div>
-      <div class="stat"><span class="stat-label">Melhor streak</span><span class="stat-value">${bestStreak}</span><span class="stat-note">dias · recorde histórico</span></div>
-      <div class="stat"><span class="stat-label">Disciplina mensal</span><span class="stat-value">${disciplineRange(30)}%</span><span class="stat-note">média de 30 dias</span></div>
-      <div class="stat"><span class="stat-label">Foco médio</span><span class="stat-value">${fmtAvg(avgLog('focus'))}</span><span class="stat-note">últimos 30 dias (1–5)</span></div>
-      <div class="stat"><span class="stat-label">Energia média</span><span class="stat-value">${fmtAvg(avgLog('energy'))}</span><span class="stat-note">últimos 30 dias (1–5)</span></div>
-      <div class="stat"><span class="stat-label">Humor médio</span><span class="stat-value">${fmtAvg(avgLog('mood'))}</span><span class="stat-note">últimos 30 dias (1–5)</span></div>
-      <div class="stat"><span class="stat-label">SAFE Score</span><span class="stat-value ${sc.total>=70?'good':sc.total>=40?'warn':'bad'}">${sc.total}</span><span class="stat-note">composição no Dashboard</span></div>
-    </div>
-
-    <div class="section-label">Evolução · últimos 14 dias</div>
+    <div class="section-label">Energia, foco e humor · 14 dias</div>
     <div class="card card-lg chart-wrap">${renderChart()}</div>`;
 }
 
@@ -1402,8 +1635,18 @@ function completeMilestone(id){
 function reopenMilestone(id){ mutate(()=>{ const m=S.milestones.find(x=>x.id===id); if(m){ m.status='Em andamento'; m.actualEnd=null; } }); }
 function deleteMilestone(id){
   const m = S.milestones.find(x=>x.id===id);
+  if (!m || m.pinned) return; /* the fixed container cannot be deleted */
   if (!confirm(`Excluir o marco "${m.name}" e todas as suas subtarefas?`)) return;
-  mutate(()=>{ S.milestones = S.milestones.filter(x=>x.id!==id); });
+  mutate(()=>{
+    const fr = S.milestones.find(x=>!x.pinned);
+    const anchor = fr ? fr.startDate : todayISO();
+    S.milestones = S.milestones.filter(x=>x.id!==id);
+    const nf = S.milestones.find(x=>!x.pinned);
+    if (nf){
+      if (nf.status !== 'Concluída') nf.startDate = anchor;
+      rechainMilestones(0);
+    }
+  });
   toast('Marco excluído');
 }
 function toggleHabit(id){
@@ -1422,11 +1665,19 @@ function setLog(field, value){
 function moveMilestone(id, action){
   mutate(()=>{
     const i = S.milestones.findIndex(m=>m.id===id); if (i < 0) return;
+    if (S.milestones[i].pinned) return; /* fixed container cannot move */
+    const firstReal = S.milestones.find(x=>!x.pinned);
+    const anchor = firstReal ? firstReal.startDate : todayISO(); /* mission start is preserved */
     const [m] = S.milestones.splice(i,1);
     if (action==='up') S.milestones.splice(Math.max(0, i-1), 0, m);
     else if (action==='down') S.milestones.splice(Math.min(S.milestones.length, i+1), 0, m);
     else if (action==='top') S.milestones.unshift(m);
     else S.milestones.push(m);
+    const pi = S.milestones.findIndex(x=>x.pinned);
+    if (pi > 0){ const [p] = S.milestones.splice(pi,1); S.milestones.unshift(p); } /* pinned always first */
+    const nf = S.milestones.find(x=>!x.pinned);
+    if (nf && nf.status !== 'Concluída') nf.startDate = anchor;
+    rechainMilestones(0); /* reorder cascades the whole sequential chain */
   });
 }
 
@@ -1442,11 +1693,11 @@ function deleteDailyTask(id){
 function openDailyTaskForm(id){
   const t = id ? S.dailyTasks.find(x=>x.id===id) : null;
   openModal(`
-    <div class="modal-title">${t?'Editar tarefa necessária':'Tarefa necessária do dia'}</div>
+    <div class="modal-title">${t?'Editar Tarefa do Dia':'Nova Tarefa do Dia'}</div>
     <div class="field"><label>Nome</label><input id="f-name" value="${t?esc(t.name):''}" placeholder="Ex.: Visitar clínica, resolver entrega"></div>
     <div class="field-row">
       <div class="field"><label>Data</label><input id="f-date" type="date" value="${t?t.date:todayISO()}"></div>
-      <div class="field"><label>Horas estimadas</label><input id="f-hours" type="number" min="0" max="24" step="0.5" value="${t&&t.hours!=null?t.hours:''}" placeholder="0"></div>
+      <div class="field"><label>Impacto no plano (dias)</label><input id="f-impact" type="number" min="0" max="90" step="0.5" value="${t&&t.impactDays!=null?t.impactDays:''}" placeholder="0"></div>
     </div>
     <div class="field"><label>Notas</label><textarea id="f-notes" placeholder="Contexto da obrigação">${t?esc(t.notes||''):''}</textarea></div>
     <div class="btn-row">
@@ -1461,7 +1712,7 @@ function saveDailyTask(id){
   const data = {
     name,
     date: $('#f-date').value || todayISO(),
-    hours: Number($('#f-hours').value) || 0,
+    impactDays: Number($('#f-impact').value) || 0,
     notes: $('#f-notes').value.trim()
   };
   mutate(()=>{
@@ -1469,6 +1720,46 @@ function saveDailyTask(id){
     else S.dailyTasks.push({ id: uid(), done: false, ...data });
   });
   closeModal(); toast(id?'Tarefa atualizada':'Tarefa necessária registrada');
+}
+
+/* ---- inline creation (v3) ---- */
+const inlineOpen = new Set(); /* nested nodes with an open inline-add row */
+function toggleInline(id){ inlineOpen.has(id) ? inlineOpen.delete(id) : inlineOpen.add(id); render(); }
+function inlineCreateMilestone(){
+  const nEl = document.getElementById('ia-ms-name'), dEl = document.getElementById('ia-ms-days');
+  const name = (nEl && nEl.value || '').trim();
+  if (!name){ toast('Informe o nome do marco'); return; }
+  const dur = Math.max(1, Number(dEl && dEl.value)||1);
+  mutate(()=>{
+    const reals = S.milestones.filter(x=>!x.pinned);
+    const last = reals[reals.length-1];
+    const start = last ? last.originalEnd : todayISO(); /* sequential: starts when the previous ends */
+    S.milestones.push({ id:uid(), name, description:'', status:'Não iniciada',
+      plannedDuration:dur, startDate:start, originalEnd:addDays(start, dur),
+      actualEnd:null, notes:'', subtasks:[], priority:'Média', bottleneck:false, difficulty:null });
+  });
+  toast('Marco criado');
+}
+function inlineCreateSubtask(mid, parentId){
+  const key = parentId || mid;
+  const nEl = document.getElementById('ia-name-'+key), dEl = document.getElementById('ia-days-'+key);
+  const name = (nEl && nEl.value || '').trim();
+  if (!name){ toast('Informe o nome da tarefa'); return; }
+  const dur = Math.max(1, Number(dEl && dEl.value)||1);
+  mutate(()=>{
+    const m = S.milestones.find(x=>x.id===mid); if (!m) return;
+    const parent = parentId ? (findTask(m.subtasks, parentId)||{}).node : null;
+    if (parentId && !parent) return;
+    const list = parent ? (parent.children = parent.children||[]) : m.subtasks;
+    const anchor = parent ? parent.startDate : m.startDate; /* first child starts with the parent */
+    const prev = list[list.length-1];
+    const start = (prev ? taskExpectedEnd(prev) : anchor) || todayISO();
+    list.push({ id:uid(), name, description:'', startDate:start, plannedDuration:dur,
+      expectedEnd:addDays(start, dur), priority:'Média', status:'Não iniciada',
+      notes:'', children:[], completedAt:null, bottleneck:false, difficulty:null });
+    syncTaskTree(m.subtasks);
+  });
+  toast('Subtarefa criada');
 }
 
 /* ---- final mission deadline ---- */
@@ -1489,6 +1780,24 @@ function saveTarget(){
   closeModal(); toast('Prazo final atualizado');
 }
 
+/* ---- difficulty selector + manual bottleneck (v4) ---- */
+let _fDiff = null;
+function setDiff(v){
+  _fDiff = (_fDiff === v) ? null : v;
+  for (let i=1;i<=5;i++){ const b = document.getElementById('f-diff-'+i); if (b) b.classList.toggle('sel', _fDiff===i); }
+}
+function diffScaleHTML(){
+  return `<div class="scale-row">` + [1,2,3,4,5].map(v =>
+    `<button type="button" id="f-diff-${v}" class="scale-dot ${_fDiff===v?'sel':''}" onclick="setDiff(${v})">${v}</button>`
+  ).join('') + `</div>`;
+}
+function applyBottleneck(node){
+  const el = $('#f-bneck');
+  const on = el && el.value === '1';
+  if (on){ clearBottlenecks(); node.bottleneck = true; }
+  else node.bottleneck = false;
+}
+
 /* ---------- MODALS ---------- */
 function openModal(html){ $('#modal').innerHTML = html; $('#overlay').classList.add('show'); }
 function closeModal(){ $('#overlay').classList.remove('show'); }
@@ -1497,6 +1806,7 @@ $('#overlay').addEventListener('click', e=>{ if(e.target.id==='overlay') closeMo
 function openMilestoneForm(id){
   const m = id ? S.milestones.find(x=>x.id===id) : null;
   const endVal = m ? m.originalEnd : addDays(todayISO(), 30);
+  _fDiff = m ? (m.difficulty || null) : null;
   openModal(`
     <div class="modal-title">${m?'Editar marco':'Novo marco'}</div>
     <div class="field"><label>Nome</label><input id="f-name" value="${m?esc(m.name):''}" placeholder="Ex.: Abrir Unidade Plus 1"></div>
@@ -1518,10 +1828,19 @@ function openMilestoneForm(id){
       </select></div>
     <div class="field" id="f-pos-ref-wrap" style="display:none"><label>Marco de referência</label>
       <select id="f-pos-ref">${S.milestones.map(x=>`<option value="${x.id}">${esc(x.name)}</option>`).join('')}</select></div>` : ''}
-    <div class="field"><label>Status</label>
-      <select id="f-status">
-        ${['Não iniciada','Em andamento','Concluída','Atrasada'].map(s=>`<option ${m&&m.status===s?'selected':''}>${s}</option>`).join('')}
-      </select></div>
+    <div class="field-row">
+      <div class="field"><label>Status</label>
+        <select id="f-status">
+          ${['Não iniciada','Em andamento','Concluída','Atrasada'].map(s=>`<option ${m&&m.status===s?'selected':''}>${s}</option>`).join('')}
+        </select></div>
+      <div class="field"><label>Prioridade</label>
+        <select id="f-prio">${['Alta','Média','Baixa'].map(p=>`<option ${m&&m.priority===p?'selected':(!m&&p==='Média'?'selected':'')}>${p}</option>`).join('')}</select></div>
+    </div>
+    <div class="field-row">
+      <div class="field"><label>Marcar como gargalo</label>
+        <select id="f-bneck"><option value="0" ${m&&m.bottleneck?'':'selected'}>Não</option><option value="1" ${m&&m.bottleneck?'selected':''}>Sim</option></select></div>
+      <div class="field"><label>Dificuldade (1–5)</label>${diffScaleHTML()}</div>
+    </div>
     <div class="field"><label>Notas</label><textarea id="f-notes" placeholder="Contexto, riscos, decisões">${m?esc(m.notes):''}</textarea></div>
     <div class="btn-row">
       <button class="btn btn-primary btn-block" onclick="saveMilestone('${id||''}')">${m?'Salvar alterações':'Criar marco'}</button>
@@ -1555,12 +1874,17 @@ function saveMilestone(id){
       const m = S.milestones.find(x=>x.id===id);
       Object.assign(m, { name, description:$('#f-desc').value.trim(), startDate:start,
         plannedDuration:dur, originalEnd:end, status:$('#f-status').value, notes:$('#f-notes').value.trim() });
+      m.priority = $('#f-prio') ? $('#f-prio').value : (m.priority || 'Média');
+      m.difficulty = _fDiff;
+      applyBottleneck(m);
       if (m.status==='Concluída' && !m.actualEnd) m.actualEnd = todayISO();
       if (m.status!=='Concluída') m.actualEnd = null;
+      rechainMilestones(S.milestones.indexOf(m)); /* cascade: edited dates push the following milestones */
     } else {
       const m2 = { id:uid(), name, description:$('#f-desc').value.trim(), status:$('#f-status').value,
         plannedDuration:dur, startDate:start, originalEnd:end, actualEnd:null,
-        notes:$('#f-notes').value.trim(), subtasks:[] };
+        notes:$('#f-notes').value.trim(), subtasks:[],
+        priority: $('#f-prio') ? $('#f-prio').value : 'Média', bottleneck:false, difficulty:_fDiff };
       if (m2.status==='Concluída') m2.actualEnd = todayISO();
       let idx = S.milestones.length;
       const posEl = $('#f-pos');
@@ -1571,6 +1895,7 @@ function saveMilestone(id){
         idx = ri < 0 ? S.milestones.length : (pos==='after' ? ri+1 : ri);
       }
       S.milestones.splice(idx, 0, m2);
+      applyBottleneck(m2);
     }
   });
   closeModal(); toast(id?'Marco atualizado':'Marco criado');
@@ -1583,6 +1908,7 @@ function openSubtaskForm(mid, parentId, sid){
   const s = sid ? (findTask(m.subtasks, sid)||{}).node : null;
   const ctx = parent ? esc(parent.name) : esc(m.name);
   const endVal = s ? (taskExpectedEnd(s)||'') : addDays(todayISO(), 3);
+  _fDiff = s ? (s.difficulty || null) : null;
   openModal(`
     <div class="modal-title">${s?'Editar subtarefa':'Nova subtarefa'}<div class="muted" style="font-weight:600;font-size:.9rem;margin-top:2px">em ${ctx}</div></div>
     <div class="field"><label>Nome</label><input id="f-name" value="${s?esc(s.name):''}" placeholder="Ex.: Destaque Como Funciona"></div>
@@ -1598,6 +1924,11 @@ function openSubtaskForm(mid, parentId, sid){
         <select id="f-prio">${['Alta','Média','Baixa'].map(p=>`<option ${s&&s.priority===p?'selected':(!s&&p==='Média'?'selected':'')}>${p}</option>`).join('')}</select></div>
       <div class="field"><label>Status</label>
         <select id="f-status">${['Não iniciada','Em andamento','Concluída','Atrasada'].map(x=>`<option ${s&&s.status===x?'selected':''}>${x}</option>`).join('')}</select></div>
+    </div>
+    <div class="field-row">
+      <div class="field"><label>Marcar como gargalo</label>
+        <select id="f-bneck"><option value="0" ${s&&s.bottleneck?'':'selected'}>Não</option><option value="1" ${s&&s.bottleneck?'selected':''}>Sim</option></select></div>
+      <div class="field"><label>Dificuldade (1–5)</label>${diffScaleHTML()}</div>
     </div>
     <div class="field"><label>Notas</label><textarea id="f-notes" placeholder="Observações">${s?esc(s.notes||''):''}</textarea></div>
     <div class="btn-row">
@@ -1616,13 +1947,14 @@ function saveSubtask(mid, parentId, sid){
   mutate(()=>{
     const m = S.milestones.find(x=>x.id===mid);
     const data = { name, description:$('#f-desc').value.trim(), startDate:start, plannedDuration:dur,
-      expectedEnd:end, priority:$('#f-prio').value, status:$('#f-status').value, notes:$('#f-notes').value.trim() };
+      expectedEnd:end, priority:$('#f-prio').value, status:$('#f-status').value, notes:$('#f-notes').value.trim(), difficulty:_fDiff };
     if (sid){
       const s = (findTask(m.subtasks, sid)||{}).node; if (!s) return;
       const wasDone = s.status === 'Concluída';
       Object.assign(s, data);
       if (s.status==='Concluída' && !wasDone) setTaskDone(s, true);
       if (s.status!=='Concluída') s.completedAt = null;
+      applyBottleneck(s);
     } else {
       const t = { id:uid(), ...data, children:[], completedAt: data.status==='Concluída' ? todayISO() : null };
       if (parentId){
@@ -1631,8 +1963,13 @@ function saveSubtask(mid, parentId, sid){
         else m.subtasks.push(t);
       } else m.subtasks.push(t);
       if (m.status==='Não iniciada' && data.status!=='Não iniciada') m.status='Em andamento';
+      applyBottleneck(t);
     }
     syncTaskTree(m.subtasks);
+    if (sid){
+      const r2 = findTask(m.subtasks, sid);
+      if (r2) rechainSiblings(r2.siblings, r2.siblings.indexOf(r2.node)); /* cascade from the edited task */
+    }
   });
   closeModal(); toast(sid?'Subtarefa atualizada':'Subtarefa criada');
 }
@@ -1641,6 +1978,7 @@ function deleteSubtask(mid, sid){
   mutate(()=>{
     const m = S.milestones.find(x=>x.id===mid);
     removeTask(m.subtasks, sid);
+    chainKids({ startDate: m.startDate, children: m.subtasks }); /* close the sequential gap */
     syncTaskTree(m.subtasks);
   });
   closeModal(); toast('Subtarefa excluída');
@@ -1718,16 +2056,24 @@ setInterval(()=>{ const t = todayISO(); if (t !== _lastDay){ _lastDay = t; rende
 /* ---------- LIVE COUNTDOWN (real-time seconds) ---------- */
 function tickCountdown(){
   if (!S || !S.targetDate) return;
-  const elD = document.getElementById('cd-d');
-  if (!elD) return; // countdown only lives on the Dashboard
+  const line = document.getElementById('cd-line');
+  if (!line) return; /* countdown only lives on the Dashboard */
   const target = pISO(S.targetDate); target.setHours(23,59,59,999);
   let ms = target - Date.now();
   const over = ms < 0; if (over) ms = -ms;
-  const f = n => Math.floor(n).toLocaleString('pt-BR');
-  elD.textContent = f(ms/86400000);
-  document.getElementById('cd-h').textContent = f(ms/3600000);
-  document.getElementById('cd-m').textContent = f(ms/60000);
-  document.getElementById('cd-s').textContent = f(ms/1000);
+  /* decomposition: months = fixed 30-day blocks */
+  let sec = Math.floor(ms/1000);
+  const months = Math.floor(sec / 2592000); sec -= months * 2592000;
+  const days = Math.floor(sec / 86400);    sec -= days * 86400;
+  const hours = Math.floor(sec / 3600);    sec -= hours * 3600;
+  const mins = Math.floor(sec / 60);       sec -= mins * 60;
+  const parts = [];
+  if (months) parts.push(months + (months===1 ? ' mês' : ' meses'));
+  if (months || days) parts.push(days + (days===1 ? ' dia' : ' dias'));
+  if (months || days || hours) parts.push(hours + ' h');
+  if (months || days || hours || mins) parts.push(mins + ' min');
+  parts.push(sec + ' s');
+  line.textContent = parts.join(' · ');
   const ov = document.getElementById('cd-over'), cd = document.getElementById('countdown'), hint = document.getElementById('cd-hint');
   if (ov) ov.style.display = over ? 'block' : 'none';
   if (cd) cd.classList.toggle('over', over);
@@ -1737,10 +2083,21 @@ setInterval(tickCountdown, 1000);
 
 /* ---------- INIT ---------- */
 (async function init(){
+  await StorageAdapter.initCloud();          /* optional: silently no-ops when offline */
   const saved = await StorageAdapter.load();
   S = migrate(saved) || defaultState();
   if (!saved) persist();
   nav('dashboard');
+
+  /* Cross-device sync: pull newer cloud state when the tab refocuses or every 60s,
+     but never while a local edit is still pending (avoids clobbering in-progress work). */
+  async function syncPull(){
+    if (_saveTimer) return;                   /* unsaved local edit in flight */
+    const fresh = await StorageAdapter.pullIfNewer();
+    if (fresh){ S = migrate(fresh); render(); }
+  }
+  document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'visible') syncPull(); });
+  setInterval(syncPull, 60000);
 })();
 </script>
 </body>
