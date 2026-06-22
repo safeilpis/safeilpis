@@ -397,6 +397,33 @@ input,select,textarea{font:inherit;color:inherit}
 .cd-line{font-size:1.35rem;font-weight:800;color:var(--navy);text-align:center;font-variant-numeric:tabular-nums;letter-spacing:-.01em;background:var(--surface);border-radius:14px;padding:18px 12px;line-height:1.35}
 @media(min-width:680px){.cd-line{font-size:1.7rem}}
 .countdown.over .cd-line{color:var(--danger)}
+
+/* ---------- Project health · Caixa · Clínicas (v5) ---------- */
+.health-pill{display:inline-flex;align-items:center;gap:8px;padding:8px 16px;border-radius:99px;font-weight:800;font-size:1rem}
+.health-pill.green{background:var(--success-bg);color:var(--success)}
+.health-pill.amber{background:var(--warning-bg);color:#B45309}
+.health-pill.red{background:var(--danger-bg);color:var(--danger)}
+.cash-bars{display:flex;flex-direction:column;gap:12px;margin-top:6px}
+.cash-bar-row{display:flex;align-items:center;gap:12px}
+.cash-bar-lbl{flex:0 0 84px;font-size:.82rem;font-weight:700;color:var(--muted)}
+.cash-bar{flex:1;height:22px;border-radius:8px;background:var(--surface);overflow:hidden}
+.cash-bar>i{display:block;height:100%;border-radius:8px;transition:width .4s}
+.cash-bar.rev>i{background:var(--success)}
+.cash-bar.exp>i{background:var(--danger)}
+.cash-bar-val{flex:0 0 116px;text-align:right;font-weight:800;font-size:.9rem;font-variant-numeric:tabular-nums}
+.money-pos{color:var(--success)}.money-neg{color:var(--danger)}
+.fin-row{display:flex;align-items:center;gap:12px;padding:12px 0;border-bottom:1px solid var(--line)}
+.fin-row:last-child{border-bottom:none}
+.fin-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0}
+.fin-main{flex:1;min-width:0}
+.clinic{background:#fff;border-radius:var(--r-md);box-shadow:var(--shadow);padding:16px 18px;margin-bottom:10px}
+.clinic-top{display:flex;align-items:flex-start;gap:12px}
+.clinic-score{width:46px;height:46px;border-radius:13px;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:1.05rem;flex-shrink:0;font-variant-numeric:tabular-nums}
+.clinic-ev{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+.temp-mq{background:#FCEAEA;color:#DC2626}.temp-q{background:#FEF5E3;color:#B45309}
+.temp-m{background:#EEF1FB;color:#081A58}.temp-f{background:#EAF1F7;color:#3B6CA8}.temp-mf{background:#F5F7FA;color:#5B6472}
+.chist{margin-top:12px;border-top:1px solid var(--line);padding-top:10px;display:none}
+.clinic.open .chist{display:block}
 </style>
 </head>
 <body>
@@ -416,6 +443,8 @@ input,select,textarea{font:inherit;color:inherit}
     <button class="side-link" data-nav="hoje"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="4.5"/><circle cx="12" cy="12" r="1" fill="currentColor"/></svg>Hoje</button>
     <button class="side-link" data-nav="rotina"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12.5l2 2 4.5-5"/><rect x="3.5" y="4" width="17" height="17" rx="3"/><path d="M8 2.5v3M16 2.5v3"/></svg>Rotina</button>
     <button class="side-link" data-nav="kpis"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20V10M10 20V4M16 20v-7M21 20H3"/></svg>KPIs</button>
+    <button class="side-link" data-nav="caixa"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2.5" y="6" width="19" height="13" rx="2.5"/><path d="M2.5 10h19"/><circle cx="17" cy="14.5" r="1.3" fill="currentColor"/></svg>Caixa</button>
+    <button class="side-link" data-nav="clinicas"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21V5a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v16"/><path d="M3 21h18M12 7v4M10 9h4"/></svg>Clínicas</button>
     <div class="side-foot">Meta: 10 Unidades SAFE Plus</div>
   </aside>
 
@@ -426,6 +455,8 @@ input,select,textarea{font:inherit;color:inherit}
     <div id="view-hoje" class="view"></div>
     <div id="view-rotina" class="view"></div>
     <div id="view-kpis" class="view"></div>
+    <div id="view-caixa" class="view"></div>
+    <div id="view-clinicas" class="view"></div>
   </main>
 </div>
 
@@ -436,6 +467,8 @@ input,select,textarea{font:inherit;color:inherit}
   <button class="bn-item" data-nav="hoje"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="4.5"/><circle cx="12" cy="12" r="1" fill="currentColor"/></svg>Hoje</button>
   <button class="bn-item" data-nav="rotina"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12.5l2 2 4.5-5"/><rect x="3.5" y="4" width="17" height="17" rx="3"/><path d="M8 2.5v3M16 2.5v3"/></svg>Rotina</button>
   <button class="bn-item" data-nav="kpis"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20V10M10 20V4M16 20v-7M21 20H3"/></svg>KPIs</button>
+  <button class="bn-item" data-nav="caixa"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2.5" y="6" width="19" height="13" rx="2.5"/><path d="M2.5 10h19"/><circle cx="17" cy="14.5" r="1.3" fill="currentColor"/></svg>Caixa</button>
+  <button class="bn-item" data-nav="clinicas"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21V5a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v16"/><path d="M3 21h18M12 7v4M10 9h4"/></svg>Clínicas</button>
 </nav>
 
 <div class="overlay" id="overlay"><div class="modal" id="modal"></div></div>
@@ -615,13 +648,15 @@ function defaultState(){
     priority: 'Média', bottleneck: false, difficulty: null
   });
   return {
-    version: 4,
+    version: 5,
     createdAt: start,
     targetUnits: 10,
     targetDate: cursor,              // final mission deadline (user-editable)
     milestones, habits,
-    dailyTasks: [],                  // necessary daily business obligations
+    dailyTasks: [],                  // necessary daily business obligations (now measured in hours)
     dailyLogs: {},   // 'YYYY-MM-DD' -> {energy,focus,mood,deepWork,notes}
+    cashflow: { startDate: start, dailyFixed: 167, entries: [] }, // financeiro
+    clinics: [],     // CRM de clínicas (temperatura)
   };
 }
 
@@ -683,6 +718,14 @@ function migrate(s){
       s.milestones.unshift(p);
     }
     s.version = 4;
+  }
+  if (s.version < 5){
+    /* v5: Tarefas do Dia passam a usar HORAS (9h = 1 dia operacional);
+       novos módulos de Caixa e Clínicas. Conversão: impactDays antigo × 9 = horas. */
+    (s.dailyTasks||[]).forEach(t => { if (t.hours == null) t.hours = (Number(t.impactDays)||0) * 9; });
+    if (!s.cashflow) s.cashflow = { startDate: s.createdAt || todayISO(), dailyFixed: 167, entries: [] };
+    if (!Array.isArray(s.clinics)) s.clinics = [];
+    s.version = 5;
   }
   return s;
 }
@@ -785,8 +828,13 @@ function msEffectiveStatus(m){
 /* ---- Tarefas do Dia engine (v3) ----
    Each daily task carries an explicit impact in days. The sum is the
    JUSTIFIED delay: it pushes the projected deadline but is never real delay. */
-function justifiedTotal(){ return (S.dailyTasks||[]).reduce((a,t)=>a+(Number(t.impactDays)||0),0); }
-function dayImpactDays(d){ return (S.dailyTasks||[]).filter(t=>t.date===d).reduce((a,t)=>a+(Number(t.impactDays)||0),0); }
+/* v5: operational time is measured in HOURS. 9 accumulated hours = 1 operational day,
+   which EXTENDS the deadline (never counts as real delay). */
+const HOURS_PER_OP_DAY = 9;
+function operationalHoursTotal(){ return (S.dailyTasks||[]).reduce((a,t)=>a+(Number(t.hours)||0),0); }
+function operationalDays(){ return Math.floor(operationalHoursTotal() / HOURS_PER_OP_DAY); }
+function justifiedTotal(){ return operationalDays(); }           // deadline extension, in days
+function dayOpHours(d){ return (S.dailyTasks||[]).filter(t=>t.date===d).reduce((a,t)=>a+(Number(t.hours)||0),0); }
 
 /* ---- Sequential chain engine (v3) ----
    The mission is sequential: each task starts when the previous one ends.
@@ -986,6 +1034,80 @@ function avgLog(field, n=30){
   for(let i=0;i<n;i++){ const l = S.dailyLogs[addDays(t,-i)]; if (l && l[field]!=null){ sum+=Number(l[field]); c++; } }
   return c ? (sum/c) : null;
 }
+/* ---- Project health (v5, replaces SAFE Score) ---- */
+function projectHealth(){
+  const e = engine();
+  if (e.realDelay > 30) return { state:'Em Risco', dot:'🔴', cls:'red',   bClass:'b-red',
+    note:`${e.realDelay} dias de atraso real acumulado` };
+  if (e.realDelay > 0)  return { state:'Atenção', dot:'🟡', cls:'amber', bClass:'b-amber',
+    note:`${e.realDelay} ${e.realDelay===1?'dia':'dias'} de atraso real · ${e.progress}% do roadmap` };
+  return { state:'No Prazo', dot:'🟢', cls:'green', bClass:'b-green',
+    note:`${e.progress}% do roadmap concluído, sem atraso real` };
+}
+
+/* ---- Clínicas CRM (v5) ---- */
+const CLINIC_EVENTS = [
+  ['Mensagem de aquecimento', 1],
+  ['Visita realizada', 2],
+  ['Hospedagem fechada', 7],
+];
+function clinicEffectiveScore(c){
+  const base = Number(c.score)||0;
+  if (!c.lastInteraction) return base;
+  const d = Math.max(0, diffDays(c.lastInteraction, todayISO()));
+  return base - 2 * Math.floor(d / 30);   // automatic decay: -2 every 30 idle days
+}
+function clinicClass(score){
+  if (score >= 10) return { label:'Muito quente', cls:'temp-mq', key:'mq', color:'#DC2626' };
+  if (score >= 5)  return { label:'Quente',       cls:'temp-q',  key:'q',  color:'#F59E0B' };
+  if (score >= 1)  return { label:'Morna',        cls:'temp-m',  key:'m',  color:'#081A58' };
+  if (score >= -4) return { label:'Fria',         cls:'temp-f',  key:'f',  color:'#3B6CA8' };
+  return                  { label:'Muito fria',   cls:'temp-mf', key:'mf', color:'#9AA4B2' };
+}
+function clinicTempBreakdown(){
+  const order = [['mq','Muito quente','#DC2626'],['q','Quente','#F59E0B'],['m','Morna','#081A58'],['f','Fria','#3B6CA8'],['mf','Muito fria','#9AA4B2']];
+  const counts = {};
+  (S.clinics||[]).forEach(c => { const k = clinicClass(clinicEffectiveScore(c)).key; counts[k]=(counts[k]||0)+1; });
+  return order.map(([key,label,color]) => ({ key, label, color, value: counts[key]||0 }));
+}
+function clinicsHot(){ return (S.clinics||[]).filter(c => clinicEffectiveScore(c) >= 5).length; }
+
+/* ---- Caixa / financeiro (v5) ---- */
+function fmtMoney(v){ return 'R$ ' + (Number(v)||0).toLocaleString('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:2}); }
+function cashFixedDays(fromISO, toISO){   // inclusive count, bounded by cashflow start
+  const cf = S.cashflow; if (!cf) return 0;
+  const start = cf.startDate || toISO;
+  let from = fromISO < start ? start : fromISO;
+  if (from > toISO) return 0;
+  return diffDays(from, toISO) + 1;
+}
+function cashPeriod(scope){               // 'day' | 'month' | 'year'
+  const t = todayISO();
+  const cf = S.cashflow || { entries:[], startDate:t, dailyFixed:0 };
+  const inScope = d => scope==='day' ? d===t : scope==='month' ? d.slice(0,7)===t.slice(0,7) : d.slice(0,4)===t.slice(0,4);
+  let rev=0, exp=0;
+  for (const e of (cf.entries||[])){ if(!inScope(e.date)) continue; if(e.type==='receita') rev += Number(e.amount)||0; else exp += Number(e.amount)||0; }
+  const scopeStart = scope==='day' ? t : scope==='month' ? t.slice(0,7)+'-01' : t.slice(0,4)+'-01-01';
+  exp += cashFixedDays(scopeStart, t) * (Number(cf.dailyFixed)||0);
+  return { rev, exp, net: rev - exp };
+}
+function cashMonthSeries(){
+  const t = todayISO(), ym = t.slice(0,7), today = Number(t.slice(8));
+  const cf = S.cashflow || { entries:[], startDate:t, dailyFixed:0 };
+  const days=[]; for(let d=1; d<=today; d++) days.push(ym+'-'+String(d).padStart(2,'0'));
+  let cumR=0, cumE=0; const R=[], E=[];
+  for (const day of days){
+    for (const e of (cf.entries||[])){ if(e.date===day){ if(e.type==='receita') cumR+=Number(e.amount)||0; else cumE+=Number(e.amount)||0; } }
+    if (day >= (cf.startDate||day)) cumE += Number(cf.dailyFixed)||0;
+    R.push(cumR); E.push(cumE);
+  }
+  return { days, R, E };
+}
+function cashCategories(){
+  const set = new Set(); (S.cashflow && S.cashflow.entries || []).forEach(e => { if(e.category) set.add(e.category); });
+  return Array.from(set).sort();
+}
+
 /* ================= LAYER 3 — UI ================= */
 let S = null;
 let currentView = 'dashboard';
@@ -1040,10 +1162,11 @@ function journeySVG(pct){
 }
 
 function renderDashboard(){
-  const e = engine(), sc = safeScore(), bn = bottleneck(), tasks = topTasks();
-  const driftTxt = e.realDelay > 30 ? `<strong style="color:#FCA5A5">${e.realDelay} dias de atraso real</strong>`
-                 : e.realDelay > 0 ? `<strong style="color:#FCD34D">${e.realDelay} dias de atraso real</strong>`
-                 : `<strong style="color:#9DC4FF">Dentro do prazo operacional</strong>`;
+  const e = engine(), h = projectHealth(), tasks = topTasks();
+  const today = todayISO();
+  const dailyToday = (S.dailyTasks||[]).filter(x => x.date === today);
+  const opHours = operationalHoursTotal(), opDays = operationalDays();
+  const monthNet = cashPeriod('month').net;
   const cells = Array.from({length: S.targetUnits}, (_,i) => {
     if (i < e.units) return '<div class="unit-cell open"></div>';
     if (i === e.units && e.progress > 0 && e.units < S.targetUnits){
@@ -1056,27 +1179,45 @@ function renderDashboard(){
   $('#view-dashboard').innerHTML = `
     <div class="page-head">
       <div class="page-title">Mission Control</div>
-      <div class="page-sub">${fmtLong(todayISO())}</div>
+      <div class="page-sub">${fmtLong(today)}</div>
     </div>
 
+    <!-- JORNADA: elemento visual principal da Home -->
     <div class="hero">
-      <div class="hero-label">Meta · 10 Unidades SAFE Plus</div>
-      <div class="hero-big">
-        <span class="hero-pct">${e.progress}%</span>
-        <span class="hero-units">${e.units} de ${S.targetUnits} unidades abertas</span>
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:12px;flex-wrap:wrap">
+        <div>
+          <div class="hero-label">Meta · 10 Unidades SAFE Plus</div>
+          <div class="hero-big"><span class="hero-pct">${e.progress}%</span><span class="hero-units">${e.units} de ${S.targetUnits} unidades</span></div>
+        </div>
+        <span class="health-pill ${h.cls}" style="background:rgba(255,255,255,.14);color:#fff">${h.dot} ${h.state}</span>
       </div>
-      <div class="unit-track">${cells}</div>
-      <div class="hero-meta">
-        <span>Prazo original: <strong>${fmt(e.originalEnd)}</strong></span>
-        <span>Projeção atual: <strong>${fmt(e.projectedEnd)}</strong></span>
-        <span>${driftTxt}</span>
-      </div>
+      <div style="margin:14px -8px 0">${journeySVG(e.progress)}</div>
+      <div class="unit-track" style="margin-top:6px">${cells}</div>
+      <div class="journey-cap" style="color:#fff;opacity:.92">Início → caminho → meta. Você está ${e.progress}% do percurso.</div>
     </div>
 
-    <div class="journey">
-      <div class="cd-title" style="margin-bottom:4px">Jornada estratégica</div>
-      ${journeySVG(e.progress)}
-      <div class="journey-cap">Você está ${e.progress}% do caminho até as 10 Unidades Plus.</div>
+    <!-- SAÚDE DO PROJETO (substitui o SAFE Score) -->
+    <div class="card" style="display:flex;align-items:center;gap:14px;flex-wrap:wrap">
+      <span class="health-pill ${h.cls}">${h.dot} Saúde do Projeto: ${h.state}</span>
+      <span class="muted small" style="flex:1;min-width:180px">${h.note}</span>
+    </div>
+
+    <!-- Prazo original x ajustado + dias operacionais -->
+    <div class="card card-lg">
+      <div class="ms-dates" style="grid-template-columns:repeat(2,1fr);margin-bottom:0">
+        <div class="dt blue"><b>Prazo original</b><span>${fmt(e.originalEnd)}</span></div>
+        <div class="dt ${e.justifiedDelay>0?'amber':'blue'}"><b>Prazo ajustado</b><span>${fmt(e.projectedEnd)}</span></div>
+        <div class="dt ${delayDtClass(e.realDelay)}"><b>Atraso real</b><span>${e.realDelay} ${e.realDelay===1?'dia':'dias'}</span></div>
+        <div class="dt blue"><b>Dias operacionais</b><span>${opDays} ${opDays===1?'dia':'dias'}</span></div>
+      </div>
+      ${e.justifiedDelay>0?`<div class="justified-note" style="margin-top:14px">⏱️ +${e.justifiedDelay} ${e.justifiedDelay===1?'dia adicionado':'dias adicionados'} ao prazo por tempo operacional necessário (${opHours.toLocaleString('pt-BR')}h ÷ 9). Isso estende o plano — não é atraso.</div>`:''}
+    </div>
+
+    <!-- Strip visual: Roadmap · Clínicas quentes · Caixa -->
+    <div class="grid" style="grid-template-columns:repeat(3,1fr)">
+      <div class="stat"><span class="stat-label">Progresso Roadmap</span><span class="stat-value" style="font-size:1.4rem">${e.progress}%</span><div style="margin-top:8px">${pbar(e.progress, h.cls==='red'?'red':h.cls==='amber'?'amber':'green')}</div></div>
+      <div class="stat"><span class="stat-label">Clínicas quentes</span><span class="stat-value" style="font-size:1.4rem">${clinicsHot()}</span><span class="stat-note">de ${(S.clinics||[]).length} na carteira</span></div>
+      <div class="stat"><span class="stat-label">Caixa do mês</span><span class="stat-value ${monthNet>=0?'good':'bad'}" style="font-size:1.25rem">${fmtMoney(monthNet)}</span><span class="stat-note">resultado acumulado</span></div>
     </div>
 
     <div class="countdown" id="countdown">
@@ -1089,69 +1230,19 @@ function renderDashboard(){
       <div class="field-hint" id="cd-hint" style="margin-top:10px">Tempo restante até o prazo final da missão.</div>
     </div>
 
-    <div class="grid">
-      <div class="stat"><span class="stat-label">SAFE Score</span><span class="stat-value ${sc.total>=70?'good':sc.total>=40?'warn':'bad'}">${sc.total}</span><span class="stat-note">de 100 pontos</span></div>
-      <div class="stat"><span class="stat-label">Disciplina hoje</span><span class="stat-value">${disciplineToday()}%</span><span class="stat-note">${S.habits.filter(h=>h.history[todayISO()]).length} de ${S.habits.length} hábitos</span></div>
-      <div class="stat"><span class="stat-label">Tarefas na semana</span><span class="stat-value">${e.doneWeek}</span><span class="stat-note">concluídas em 7 dias</span></div>
-      <div class="stat"><span class="stat-label">Tarefas atrasadas</span><span class="stat-value ${e.overdue?'bad':'good'}">${e.overdue}</span><span class="stat-note">${e.realDelay} dias reais · ${e.justifiedDelay} justificados</span></div>
-    </div>
-
-    <div class="section-label">Análise de atraso</div>
-    <div class="card">
-      <div class="ms-dates" style="margin-bottom:12px">
-        <div class="dt blue"><b>Prazo original</b><span>${fmt(e.originalEnd)}</span></div>
-        <div class="dt ${delayDtClass(e.realDelay)}"><b>Prazo projetado real</b><span>${fmt(e.projectedRealEnd)}</span></div>
-        <div class="dt blue"><b>Projetado com Tarefas do Dia</b><span>${fmt(e.projectedEnd)}</span></div>
-        <div class="dt ${delayDtClass(e.realDelay)}"><b>Atraso real</b><span>${e.realDelay} ${e.realDelay===1?'dia':'dias'}</span></div>
-        <div class="dt blue"><b>Atraso por Tarefas do Dia</b><span>${e.justifiedDelay} ${e.justifiedDelay===1?'dia':'dias'}</span></div>
-        <div class="dt"><b>Status</b><span>${e.realDelay>0?`<span class="badge ${delayClass(e.realDelay)}">${e.realDelay} ${e.realDelay===1?'dia':'dias'} de atraso real</span>`:`<span class="badge b-blue">Dentro do prazo operacional</span>`}</span></div>
-      </div>
-      ${e.totalDelay ? `
-        <div class="delay-stack">
-          <i style="width:${(e.realDelay/e.totalDelay*100).toFixed(1)}%;background:var(--danger)"></i>
-          <i style="width:${(e.justifiedDelay/e.totalDelay*100).toFixed(1)}%;background:var(--warning)"></i>
-        </div>
-        <div class="legend"><span><i style="background:var(--danger)"></i>Atraso real do plano</span><span><i style="background:var(--warning)"></i>Justificado por Tarefas do Dia</span></div>`
-      : `<div class="muted small">Nenhum atraso acumulado. Execução no prazo.</div>`}
-      ${e.hasNecessaryToday ? `<div class="justified-note">⚠️ Hoje houve tarefas necessárias da operação. Parte do atraso foi justificada.</div>` : ''}
-    </div>
-
-    <div class="section-label">Próxima tarefa crítica</div>
-    ${tasks.length ? `
-      <div class="card">
-        <div style="display:flex;gap:14px;align-items:flex-start">
-          <div class="tp-rank">1</div>
-          <div style="flex:1">
-            <div class="sub-name">${esc(tasks[0].s.name)}</div>
-            <div class="sub-meta">
-              <span>${esc(tasks[0].m.name)}</span>
-              <span class="badge prio-${tasks[0].s.priority}">${tasks[0].s.priority}</span>
-              ${tasks[0].delay>0 ? `<span class="badge b-red">Atrasada em ${tasks[0].delay} ${tasks[0].delay===1?'dia':'dias'}</span>` : tasks[0].end!=='9999-12-31' ? `<span>Prazo: ${fmt(tasks[0].end)}</span>` : ''}
-            </div>
+    <div class="section-label">Tarefas de hoje</div>
+    <div class="card card-lg">
+      ${tasks.length ? tasks.map((t,i)=>`
+        <div class="task-pick">
+          <div class="tp-rank">${i+1}</div>
+          <div style="flex:1;min-width:0">
+            <div class="sub-name">${esc(t.s.name)}</div>
+            <div class="sub-meta"><span>${esc(t.m.name)}</span><span class="badge prio-${t.s.priority}">${t.s.priority}</span>${t.delay>0?`<span class="badge b-red">Atrasada ${t.delay}d</span>`:''}</div>
           </div>
-        </div>
-      </div>` : `<div class="empty">Nenhuma tarefa pendente. Adicione subtarefas no Roadmap para gerar prioridades.</div>`}
-
-    <div class="section-label">Maior gargalo</div>
-    ${bn ? `
-      <div class="card">
-        <div class="sub-name">${esc(bn.m.name)}</div>
-        <div class="sub-meta" style="margin-top:4px">
-          ${bn.manual?`<span class="badge b-red">Gargalo marcado</span>`:''}
-          ${bn.delay>0 ? `<span class="badge ${delayClass(bn.delay)}">Atrasado em ${bn.delay} ${bn.delay===1?'dia':'dias'}</span>` : `<span class="badge b-blue">${bn.manual?'No prazo':'Marco ativo'}</span>`}
-          <span>Projeção: ${fmt(bn.host ? taskExpectedEnd(bn.m) : msProjectedEnd(bn.m))}</span>
-        </div>
-        <div style="margin-top:12px">${pbar(bn.host ? taskProgress(bn.m) : msProgress(bn.m), bn.delay>0?'red':'')}</div>
-      </div>` : `<div class="empty">Roadmap concluído.</div>`}
-
-    <div class="section-label">Composição do SAFE Score</div>
-    <div class="card">
-      ${[['Disciplina diária',sc.disc,30],['Tarefas estratégicas',sc.strat,40],['Sem atrasos',sc.onTime,20],['Revisão diária',sc.review,10]].map(([l,v,max])=>`
-        <div style="display:flex;align-items:center;gap:12px;margin-bottom:10px">
-          <span style="flex:0 0 152px;font-size:.88rem;font-weight:600">${l}</span>
-          <div class="pbar" style="flex:1"><i style="width:${v/max*100}%"></i></div>
-          <span class="pbar-pct">${v}/${max}</span>
-        </div>`).join('')}
+          <button class="sub-check" style="margin-top:0" onclick="toggleSubtask('${t.m.id}','${t.s.id}')" aria-label="Concluir"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13l4 4L19 7"/></svg></button>
+        </div>`).join('') : '<div class="muted small">Nenhuma tarefa pendente — adicione subtarefas no Roadmap.</div>'}
+      ${dailyToday.length?`<div class="divider"></div><div class="muted small" style="margin-bottom:8px">Operação de hoje: ${dailyToday.reduce((a,x)=>a+(Number(x.hours)||0),0)}h em ${dailyToday.length} ${dailyToday.length===1?'tarefa':'tarefas'}</div>`:''}
+      <button class="btn btn-soft btn-sm btn-block" style="margin-top:12px" onclick="nav('hoje')">Abrir operação do dia</button>
     </div>
 
     <div class="btn-row" style="margin-top:20px">
@@ -1162,6 +1253,7 @@ function renderDashboard(){
   tickCountdown();
 }
 
+/* ---------- ROADMAP ---------- */
 /* ---------- ROADMAP ---------- */
 const openBodies = new Set();
 function renderRoadmap(){
@@ -1306,104 +1398,90 @@ function toggleMs(id){ openBodies.has(id) ? openBodies.delete(id) : openBodies.a
 
 /* ---------- HOJE ---------- */
 function renderHoje(){
-  const sc = safeScore(), e = engine(), bn = bottleneck(), tasks = topTasks();
-  const cls = sc.total>=70?'forte':sc.total>=40?'medio':'fraco';
-  const lbl = {forte:'Dia Forte',medio:'Dia Médio',fraco:'Dia Fraco'}[cls];
-  const risk = e.realDelay===0?['Dentro do prazo','b-blue']:e.realDelay<=30?['Atenção','b-amber']:['Crítico','b-red'];
+  const e = engine(), h = projectHealth(), bn = bottleneck(), tasks = topTasks();
+  const cls = h.cls==='green'?'forte':h.cls==='amber'?'medio':'fraco';
+  const opHours = operationalHoursTotal(), opDays = operationalDays();
   $('#view-hoje').innerHTML = `
     <div class="page-head">
-      <div class="page-title">Por que hoje importa?</div>
+      <div class="page-title">Operação do dia</div>
       <div class="page-sub">${fmtLong(todayISO())}</div>
     </div>
 
     <div class="day-banner ${cls}">
-      <h2>${lbl} · SAFE Score ${sc.total}</h2>
-      <p>${cls==='forte'?'Execução acima do padrão. Mantenha o ritmo.':cls==='medio'?'Há espaço para subir o nível hoje. Foque nas prioridades.':'Dia de recuperação. Comece pela tarefa nº 1 e marque os hábitos.'}</p>
+      <h2>${h.dot} ${h.state}</h2>
+      <p>${cls==='forte'?'Projeto no prazo. Mantenha o ritmo e proteja a execução do roadmap.':cls==='medio'?'Atenção ao atraso real. Priorize as tarefas críticas do roadmap hoje.':'Projeto em risco. Foque na recuperação do roadmap antes da operação.'}</p>
     </div>
 
     <div class="card card-lg">
-      <h3>Top 3 prioridades de hoje</h3>
+      <h3>Top 3 prioridades do roadmap</h3>
       ${tasks.length ? tasks.map((t,i)=>`
         <div class="task-pick">
           <div class="tp-rank">${i+1}</div>
           <div style="flex:1;min-width:0">
             <div class="sub-name">${esc(t.s.name)}</div>
-            <div class="sub-meta">
-              <span>${esc(t.m.name)}</span>
-              <span class="badge prio-${t.s.priority}">${t.s.priority}</span>
-              ${t.delay>0?`<span class="badge b-red">Atrasada em ${t.delay} ${t.delay===1?'dia':'dias'}</span>`:''}
-            </div>
+            <div class="sub-meta"><span>${esc(t.m.name)}</span><span class="badge prio-${t.s.priority}">${t.s.priority}</span>${t.delay>0?`<span class="badge b-red">Atrasada em ${t.delay} ${t.delay===1?'dia':'dias'}</span>`:''}</div>
           </div>
-          <button class="sub-check" style="margin-top:0" onclick="toggleSubtask('${t.m.id}','${t.s.id}')" aria-label="Concluir">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13l4 4L19 7"/></svg>
-          </button>
+          <button class="sub-check" style="margin-top:0" onclick="toggleSubtask('${t.m.id}','${t.s.id}')" aria-label="Concluir"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13l4 4L19 7"/></svg></button>
         </div>`).join('') : '<div class="muted">Nenhuma tarefa pendente — adicione subtarefas no Roadmap.</div>'}
     </div>
 
-    <div class="grid" style="grid-template-columns:1fr 1fr">
-      <div class="stat">
-        <span class="stat-label">Gargalo atual</span>
-        <span style="font-weight:700;font-size:1rem;margin-top:2px">${bn?esc(bn.m.name):'—'}</span>
-        ${bn&&bn.delay>0?`<span class="stat-note" style="color:var(--danger);font-weight:600">+${bn.delay} dias de atraso</span>`:'<span class="stat-note">'+(bn&&bn.manual?'Gargalo marcado manualmente':'Marco em andamento')+'</span>'}
-      </div>
-      <div class="stat">
-        <span class="stat-label">Risco de cronograma</span>
-        <span class="stat-value" style="font-size:1.3rem"><span class="badge ${risk[1]}" style="font-size:.95rem">${risk[0]}</span></span>
-        <span class="stat-note">${e.realDelay} dias reais · ${e.justifiedDelay} justificados</span>
-      </div>
-    </div>
-
-    <div class="impact-note" style="margin-top:4px">
-      Se você concluir as prioridades de hoje, reduz o atraso projetado e se aproxima da sua primeira Unidade SAFE Plus${e.firstUnitDate?` — prevista para <u>${fmt(e.firstUnitDate)}</u>`:''}.
-    </div>
-
-    <div class="section-label">Tarefas do Dia</div>
+    <!-- ÁREA OPERACIONAL DIÁRIA UNIFICADA: tarefas (horas) + humor/energia + observações -->
+    <div class="section-label">Tarefas do dia · operação</div>
     ${renderDailyTasksCard()}
 
-    <div class="section-label">Registro do dia</div>
+    <div class="section-label">Como você está hoje</div>
     ${renderLogCard()}
 
-    <div class="section-label">Projeção de meta</div>
+    <div class="section-label">Tempo operacional necessário</div>
     <div class="card">
-      ${e.firstUnitDate?`<div style="font-size:1.05rem;font-weight:700;color:var(--navy);margin-bottom:14px">Primeira Unidade Plus prevista para ${fmt(e.firstUnitDate)}</div>`:''}
       <div class="grid" style="grid-template-columns:repeat(3,1fr);gap:10px">
-        <div class="dt"><b>Ritmo atual</b><span>${e.paceDate?fmt(e.paceDate):'Sem dados'}</span></div>
-        <div class="dt"><b>Melhor ritmo</b><span>${fmt(e.originalEnd)}</span></div>
-        <div class="dt"><b>Ritmo exigido</b><span>${e.requiredPace>0?e.requiredPace.toFixed(2)+' marcos/dia':'—'}</span></div>
+        <div class="dt"><b>Horas acumuladas</b><span>${opHours.toLocaleString('pt-BR')} h</span></div>
+        <div class="dt"><b>Dias equivalentes</b><span>${opDays} ${opDays===1?'dia':'dias'}</span></div>
+        <div class="dt ${e.justifiedDelay>0?'amber':'blue'}"><b>Impacto no prazo</b><span>+${e.justifiedDelay} ${e.justifiedDelay===1?'dia':'dias'}</span></div>
       </div>
-      <div class="field-hint" style="margin-top:10px">O ritmo atual usa a velocidade real de conclusão de marcos. A projeção é recalculada automaticamente todos os dias.</div>
+      <div class="field-hint" style="margin-top:10px">Regra: cada 9 horas de Tarefas do Dia = 1 dia operacional, que <b>estende o prazo</b> (não é atraso real).</div>
+    </div>
+
+    <div class="section-label">Gargalo atual</div>
+    <div class="card">
+      <div class="sub-name">${bn?esc(bn.m.name):'—'}</div>
+      <div class="sub-meta" style="margin-top:4px">
+        ${bn&&bn.manual?`<span class="badge b-red">Gargalo marcado</span>`:''}
+        ${bn&&bn.delay>0?`<span class="badge ${delayClass(bn.delay)}">Atrasado em ${bn.delay} ${bn.delay===1?'dia':'dias'}</span>`:`<span class="badge b-blue">Marco ativo</span>`}
+      </div>
     </div>`;
 }
 
 /* necessary daily tasks card (Hoje) */
+/* necessary daily tasks card (Hoje) */
 function renderDailyTasksCard(){
   const t = todayISO();
   const list = (S.dailyTasks||[]).filter(x => x.date === t);
+  const dayHours = list.reduce((a,x)=>a+(Number(x.hours)||0),0);
   return `
   <div class="card card-lg">
     <div class="list-head">
       <h3 style="margin:0">Tarefas do Dia</h3>
       <button class="btn btn-soft btn-sm" onclick="openDailyTaskForm()">+ Tarefa</button>
     </div>
-    <div class="muted small" style="margin-bottom:6px">Obrigações reais da operação. Elas justificam atraso — não contam como falha pessoal.</div>
+    <div class="muted small" style="margin-bottom:6px">Obrigações reais da operação, medidas em horas. Elas estendem o prazo — não contam como falha pessoal.</div>
     ${list.length ? list.map(x => `
       <div class="ntask">
-        <button class="sub-check ${x.done?'on':''}" onclick="toggleDailyTask('${x.id}')" aria-label="Concluir tarefa necessária">
+        <button class="sub-check ${x.done?'on':''}" onclick="toggleDailyTask('${x.id}')" aria-label="Concluir tarefa">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13l4 4L19 7"/></svg>
         </button>
         <div class="sub-main">
           <div class="sub-name" style="${x.done?'text-decoration:line-through;color:var(--muted)':''}">${esc(x.name)}</div>
           <div class="sub-meta">
-            ${Number(x.impactDays)?`<span>Impacto: ${x.impactDays} ${Number(x.impactDays)===1?'dia':'dias'}</span>`:''}
+            ${Number(x.hours)?`<span class="badge b-amber">${x.hours}h</span>`:''}
             ${x.notes?`<span>· ${esc(x.notes)}</span>`:''}
           </div>
         </div>
-        <button class="icon-btn" onclick="openDailyTaskForm('${x.id}')" aria-label="Editar tarefa necessária">
+        <button class="icon-btn" onclick="openDailyTaskForm('${x.id}')" aria-label="Editar tarefa">
           <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 3a2.8 2.8 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5z"/></svg>
         </button>
-      </div>`).join('') : '<div class="muted small" style="padding:6px 0">Nenhuma tarefa necessária registrada hoje.</div>'}
-    ${list.length ? `<div class="justified-note">⚠️ Hoje houve tarefas necessárias da operação. Parte do atraso foi justificada.</div>` : ''}
-    <div class="field-hint" style="margin-top:10px">O impacto em dias de cada Tarefa do Dia empurra o prazo projetado como atraso justificado (azul) — nunca vira atraso real (laranja/vermelho).</div>
+      </div>`).join('') : '<div class="muted small" style="padding:6px 0">Nenhuma tarefa operacional registrada hoje.</div>'}
+    ${list.length ? `<div class="justified-note">⏱️ ${dayHours}h de operação hoje. A cada 9h acumuladas, +1 dia é somado ao prazo ajustado (tempo operacional necessário, não atraso).</div>` : ''}
   </div>`;
 }
 
@@ -1419,7 +1497,7 @@ function renderLogCard(){
       <div class="field"><label>Horas de trabalho profundo</label>
         <input type="number" min="0" max="16" step="0.5" value="${log.deepWork??''}" placeholder="0" onchange="setLog('deepWork',this.value)"></div>
       <div class="field"><label>&nbsp;</label>
-        <div class="calc-pill" style="margin:0;min-height:50px">${log.energy&&log.focus&&log.mood?'✓ Revisão de hoje concluída (+10 no SAFE Score)':'Complete energia, foco e humor'}</div></div>
+        <div class="calc-pill" style="margin:0;min-height:50px">${log.energy&&log.focus&&log.mood?'✓ Registro de hoje concluído':'Complete energia, foco e humor'}</div></div>
     </div>
     <div class="field"><label>Notas do dia</label>
       <textarea placeholder="O que moveu a SAFE hoje?" onchange="setLog('notes',this.value)">${esc(log.notes||'')}</textarea></div>
@@ -1525,14 +1603,14 @@ function pieSVG(parts, size){
 }
 
 function renderKpis(){
-  const e = engine(), sc = safeScore();
+  const e = engine(), h = projectHealth();
   const t = todayISO(), weekAgo = addDays(t,-7), twoWeeks = addDays(t,-14);
   let prevWeek = 0;
   S.milestones.forEach(m => flattenTasks(m.subtasks).forEach(s => {
     if (s.completedAt && s.completedAt >= twoWeeks && s.completedAt < weekAgo) prevWeek++;
   }));
   const discNow = disciplineWindow(0,7), discPrev = disciplineWindow(7,7);
-  const scColor = sc.total>=70 ? '#16A34A' : sc.total>=40 ? '#F59E0B' : '#DC2626';
+  const opHours = operationalHoursTotal(), opDays = operationalDays();
   const impactPct = Math.min(100, +(e.justifiedDelay / e.plannedSpanDays * 100).toFixed(1));
 
   $('#view-kpis').innerHTML = `
@@ -1541,18 +1619,19 @@ function renderKpis(){
       <div class="page-sub">Indicadores de execução da missão</div>
     </div>
 
-    <div class="kpi-hero">
+    <div class="card" style="display:flex;align-items:center;gap:14px;flex-wrap:wrap">
+      <span class="health-pill ${h.cls}">${h.dot} Saúde do Projeto: ${h.state}</span>
+      <span class="muted small" style="flex:1;min-width:180px">${h.note}</span>
+    </div>
+
+    <div class="kpi-hero" style="grid-template-columns:repeat(2,1fr)">
       <div class="kpi-circle">
         ${donutSVG(e.progress, '#081A58', 116, 11, e.progress+'%', e.done+'/'+e.total+' marcos')}
-        <span class="stat-label">Progresso da missão</span>
+        <span class="stat-label">Progresso do Roadmap</span>
       </div>
       <div class="kpi-circle">
         ${donutSVG(disciplineToday(), '#16A34A', 116, 11, disciplineToday()+'%', 'hoje')}
         <span class="stat-label">Disciplina</span>
-      </div>
-      <div class="kpi-circle">
-        ${donutSVG(sc.total, scColor, 116, 11, String(sc.total), 'de 100')}
-        <span class="stat-label">SAFE Score</span>
       </div>
     </div>
 
@@ -1562,15 +1641,26 @@ function renderKpis(){
       <span class="small">Disciplina <b>${discNow}%</b> · ${trendBadge(discNow, discPrev, ' pts')}</span>
     </div>
 
-    <div class="section-label">Composição do atraso</div>
+    <div class="section-label">Tempo Operacional Consumido</div>
+    <div class="card card-lg">
+      <div class="grid" style="grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:14px">
+        <div class="dt"><b>Horas acumuladas</b><span>${opHours.toLocaleString('pt-BR')} h</span></div>
+        <div class="dt"><b>Dias equivalentes</b><span>${opDays} ${opDays===1?'dia':'dias'}</span></div>
+        <div class="dt ${e.justifiedDelay>0?'amber':'blue'}"><b>Impacto no prazo</b><span>+${e.justifiedDelay} ${e.justifiedDelay===1?'dia':'dias'}</span></div>
+      </div>
+      ${pbar(impactPct, 'amber')}
+      <div class="muted small" style="margin-top:10px">Tempo operacional necessário consome ${e.justifiedDelay} de ${e.plannedSpanDays} dias planejados. Estende o prazo — separado do atraso real.</div>
+    </div>
+
+    <div class="section-label">Atraso real x tempo operacional</div>
     <div class="card" style="display:flex;gap:22px;align-items:center;flex-wrap:wrap">
       ${e.totalDelay ? pieSVG([{value:e.realDelay,color:'#DC2626'},{value:e.justifiedDelay,color:'#F59E0B'}], 140) : ''}
       <div style="flex:1;min-width:220px">
         ${e.totalDelay ? `
           <div class="legend" style="flex-direction:column;align-items:flex-start;gap:9px;margin-top:0">
             <span><i style="background:#DC2626"></i>Atraso real: <b>${e.realDelay} ${e.realDelay===1?'dia':'dias'}</b> (${Math.round(e.realDelay/e.totalDelay*100)}%)</span>
-            <span><i style="background:#F59E0B"></i>Justificado por Tarefas do Dia: <b>${e.justifiedDelay} ${e.justifiedDelay===1?'dia':'dias'}</b> (${Math.round(e.justifiedDelay/e.totalDelay*100)}%)</span>
-            <span class="muted small">Total projetado: ${e.totalDelay} dias · novo prazo ${fmt(e.projectedEnd)}</span>
+            <span><i style="background:#F59E0B"></i>Tempo operacional necessário: <b>${e.justifiedDelay} ${e.justifiedDelay===1?'dia':'dias'}</b> (${Math.round(e.justifiedDelay/e.totalDelay*100)}%)</span>
+            <span class="muted small">Prazo original ${fmt(e.originalEnd)} · ajustado ${fmt(e.projectedEnd)}</span>
           </div>`
         : `<span class="badge b-blue">Dentro do prazo operacional</span>
            <div class="muted small" style="margin-top:8px">Nenhum atraso acumulado até hoje. Prazo original: ${fmt(e.originalEnd)}.</div>`}
@@ -1578,15 +1668,7 @@ function renderKpis(){
     </div>
 
     <div class="section-label">Tarefas concluídas por dia</div>
-    <div class="card card-lg">
-      ${weekTimeline()}
-    </div>
-
-    <div class="section-label">Tarefas do Dia · impacto operacional</div>
-    <div class="card">
-      ${pbar(impactPct, 'amber')}
-      <div class="muted small" style="margin-top:10px">${e.justifiedDelay} ${e.justifiedDelay===1?'dia':'dias'} consumidos pela operação de ${e.plannedSpanDays} planejados · ${e.dtDone} concluídas · ${e.dtPending} pendentes</div>
-    </div>
+    <div class="card card-lg">${weekTimeline()}</div>
 
     <div class="section-label">Energia, foco e humor · 14 dias</div>
     <div class="card card-lg chart-wrap">${renderChart()}</div>`;
@@ -1612,6 +1694,261 @@ function renderChart(){
   if(!hasData) return '<div class="muted" style="text-align:center;padding:24px">Registre energia, foco e humor na aba <b>Hoje</b> para gerar o gráfico.</div>';
   return svg + `<div class="legend">${series.map(([f,c,l])=>`<span><i style="background:${c}"></i>${l}</span>`).join('')}</div>`;
 }
+/* ---------- CAIXA (financeiro v5) ---------- */
+let cashFilter = '';
+function renderCaixa(){
+  const day = cashPeriod('day'), month = cashPeriod('month'), year = cashPeriod('year');
+  const cats = cashCategories();
+  const cf = S.cashflow || { entries:[], dailyFixed:167, startDate:todayISO() };
+  let entries = (cf.entries||[]).slice().sort((a,b)=> b.date.localeCompare(a.date) || (b.id>a.id?1:-1));
+  if (cashFilter) entries = entries.filter(e => e.category === cashFilter);
+  const money = (v) => `<span class="${v>=0?'money-pos':'money-neg'}">${fmtMoney(v)}</span>`;
+
+  $('#view-caixa').innerHTML = `
+    <div class="page-head">
+      <div class="page-title">Caixa</div>
+      <div class="page-sub">Despesa fixa automática de ${fmtMoney(cf.dailyFixed)}/dia · receitas e despesas extras</div>
+    </div>
+
+    <div class="grid" style="grid-template-columns:repeat(3,1fr)">
+      <div class="stat"><span class="stat-label">Resultado do dia</span><span class="stat-value" style="font-size:1.25rem">${money(day.net)}</span><span class="stat-note">+${fmtMoney(day.rev)} · −${fmtMoney(day.exp)}</span></div>
+      <div class="stat"><span class="stat-label">Acumulado do mês</span><span class="stat-value" style="font-size:1.25rem">${money(month.net)}</span><span class="stat-note">+${fmtMoney(month.rev)} · −${fmtMoney(month.exp)}</span></div>
+      <div class="stat"><span class="stat-label">Acumulado do ano</span><span class="stat-value" style="font-size:1.25rem">${money(year.net)}</span><span class="stat-note">+${fmtMoney(year.rev)} · −${fmtMoney(year.exp)}</span></div>
+    </div>
+
+    <div class="section-label">Acumulado do mês · receitas x despesas</div>
+    <div class="card card-lg">
+      ${cashCumulativeBars(month)}
+      <div class="chart-wrap" style="margin-top:16px">${cashChartSVG()}</div>
+      <div class="legend"><span><i style="background:var(--success)"></i>Receitas acumuladas</span><span><i style="background:var(--danger)"></i>Despesas acumuladas (inclui fixa diária)</span></div>
+    </div>
+
+    <div class="list-head" style="margin-top:8px">
+      <div class="section-label" style="margin:0">Lançamentos</div>
+      <div class="btn-row">
+        <button class="btn btn-soft btn-sm" onclick="openCashForm('receita')">+ Receita</button>
+        <button class="btn btn-soft btn-sm" onclick="openCashForm('despesa')">+ Despesa</button>
+      </div>
+    </div>
+
+    ${cats.length?`<div class="field" style="margin-bottom:12px"><label>Filtrar por categoria</label>
+      <select onchange="cashFilter=this.value; render()">
+        <option value="" ${cashFilter===''?'selected':''}>Todas as categorias</option>
+        ${cats.map(cat=>`<option ${cashFilter===cat?'selected':''}>${esc(cat)}</option>`).join('')}
+      </select></div>`:''}
+
+    <div class="card">
+      <div class="fin-row" style="font-weight:700;color:var(--muted);font-size:.8rem;text-transform:uppercase;letter-spacing:.05em">
+        <span class="fin-dot" style="background:transparent"></span>
+        <div class="fin-main">Despesa fixa diária (automática)</div>
+        <span class="money-neg">−${fmtMoney(cf.dailyFixed)}/dia</span>
+      </div>
+      ${entries.length ? entries.map(e=>`
+        <div class="fin-row">
+          <span class="fin-dot" style="background:${e.type==='receita'?'var(--success)':'var(--danger)'}"></span>
+          <div class="fin-main">
+            <div style="font-weight:600">${esc(e.category||(e.type==='receita'?'Receita':'Despesa'))}</div>
+            <div class="muted small">${fmt(e.date)}${e.note?' · '+esc(e.note):''}</div>
+          </div>
+          <span style="font-weight:800;font-variant-numeric:tabular-nums" class="${e.type==='receita'?'money-pos':'money-neg'}">${e.type==='receita'?'+':'−'}${fmtMoney(e.amount)}</span>
+          <button class="icon-btn" onclick="deleteCashEntry('${e.id}')" aria-label="Excluir lançamento">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h16M9 7V5a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2M6 7l1 13a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1l1-13"/></svg>
+          </button>
+        </div>`).join('') : '<div class="muted small" style="padding:10px 0">Nenhum lançamento ainda. Registre uma receita ou despesa.</div>'}
+    </div>`;
+}
+function cashCumulativeBars(month){
+  const rev = month.rev, exp = month.exp, max = Math.max(1, rev, exp);
+  return `<div class="cash-bars">
+    <div class="cash-bar-row"><span class="cash-bar-lbl">Receitas</span><div class="cash-bar rev"><i style="width:${(rev/max*100).toFixed(1)}%"></i></div><span class="cash-bar-val money-pos">${fmtMoney(rev)}</span></div>
+    <div class="cash-bar-row"><span class="cash-bar-lbl">Despesas</span><div class="cash-bar exp"><i style="width:${(exp/max*100).toFixed(1)}%"></i></div><span class="cash-bar-val money-neg">${fmtMoney(exp)}</span></div>
+  </div>`;
+}
+function cashChartSVG(){
+  const { days, R, E } = cashMonthSeries();
+  if (days.length < 2) return '<div class="muted small" style="text-align:center;padding:18px">O gráfico acumulado aparece a partir do 2º dia do mês.</div>';
+  const W=640,H=180,P=30, n=days.length;
+  const max = Math.max(1, ...R, ...E);
+  const x=i=>P+i*(W-2*P)/(n-1), y=v=>H-P-(v/max)*(H-2*P);
+  const line=(arr,color)=>{ let d=''; arr.forEach((v,i)=>{ d+=(i?'L':'M')+x(i).toFixed(1)+' '+y(v).toFixed(1)+' '; }); return `<path d="${d}" fill="none" stroke="${color}" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>`; };
+  let svg = `<svg viewBox="0 0 ${W} ${H+20}" style="width:100%;min-width:460px;height:auto">`;
+  for(let g=0;g<=2;g++){ const v=max*g/2; svg+=`<line x1="${P}" y1="${y(v)}" x2="${W-P}" y2="${y(v)}" stroke="#E6EAF0"/><text x="${P-6}" y="${y(v)+4}" font-size="9" fill="#5B6472" text-anchor="end">${Math.round(v)}</text>`; }
+  svg += line(E,'#DC2626') + line(R,'#16A34A');
+  days.forEach((d,i)=>{ if(i%5===0||i===n-1) svg+=`<text x="${x(i)}" y="${H+14}" font-size="9" fill="#5B6472" text-anchor="middle">${d.slice(8)}</text>`; });
+  return svg + '</svg>';
+}
+function openCashForm(type, id){
+  const e = id ? (S.cashflow.entries||[]).find(x=>x.id===id) : null;
+  const tp = e ? e.type : (type||'receita');
+  const title = tp==='receita' ? 'Receita' : 'Despesa';
+  openModal(`
+    <div class="modal-title">${e?'Editar':'Nova'} ${title}</div>
+    <div class="field-row">
+      <div class="field"><label>Tipo</label>
+        <select id="f-type"><option value="receita" ${tp==='receita'?'selected':''}>Receita</option><option value="despesa" ${tp==='despesa'?'selected':''}>Despesa</option></select></div>
+      <div class="field"><label>Valor (R$)</label><input id="f-amount" type="number" min="0" step="0.01" value="${e?e.amount:''}" placeholder="0,00"></div>
+    </div>
+    <div class="field"><label>Categoria</label><input id="f-cat" value="${e?esc(e.category||''):''}" placeholder="Ex.: Hospedagem, Comissão, Aula de Tênis"></div>
+    <div class="field-row">
+      <div class="field"><label>Data</label><input id="f-date" type="date" value="${e?e.date:todayISO()}"></div>
+      <div class="field"><label>Observação</label><input id="f-note" value="${e?esc(e.note||''):''}" placeholder="Opcional"></div>
+    </div>
+    <div class="btn-row"><button class="btn btn-primary btn-block" onclick="saveCashEntry('${id||''}')">${e?'Salvar':'Registrar'}</button></div>
+    ${e?`<button class="btn btn-danger btn-block" style="margin-top:8px" onclick="deleteCashEntry('${id}')">Excluir</button>`:''}
+    <button class="btn btn-ghost btn-block" style="margin-top:8px" onclick="closeModal()">Cancelar</button>`);
+}
+function saveCashEntry(id){
+  const amount = Number($('#f-amount').value)||0;
+  if (amount <= 0){ toast('Informe um valor válido'); return; }
+  const data = { type:$('#f-type').value, amount, category:$('#f-cat').value.trim(), date:$('#f-date').value||todayISO(), note:$('#f-note').value.trim() };
+  mutate(()=>{
+    if (!S.cashflow) S.cashflow = { startDate: S.createdAt||todayISO(), dailyFixed:167, entries:[] };
+    if (id){ Object.assign(S.cashflow.entries.find(x=>x.id===id), data); }
+    else S.cashflow.entries.push({ id:uid(), ...data });
+  });
+  closeModal(); toast(id?'Lançamento atualizado':'Lançamento registrado');
+}
+function deleteCashEntry(id){
+  if (!confirm('Excluir este lançamento?')) return;
+  mutate(()=>{ S.cashflow.entries = (S.cashflow.entries||[]).filter(x=>x.id!==id); });
+  closeModal(); toast('Lançamento excluído');
+}
+
+/* ---------- CLÍNICAS (CRM v5) ---------- */
+const openClinics = new Set();
+function renderClinicas(){
+  const clinics = (S.clinics||[]).slice().sort((a,b)=> clinicEffectiveScore(b)-clinicEffectiveScore(a));
+  const breakdown = clinicTempBreakdown();
+  const total = clinics.length;
+
+  $('#view-clinicas').innerHTML = `
+    <div class="page-head">
+      <div class="page-title">Clínicas</div>
+      <div class="page-sub">${total} ${total===1?'clínica':'clínicas'} · ${clinicsHot()} quentes (5+ pts)</div>
+    </div>
+
+    <div class="card card-lg">
+      <h3>Temperatura da carteira</h3>
+      ${total ? `<div style="display:flex;gap:22px;align-items:center;flex-wrap:wrap">
+        ${pieSVG(breakdown.map(b=>({value:b.value,color:b.color})), 150)}
+        <div class="legend" style="flex-direction:column;align-items:flex-start;gap:8px;margin-top:0">
+          ${breakdown.map(b=>`<span><i style="background:${b.color}"></i>${b.label}: <b>${b.value}</b>${total?` · ${Math.round(b.value/total*100)}%`:''}</span>`).join('')}
+        </div>
+      </div>` : '<div class="muted small">Cadastre clínicas para ver a distribuição de temperatura.</div>'}
+    </div>
+
+    <div class="card">
+      <strong style="font-size:.95rem">Nova clínica</strong>
+      <div class="inline-add">
+        <input class="ia-name" id="ia-clinic-name" type="text" placeholder="Nome da clínica" onkeydown="if(event.key==='Enter')addClinic()">
+        <button class="btn btn-primary btn-sm" onclick="addClinic()">+ Criar</button>
+      </div>
+      <div class="ia-hint">Pontuação começa em 0. Registre eventos para aquecer; a nota cai −2 a cada 30 dias sem interação.</div>
+    </div>
+
+    <div class="section-label">Carteira</div>
+    ${clinics.length ? clinics.map(renderClinic).join('') : '<div class="empty">Nenhuma clínica cadastrada ainda.</div>'}`;
+}
+function renderClinic(c){
+  const eff = clinicEffectiveScore(c);
+  const k = clinicClass(eff);
+  const open = openClinics.has(c.id);
+  const hist = (c.history||[]);
+  const idle = c.lastInteraction ? diffDays(c.lastInteraction, todayISO()) : null;
+  return `
+  <div class="clinic ${open?'open':''}">
+    <div class="clinic-top">
+      <div class="clinic-score ${k.cls}">${eff}</div>
+      <div style="flex:1;min-width:0">
+        <div style="font-weight:700;font-size:1.02rem">${esc(c.name)}</div>
+        <div class="sub-meta" style="margin-top:4px">
+          <span class="badge ${k.cls}" style="background:${k.color}1a;color:${k.color}">${k.label}</span>
+          <span>${c.lastInteraction?`Última interação ${fmt(c.lastInteraction)}`:'Sem interações'}</span>
+          ${idle!=null && idle>=30?`<span class="badge b-grey">${Math.floor(idle/30)*2} pts de desgaste</span>`:''}
+        </div>
+      </div>
+      <button class="icon-btn" onclick="openClinicForm('${c.id}')" aria-label="Editar clínica">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 3a2.8 2.8 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5z"/></svg>
+      </button>
+    </div>
+    <div class="clinic-ev">
+      <button class="btn btn-soft btn-sm" onclick="addClinicInteraction('${c.id}','Mensagem de aquecimento')">＋ Aquecimento +1</button>
+      <button class="btn btn-soft btn-sm" onclick="addClinicInteraction('${c.id}','Visita realizada')">＋ Visita +2</button>
+      <button class="btn btn-soft btn-sm" onclick="addClinicInteraction('${c.id}','Hospedagem fechada')">＋ Hospedagem +7</button>
+      <button class="btn btn-ghost btn-sm" onclick="toggleClinic('${c.id}')">${open?'Ocultar':'Histórico'} (${hist.length})</button>
+    </div>
+    <div class="chist">
+      ${hist.length ? hist.map(h=>`
+        <div class="fin-row">
+          <span class="fin-dot" style="background:var(--navy)"></span>
+          <div class="fin-main"><div style="font-weight:600">${esc(h.type)}</div>${h.note?`<div class="muted small">${esc(h.note)}</div>`:''}</div>
+          <span class="muted small">${fmt(h.date)}</span>
+        </div>`).join('') : '<div class="muted small" style="padding:6px 0">Sem histórico ainda.</div>'}
+      <button class="btn btn-ghost btn-sm" style="margin-top:8px;color:var(--danger)" onclick="deleteClinic('${c.id}')">Excluir clínica</button>
+    </div>
+  </div>`;
+}
+function toggleClinic(id){ openClinics.has(id)?openClinics.delete(id):openClinics.add(id); render(); }
+function addClinic(){
+  const el = document.getElementById('ia-clinic-name');
+  const name = (el && el.value || '').trim();
+  if (!name){ toast('Informe o nome da clínica'); return; }
+  mutate(()=>{ S.clinics.push({ id:uid(), name, score:0, lastInteraction:null, history:[] }); });
+  toast('Clínica cadastrada');
+}
+function addClinicInteraction(id, type, note){
+  mutate(()=>{
+    const c = S.clinics.find(x=>x.id===id); if(!c) return;
+    const ev = CLINIC_EVENTS.find(e=>e[0]===type);
+    c.score = (Number(c.score)||0) + (ev?ev[1]:0);
+    c.lastInteraction = todayISO();
+    c.history = c.history||[];
+    c.history.unshift({ date:todayISO(), type, note:note||'' });
+  });
+  toast(type);
+}
+function openClinicForm(id){
+  const c = S.clinics.find(x=>x.id===id); if(!c) return;
+  openModal(`
+    <div class="modal-title">Editar clínica</div>
+    <div class="field"><label>Nome</label><input id="f-cname" value="${esc(c.name)}"></div>
+    <div class="field"><label>Pontuação base (pode ser negativa)</label><input id="f-cscore" type="number" value="${Number(c.score)||0}"></div>
+    <div class="field-hint" style="margin-bottom:14px">A pontuação base é antes do desgaste automático por inatividade. Pontuação efetiva atual: <b>${clinicEffectiveScore(c)}</b>.</div>
+    <div class="field"><label>Registrar interação avulsa</label>
+      <select id="f-cevent">
+        <option value="">— nenhuma —</option>
+        ${CLINIC_EVENTS.map(e=>`<option value="${e[0]}">${e[0]} (+${e[1]})</option>`).join('')}
+      </select></div>
+    <div class="field"><label>Observação da interação</label><input id="f-cnote" placeholder="Opcional"></div>
+    <div class="btn-row"><button class="btn btn-primary btn-block" onclick="saveClinic('${id}')">Salvar</button></div>
+    <button class="btn btn-danger btn-block" style="margin-top:8px" onclick="deleteClinic('${id}')">Excluir clínica</button>
+    <button class="btn btn-ghost btn-block" style="margin-top:8px" onclick="closeModal()">Cancelar</button>`);
+}
+function saveClinic(id){
+  const name = $('#f-cname').value.trim();
+  if (!name){ toast('Informe o nome'); return; }
+  const ev = $('#f-cevent').value, note = $('#f-cnote').value.trim();
+  mutate(()=>{
+    const c = S.clinics.find(x=>x.id===id); if(!c) return;
+    c.name = name;
+    c.score = Number($('#f-cscore').value)||0;
+    if (ev){
+      const def = CLINIC_EVENTS.find(e=>e[0]===ev);
+      c.score += def?def[1]:0;
+      c.lastInteraction = todayISO();
+      c.history = c.history||[];
+      c.history.unshift({ date:todayISO(), type:ev, note });
+    }
+  });
+  closeModal(); toast('Clínica atualizada');
+}
+function deleteClinic(id){
+  const c = S.clinics.find(x=>x.id===id);
+  if (!c || !confirm(`Excluir a clínica "${c.name}" e seu histórico?`)) return;
+  mutate(()=>{ S.clinics = S.clinics.filter(x=>x.id!==id); });
+  closeModal(); toast('Clínica excluída');
+}
+
 /* ---------- ACTIONS ---------- */
 function mutate(fn){ fn(); persist(); render(); }
 
@@ -1697,8 +2034,9 @@ function openDailyTaskForm(id){
     <div class="field"><label>Nome</label><input id="f-name" value="${t?esc(t.name):''}" placeholder="Ex.: Visitar clínica, resolver entrega"></div>
     <div class="field-row">
       <div class="field"><label>Data</label><input id="f-date" type="date" value="${t?t.date:todayISO()}"></div>
-      <div class="field"><label>Impacto no plano (dias)</label><input id="f-impact" type="number" min="0" max="90" step="0.5" value="${t&&t.impactDays!=null?t.impactDays:''}" placeholder="0"></div>
+      <div class="field"><label>Duração (horas)</label><input id="f-hours" type="number" min="0" max="24" step="0.5" value="${t&&t.hours!=null?t.hours:''}" placeholder="0"></div>
     </div>
+    <div class="field-hint" style="margin-top:-8px;margin-bottom:16px">Cada 9 horas acumuladas em Tarefas do Dia = 1 dia operacional somado ao prazo ajustado.</div>
     <div class="field"><label>Notas</label><textarea id="f-notes" placeholder="Contexto da obrigação">${t?esc(t.notes||''):''}</textarea></div>
     <div class="btn-row">
       <button class="btn btn-primary btn-block" onclick="saveDailyTask('${id||''}')">${t?'Salvar alterações':'Registrar tarefa'}</button>
@@ -1712,7 +2050,7 @@ function saveDailyTask(id){
   const data = {
     name,
     date: $('#f-date').value || todayISO(),
-    impactDays: Number($('#f-impact').value) || 0,
+    hours: Number($('#f-hours').value) || 0,
     notes: $('#f-notes').value.trim()
   };
   mutate(()=>{
@@ -2046,7 +2384,7 @@ function nav(view){
 document.querySelectorAll('[data-nav]').forEach(b=>b.addEventListener('click', ()=>nav(b.dataset.nav)));
 
 function render(){
-  ({ dashboard:renderDashboard, roadmap:renderRoadmap, hoje:renderHoje, rotina:renderRotina, kpis:renderKpis })[currentView]();
+  ({ dashboard:renderDashboard, roadmap:renderRoadmap, hoje:renderHoje, rotina:renderRotina, kpis:renderKpis, caixa:renderCaixa, clinicas:renderClinicas })[currentView]();
 }
 
 /* Re-evaluate schedule drift automatically at every day change */
