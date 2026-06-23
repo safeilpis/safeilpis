@@ -424,6 +424,70 @@ input,select,textarea{font:inherit;color:inherit}
 .temp-m{background:#EEF1FB;color:#081A58}.temp-f{background:#EAF1F7;color:#3B6CA8}.temp-mf{background:#F5F7FA;color:#5B6472}
 .chist{margin-top:12px;border-top:1px solid var(--line);padding-top:10px;display:none}
 .clinic.open .chist{display:block}
+
+/* ============================================================
+   PRODUCT POLISH (v7) — mobile-first, visual hierarchy
+   ============================================================ */
+/* New clinic temperature palette: 🔵 muito quente · 🟢 quente · 🟠 morna · ⚪ fria · 🔴 muito fria */
+.temp-mq{background:#E6EEFF;color:#2563EB}
+.temp-q{background:#E7F7EE;color:#16A34A}
+.temp-m{background:#FDEFD9;color:#B4660A}
+.temp-f{background:#EFF1F5;color:#6B7686}
+.temp-mf{background:#FCE9E9;color:#DC2626}
+
+/* Compact metric chips */
+.metric-row{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:16px}
+.metric{background:#fff;border-radius:var(--r-md);box-shadow:var(--shadow);padding:16px 12px;text-align:center}
+.metric-val{font-size:1.5rem;font-weight:800;color:var(--navy);letter-spacing:-.02em;line-height:1.05}
+.metric-lbl{font-size:.73rem;font-weight:600;color:var(--muted);margin-top:4px;line-height:1.2}
+
+/* Roadmap journey hero */
+.rm-journey{background:var(--navy);color:#fff;border-radius:var(--r-lg);padding:20px 18px 12px;margin-bottom:14px;box-shadow:var(--shadow);position:relative;overflow:hidden}
+.rm-journey::after{content:"";position:absolute;right:-70px;top:-70px;width:220px;height:220px;border-radius:50%;background:radial-gradient(circle,rgba(255,255,255,.10),transparent 70%)}
+.rm-flags{display:flex;justify-content:space-between;font-size:1.25rem;position:relative;z-index:1}
+.rm-pct{font-size:2.5rem;font-weight:800;letter-spacing:-.03em;line-height:1;margin-top:2px}
+.rm-sub{opacity:.85;font-size:.88rem;margin-top:2px}
+.op-chip{display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,.16);color:#fff;border-radius:99px;padding:5px 12px;font-size:.8rem;font-weight:700;margin-top:10px}
+
+/* Money/long values never overflow their card */
+.stat-value{overflow-wrap:anywhere}
+
+/* ---- Mobile-first (≤560px) ---- */
+@media(max-width:560px){
+  .main{padding:16px 13px calc(var(--nav-h) + 26px + env(safe-area-inset-bottom))}
+  .page-head{margin-bottom:18px}
+  .page-title{font-size:1.5rem}
+  .page-sub{font-size:.92rem}
+  .card{padding:16px;border-radius:15px;margin-bottom:13px}
+  .card-lg{padding:18px}
+  .hero{padding:21px 17px}
+  .hero-pct{font-size:2.8rem}
+  .hero-meta{gap:10px;font-size:.84rem}
+  .grid{gap:10px}
+  .stat{padding:13px;min-height:0;gap:2px}
+  .stat-value{font-size:1.3rem}
+  .stat-label{font-size:.78rem}
+  .stat-note{font-size:.74rem}
+  .metric{padding:13px 8px}
+  .metric-val{font-size:1.3rem}
+  .section-label{margin:20px 0 10px}
+  .bn-item{font-size:.63rem;gap:2px}
+  .bn-item svg{width:22px;height:22px}
+  .chart-wrap{overflow-x:visible}
+  .chart-wrap svg{min-width:0!important}
+  .modal{padding:20px 16px calc(20px + env(safe-area-inset-bottom))}
+  .ms-head{padding:16px 15px 14px;gap:12px}
+  .ms-num{width:34px;height:34px}
+  .ms-prog,.ms-body{padding-left:15px;padding-right:15px}
+  .day-banner{padding:18px}
+  .day-banner h2{font-size:1.2rem}
+  .kpi-circle{padding:14px 8px}
+}
+@media(max-width:380px){
+  .metric-val{font-size:1.15rem}
+  .stat-value{font-size:1.18rem}
+  .bn-item{font-size:.58rem}
+}
 </style>
 </head>
 <body>
@@ -438,10 +502,9 @@ input,select,textarea{font:inherit;color:inherit}
         <div class="brand-sub">Mission Control</div>
       </div>
     </div>
-    <button class="side-link" data-nav="dashboard"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="9" rx="1.5"/><rect x="14" y="3" width="7" height="5" rx="1.5"/><rect x="14" y="12" width="7" height="9" rx="1.5"/><rect x="3" y="16" width="7" height="5" rx="1.5"/></svg>Dashboard</button>
+    <button class="side-link" data-nav="dashboard"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="9" rx="1.5"/><rect x="14" y="3" width="7" height="5" rx="1.5"/><rect x="14" y="12" width="7" height="9" rx="1.5"/><rect x="3" y="16" width="7" height="5" rx="1.5"/></svg>Dash</button>
     <button class="side-link" data-nav="roadmap"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="6" cy="5" r="2.4"/><circle cx="18" cy="12" r="2.4"/><circle cx="6" cy="19" r="2.4"/><path d="M8.4 5h6a3 3 0 0 1 0 7H9a3 3 0 0 0 0 7h6.6"/></svg>Roadmap</button>
     <button class="side-link" data-nav="hoje"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="4.5"/><circle cx="12" cy="12" r="1" fill="currentColor"/></svg>Hoje</button>
-    <button class="side-link" data-nav="rotina"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12.5l2 2 4.5-5"/><rect x="3.5" y="4" width="17" height="17" rx="3"/><path d="M8 2.5v3M16 2.5v3"/></svg>Rotina</button>
     <button class="side-link" data-nav="kpis"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20V10M10 20V4M16 20v-7M21 20H3"/></svg>KPIs</button>
     <button class="side-link" data-nav="caixa"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2.5" y="6" width="19" height="13" rx="2.5"/><path d="M2.5 10h19"/><circle cx="17" cy="14.5" r="1.3" fill="currentColor"/></svg>Caixa</button>
     <button class="side-link" data-nav="clinicas"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21V5a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v16"/><path d="M3 21h18M12 7v4M10 9h4"/></svg>Clínicas</button>
@@ -462,10 +525,9 @@ input,select,textarea{font:inherit;color:inherit}
 
 <!-- Bottom navigation (mobile) -->
 <nav class="bottomnav">
-  <button class="bn-item" data-nav="dashboard"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="9" rx="1.5"/><rect x="14" y="3" width="7" height="5" rx="1.5"/><rect x="14" y="12" width="7" height="9" rx="1.5"/><rect x="3" y="16" width="7" height="5" rx="1.5"/></svg>Dashboard</button>
+  <button class="bn-item" data-nav="dashboard"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="9" rx="1.5"/><rect x="14" y="3" width="7" height="5" rx="1.5"/><rect x="14" y="12" width="7" height="9" rx="1.5"/><rect x="3" y="16" width="7" height="5" rx="1.5"/></svg>Dash</button>
   <button class="bn-item" data-nav="roadmap"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="6" cy="5" r="2.4"/><circle cx="18" cy="12" r="2.4"/><circle cx="6" cy="19" r="2.4"/><path d="M8.4 5h6a3 3 0 0 1 0 7H9a3 3 0 0 0 0 7h6.6"/></svg>Roadmap</button>
   <button class="bn-item" data-nav="hoje"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="4.5"/><circle cx="12" cy="12" r="1" fill="currentColor"/></svg>Hoje</button>
-  <button class="bn-item" data-nav="rotina"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12.5l2 2 4.5-5"/><rect x="3.5" y="4" width="17" height="17" rx="3"/><path d="M8 2.5v3M16 2.5v3"/></svg>Rotina</button>
   <button class="bn-item" data-nav="kpis"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20V10M10 20V4M16 20v-7M21 20H3"/></svg>KPIs</button>
   <button class="bn-item" data-nav="caixa"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2.5" y="6" width="19" height="13" rx="2.5"/><path d="M2.5 10h19"/><circle cx="17" cy="14.5" r="1.3" fill="currentColor"/></svg>Caixa</button>
   <button class="bn-item" data-nav="clinicas"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21V5a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v16"/><path d="M3 21h18M12 7v4M10 9h4"/></svg>Clínicas</button>
@@ -1058,19 +1120,28 @@ function clinicEffectiveScore(c){
   return base - 2 * Math.floor(d / 30);   // automatic decay: -2 every 30 idle days
 }
 function clinicClass(score){
-  if (score >= 10) return { label:'Muito quente', cls:'temp-mq', key:'mq', color:'#DC2626' };
-  if (score >= 5)  return { label:'Quente',       cls:'temp-q',  key:'q',  color:'#F59E0B' };
-  if (score >= 1)  return { label:'Morna',        cls:'temp-m',  key:'m',  color:'#081A58' };
-  if (score >= -4) return { label:'Fria',         cls:'temp-f',  key:'f',  color:'#3B6CA8' };
-  return                  { label:'Muito fria',   cls:'temp-mf', key:'mf', color:'#9AA4B2' };
+  if (score >= 10) return { label:'Muito quente', cls:'temp-mq', key:'mq', color:'#2563EB' };
+  if (score >= 5)  return { label:'Quente',       cls:'temp-q',  key:'q',  color:'#16A34A' };
+  if (score >= 1)  return { label:'Morna',        cls:'temp-m',  key:'m',  color:'#B4660A' };
+  if (score >= -4) return { label:'Fria',         cls:'temp-f',  key:'f',  color:'#6B7686' };
+  return                  { label:'Muito fria',   cls:'temp-mf', key:'mf', color:'#DC2626' };
 }
 function clinicTempBreakdown(){
-  const order = [['mq','Muito quente','#DC2626'],['q','Quente','#F59E0B'],['m','Morna','#081A58'],['f','Fria','#3B6CA8'],['mf','Muito fria','#9AA4B2']];
+  const order = [['mq','Muito quente','#2563EB'],['q','Quente','#16A34A'],['m','Morna','#B4660A'],['f','Fria','#6B7686'],['mf','Muito fria','#DC2626']];
   const counts = {};
   (S.clinics||[]).forEach(c => { const k = clinicClass(clinicEffectiveScore(c)).key; counts[k]=(counts[k]||0)+1; });
   return order.map(([key,label,color]) => ({ key, label, color, value: counts[key]||0 }));
 }
 function clinicsHot(){ return (S.clinics||[]).filter(c => clinicEffectiveScore(c) >= 5).length; }
+function clinicMonthlyAdmissions(){
+  const ym = todayISO().slice(0,7); let n = 0;
+  (S.clinics||[]).forEach(c => (c.history||[]).forEach(h => { if (h.type==='Hospedagem fechada' && (h.date||'').slice(0,7)===ym) n++; }));
+  return n;
+}
+function clinicConversion(){
+  const total = (S.clinics||[]).length; if (!total) return 0;
+  return +(clinicMonthlyAdmissions() / total * 100).toFixed(1);
+}
 
 /* ---- Caixa / financeiro (v5) ---- */
 function fmtMoney(v){ return 'R$ ' + (Number(v)||0).toLocaleString('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:2}); }
@@ -1202,15 +1273,16 @@ function renderDashboard(){
       <span class="muted small" style="flex:1;min-width:180px">${h.note}</span>
     </div>
 
-    <!-- Prazo original x ajustado + dias operacionais -->
-    <div class="card card-lg">
-      <div class="ms-dates" style="grid-template-columns:repeat(2,1fr);margin-bottom:0">
+    <!-- Prazo: visão enxuta -->
+    <div class="card">
+      <div class="ms-dates" style="grid-template-columns:repeat(2,1fr);margin-bottom:12px">
         <div class="dt blue"><b>Prazo original</b><span>${fmt(e.originalEnd)}</span></div>
         <div class="dt ${e.justifiedDelay>0?'amber':'blue'}"><b>Prazo ajustado</b><span>${fmt(e.projectedEnd)}</span></div>
-        <div class="dt ${delayDtClass(e.realDelay)}"><b>Atraso real</b><span>${e.realDelay} ${e.realDelay===1?'dia':'dias'}</span></div>
-        <div class="dt blue"><b>Dias operacionais</b><span>${opDays} ${opDays===1?'dia':'dias'}</span></div>
       </div>
-      ${e.justifiedDelay>0?`<div class="justified-note" style="margin-top:14px">⏱️ +${e.justifiedDelay} ${e.justifiedDelay===1?'dia adicionado':'dias adicionados'} ao prazo por tempo operacional necessário (${opHours.toLocaleString('pt-BR')}h ÷ 9). Isso estende o plano — não é atraso.</div>`:''}
+      <div class="sub-meta">
+        ${e.realDelay>0?`<span class="badge ${delayClass(e.realDelay)}">${e.realDelay}d atraso real</span>`:`<span class="badge b-blue">No prazo</span>`}
+        ${e.justifiedDelay>0?`<span class="badge b-amber">+${e.justifiedDelay}d operação · ${opDays} ${opDays===1?'dia':'dias'} (${opHours.toLocaleString('pt-BR')}h)</span>`:''}
+      </div>
     </div>
 
     <!-- Strip visual: Roadmap · Clínicas quentes · Caixa -->
@@ -1263,15 +1335,18 @@ function renderRoadmap(){
       <div class="page-title">Roadmap Estratégico</div>
       <div class="page-sub">${e.done} de ${e.total} marcos concluídos · ${e.remaining} restantes</div>
     </div>
-    <div class="card card-lg">
-      <h3>Progresso geral do projeto</h3>
+    <div class="rm-journey">
+      <div class="rm-flags"><span>🏁</span><span>🎯</span></div>
+      <div style="margin:2px -6px 0">${journeySVG(e.progress)}</div>
+      <div class="rm-pct">${e.progress}%</div>
+      <div class="rm-sub">${e.done} de ${e.total} marcos · ${e.units} de ${S.targetUnits} unidades abertas</div>
+      ${e.justifiedDelay>0?`<div class="op-chip">⏱️ +${e.justifiedDelay} ${e.justifiedDelay===1?'dia':'dias'} por operação</div>`:''}
+    </div>
+    <div class="card">
       ${pbar(e.progress, e.realDelay>0?(e.realDelay<=30?'amber':'red'):'green')}
-      <div class="sub-meta" style="margin-top:12px">
-        <span>Prazo original: <b>${fmt(e.originalEnd)}</b></span>
-        <span>Projeção real: <b>${fmt(e.projectedRealEnd)}</b></span>
-        <span>Projeção total: <b>${fmt(e.projectedEnd)}</b></span>
-        ${e.realDelay>0?`<span class="badge ${delayClass(e.realDelay)}">${e.realDelay} dias de atraso real</span>`:`<span class="badge b-blue">Dentro do prazo operacional</span>`}
-        ${e.justifiedDelay>0?`<span class="badge b-blue">+${e.justifiedDelay}d por Tarefas do Dia</span>`:''}
+      <div class="sub-meta" style="margin-top:10px">
+        ${e.realDelay>0?`<span class="badge ${delayClass(e.realDelay)}">${e.realDelay} ${e.realDelay===1?'dia':'dias'} de atraso real</span>`:`<span class="badge b-blue">No prazo</span>`}
+        <span>Prazo ${fmt(e.originalEnd)} → <b>${fmt(e.projectedEnd)}</b></span>
       </div>
     </div>
     <div class="section-label">Marcos</div>
@@ -1432,6 +1507,10 @@ function renderHoje(){
     <div class="section-label">Como você está hoje</div>
     ${renderLogCard()}
 
+    <div class="section-label">Rotina · disciplina de hoje</div>
+    <div class="card" style="margin-bottom:14px">${pbar(disciplineToday(), disciplineToday()>=80?'green':disciplineToday()>=50?'':'amber')}</div>
+    ${habitsListHTML()}
+
     <div class="section-label">Tempo operacional necessário</div>
     <div class="card">
       <div class="grid" style="grid-template-columns:repeat(3,1fr);gap:10px">
@@ -1540,6 +1619,32 @@ function renderRotina(){
         </button>
       </div>`;
     }).join('') || '<div class="empty">Nenhum hábito. Crie o primeiro para começar a medir sua disciplina.</div>'}`;
+}
+
+/* habits list (shared — also used inside Hoje after merging Rotina) */
+function habitsListHTML(){
+  return `<div class="list-head"><div class="section-label" style="margin:0">Hábitos</div><button class="btn btn-primary btn-sm" onclick="openHabitForm()">+ Novo</button></div>` +
+  (S.habits.map(h=>{
+    const st = habitStats(h);
+    return `
+    <div class="habit">
+      <button class="habit-check ${st.doneToday?'on':''}" onclick="toggleHabit('${h.id}')" aria-label="Concluir hábito">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13l4 4L19 7"/></svg>
+      </button>
+      <div class="habit-main">
+        <div class="habit-name">${esc(h.name)}</div>
+        <div class="habit-stats">
+          <span class="streak">🔥 ${st.streak} ${st.streak===1?'dia':'dias'}</span>
+          <span>Recorde: ${st.best}</span>
+          <span>Semana: ${st.week}%</span>
+          <span>Mês: ${st.month}%</span>
+        </div>
+      </div>
+      <button class="icon-btn" onclick="openHabitForm('${h.id}')" aria-label="Editar hábito">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 3a2.8 2.8 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5z"/></svg>
+      </button>
+    </div>`;
+  }).join('') || '<div class="empty">Nenhum hábito ainda. Crie o primeiro para medir sua disciplina.</div>');
 }
 
 /* ---------- KPIs ---------- */
@@ -1728,6 +1833,7 @@ function renderCaixa(){
       <div class="btn-row">
         <button class="btn btn-soft btn-sm" onclick="openCashForm('receita')">+ Receita</button>
         <button class="btn btn-soft btn-sm" onclick="openCashForm('despesa')">+ Despesa</button>
+        <button class="btn btn-soft btn-sm" onclick="openCashForm('receita','','Ajuste manual')">± Ajuste</button>
       </div>
     </div>
 
@@ -1777,7 +1883,7 @@ function cashChartSVG(){
   days.forEach((d,i)=>{ if(i%5===0||i===n-1) svg+=`<text x="${x(i)}" y="${H+14}" font-size="9" fill="#5B6472" text-anchor="middle">${d.slice(8)}</text>`; });
   return svg + '</svg>';
 }
-function openCashForm(type, id){
+function openCashForm(type, id, presetCat){
   const e = id ? (S.cashflow.entries||[]).find(x=>x.id===id) : null;
   const tp = e ? e.type : (type||'receita');
   const title = tp==='receita' ? 'Receita' : 'Despesa';
@@ -1788,7 +1894,7 @@ function openCashForm(type, id){
         <select id="f-type"><option value="receita" ${tp==='receita'?'selected':''}>Receita</option><option value="despesa" ${tp==='despesa'?'selected':''}>Despesa</option></select></div>
       <div class="field"><label>Valor (R$)</label><input id="f-amount" type="number" min="0" step="0.01" value="${e?e.amount:''}" placeholder="0,00"></div>
     </div>
-    <div class="field"><label>Categoria</label><input id="f-cat" value="${e?esc(e.category||''):''}" placeholder="Ex.: Hospedagem, Comissão, Aula de Tênis"></div>
+    <div class="field"><label>Categoria</label><input id="f-cat" value="${e?esc(e.category||''):(presetCat?esc(presetCat):'')}" placeholder="Ex.: Hospedagem, Comissão, Aula de Tênis"></div>
     <div class="field-row">
       <div class="field"><label>Data</label><input id="f-date" type="date" value="${e?e.date:todayISO()}"></div>
       <div class="field"><label>Observação</label><input id="f-note" value="${e?esc(e.note||''):''}" placeholder="Opcional"></div>
@@ -1825,6 +1931,12 @@ function renderClinicas(){
     <div class="page-head">
       <div class="page-title">Clínicas</div>
       <div class="page-sub">${total} ${total===1?'clínica':'clínicas'} · ${clinicsHot()} quentes (5+ pts)</div>
+    </div>
+
+    <div class="metric-row">
+      <div class="metric"><div class="metric-val">${clinicMonthlyAdmissions()}</div><div class="metric-lbl">Hospedagens no mês</div></div>
+      <div class="metric"><div class="metric-val">${total}</div><div class="metric-lbl">Total de clínicas</div></div>
+      <div class="metric"><div class="metric-val">${clinicConversion()}%</div><div class="metric-lbl">Conversão</div></div>
     </div>
 
     <div class="card card-lg">
