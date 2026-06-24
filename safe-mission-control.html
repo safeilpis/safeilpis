@@ -488,6 +488,73 @@ input,select,textarea{font:inherit;color:inherit}
   .stat-value{font-size:1.18rem}
   .bn-item{font-size:.58rem}
 }
+
+/* ============================================================
+   ROADMAP UX (v8) — KPI header, timeline, drag reorder
+   ============================================================ */
+.rm-kpis{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-bottom:14px}
+@media(min-width:680px){.rm-kpis{grid-template-columns:repeat(4,1fr)}}
+
+/* Per-milestone timeline (gantt-style) */
+.gantt{position:relative;height:10px;border-radius:6px;background:var(--surface);margin-top:10px;overflow:hidden}
+.gantt-bar{position:absolute;top:0;height:100%;border-radius:6px;overflow:hidden;min-width:6px}
+.gantt-bar.navy{background:#C7CEDC}
+.gantt-bar.green{background:#BBE7CC}
+.gantt-bar.red{background:#F3C2C2}
+.gantt-bar>i{display:block;height:100%;background:var(--navy)}
+.gantt-bar.green>i{background:var(--success)}
+.gantt-bar.red>i{background:var(--danger)}
+
+/* Drag handle + states */
+.drag-handle{width:36px;height:36px;border-radius:10px;display:inline-flex;align-items:center;justify-content:center;color:#AEB6C4;flex-shrink:0;cursor:grab;touch-action:none;margin:-4px 0 0 -4px}
+.drag-handle:hover{background:var(--surface);color:var(--navy)}
+.drag-handle:active{cursor:grabbing}
+.ms.dragging{opacity:.45;box-shadow:var(--shadow-lg);transform:scale(.99)}
+.ms.drop-target{outline:2px dashed var(--navy);outline-offset:3px}
+.ms.drop-target::before{content:"Soltar aqui";position:absolute;top:-10px;left:14px;background:var(--navy);color:#fff;font-size:.66rem;font-weight:700;padding:2px 8px;border-radius:99px;z-index:2}
+.ms{position:relative}
+
+@media(max-width:560px){
+  .rm-kpis{gap:8px}
+  .drag-handle{width:40px;height:40px}
+  .move-btn{min-height:44px}
+}
+
+/* ============================================================
+   PERFORMANCE INTELLIGENCE (v9) — check-in sliders + insights
+   ============================================================ */
+.ci-row{margin-bottom:18px}
+.ci-top{display:flex;justify-content:space-between;align-items:center;font-weight:700;font-size:.95rem;margin-bottom:9px}
+.ci-val{font-weight:800;color:var(--navy);font-variant-numeric:tabular-nums;background:var(--surface);border-radius:9px;padding:3px 12px;min-width:42px;text-align:center}
+.ci-range{-webkit-appearance:none;appearance:none;width:100%;height:12px;border-radius:7px;background:var(--surface);outline:none;margin:0}
+.ci-range::-webkit-slider-thumb{-webkit-appearance:none;width:30px;height:30px;border-radius:50%;background:var(--navy);cursor:pointer;box-shadow:var(--shadow);border:3px solid #fff}
+.ci-range::-moz-range-thumb{width:26px;height:26px;border:3px solid #fff;border-radius:50%;background:var(--navy);cursor:pointer;box-shadow:var(--shadow)}
+.ci-range.f-anxiety::-webkit-slider-thumb{background:#B4660A}
+.ci-range.f-anxiety::-moz-range-thumb{background:#B4660A}
+.ci-times{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px}
+@media(max-width:480px){.ci-times{grid-template-columns:1fr 1fr}}
+.insight{display:flex;gap:11px;align-items:flex-start;background:var(--info-bg);border-radius:var(--r-md);padding:14px 16px;margin-bottom:10px;font-size:.92rem;font-weight:600;color:var(--navy);line-height:1.45}
+.insight .ic{font-size:1.15rem;flex-shrink:0;line-height:1.3}
+
+/* ============================================================
+   UX CORRECTION (v10) — wake selector, roadmap dates, readability
+   ============================================================ */
+.wake-row{display:grid;grid-template-columns:repeat(6,1fr);gap:8px}
+.wake-btn{min-height:56px;border-radius:14px;border:1.5px solid var(--line);background:#fff;font-weight:800;font-size:1.02rem;color:var(--muted);transition:.15s;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;line-height:1}
+.wake-btn.sel{background:var(--navy);border-color:var(--navy);color:#fff}
+.wake-btn small{font-size:.66rem;font-weight:700}
+@media(max-width:380px){.wake-btn{font-size:.94rem;min-height:52px}.wake-row{gap:6px}}
+
+/* Roadmap collapsed dates */
+.ms-when{font-size:.95rem;font-weight:600;color:var(--muted);margin-top:6px;font-variant-numeric:tabular-nums}
+.ms-when b{color:var(--navy)}
+
+/* Readability (≥15px important UI) */
+.metric-lbl{font-size:.8rem}
+.sub-meta{font-size:.84rem}
+.stat-note{font-size:.8rem}
+.ia-hint{font-size:.8rem}
+@media(min-width:1024px){.metric-lbl{font-size:.84rem}}
 </style>
 </head>
 <body>
@@ -505,7 +572,6 @@ input,select,textarea{font:inherit;color:inherit}
     <button class="side-link" data-nav="dashboard"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="9" rx="1.5"/><rect x="14" y="3" width="7" height="5" rx="1.5"/><rect x="14" y="12" width="7" height="9" rx="1.5"/><rect x="3" y="16" width="7" height="5" rx="1.5"/></svg>Dash</button>
     <button class="side-link" data-nav="roadmap"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="6" cy="5" r="2.4"/><circle cx="18" cy="12" r="2.4"/><circle cx="6" cy="19" r="2.4"/><path d="M8.4 5h6a3 3 0 0 1 0 7H9a3 3 0 0 0 0 7h6.6"/></svg>Roadmap</button>
     <button class="side-link" data-nav="hoje"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="4.5"/><circle cx="12" cy="12" r="1" fill="currentColor"/></svg>Hoje</button>
-    <button class="side-link" data-nav="kpis"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20V10M10 20V4M16 20v-7M21 20H3"/></svg>KPIs</button>
     <button class="side-link" data-nav="caixa"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2.5" y="6" width="19" height="13" rx="2.5"/><path d="M2.5 10h19"/><circle cx="17" cy="14.5" r="1.3" fill="currentColor"/></svg>Caixa</button>
     <button class="side-link" data-nav="clinicas"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21V5a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v16"/><path d="M3 21h18M12 7v4M10 9h4"/></svg>Clínicas</button>
     <div class="side-foot">Meta: 10 Unidades SAFE Plus</div>
@@ -528,7 +594,6 @@ input,select,textarea{font:inherit;color:inherit}
   <button class="bn-item" data-nav="dashboard"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="9" rx="1.5"/><rect x="14" y="3" width="7" height="5" rx="1.5"/><rect x="14" y="12" width="7" height="9" rx="1.5"/><rect x="3" y="16" width="7" height="5" rx="1.5"/></svg>Dash</button>
   <button class="bn-item" data-nav="roadmap"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="6" cy="5" r="2.4"/><circle cx="18" cy="12" r="2.4"/><circle cx="6" cy="19" r="2.4"/><path d="M8.4 5h6a3 3 0 0 1 0 7H9a3 3 0 0 0 0 7h6.6"/></svg>Roadmap</button>
   <button class="bn-item" data-nav="hoje"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="4.5"/><circle cx="12" cy="12" r="1" fill="currentColor"/></svg>Hoje</button>
-  <button class="bn-item" data-nav="kpis"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20V10M10 20V4M16 20v-7M21 20H3"/></svg>KPIs</button>
   <button class="bn-item" data-nav="caixa"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2.5" y="6" width="19" height="13" rx="2.5"/><path d="M2.5 10h19"/><circle cx="17" cy="14.5" r="1.3" fill="currentColor"/></svg>Caixa</button>
   <button class="bn-item" data-nav="clinicas"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21V5a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v16"/><path d="M3 21h18M12 7v4M10 9h4"/></svg>Clínicas</button>
 </nav>
@@ -676,30 +741,9 @@ const uid = () => Math.random().toString(36).slice(2,10) + Date.now().toString(3
 /* ================= DEFAULT STATE ================= */
 function defaultState(){
   const start = todayISO();
-  const defs = [
-    ['Finalizar Instagram','Perfil, destaques e linha editorial concluídos',14],
-    ['Finalizar Site','Site institucional no ar e otimizado',21],
-    ['Finalizar Aplicativo','App SAFE funcional para clínicas parceiras',30],
-    ['Vender e gravar com 10 a 50 clínicas','Primeiras parcerias ativas e conteúdo gravado',60],
-    ['Vender para 100 clínicas','Escala comercial: 100 clínicas na base',90],
-    ['Vender para 350 clínicas','Domínio de mercado: 350 clínicas na base',180],
-    ['Abrir Unidade Plus 1','Primeira Unidade SAFE Plus em operação',120],
-    ['Abrir mais 2 Unidades Plus','Unidades 2 e 3 em operação',180],
-    ['Abrir mais 3 Unidades Plus','Unidades 4, 5 e 6 em operação',240],
-    ['Abrir mais 4 Unidades Plus','Unidades 7, 8, 9 e 10 em operação',300],
-  ];
-  let cursor = start;
-  const milestones = defs.map(([name,description,dur]) => {
-    const m = {
-      id: uid(), name, description, status:'Não iniciada',
-      plannedDuration: dur, startDate: cursor,
-      originalEnd: addDays(cursor, dur), actualEnd: null,
-      notes:'', subtasks: [],
-      priority:'Média', bottleneck:false, difficulty:null
-    };
-    cursor = m.originalEnd;
-    return m;
-  });
+  /* Roadmap começa vazio — o usuário cria os próprios marcos. */
+  let cursor = addDays(start, 365);
+  const milestones = [];
   const habits = ['Acordar às 04:15','Meditar às 04:40','Treinar às 05:00','Trabalhar às 06:00','Duolingo 15 minutos','Trabalhar 8 horas','Ler às 19:00','Dormir às 19:20']
     .map(name => ({ id: uid(), name, history:{} }));
   milestones.unshift({
@@ -710,14 +754,14 @@ function defaultState(){
     priority: 'Média', bottleneck: false, difficulty: null
   });
   return {
-    version: 5,
+    version: 6,
     createdAt: start,
     targetUnits: 10,
     targetDate: cursor,              // final mission deadline (user-editable)
     milestones, habits,
     dailyTasks: [],                  // necessary daily business obligations (now measured in hours)
-    dailyLogs: {},   // 'YYYY-MM-DD' -> {energy,focus,mood,deepWork,notes}
-    cashflow: { startDate: start, dailyFixed: 167, entries: [] }, // financeiro
+    dailyLogs: {},   // 'YYYY-MM-DD' -> {wake,bed,sleep,mood,energy,focus,anxiety,deepWork,notes}
+    cashflow: { startDate: start, dailyFixed: 167, openingBalance: 0, entries: [] }, // financeiro
     clinics: [],     // CRM de clínicas (temperatura)
   };
 }
@@ -788,6 +832,12 @@ function migrate(s){
     if (!s.cashflow) s.cashflow = { startDate: s.createdAt || todayISO(), dailyFixed: 167, entries: [] };
     if (!Array.isArray(s.clinics)) s.clinics = [];
     s.version = 5;
+  }
+  if (s.version < 6){
+    /* v6: check-in expandido (sono/ansiedade, escala 1–10) + saldo inicial do caixa.
+       Logs antigos são preservados; novos campos são opcionais. */
+    if (s.cashflow && s.cashflow.openingBalance == null) s.cashflow.openingBalance = 0;
+    s.version = 6;
   }
   return s;
 }
@@ -1142,6 +1192,10 @@ function clinicConversion(){
   const total = (S.clinics||[]).length; if (!total) return 0;
   return +(clinicMonthlyAdmissions() / total * 100).toFixed(1);
 }
+function clinicAvgScore(){
+  const cs = (S.clinics||[]); if (!cs.length) return 0;
+  return Math.round(cs.reduce((a,c)=>a+clinicEffectiveScore(c),0)/cs.length*10)/10;
+}
 
 /* ---- Caixa / financeiro (v5) ---- */
 function fmtMoney(v){ return 'R$ ' + (Number(v)||0).toLocaleString('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:2}); }
@@ -1177,6 +1231,14 @@ function cashMonthSeries(){
 function cashCategories(){
   const set = new Set(); (S.cashflow && S.cashflow.entries || []).forEach(e => { if(e.category) set.add(e.category); });
   return Array.from(set).sort();
+}
+function cashLifetime(){
+  const cf = S.cashflow || { entries:[], startDate:todayISO(), dailyFixed:0, openingBalance:0 };
+  let rev=0, exp=0;
+  (cf.entries||[]).forEach(e=>{ if(e.type==='receita') rev+=Number(e.amount)||0; else exp+=Number(e.amount)||0; });
+  exp += cashFixedDays(cf.startDate||todayISO(), todayISO()) * (Number(cf.dailyFixed)||0);
+  const opening = Number(cf.openingBalance)||0;
+  return { rev, exp, opening, net: opening + rev - exp };
 }
 
 /* ================= LAYER 3 — UI ================= */
@@ -1285,12 +1347,23 @@ function renderDashboard(){
       </div>
     </div>
 
-    <!-- Strip visual: Roadmap · Clínicas quentes · Caixa -->
-    <div class="grid" style="grid-template-columns:repeat(3,1fr)">
-      <div class="stat"><span class="stat-label">Progresso Roadmap</span><span class="stat-value" style="font-size:1.4rem">${e.progress}%</span><div style="margin-top:8px">${pbar(e.progress, h.cls==='red'?'red':h.cls==='amber'?'amber':'green')}</div></div>
-      <div class="stat"><span class="stat-label">Clínicas quentes</span><span class="stat-value" style="font-size:1.4rem">${clinicsHot()}</span><span class="stat-note">de ${(S.clinics||[]).length} na carteira</span></div>
-      <div class="stat"><span class="stat-label">Caixa do mês</span><span class="stat-value ${monthNet>=0?'good':'bad'}" style="font-size:1.25rem">${fmtMoney(monthNet)}</span><span class="stat-note">resultado acumulado</span></div>
+    <!-- Rings: progresso + disciplina -->
+    <div class="kpi-hero" style="grid-template-columns:repeat(2,1fr)">
+      <div class="kpi-circle">${donutSVG(e.progress, '#081A58', 116, 11, e.progress+'%', e.done+'/'+e.total+' marcos')}<span class="stat-label">Roadmap</span></div>
+      <div class="kpi-circle">${donutSVG(disciplineToday(), '#16A34A', 116, 11, disciplineToday()+'%', 'hoje')}<span class="stat-label">Disciplina</span></div>
     </div>
+    <!-- Snapshot financeiro + clínicas -->
+    <div class="grid" style="grid-template-columns:repeat(2,1fr)">
+      <div class="stat"><span class="stat-label">Caixa do mês</span><span class="stat-value ${monthNet>=0?'good':'bad'}" style="font-size:1.2rem">${fmtMoney(monthNet)}</span><span class="stat-note">Total ${fmtMoney(cashLifetime().net)}</span></div>
+      <div class="stat"><span class="stat-label">Clínicas quentes</span><span class="stat-value" style="font-size:1.35rem">${clinicsHot()}</span><span class="stat-note">de ${(S.clinics||[]).length} · média ${clinicAvgScore()}</span></div>
+    </div>
+    ${(S.clinics||[]).length?`<div class="card"><div class="metric-lbl" style="text-align:left;font-weight:700;margin-bottom:8px">Temperatura da carteira</div>${clinicTempBar()}</div>`:''}
+
+    <div class="section-label">Performance · 30 dias</div>
+    ${perfDashboardHTML()}
+
+    <div class="section-label">Energia, foco, humor e ansiedade · 14 dias</div>
+    <div class="card card-lg chart-wrap">${renderChart()}</div>
 
     <div class="countdown" id="countdown">
       <div class="cd-head">
@@ -1328,37 +1401,46 @@ function renderDashboard(){
 /* ---------- ROADMAP ---------- */
 /* ---------- ROADMAP ---------- */
 const openBodies = new Set();
+let _rmRange = null;
 function renderRoadmap(){
   const e = engine();
+  _rmRange = roadmapRange();
+  const activeCount = S.milestones.filter(m => !m.pinned && m.status === 'Em andamento').length;
+  const _reals = S.milestones.filter(m => !m.pinned);
+  const nextStart = _reals.length ? _reals[_reals.length-1].originalEnd : todayISO();
   $('#view-roadmap').innerHTML = `
     <div class="page-head">
       <div class="page-title">Roadmap Estratégico</div>
       <div class="page-sub">${e.done} de ${e.total} marcos concluídos · ${e.remaining} restantes</div>
     </div>
-    <div class="rm-journey">
-      <div class="rm-flags"><span>🏁</span><span>🎯</span></div>
-      <div style="margin:2px -6px 0">${journeySVG(e.progress)}</div>
-      <div class="rm-pct">${e.progress}%</div>
-      <div class="rm-sub">${e.done} de ${e.total} marcos · ${e.units} de ${S.targetUnits} unidades abertas</div>
-      ${e.justifiedDelay>0?`<div class="op-chip">⏱️ +${e.justifiedDelay} ${e.justifiedDelay===1?'dia':'dias'} por operação</div>`:''}
+    <div class="rm-kpis">
+      <div class="metric"><div class="metric-val">${e.progress}%</div><div class="metric-lbl">Progresso estratégico</div></div>
+      <div class="metric"><div class="metric-val">${activeCount}</div><div class="metric-lbl">Projetos ativos</div></div>
+      <div class="metric"><div class="metric-val">${e.remaining}</div><div class="metric-lbl">Marcos restantes</div></div>
+      <div class="metric"><div class="metric-val" style="font-size:1.05rem">${fmt(e.projectedEnd)}</div><div class="metric-lbl">Conclusão prevista</div></div>
     </div>
     <div class="card">
       ${pbar(e.progress, e.realDelay>0?(e.realDelay<=30?'amber':'red'):'green')}
       <div class="sub-meta" style="margin-top:10px">
         ${e.realDelay>0?`<span class="badge ${delayClass(e.realDelay)}">${e.realDelay} ${e.realDelay===1?'dia':'dias'} de atraso real</span>`:`<span class="badge b-blue">No prazo</span>`}
+        ${e.justifiedDelay>0?`<span class="badge b-amber">+${e.justifiedDelay}d operação</span>`:''}
         <span>Prazo ${fmt(e.originalEnd)} → <b>${fmt(e.projectedEnd)}</b></span>
       </div>
+      <div class="field-hint" style="margin-top:8px">⚡ Agendamento automático: cada marco começa quando o anterior termina. Mudar a duração de um marco recalcula todos os seguintes. Arraste pelo ⠿ para reordenar.</div>
     </div>
     <div class="section-label">Marcos</div>
     ${S.milestones.map((m,i)=>renderMilestone(m,i)).join('') || '<div class="empty">Nenhum marco criado. Crie o primeiro abaixo.</div>'}
     <div class="card">
       <strong style="font-size:.95rem">Novo marco</strong>
-      <div class="inline-add">
+      <div class="inline-add" style="margin-top:10px">
         <input class="ia-name" id="ia-ms-name" type="text" placeholder="Nome do marco" onkeydown="if(event.key==='Enter')inlineCreateMilestone()">
+      </div>
+      <div class="inline-add" style="margin-top:8px">
+        <input id="ia-ms-start" type="date" value="${nextStart}" style="flex:1;min-height:48px;border:1.5px solid var(--line);border-radius:12px;padding:0 12px;font-size:1rem;background:#fff;outline:none" aria-label="Data inicial">
         <input class="ia-days" id="ia-ms-days" type="number" min="1" placeholder="dias" onkeydown="if(event.key==='Enter')inlineCreateMilestone()">
         <button class="btn btn-primary btn-sm" onclick="inlineCreateMilestone()">+ Criar</button>
       </div>
-      <div class="ia-hint">Sequencial: o novo marco começa quando o anterior termina. Demais detalhes pelo botão Editar.</div>
+      <div class="ia-hint">Nome, data inicial e duração → a data final é calculada sozinha. O próximo marco já sugere começar quando este terminar.</div>
     </div>`;
 }
 
@@ -1368,25 +1450,25 @@ function renderMilestone(m, i){
   const open = openBodies.has(m.id);
   const num = m.pinned ? '📌' : (S.milestones.slice(0, i).filter(x=>!x.pinned).length + 1);
   return `
-  <div class="ms ${!m.pinned && st==='Concluída'?'done':''} ${open?'open-body':''}" id="ms-${m.id}">
+  <div class="ms ${m.pinned?'pinned-ms':''} ${!m.pinned && st==='Concluída'?'done':''} ${open?'open-body':''}" id="ms-${m.id}" data-msid="${m.id}">
     <div class="ms-head" onclick="toggleMs('${m.id}')">
+      ${m.pinned?'':`<button class="drag-handle" data-drag="${m.id}" onclick="event.stopPropagation()" aria-label="Arrastar para reordenar" title="Arrastar para reordenar"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><circle cx="9" cy="6" r="1.6"/><circle cx="15" cy="6" r="1.6"/><circle cx="9" cy="12" r="1.6"/><circle cx="15" cy="12" r="1.6"/><circle cx="9" cy="18" r="1.6"/><circle cx="15" cy="18" r="1.6"/></svg></button>`}
       <div class="ms-num">${!m.pinned && st==='Concluída'?'✓':num}</div>
       <div style="flex:1;min-width:0">
         <div class="ms-title">${esc(m.name)}</div>
         ${m.description?`<div class="ms-desc">${esc(m.description)}</div>`:''}
+        ${m.pinned?'':`<div class="ms-when">${fmt(m.startDate)} → ${fmt(msProjectedEnd(m))} · <b>${prog}%</b></div>`}
         <div class="ms-badges">
           ${m.pinned?`<span class="badge b-blue">Fixo · fora da sequência</span>`:statusBadge(st)}
-          ${!m.pinned?`<span class="badge prio-${m.priority||'Média'}">${m.priority||'Média'}</span>`:''}
           ${m.bottleneck?`<span class="badge b-red">Gargalo</span>`:''}
-          ${m.difficulty?`<span class="badge b-grey">Dificuldade ${m.difficulty}/5</span>`:''}
-          ${!m.pinned && delay>0 && st!=='Concluída'?`<span class="badge ${delayClass(delay)}">Atrasado em ${delay} ${delay===1?'dia':'dias'}</span>`:''}
-          ${!m.pinned && delay>0 && st==='Concluída'?`<span class="badge ${delayClass(delay)}">Concluído com ${delay} ${delay===1?'dia':'dias'} de atraso</span>`:''}
+          ${!m.pinned && delay>0 && st!=='Concluída'?`<span class="badge ${delayClass(delay)}">Atrasado ${delay}${delay===1?' dia':' dias'}</span>`:''}
+          ${!m.pinned && delay>0 && st==='Concluída'?`<span class="badge ${delayClass(delay)}">Concluído +${delay}d</span>`:''}
           <span class="badge b-grey" style="background:var(--surface)">${all.filter(s=>s.status==='Concluída').length}/${all.length} subtarefas</span>
         </div>
       </div>
       <svg class="chev" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
     </div>
-    <div class="ms-prog">${pbar(prog, !m.pinned && st==='Atrasada'?'red':st==='Concluída'&&!m.pinned?'green':'')}</div>
+    <div class="ms-prog">${pbar(prog, !m.pinned && st==='Atrasada'?'red':st==='Concluída'&&!m.pinned?'green':'')}${m.pinned?'':ganttBar(m,_rmRange)}</div>
     <div class="ms-body">
       ${m.pinned?'':`<div class="ms-dates">
         <div class="dt"><b>Data inicial</b><span>${fmt(m.startDate)}</span></div>
@@ -1475,6 +1557,7 @@ function toggleMs(id){ openBodies.has(id) ? openBodies.delete(id) : openBodies.a
 function renderHoje(){
   const e = engine(), h = projectHealth(), bn = bottleneck(), tasks = topTasks();
   const cls = h.cls==='green'?'forte':h.cls==='amber'?'medio':'fraco';
+  const _tm = todayMomentum();
   const opHours = operationalHoursTotal(), opDays = operationalDays();
   $('#view-hoje').innerHTML = `
     <div class="page-head">
@@ -1482,9 +1565,16 @@ function renderHoje(){
       <div class="page-sub">${fmtLong(todayISO())}</div>
     </div>
 
-    <div class="day-banner ${cls}">
-      <h2>${h.dot} ${h.state}</h2>
-      <p>${cls==='forte'?'Projeto no prazo. Mantenha o ritmo e proteja a execução do roadmap.':cls==='medio'?'Atenção ao atraso real. Priorize as tarefas críticas do roadmap hoje.':'Projeto em risco. Foque na recuperação do roadmap antes da operação.'}</p>
+    <div class="card card-lg" style="display:flex;align-items:center;gap:18px;flex-wrap:wrap">
+      ${donutSVG(_tm.score, h.cls==='green'?'#16A34A':h.cls==='amber'?'#F59E0B':'#DC2626', 122, 12, _tm.score+'%', 'hoje')}
+      <div style="flex:1;min-width:150px">
+        <div style="font-weight:800;font-size:1.2rem;color:var(--navy)">${h.dot} ${h.state}</div>
+        <div class="sub-meta" style="margin-top:10px">
+          <span class="badge b-blue">Tarefas ${_tm.dtDone}/${_tm.dtTotal}</span>
+          <span class="badge b-green">Hábitos ${_tm.habDone}/${_tm.habTotal}</span>
+          <span class="badge ${_tm.checkin?'b-green':'b-grey'}">Check-in ${_tm.checkin?'feito':'pendente'}</span>
+        </div>
+      </div>
     </div>
 
     <div class="card card-lg">
@@ -1500,15 +1590,12 @@ function renderHoje(){
         </div>`).join('') : '<div class="muted">Nenhuma tarefa pendente — adicione subtarefas no Roadmap.</div>'}
     </div>
 
-    <!-- ÁREA OPERACIONAL DIÁRIA UNIFICADA: tarefas (horas) + humor/energia + observações -->
     <div class="section-label">Tarefas do dia · operação</div>
     ${renderDailyTasksCard()}
 
-    <div class="section-label">Como você está hoje</div>
+    <div class="section-label">Rotina de hoje</div>
     ${renderLogCard()}
-
-    <div class="section-label">Rotina · disciplina de hoje</div>
-    <div class="card" style="margin-bottom:14px">${pbar(disciplineToday(), disciplineToday()>=80?'green':disciplineToday()>=50?'':'amber')}</div>
+    <div class="card" style="margin-bottom:14px"><div class="metric-lbl" style="text-align:left;font-weight:700;margin-bottom:8px">Disciplina de hoje</div>${pbar(disciplineToday(), disciplineToday()>=80?'green':disciplineToday()>=50?'':'amber')}</div>
     ${habitsListHTML()}
 
     <div class="section-label">Tempo operacional necessário</div>
@@ -1566,18 +1653,24 @@ function renderDailyTasksCard(){
 
 function renderLogCard(){
   const t = todayISO(), log = S.dailyLogs[t] || {};
-  const scale = (f) => [1,2,3,4,5].map(v=>`<button class="scale-dot ${log[f]===v?'sel':''}" onclick="setLog('${f}',${v})">${v}</button>`).join('');
+  const sld = (f,label,emoji) => {
+    const has = log[f]!=null && log[f]!=='';
+    return `<div class="ci-row">
+      <div class="ci-top"><span>${emoji} ${label}</span><span class="ci-val">${has?log[f]:'—'}</span></div>
+      <input type="range" min="1" max="10" step="1" value="${has?log[f]:5}" class="ci-range f-${f}" oninput="setLogLive(this)" onchange="setLog('${f}',this.value)">
+    </div>`;
+  };
   return `
   <div class="card card-lg">
-    <div class="field"><label>Energia</label><div class="scale-row">${scale('energy')}</div></div>
-    <div class="field"><label>Foco</label><div class="scale-row">${scale('focus')}</div></div>
-    <div class="field"><label>Humor</label><div class="scale-row">${scale('mood')}</div></div>
-    <div class="field-row">
-      <div class="field"><label>Horas de trabalho profundo</label>
-        <input type="number" min="0" max="16" step="0.5" value="${log.deepWork??''}" placeholder="0" onchange="setLog('deepWork',this.value)"></div>
-      <div class="field"><label>&nbsp;</label>
-        <div class="calc-pill" style="margin:0;min-height:50px">${log.energy&&log.focus&&log.mood?'✓ Registro de hoje concluído':'Complete energia, foco e humor'}</div></div>
-    </div>
+    <div class="field" style="margin-bottom:8px"><label>🌅 Hora de acordar</label></div>
+    ${wakeSelectorHTML(log)}
+    <div class="divider"></div>
+    ${sld('mood','Humor','🙂')}
+    ${sld('energy','Energia','⚡')}
+    ${sld('focus','Foco','🎯')}
+    ${sld('anxiety','Ansiedade','😰')}
+    <div class="field" style="margin-top:6px"><label>Horas de trabalho profundo</label>
+      <input type="number" min="0" max="16" step="0.5" value="${log.deepWork??''}" placeholder="0" onchange="setLog('deepWork',this.value)"></div>
     <div class="field"><label>Notas do dia</label>
       <textarea placeholder="O que moveu a SAFE hoje?" onchange="setLog('notes',this.value)">${esc(log.notes||'')}</textarea></div>
   </div>`;
@@ -1645,6 +1738,75 @@ function habitsListHTML(){
       </button>
     </div>`;
   }).join('') || '<div class="empty">Nenhum hábito ainda. Crie o primeiro para medir sua disciplina.</div>');
+}
+
+/* ---------- UX helpers (v10) ---------- */
+function wakeSelectorHTML(log){
+  const hours = ['04','05','06','07','08','09'];
+  const cur = log && log.wake ? log.wake.slice(0,2) : null;
+  return `<div class="wake-row">${hours.map(h=>`<button class="wake-btn ${cur===h?'sel':''}" onclick="setLog('wake','${h}:00')">${h}h${cur===h?'<small>✅</small>':''}</button>`).join('')}</div>`;
+}
+function todayMomentum(){
+  const t = todayISO();
+  const dts = (S.dailyTasks||[]).filter(x=>x.date===t);
+  const dtDone = dts.filter(x=>x.done).length;
+  const habTotal = S.habits.length, habDone = S.habits.filter(h=>h.history[t]).length;
+  const log = S.dailyLogs[t]||{};
+  const checkin = (log.mood&&log.energy&&log.focus) ? 1 : 0;
+  const parts = [];
+  if (dts.length) parts.push(dtDone/dts.length);
+  if (habTotal) parts.push(habDone/habTotal);
+  parts.push(checkin);
+  const score = parts.length ? Math.round(parts.reduce((a,b)=>a+b,0)/parts.length*100) : 0;
+  return { score, dtDone, dtTotal:dts.length, habDone, habTotal, checkin };
+}
+function clinicTempBar(){
+  const bd = clinicTempBreakdown(), total = bd.reduce((a,b)=>a+b.value,0);
+  if (!total) return '<div class="muted small">Sem clínicas na carteira.</div>';
+  const seg = bd.filter(b=>b.value>0).map(b=>`<div style="flex:${b.value};background:${b.color}" title="${b.label}: ${b.value}"></div>`).join('');
+  return `<div style="display:flex;height:16px;border-radius:8px;overflow:hidden;background:var(--surface)">${seg}</div>
+  <div class="legend" style="margin-top:8px">${bd.filter(b=>b.value>0).map(b=>`<span><i style="background:${b.color}"></i>${b.label} ${b.value}</span>`).join('')}</div>`;
+}
+
+/* ---------- Performance intelligence (v9) ---------- */
+function timeToMin(s){ if(!s||!/^\d{1,2}:\d{2}$/.test(s)) return null; const [h,m]=s.split(':').map(Number); return h*60+m; }
+function minToTime(min){ if(min==null) return '—'; min=((Math.round(min)%1440)+1440)%1440; return String(Math.floor(min/60)).padStart(2,'0')+':'+String(min%60).padStart(2,'0'); }
+function sleepHours(wake, bed){ const w=timeToMin(wake), b=timeToMin(bed); if(w==null||b==null) return null; return Math.round(((w - b + 1440)%1440)/6)/10; }
+function logsArray(n){
+  const t=todayISO(), out=[];
+  for(let i=0;i<(n||30);i++){ const d=addDays(t,-i); const l=S.dailyLogs[d]; if(l) out.push(Object.assign({date:d, dow:pISO(d).getDay()}, l)); }
+  return out;
+}
+function avgOf(arr, f){ const v=arr.map(x=>x[f]).filter(x=>x!=null&&x!==''&&!isNaN(Number(x))).map(Number); return v.length? v.reduce((a,b)=>a+b,0)/v.length : null; }
+function avgTimeOf(arr, f){ const v=arr.map(x=>timeToMin(x[f])).filter(x=>x!=null); return v.length? minToTime(v.reduce((a,b)=>a+b,0)/v.length) : null; }
+function perfInsights(){
+  const A=logsArray(60), out=[];
+  const goodSleep=A.filter(x=>x.sleep!=null&&Number(x.sleep)>=7.5), badSleep=A.filter(x=>x.sleep!=null&&Number(x.sleep)<7.5);
+  if(goodSleep.length>=3&&badSleep.length>=3){ const g=avgOf(goodSleep,'focus'),b=avgOf(badSleep,'focus'); if(g!=null&&b!=null&&g-b>=0.5) out.push(['🎯',`Seu foco médio é maior quando você dorme 7h30 ou mais (${g.toFixed(1)} vs ${b.toFixed(1)}).`]); }
+  const early=A.filter(x=>{const w=timeToMin(x.wake);return w!=null&&w<=345;}), late=A.filter(x=>{const w=timeToMin(x.wake);return w!=null&&w>345;});
+  if(early.length>=3&&late.length>=3){ const e=avgOf(early,'focus'),l=avgOf(late,'focus'); if(e!=null&&l!=null&&e-l>=0.5) out.push(['🌅',`Seu foco é maior quando você acorda até 05:45 (${e.toFixed(1)} vs ${l.toFixed(1)}).`]); }
+  const eBed=A.filter(x=>{const b=timeToMin(x.bed);return b!=null&&b<=1350;}), lBed=A.filter(x=>{const b=timeToMin(x.bed);return b!=null&&b>1350;});
+  if(eBed.length>=3&&lBed.length>=3){ const e=avgOf(eBed,'anxiety'),l=avgOf(lBed,'anxiety'); if(e!=null&&l!=null&&l-e>=0.5) out.push(['😌',`Sua ansiedade é menor quando você dorme antes das 22:30 (${e.toFixed(1)} vs ${l.toFixed(1)}).`]); }
+  const names=['no domingo','na segunda-feira','na terça-feira','na quarta-feira','na quinta-feira','na sexta-feira','no sábado'];
+  const byDow={}; A.forEach(x=>{ const s=[x.focus,x.energy].filter(v=>v!=null).map(Number); if(s.length){ (byDow[x.dow]=byDow[x.dow]||[]).push(s.reduce((a,b)=>a+b,0)/s.length); }});
+  let bestD=null,bestV=-1; Object.keys(byDow).forEach(k=>{ if(byDow[k].length>=2){ const m=byDow[k].reduce((a,b)=>a+b,0)/byDow[k].length; if(m>bestV){bestV=m;bestD=Number(k);} }});
+  if(bestD!=null) out.push(['📈',`Sua melhor performance costuma acontecer ${names[bestD]}.`]);
+  return out;
+}
+function perfDashboardHTML(){
+  const A=logsArray(30);
+  if(!A.length) return '<div class="empty">Faça o check-in diário na aba <b>Hoje</b> (sono, humor, energia, foco, ansiedade) para liberar sua análise de performance.</div>';
+  const m=(v,suf='')=> v==null?'—':(Math.round(v*10)/10)+suf;
+  const ins=perfInsights();
+  return `
+  <div class="metric-row" style="grid-template-columns:repeat(3,1fr)">
+    <div class="metric"><div class="metric-val" style="font-size:1.15rem">${avgTimeOf(A,'wake')||'—'}</div><div class="metric-lbl">Acordar médio</div></div>
+    <div class="metric"><div class="metric-val">${m(avgOf(A,'mood'))}</div><div class="metric-lbl">Humor</div></div>
+    <div class="metric"><div class="metric-val">${m(avgOf(A,'energy'))}</div><div class="metric-lbl">Energia</div></div>
+    <div class="metric"><div class="metric-val">${m(avgOf(A,'focus'))}</div><div class="metric-lbl">Foco</div></div>
+    <div class="metric"><div class="metric-val">${m(avgOf(A,'anxiety'))}</div><div class="metric-lbl">Ansiedade</div></div>
+  </div>
+  ${ins.length ? `<div style="margin-top:14px">${ins.map(([ic,txt])=>`<div class="insight"><span class="ic">${ic}</span><span>${txt}</span></div>`).join('')}</div>` : '<div class="muted small" style="margin-top:10px">Continue registrando — os insights automáticos aparecem com ~6 dias de dados.</div>'}`;
 }
 
 /* ---------- KPIs ---------- */
@@ -1775,17 +1937,20 @@ function renderKpis(){
     <div class="section-label">Tarefas concluídas por dia</div>
     <div class="card card-lg">${weekTimeline()}</div>
 
-    <div class="section-label">Energia, foco e humor · 14 dias</div>
+    <div class="section-label">Performance pessoal · 30 dias</div>
+    ${perfDashboardHTML()}
+
+    <div class="section-label">Energia, foco, humor e ansiedade · 14 dias</div>
     <div class="card card-lg chart-wrap">${renderChart()}</div>`;
 }
 
 function renderChart(){
   const t = todayISO(), days = [];
   for(let i=13;i>=0;i--) days.push(addDays(t,-i));
-  const series = [['energy','#081A58','Energia'],['focus','#16A34A','Foco'],['mood','#F59E0B','Humor']];
-  const W=640,H=200,P=28, x=i=>P+i*(W-2*P)/13, y=v=>H-P-(v-0)*(H-2*P)/5;
+  const series = [['energy','#081A58','Energia'],['focus','#16A34A','Foco'],['mood','#F59E0B','Humor'],['anxiety','#7C3AED','Ansiedade']];
+  const W=640,H=200,P=28, x=i=>P+i*(W-2*P)/13, y=v=>H-P-(v-0)*(H-2*P)/10;
   let svg = `<svg viewBox="0 0 ${W} ${H+30}" style="width:100%;min-width:480px;height:auto">`;
-  for(let g=1;g<=5;g++) svg += `<line x1="${P}" y1="${y(g)}" x2="${W-P}" y2="${y(g)}" stroke="#E6EAF0"/><text x="${P-8}" y="${y(g)+4}" font-size="10" fill="#5B6472" text-anchor="end">${g}</text>`;
+  for(let g=2;g<=10;g+=2) svg += `<line x1="${P}" y1="${y(g)}" x2="${W-P}" y2="${y(g)}" stroke="#E6EAF0"/><text x="${P-8}" y="${y(g)+4}" font-size="10" fill="#5B6472" text-anchor="end">${g}</text>`;
   days.forEach((d,i)=>{ if(i%2===0) svg += `<text x="${x(i)}" y="${H+18}" font-size="10" fill="#5B6472" text-anchor="middle">${d.slice(8)}/${d.slice(5,7)}</text>`; });
   let hasData = false;
   for(const [f,color,label] of series){
@@ -1804,7 +1969,8 @@ let cashFilter = '';
 function renderCaixa(){
   const day = cashPeriod('day'), month = cashPeriod('month'), year = cashPeriod('year');
   const cats = cashCategories();
-  const cf = S.cashflow || { entries:[], dailyFixed:167, startDate:todayISO() };
+  const cf = S.cashflow || { entries:[], dailyFixed:167, startDate:todayISO(), openingBalance:0 };
+  const life = cashLifetime();
   let entries = (cf.entries||[]).slice().sort((a,b)=> b.date.localeCompare(a.date) || (b.id>a.id?1:-1));
   if (cashFilter) entries = entries.filter(e => e.category === cashFilter);
   const money = (v) => `<span class="${v>=0?'money-pos':'money-neg'}">${fmtMoney(v)}</span>`;
@@ -1815,10 +1981,11 @@ function renderCaixa(){
       <div class="page-sub">Despesa fixa automática de ${fmtMoney(cf.dailyFixed)}/dia · receitas e despesas extras</div>
     </div>
 
-    <div class="grid" style="grid-template-columns:repeat(3,1fr)">
-      <div class="stat"><span class="stat-label">Resultado do dia</span><span class="stat-value" style="font-size:1.25rem">${money(day.net)}</span><span class="stat-note">+${fmtMoney(day.rev)} · −${fmtMoney(day.exp)}</span></div>
-      <div class="stat"><span class="stat-label">Acumulado do mês</span><span class="stat-value" style="font-size:1.25rem">${money(month.net)}</span><span class="stat-note">+${fmtMoney(month.rev)} · −${fmtMoney(month.exp)}</span></div>
-      <div class="stat"><span class="stat-label">Acumulado do ano</span><span class="stat-value" style="font-size:1.25rem">${money(year.net)}</span><span class="stat-note">+${fmtMoney(year.rev)} · −${fmtMoney(year.exp)}</span></div>
+    <div class="grid" style="grid-template-columns:repeat(2,1fr)">
+      <div class="stat"><span class="stat-label">Resultado do dia</span><span class="stat-value" style="font-size:1.2rem">${money(day.net)}</span><span class="stat-note">+${fmtMoney(day.rev)} · −${fmtMoney(day.exp)}</span></div>
+      <div class="stat"><span class="stat-label">Acumulado do mês</span><span class="stat-value" style="font-size:1.2rem">${money(month.net)}</span><span class="stat-note">+${fmtMoney(month.rev)} · −${fmtMoney(month.exp)}</span></div>
+      <div class="stat"><span class="stat-label">Acumulado do ano</span><span class="stat-value" style="font-size:1.2rem">${money(year.net)}</span><span class="stat-note">+${fmtMoney(year.rev)} · −${fmtMoney(year.exp)}</span></div>
+      <div class="stat"><span class="stat-label">Saldo total (lifetime)</span><span class="stat-value" style="font-size:1.2rem">${money(life.net)}</span><span class="stat-note">inclui saldo inicial ${fmtMoney(life.opening)}</span></div>
     </div>
 
     <div class="section-label">Acumulado do mês · receitas x despesas</div>
@@ -1834,6 +2001,7 @@ function renderCaixa(){
         <button class="btn btn-soft btn-sm" onclick="openCashForm('receita')">+ Receita</button>
         <button class="btn btn-soft btn-sm" onclick="openCashForm('despesa')">+ Despesa</button>
         <button class="btn btn-soft btn-sm" onclick="openCashForm('receita','','Ajuste manual')">± Ajuste</button>
+        <button class="btn btn-soft btn-sm" onclick="openOpeningForm()">Saldo inicial</button>
       </div>
     </div>
 
@@ -1919,6 +2087,20 @@ function deleteCashEntry(id){
   mutate(()=>{ S.cashflow.entries = (S.cashflow.entries||[]).filter(x=>x.id!==id); });
   closeModal(); toast('Lançamento excluído');
 }
+function openOpeningForm(){
+  const cf = S.cashflow || {};
+  openModal(`
+    <div class="modal-title">Saldo inicial</div>
+    <div class="field"><label>Saldo de partida do caixa (R$)</label><input id="f-opening" type="number" step="0.01" value="${Number(cf.openingBalance)||0}" placeholder="0,00"></div>
+    <div class="field-hint" style="margin-bottom:16px">Ponto de partida do saldo total (lifetime). Pode ser positivo ou negativo. Não altera os lançamentos diários.</div>
+    <div class="btn-row"><button class="btn btn-primary btn-block" onclick="saveOpening()">Salvar saldo inicial</button></div>
+    <button class="btn btn-ghost btn-block" style="margin-top:8px" onclick="closeModal()">Cancelar</button>`);
+}
+function saveOpening(){
+  const v = Number($('#f-opening').value)||0;
+  mutate(()=>{ if(!S.cashflow) S.cashflow={ startDate:S.createdAt||todayISO(), dailyFixed:167, entries:[] }; S.cashflow.openingBalance=v; });
+  closeModal(); toast('Saldo inicial atualizado');
+}
 
 /* ---------- CLÍNICAS (CRM v5) ---------- */
 const openClinics = new Set();
@@ -1933,10 +2115,11 @@ function renderClinicas(){
       <div class="page-sub">${total} ${total===1?'clínica':'clínicas'} · ${clinicsHot()} quentes (5+ pts)</div>
     </div>
 
-    <div class="metric-row">
+    <div class="metric-row" style="grid-template-columns:repeat(2,1fr)">
       <div class="metric"><div class="metric-val">${clinicMonthlyAdmissions()}</div><div class="metric-lbl">Hospedagens no mês</div></div>
       <div class="metric"><div class="metric-val">${total}</div><div class="metric-lbl">Total de clínicas</div></div>
       <div class="metric"><div class="metric-val">${clinicConversion()}%</div><div class="metric-lbl">Conversão</div></div>
+      <div class="metric"><div class="metric-val">${clinicAvgScore()}</div><div class="metric-lbl">Pontuação média</div></div>
     </div>
 
     <div class="card card-lg">
@@ -2106,9 +2289,101 @@ function setLog(field, value){
   mutate(()=>{
     const t=todayISO();
     if(!S.dailyLogs[t]) S.dailyLogs[t]={};
-    S.dailyLogs[t][field] = field==='notes' ? value : Number(value);
+    const L=S.dailyLogs[t];
+    if(field==='notes'||field==='wake'||field==='bed') L[field]=value;
+    else L[field]=Number(value);
+    if(field==='wake'||field==='bed'){ const sh=sleepHours(L.wake, L.bed); if(sh!=null) L.sleep=sh; }
   });
 }
+/* live slider label (no persist/re-render while dragging) */
+function setLogLive(el){
+  const row = el.closest('.ci-row'); if(!row) return;
+  const v = row.querySelector('.ci-val'); if(v) v.textContent = el.value;
+}
+
+/* ---- roadmap timeline (gantt) helpers (v8) ---- */
+function roadmapRange(){
+  const R = S.milestones.filter(m => !m.pinned);
+  if (!R.length) return null;
+  let min = R[0].startDate, max = R[0].originalEnd;
+  R.forEach(m => {
+    if (m.startDate < min) min = m.startDate;
+    const en = msProjectedEnd(m);
+    if (en > max) max = en;
+  });
+  return { min, max, span: Math.max(1, diffDays(min, max)) };
+}
+function ganttBar(m, range){
+  if (!range) return '';
+  const off = Math.max(0, diffDays(range.min, m.startDate));
+  const en = msProjectedEnd(m);
+  const len = Math.max(1, diffDays(m.startDate, en));
+  let left = off / range.span * 100;
+  let width = len / range.span * 100;
+  if (left > 98) left = 98;
+  if (width < 2) width = 2;
+  if (left + width > 100) width = 100 - left;
+  const prog = msProgress(m);
+  const st = msEffectiveStatus(m);
+  const cls = (!m.pinned && st === 'Atrasada') ? 'red' : (m.status === 'Concluída' ? 'green' : 'navy');
+  return `<div class="gantt" title="${fmt(m.startDate)} → ${fmt(en)}"><div class="gantt-bar ${cls}" style="left:${left.toFixed(1)}%;width:${width.toFixed(1)}%"><i style="width:${prog}%"></i></div></div>`;
+}
+
+/* ---- drag-and-drop reorder (pointer + touch, v8) ---- */
+function reorderMilestoneBefore(draggedId, targetId){
+  mutate(()=>{
+    const M = S.milestones;
+    const di = M.findIndex(m=>m.id===draggedId);
+    if (di < 0 || M[di].pinned) return;
+    const firstReal = M.find(x=>!x.pinned);
+    const anchor = firstReal ? firstReal.startDate : todayISO();
+    const [m] = M.splice(di,1);
+    let ti = M.findIndex(x=>x.id===targetId);
+    if (ti < 0) ti = M.length;
+    M.splice(ti, 0, m);                  /* insert at target slot */
+    const pi = M.findIndex(x=>x.pinned); /* pinned container stays first */
+    if (pi > 0){ const [p] = M.splice(pi,1); M.unshift(p); }
+    const nf = M.find(x=>!x.pinned);
+    if (nf && nf.status !== 'Concluída') nf.startDate = anchor;
+    rechainMilestones(0);                /* cascade dates after reorder */
+  });
+  toast('Roadmap reordenado');
+}
+let _drag = null;
+function _dragClear(){
+  if (_drag && _drag.card) _drag.card.classList.remove('dragging');
+  document.querySelectorAll('.ms.drop-target').forEach(x=>x.classList.remove('drop-target'));
+  _drag = null;
+}
+document.addEventListener('pointerdown', e=>{
+  const h = e.target.closest && e.target.closest('[data-drag]');
+  if (!h) return;
+  e.preventDefault();
+  const card = h.closest('.ms');
+  _drag = { id: h.getAttribute('data-drag'), card };
+  if (card) card.classList.add('dragging');
+  try { h.setPointerCapture(e.pointerId); } catch(_){}
+});
+document.addEventListener('pointermove', e=>{
+  if (!_drag) return;
+  e.preventDefault();
+  const el = document.elementFromPoint(e.clientX, e.clientY);
+  const over = el && el.closest && el.closest('.ms[data-msid]');
+  document.querySelectorAll('.ms.drop-target').forEach(x=>x.classList.remove('drop-target'));
+  if (over && !over.classList.contains('pinned-ms') && over.getAttribute('data-msid') !== _drag.id){
+    over.classList.add('drop-target');
+  }
+});
+document.addEventListener('pointerup', e=>{
+  if (!_drag) return;
+  const draggedId = _drag.id;
+  const el = document.elementFromPoint(e.clientX, e.clientY);
+  const over = el && el.closest && el.closest('.ms[data-msid]');
+  const targetId = (over && !over.classList.contains('pinned-ms')) ? over.getAttribute('data-msid') : null;
+  _dragClear();
+  if (targetId && targetId !== draggedId) reorderMilestoneBefore(draggedId, targetId);
+});
+document.addEventListener('pointercancel', _dragClear);
 
 /* ---- reorder milestones ---- */
 function moveMilestone(id, action){
@@ -2180,10 +2455,11 @@ function inlineCreateMilestone(){
   const name = (nEl && nEl.value || '').trim();
   if (!name){ toast('Informe o nome do marco'); return; }
   const dur = Math.max(1, Number(dEl && dEl.value)||1);
+  const sEl = document.getElementById('ia-ms-start');
   mutate(()=>{
     const reals = S.milestones.filter(x=>!x.pinned);
     const last = reals[reals.length-1];
-    const start = last ? last.originalEnd : todayISO(); /* sequential: starts when the previous ends */
+    const start = (sEl && sEl.value) || (last ? last.originalEnd : todayISO()); /* explicit start, else sequential */
     S.milestones.push({ id:uid(), name, description:'', status:'Não iniciada',
       plannedDuration:dur, startDate:start, originalEnd:addDays(start, dur),
       actualEnd:null, notes:'', subtasks:[], priority:'Média', bottleneck:false, difficulty:null });
