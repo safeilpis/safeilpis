@@ -1,0 +1,651 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SAFE ILPIS — Protocolo de Controle de Qualidade</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --navy:#081A58;
+  --navy-soft:#1a2e6b;
+  --white:#ffffff;
+  --gray-50:#f7f8fb;
+  --gray-100:#eef1f7;
+  --gray-200:#e2e7f0;
+  --gray-400:#9aa3b8;
+  --gray-600:#5b6478;
+  --text:#0f1733;
+  --green:#16a34a;
+  --yellow:#eab308;
+  --orange:#ea580c;
+  --red:#dc2626;
+  --shadow:0 10px 40px rgba(8,26,88,.08);
+  --shadow-lg:0 20px 60px rgba(8,26,88,.12);
+  --radius:24px;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  font-family:'Montserrat',sans-serif;
+  background:var(--white);
+  color:var(--text);
+  font-size:17px;
+  line-height:1.65;
+  -webkit-font-smoothing:antialiased;
+}
+.container{width:100%;max-width:1180px;margin:0 auto;padding:0 24px}
+img{max-width:100%}
+
+/* NAV */
+.nav{
+  position:sticky;top:0;z-index:100;
+  background:rgba(255,255,255,.85);
+  backdrop-filter:blur(16px);
+  border-bottom:1px solid var(--gray-100);
+}
+.nav-inner{display:flex;align-items:center;justify-content:space-between;height:72px}
+.logo{display:flex;align-items:center;gap:10px;font-weight:800;font-size:18px;color:var(--navy);letter-spacing:.5px}
+.logo-mark{width:34px;height:34px;border-radius:10px;background:var(--navy);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:800;font-size:15px}
+.nav-links{display:flex;gap:34px;list-style:none}
+.nav-links a{text-decoration:none;color:var(--gray-600);font-weight:500;font-size:15px;transition:.2s}
+.nav-links a:hover{color:var(--navy)}
+.nav-cta{background:var(--navy);color:#fff;padding:10px 22px;border-radius:999px;text-decoration:none;font-weight:600;font-size:15px;transition:.2s}
+.nav-cta:hover{transform:translateY(-1px);box-shadow:var(--shadow)}
+.burger{display:none;flex-direction:column;gap:5px;background:none;border:none;cursor:pointer}
+.burger span{width:24px;height:2px;background:var(--navy);border-radius:2px}
+
+/* HERO */
+.hero{padding:120px 0 90px;text-align:center;position:relative;overflow:hidden}
+.hero:before{content:"";position:absolute;top:-200px;left:50%;transform:translateX(-50%);width:900px;height:600px;background:radial-gradient(circle,rgba(8,26,88,.06),transparent 70%);pointer-events:none}
+.badge{display:inline-flex;align-items:center;gap:8px;background:var(--gray-100);color:var(--navy);padding:8px 18px;border-radius:999px;font-size:14px;font-weight:600;margin-bottom:28px}
+.badge .dot{width:8px;height:8px;border-radius:50%;background:var(--green)}
+.hero h1{font-size:clamp(40px,7vw,72px);font-weight:800;letter-spacing:-1.5px;line-height:1.05;color:var(--navy);margin-bottom:28px}
+.hero .lead{font-size:clamp(19px,2.4vw,23px);color:var(--text);font-weight:600;max-width:680px;margin:0 auto 24px}
+.hero .sub{font-size:18px;color:var(--gray-600);max-width:680px;margin:0 auto;font-weight:400}
+.hero .sub strong{color:var(--navy);font-weight:700}
+
+/* SECTION base */
+section{padding:90px 0}
+.sec-head{text-align:center;max-width:720px;margin:0 auto 60px}
+.eyebrow{font-size:14px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--navy);opacity:.6;margin-bottom:16px}
+.sec-head h2{font-size:clamp(32px,5vw,46px);font-weight:800;letter-spacing:-1px;color:var(--navy);line-height:1.1;margin-bottom:20px}
+.sec-head p{font-size:18px;color:var(--gray-600)}
+.alt{background:var(--gray-50)}
+
+/* PROTOCOL CARDS */
+.protocol-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:24px}
+.p-card{background:#fff;border-radius:var(--radius);padding:34px;box-shadow:var(--shadow);border:1px solid var(--gray-100);position:relative;overflow:hidden;transition:.25s}
+.p-card:hover{transform:translateY(-4px);box-shadow:var(--shadow-lg)}
+.p-card .bar{position:absolute;top:0;left:0;width:100%;height:6px}
+.p-green .bar{background:var(--green)}
+.p-yellow .bar{background:var(--yellow)}
+.p-orange .bar{background:var(--orange)}
+.p-red .bar{background:var(--red)}
+.p-card .level{display:inline-flex;align-items:center;gap:10px;font-weight:800;font-size:15px;letter-spacing:1px;text-transform:uppercase;margin-bottom:6px}
+.lv-dot{width:14px;height:14px;border-radius:50%}
+.p-green .lv-dot{background:var(--green)} .p-green .level{color:var(--green)}
+.p-yellow .lv-dot{background:var(--yellow)} .p-yellow .level{color:#a16207}
+.p-orange .lv-dot{background:var(--orange)} .p-orange .level{color:var(--orange)}
+.p-red .lv-dot{background:var(--red)} .p-red .level{color:var(--red)}
+.p-card h3{font-size:22px;font-weight:800;color:var(--navy);margin-bottom:18px}
+.p-card ul{list-style:none;margin-bottom:22px}
+.p-card li{padding:7px 0 7px 26px;position:relative;color:var(--gray-600);font-size:16px;border-bottom:1px solid var(--gray-100)}
+.p-card li:last-child{border-bottom:none}
+.p-card li:before{content:"";position:absolute;left:4px;top:16px;width:7px;height:7px;border-radius:50%;background:var(--gray-400)}
+.p-card .verdict{background:var(--gray-50);border-radius:14px;padding:16px 18px;font-weight:700;color:var(--navy);font-size:16px;display:flex;align-items:center;gap:10px}
+.p-card .count{font-size:13px;font-weight:600;color:var(--gray-400);letter-spacing:.5px;text-transform:uppercase;margin-bottom:10px;display:block}
+
+/* FLOW */
+.flow{margin-top:70px}
+.flow-track{display:flex;align-items:stretch;justify-content:center;gap:0;flex-wrap:wrap}
+.flow-step{flex:1;min-width:150px;text-align:center;background:#fff;border:1px solid var(--gray-100);border-radius:18px;padding:24px 16px;box-shadow:var(--shadow);margin:0 6px 24px;position:relative}
+.flow-num{font-size:40px;font-weight:800;line-height:1}
+.flow-step .lab{font-size:14px;font-weight:600;color:var(--gray-600);margin-top:6px;display:block}
+.f-green .flow-num{color:var(--green)}
+.f-yellow .flow-num{color:var(--yellow)}
+.f-orange .flow-num{color:var(--orange)}
+.f-red .flow-num{color:var(--red)}
+.flow-arrow{display:flex;align-items:center;justify-content:center;color:var(--gray-400);font-size:26px;padding:0 4px}
+.flow-final{background:var(--navy);color:#fff;border-radius:18px;padding:24px 20px;text-align:center;font-weight:800;font-size:18px;margin-top:14px;box-shadow:var(--shadow-lg);display:flex;align-items:center;justify-content:center;gap:12px}
+
+/* INVESTIGATE CARDS */
+.icards{display:grid;grid-template-columns:repeat(4,1fr);gap:20px}
+.icard{background:#fff;border:1px solid var(--gray-100);border-radius:20px;padding:28px 24px;box-shadow:var(--shadow);transition:.25s}
+.icard:hover{transform:translateY(-4px);box-shadow:var(--shadow-lg)}
+.icard .ico{width:52px;height:52px;border-radius:14px;background:var(--gray-100);display:flex;align-items:center;justify-content:center;margin-bottom:18px}
+.icard .ico svg{width:26px;height:26px;stroke:var(--navy)}
+.icard h4{font-size:18px;font-weight:700;color:var(--navy);margin-bottom:8px}
+.icard p{font-size:15px;color:var(--gray-600)}
+.intro-line{text-align:center;max-width:680px;margin:0 auto 50px;font-size:19px;font-weight:600;color:var(--navy)}
+
+/* MONTHLY */
+.monthly-wrap{display:grid;grid-template-columns:1fr 1fr;gap:50px;align-items:center}
+.monthly-text h3{font-size:28px;font-weight:800;color:var(--navy);margin-bottom:22px;line-height:1.2}
+.monthly-text .tag-row{display:flex;flex-wrap:wrap;gap:12px;margin-bottom:28px}
+.tag{background:#fff;border:1px solid var(--gray-200);border-radius:999px;padding:9px 18px;font-size:14px;font-weight:600;color:var(--navy)}
+.eval-list{list-style:none}
+.eval-list li{display:flex;align-items:center;gap:14px;padding:14px 0;border-bottom:1px solid var(--gray-200);font-weight:600;color:var(--text)}
+.eval-list li:last-child{border-bottom:none}
+.check{width:26px;height:26px;border-radius:50%;background:var(--navy);flex-shrink:0;display:flex;align-items:center;justify-content:center}
+.check svg{width:15px;height:15px;stroke:#fff;stroke-width:3}
+.monthly-visual{background:var(--navy);border-radius:var(--radius);padding:48px 40px;color:#fff;box-shadow:var(--shadow-lg);position:relative;overflow:hidden}
+.monthly-visual:before{content:"";position:absolute;width:300px;height:300px;background:radial-gradient(circle,rgba(255,255,255,.08),transparent 70%);top:-100px;right:-100px}
+.mv-stat{margin-bottom:34px}
+.mv-stat .num{font-size:54px;font-weight:800;line-height:1}
+.mv-stat .desc{font-size:16px;opacity:.8;font-weight:500}
+.mv-divider{height:1px;background:rgba(255,255,255,.15);margin:26px 0}
+
+/* CONTEXT CARDS */
+.ctx-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+.ctx-card{background:#fff;border:1px solid var(--gray-100);border-radius:var(--radius);padding:34px;box-shadow:var(--shadow);transition:.25s}
+.ctx-card:hover{transform:translateY(-4px);box-shadow:var(--shadow-lg)}
+.ctx-card .num{font-size:14px;font-weight:800;color:var(--navy);opacity:.4;letter-spacing:2px;margin-bottom:14px}
+.ctx-card h4{font-size:21px;font-weight:800;color:var(--navy);margin-bottom:16px}
+.ctx-card p{font-size:16px;color:var(--gray-600);margin-bottom:14px}
+.ctx-card ul{list-style:none;margin:14px 0}
+.ctx-card li{padding:6px 0 6px 24px;position:relative;font-size:15px;color:var(--gray-600)}
+.ctx-card li:before{content:"";position:absolute;left:4px;top:14px;width:6px;height:6px;border-radius:50%;background:var(--navy);opacity:.5}
+.ctx-card .note{background:var(--gray-50);border-radius:12px;padding:14px 16px;font-size:15px;font-weight:600;color:var(--navy)}
+
+/* FAQ */
+.faq-search{position:relative;max-width:560px;margin:0 auto 36px}
+.faq-search input{width:100%;padding:18px 22px 18px 54px;border-radius:999px;border:1px solid var(--gray-200);font-family:inherit;font-size:17px;outline:none;transition:.2s;background:#fff}
+.faq-search input:focus{border-color:var(--navy);box-shadow:0 0 0 4px rgba(8,26,88,.08)}
+.faq-search svg{position:absolute;left:20px;top:50%;transform:translateY(-50%);width:22px;height:22px;stroke:var(--gray-400)}
+.faq-cats{display:flex;flex-wrap:wrap;justify-content:center;gap:12px;margin-bottom:50px}
+.cat-btn{background:#fff;border:1px solid var(--gray-200);border-radius:999px;padding:11px 22px;font-family:inherit;font-size:15px;font-weight:600;color:var(--gray-600);cursor:pointer;transition:.2s}
+.cat-btn:hover{border-color:var(--navy);color:var(--navy)}
+.cat-btn.active{background:var(--navy);color:#fff;border-color:var(--navy)}
+.faq-cat-block{margin-bottom:46px}
+.faq-cat-title{font-size:22px;font-weight:800;color:var(--navy);margin-bottom:20px;display:flex;align-items:center;gap:12px}
+.faq-cat-title .n{width:32px;height:32px;border-radius:9px;background:var(--navy);color:#fff;display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:700}
+.faq-item{background:#fff;border:1px solid var(--gray-100);border-radius:16px;margin-bottom:12px;overflow:hidden;box-shadow:0 4px 16px rgba(8,26,88,.04)}
+.faq-q{width:100%;text-align:left;background:none;border:none;font-family:inherit;font-size:17px;font-weight:600;color:var(--navy);padding:22px 56px 22px 24px;cursor:pointer;position:relative;line-height:1.45}
+.faq-q .ic{position:absolute;right:22px;top:24px;width:22px;height:22px;transition:.3s;color:var(--navy)}
+.faq-item.open .faq-q .ic{transform:rotate(180deg)}
+.faq-a{max-height:0;overflow:hidden;transition:max-height .4s ease;padding:0 24px}
+.faq-item.open .faq-a{max-height:900px;padding:0 24px 24px}
+.faq-a .row{display:flex;gap:12px;padding:9px 0;border-bottom:1px solid var(--gray-100);font-size:15.5px}
+.faq-a .row:last-child{border-bottom:none}
+.faq-a .k{flex-shrink:0;font-weight:700;color:var(--navy);width:150px}
+.faq-a .v{color:var(--gray-600)}
+.pill{display:inline-block;padding:3px 12px;border-radius:999px;font-size:13px;font-weight:700;color:#fff}
+.pill.green{background:var(--green)} .pill.yellow{background:var(--yellow)} .pill.orange{background:var(--orange)} .pill.red{background:var(--red)} .pill.navy{background:var(--navy)}
+.no-results{text-align:center;color:var(--gray-400);font-weight:600;padding:40px;display:none}
+
+/* MYTHS */
+.myth-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+.myth-card{border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow);background:#fff;border:1px solid var(--gray-100);transition:.25s}
+.myth-card:hover{transform:translateY(-4px);box-shadow:var(--shadow-lg)}
+.myth-top{background:var(--gray-50);padding:28px;border-bottom:2px dashed var(--gray-200)}
+.myth-top .tag{background:#fee2e2;color:var(--red);display:inline-block;border:none;margin-bottom:14px}
+.myth-top p{font-size:18px;font-weight:600;color:var(--text)}
+.myth-bot{padding:28px}
+.myth-bot .tag{background:#dcfce7;color:var(--green);display:inline-block;border:none;margin-bottom:14px}
+.myth-bot p{font-size:18px;font-weight:700;color:var(--navy)}
+
+/* FINAL */
+.final{background:var(--navy);color:#fff;text-align:center;border-radius:0}
+.final h2{color:#fff;font-size:clamp(32px,5vw,48px);font-weight:800;letter-spacing:-1px;margin-bottom:34px}
+.final-lines p{font-size:21px;font-weight:600;margin-bottom:18px;opacity:.95}
+.final-lines .big{font-size:18px;font-weight:400;opacity:.8;max-width:680px;margin:30px auto 0;line-height:1.7}
+
+/* FOOTER */
+footer{background:#050f33;color:#fff;padding:50px 0;text-align:center}
+footer .logo{color:#fff;justify-content:center;margin-bottom:16px}
+footer p{font-size:14px;opacity:.5}
+
+/* RESPONSIVE */
+@media(max-width:900px){
+  .icards{grid-template-columns:repeat(2,1fr)}
+  .monthly-wrap{grid-template-columns:1fr}
+  .ctx-grid,.myth-grid{grid-template-columns:1fr}
+  .protocol-grid{grid-template-columns:1fr}
+}
+@media(max-width:768px){
+  .nav-links,.nav-cta{display:none}
+  .burger{display:flex}
+  .nav-links.show{display:flex;position:absolute;top:72px;left:0;width:100%;background:#fff;flex-direction:column;padding:20px 24px;gap:18px;border-bottom:1px solid var(--gray-100);box-shadow:var(--shadow)}
+  section{padding:64px 0}
+  .hero{padding:80px 0 60px}
+  .flow-arrow{transform:rotate(90deg)}
+  .flow-track{flex-direction:column}
+  .flow-step{margin:0 0 4px}
+  .faq-a .row{flex-direction:column;gap:4px}
+  .faq-a .k{width:auto}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav">
+  <div class="container nav-inner">
+    <div class="logo"><span class="logo-mark">S</span> SAFE ILPIS</div>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="#protocol">Protocolo</a></li>
+      <li><a href="#investigate">Investigação</a></li>
+      <li><a href="#inspections">Inspeções</a></li>
+      <li><a href="#faq">FAQ</a></li>
+      <li><a href="#transparency">Transparência</a></li>
+    </ul>
+    <a href="#transparency" class="nav-cta">Nosso Compromisso</a>
+    <button class="burger" id="burger"><span></span><span></span><span></span></button>
+  </div>
+</nav>
+
+<!-- HERO -->
+<header class="hero">
+  <div class="container">
+    <div class="badge"><span class="dot"></span> Protocolo de Controle de Qualidade</div>
+    <h1>CONTROLE DE QUALIDADE<br>SAFE ILPIS</h1>
+    <p class="lead">Toda avaliação é registrada. Nenhum feedback é ignorado.</p>
+    <p class="sub">Nosso objetivo não é encontrar as instituições mais bonitas. Nosso objetivo é identificar quais instituições oferecem <strong>cuidado seguro, consistente e de alta qualidade.</strong></p>
+  </div>
+</header>
+
+<!-- SECTION 2: PROTOCOL -->
+<section id="protocol">
+  <div class="container">
+    <div class="sec-head">
+      <div class="eyebrow">Protocolo Visual de Qualidade</div>
+      <h2>Como o feedback é classificado</h2>
+      <p>Toda situação relatada é analisada, confirmada e recebe um nível de classificação. O acúmulo de feedbacks confirmados pode levar ao encerramento da parceria.</p>
+    </div>
+
+    <div class="protocol-grid">
+      <div class="p-card p-green">
+        <div class="bar"></div>
+        <div class="level"><span class="lv-dot"></span> Verde</div>
+        <h3>Feedback Leve</h3>
+        <ul>
+          <li>Comunicação deficiente</li>
+          <li>Perda de roupas de cama</li>
+          <li>Problemas administrativos</li>
+        </ul>
+        <span class="count">10 Feedbacks Leves confirmados</span>
+        <div class="verdict">→ Parceria encerrada</div>
+      </div>
+
+      <div class="p-card p-yellow">
+        <div class="bar"></div>
+        <div class="level"><span class="lv-dot"></span> Amarelo</div>
+        <h3>Feedback Intermediário</h3>
+        <ul>
+          <li>Irritação de pele recorrente</li>
+          <li>Falhas de higiene recorrentes</li>
+          <li>Problemas de atendimento recorrentes</li>
+        </ul>
+        <span class="count">5 Feedbacks Intermediários confirmados</span>
+        <div class="verdict">→ Parceria encerrada</div>
+      </div>
+
+      <div class="p-card p-orange">
+        <div class="bar"></div>
+        <div class="level"><span class="lv-dot"></span> Laranja</div>
+        <h3>Feedback Grave</h3>
+        <ul>
+          <li>Quedas</li>
+          <li>Falhas de medicação</li>
+          <li>Negligência no cuidado</li>
+          <li>Falhas de segurança</li>
+        </ul>
+        <span class="count">3 Feedbacks Graves confirmados</span>
+        <div class="verdict">→ Parceria encerrada</div>
+      </div>
+
+      <div class="p-card p-red">
+        <div class="bar"></div>
+        <div class="level"><span class="lv-dot"></span> Vermelho</div>
+        <h3>Feedback Gravíssimo</h3>
+        <ul>
+          <li>Abuso comprovado</li>
+          <li>Agressão física</li>
+          <li>Abuso psicológico</li>
+          <li>Privação de alimentos</li>
+          <li>Negligência severa</li>
+          <li>Morte causada por negligência</li>
+        </ul>
+        <span class="count">1 Feedback Gravíssimo confirmado</span>
+        <div class="verdict">→ Encerramento imediato da parceria</div>
+      </div>
+    </div>
+
+    <!-- FLOW -->
+    <div class="flow">
+      <div class="flow-track">
+        <div class="flow-step f-green"><div class="flow-num">10</div><span class="lab">Leve</span></div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-step f-yellow"><div class="flow-num">5</div><span class="lab">Intermediário</span></div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-step f-orange"><div class="flow-num">3</div><span class="lab">Grave</span></div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-step f-red"><div class="flow-num">1</div><span class="lab">Gravíssimo</span></div>
+      </div>
+      <div class="flow-final">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5"><path d="M18 6L6 18M6 6l12 12"/></svg>
+        Parceiro Removido
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION 3: INVESTIGATE -->
+<section id="investigate" class="alt">
+  <div class="container">
+    <div class="sec-head">
+      <div class="eyebrow">Como a SAFE Investiga</div>
+      <h2>Uma única opinião nunca decide</h2>
+    </div>
+    <p class="intro-line">A SAFE não remove uma instituição com base em uma única opinião. Cada caso é cruzado com múltiplas fontes independentes.</p>
+    <div class="icards">
+      <div class="icard"><div class="ico"><svg fill="none" stroke-width="2" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg></div><h4>Feedback das Famílias</h4><p>Os relatos das famílias são documentados e analisados individualmente.</p></div>
+      <div class="icard"><div class="ico"><svg fill="none" stroke-width="2" viewBox="0 0 24 24"><path d="M12 8v4l3 3"/><circle cx="12" cy="12" r="9"/></svg></div><h4>Histórico da Instituição</h4><p>Ocorrências passadas e padrões são analisados ao longo do tempo.</p></div>
+      <div class="icard"><div class="ico"><svg fill="none" stroke-width="2" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M9 15l2 2 4-4"/></svg></div><h4>Evidências de Apoio</h4><p>Fotos, registros e documentação que sustentam cada relato.</p></div>
+      <div class="icard"><div class="ico"><svg fill="none" stroke-width="2" viewBox="0 0 24 24"><path d="M23 6l-9.5 9.5-5-5L1 18"/><path d="M17 6h6v6"/></svg></div><h4>Recorrência</h4><p>Se o problema acontece uma vez ou se repete ao longo do tempo.</p></div>
+      <div class="icard"><div class="ico"><svg fill="none" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg></div><h4>Inspeções Mensais</h4><p>Avaliações presenciais agendadas no local todos os meses.</p></div>
+      <div class="icard"><div class="ico"><svg fill="none" stroke-width="2" viewBox="0 0 24 24"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/></svg></div><h4>Inspeções Sem Aviso</h4><p>Visitas surpresa em horários aleatórios e sem aviso prévio.</p></div>
+      <div class="icard"><div class="ico"><svg fill="none" stroke-width="2" viewBox="0 0 24 24"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg></div><h4>Monitoramento dos Residentes</h4><p>Observação contínua das condições e do bem-estar dos residentes.</p></div>
+      <div class="icard"><div class="ico"><svg fill="none" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg></div><h4>Investigação Interna</h4><p>Um processo interno formal antes de qualquer decisão ser tomada.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION 4: MONTHLY -->
+<section id="inspections">
+  <div class="container">
+    <div class="sec-head">
+      <div class="eyebrow">Inspeções Mensais</div>
+      <h2>Consistentes, presenciais e sem aviso</h2>
+    </div>
+    <div class="monthly-wrap">
+      <div class="monthly-text">
+        <h3>A SAFE realiza inspeções presenciais mensais.</h3>
+        <div class="tag-row">
+          <span class="tag">Podem ocorrer sem aviso</span>
+          <span class="tag">Podem acontecer em horários aleatórios</span>
+          <span class="tag">Sempre presenciais</span>
+        </div>
+        <ul class="eval-list">
+          <li><span class="check"><svg fill="none" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg></span> Segurança dos residentes</li>
+          <li><span class="check"><svg fill="none" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg></span> Higiene</li>
+          <li><span class="check"><svg fill="none" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg></span> Qualidade do cuidado</li>
+          <li><span class="check"><svg fill="none" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg></span> Rotinas diárias</li>
+          <li><span class="check"><svg fill="none" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg></span> Infraestrutura exigida</li>
+          <li><span class="check"><svg fill="none" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg></span> Documentação</li>
+          <li><span class="check"><svg fill="none" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg></span> Condições dos residentes</li>
+        </ul>
+      </div>
+      <div class="monthly-visual">
+        <div class="mv-stat"><div class="num">12×</div><div class="desc">Mínimo de inspeções agendadas por ano</div></div>
+        <div class="mv-divider"></div>
+        <div class="mv-stat"><div class="num">0</div><div class="desc">Aviso prévio nas visitas surpresa</div></div>
+        <div class="mv-divider"></div>
+        <div class="mv-stat"><div class="num">100%</div><div class="desc">Das inspeções registradas e documentadas</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION 5: CONTEXT -->
+<section class="alt">
+  <div class="container">
+    <div class="sec-head">
+      <div class="eyebrow">O Contexto Importa</div>
+      <h2>Justiça acima das primeiras impressões</h2>
+    </div>
+    <div class="ctx-grid">
+      <div class="ctx-card">
+        <div class="num">CARD 01</div>
+        <h4>Estrutura Física Simples</h4>
+        <p>Pintura antiga, móveis simples, decoração básica e prédios mais antigos <strong>não</strong> geram automaticamente pontuação negativa.</p>
+        <div class="note">A SAFE prioriza a qualidade do cuidado, a segurança e a conformidade.</div>
+      </div>
+      <div class="ctx-card">
+        <div class="num">CARD 02</div>
+        <h4>Rotinas de Limpeza e Banho pela Manhã</h4>
+        <p>Durante a manhã, é comum que as instituições realizem:</p>
+        <ul>
+          <li>Banhos</li>
+          <li>Trocas de fralda</li>
+          <li>Limpeza dos quartos</li>
+          <li>Limpeza de áreas comuns</li>
+        </ul>
+        <p>A desordem temporária durante esses períodos não indica automaticamente negligência. A SAFE avalia frequência, duração e impacto no cuidado ao residente.</p>
+      </div>
+      <div class="ctx-card">
+        <div class="num">CARD 03</div>
+        <h4>Problemas de Comunicação</h4>
+        <p>Nem toda falha de comunicação gera risco.</p>
+        <div class="note">No entanto, toda reclamação é registrada e afeta o histórico da instituição.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION 6: FAQ -->
+<section id="faq">
+  <div class="container">
+    <div class="sec-head">
+      <div class="eyebrow">Sistema de FAQ</div>
+      <h2>Como a SAFE avalia cada situação</h2>
+      <p>Pesquise qualquer cenário ou navegue por categoria. Cada resposta explica como a SAFE interpreta a situação, a classificação inicial, o que acontece em seguida e quando ocorre o encerramento.</p>
+    </div>
+
+    <div class="faq-search">
+      <svg fill="none" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+      <input type="text" id="faqSearch" placeholder="Pesquise uma situação… ex.: queda, medicação, comunicação">
+    </div>
+
+    <div class="faq-cats" id="faqCats">
+      <button class="cat-btn active" data-cat="all">Todas</button>
+      <button class="cat-btn" data-cat="1">Comunicação e Atendimento</button>
+      <button class="cat-btn" data-cat="2">Estrutura Física</button>
+      <button class="cat-btn" data-cat="3">Higiene e Organização</button>
+      <button class="cat-btn" data-cat="4">Cuidado e Saúde</button>
+      <button class="cat-btn" data-cat="5">Segurança</button>
+      <button class="cat-btn" data-cat="6">Abuso e Negligência</button>
+    </div>
+
+    <div id="faqContainer"></div>
+    <div class="no-results" id="noResults">Nenhuma pergunta corresponde à sua pesquisa.</div>
+  </div>
+</section>
+
+<!-- SECTION 7: MYTHS -->
+<section class="alt">
+  <div class="container">
+    <div class="sec-head">
+      <div class="eyebrow">Mitos e Verdades</div>
+      <h2>Esclarecendo os fatos</h2>
+    </div>
+    <div class="myth-grid">
+      <div class="myth-card">
+        <div class="myth-top"><span class="tag">Mito</span><p>Uma instituição bonita sempre oferece um cuidado melhor.</p></div>
+        <div class="myth-bot"><span class="tag">Verdade</span><p>Instituições simples podem oferecer um cuidado excelente.</p></div>
+      </div>
+      <div class="myth-card">
+        <div class="myth-top"><span class="tag">Mito</span><p>Um incidente isolado significa automaticamente abuso.</p></div>
+        <div class="myth-bot"><span class="tag">Verdade</span><p>Toda situação é avaliada dentro do contexto.</p></div>
+      </div>
+      <div class="myth-card">
+        <div class="myth-top"><span class="tag">Mito</span><p>Desordem pela manhã significa automaticamente negligência.</p></div>
+        <div class="myth-bot"><span class="tag">Verdade</span><p>As rotinas matinais de cuidado costumam envolver banhos, limpeza e trocas de fralda.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION 8: FINAL -->
+<section id="transparency" class="final">
+  <div class="container">
+    <h2>Transparência e Responsabilidade</h2>
+    <div class="final-lines">
+      <p>Nenhum feedback é ignorado.</p>
+      <p>Nenhuma instituição recebe tratamento especial.</p>
+      <p class="big">Toda ocorrência registrada afeta o histórico da instituição e pode contribuir para penalidades futuras ou para a remoção da plataforma SAFE ILPIS.</p>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    <div class="logo"><span class="logo-mark">S</span> SAFE ILPIS</div>
+    <p>Protocolo de Controle de Qualidade SAFE ILPIS — Avaliação transparente, imparcial e profissional de instituições de longa permanência parceiras.</p>
+  </div>
+</footer>
+
+<script>
+/* ===== FAQ DATA ===== */
+const FAQ = [
+/* CATEGORY 1 — Comunicação e Atendimento */
+{c:1,q:"A equipe não retornou a ligação de um familiar.",i:"A SAFE trata ligações não retornadas como uma falha de comunicação, e não como um risco imediato ao cuidado.",cls:"Feedback Leve",pill:"green",next:"A reclamação é registrada no histórico da instituição e a instituição é solicitada a responder.",term:"A parceria é encerrada após 10 Feedbacks Leves confirmados."},
+{c:1,q:"A instituição passou informações inconsistentes sobre a rotina de um residente.",i:"A SAFE vê informações contraditórias como comunicação deficiente que deve ser corrigida.",cls:"Feedback Leve",pill:"green",next:"Documentado e adicionado ao histórico da instituição; a instituição é notificada.",term:"O encerramento ocorre após 10 Feedbacks Leves confirmados."},
+{c:1,q:"Um membro da equipe foi rude com um familiar.",i:"A SAFE diferencia rudeza de abuso psicológico. Rudeza isolada é uma questão de qualidade de atendimento.",cls:"Feedback Intermediário",pill:"yellow",next:"Registrado e investigado; a instituição deve corrigir a conduta da equipe.",term:"A parceria é encerrada após 5 Feedbacks Intermediários confirmados. Se evoluir para humilhação, ameaças ou abuso psicológico, torna-se Gravíssimo e gera encerramento imediato."},
+{c:1,q:"A instituição deixa de responder mensagens repetidamente.",i:"A SAFE vê a falta de resposta recorrente como um problema de atendimento contínuo, e não um deslize isolado.",cls:"Feedback Intermediário",pill:"yellow",next:"Cada recorrência é registrada; a recorrência aumenta a gravidade dos problemas de atendimento.",term:"Encerramento após 5 Feedbacks Intermediários confirmados."},
+{c:1,q:"Uma família não foi informada sobre uma pequena mudança de horário.",i:"A SAFE considera isso uma pequena falha administrativa de comunicação.",cls:"Feedback Leve",pill:"green",next:"Registrado no histórico da instituição; a instituição é lembrada de seus deveres de notificação.",term:"Encerramento após 10 Feedbacks Leves confirmados."},
+{c:1,q:"A administração cometeu um erro de cobrança ou de documentação.",i:"A SAFE trata erros administrativos como problemas operacionais leves, a menos que afetem o cuidado.",cls:"Feedback Leve",pill:"green",next:"Registrado e a instituição é solicitada a corrigir o registro.",term:"Encerramento após 10 Feedbacks Leves confirmados."},
+{c:1,q:"Pertences pessoais ou roupas de cama foram perdidos.",i:"A SAFE classifica a perda de roupas de cama e pertences como um problema administrativo leve.",cls:"Feedback Leve",pill:"green",next:"Registrado no histórico; espera-se que a instituição melhore o controle.",term:"Encerramento após 10 Feedbacks Leves confirmados."},
+{c:1,q:"Um membro da equipe humilhou ou ameaçou um residente.",i:"A SAFE trata humilhação, ameaças ou abuso psicológico como uma violação gravíssima, e não como mera rudeza.",cls:"Feedback Gravíssimo",pill:"red",next:"Uma investigação interna imediata é aberta para confirmar os fatos.",term:"Se confirmado, encerramento imediato da parceria."},
+{c:1,q:"A instituição demorou a comunicar um evento relevante à família.",i:"A SAFE avalia se a demora impactou o cuidado ou a segurança do residente.",cls:"Feedback Leve",pill:"green",next:"Registrado; se a demora causou impacto no cuidado, pode ser reavaliado como Grave.",term:"Encerramento após 10 Feedbacks Leves confirmados, ou antes se o cuidado for prejudicado."},
+{c:1,q:"Problemas de comunicação são relatados repetidamente ao longo de meses.",i:"A SAFE vê um padrão recorrente de falha de comunicação como um problema estrutural de atendimento.",cls:"Feedback Intermediário",pill:"yellow",next:"A recorrência eleva a classificação; o padrão é documentado em todo o histórico.",term:"Encerramento após 5 Feedbacks Intermediários confirmados."},
+
+/* CATEGORY 2 — Estrutura Física */
+{c:2,q:"O prédio tem pintura antiga e descascada.",i:"A SAFE não penaliza a aparência estética. Pintura antiga não é um indicador de cuidado.",cls:"Sem penalidade automática",pill:"navy",next:"Anotado, mas não gera pontuação negativa por si só.",term:"Nenhum encerramento resulta apenas da aparência física."},
+{c:2,q:"Os móveis são antigos e a decoração é simples.",i:"A SAFE prioriza a qualidade do cuidado, a segurança e a conformidade acima da estética.",cls:"Sem penalidade automática",pill:"navy",next:"Registrado apenas como uma observação neutra.",term:"Nenhum encerramento decorre apenas de mobiliário simples."},
+{c:2,q:"A instituição funciona em um prédio pequeno e mais antigo.",i:"A SAFE avalia se a estrutura é segura e conforme, e não seu tamanho ou idade.",cls:"Sem penalidade automática",pill:"navy",next:"A infraestrutura é verificada quanto à segurança; a aparência isolada é neutra.",term:"Nenhum encerramento decorre apenas do tamanho ou da idade do prédio."},
+{c:2,q:"Ocorreu uma queda de energia na instituição.",i:"A SAFE não penaliza automaticamente quedas de energia. Ela avalia duração, frequência e impacto no cuidado.",cls:"Depende do contexto",pill:"navy",next:"A SAFE analisa quanto tempo durou, com que frequência acontece e se os residentes foram afetados.",term:"Só gera Feedback Grave se o cuidado ao residente foi prejudicado; 3 Graves confirmados levam ao encerramento."},
+{c:2,q:"Um equipamento está danificado, mas não causou lesão.",i:"A SAFE trata equipamentos quebrados sem danos como uma questão de manutenção/intermediária.",cls:"Feedback Intermediário",pill:"yellow",next:"Registrado; a instituição deve consertar ou substituir o equipamento.",term:"Encerramento após 5 Feedbacks Intermediários confirmados."},
+{c:2,q:"A falha de um equipamento causou lesão em um residente.",i:"A SAFE eleva o caso quando o equipamento causa dano físico.",cls:"Feedback Grave",pill:"orange",next:"Investigação interna sobre manutenção e supervisão.",term:"Encerramento após 3 Feedbacks Graves confirmados."},
+{c:2,q:"A infraestrutura exigida (rampas, corrimãos) está ausente.",i:"A SAFE verifica a infraestrutura obrigatória como uma questão de conformidade e segurança.",cls:"Feedback Intermediário",pill:"yellow",next:"Registrado e a instituição deve corrigir a falha de conformidade; o impacto na segurança pode elevar o caso.",term:"Encerramento após 5 Feedbacks Intermediários confirmados, ou antes se causar uma falha de segurança."},
+{c:2,q:"A instituição parece pouco impressionante visualmente durante uma visita.",i:"A SAFE separa a impressão visual do cuidado efetivamente prestado.",cls:"Sem penalidade automática",pill:"navy",next:"A qualidade do cuidado é avaliada de forma independente da aparência.",term:"Nenhum encerramento com base apenas na impressão visual."},
+{c:2,q:"Quedas de energia repetidas atrapalham o cuidado aos residentes.",i:"A SAFE avalia quedas de energia recorrentes pelo seu impacto real no bem-estar dos residentes.",cls:"Feedback Grave",pill:"orange",next:"Se o cuidado foi prejudicado, cada evento confirmado conta como Grave.",term:"Encerramento após 3 Feedbacks Graves confirmados."},
+{c:2,q:"O espaço parece apertado, mas os residentes estão seguros e bem cuidados.",i:"A SAFE pondera a segurança e a conformidade reais acima da estética do espaço.",cls:"Sem penalidade automática",pill:"navy",next:"Documentado; só gera feedback se a segurança ou o cuidado forem comprometidos.",term:"Nenhum encerramento a menos que a segurança ou o cuidado sejam comprovadamente afetados."},
+
+/* CATEGORY 3 — Higiene e Organização */
+{c:3,q:"Os quartos parecem desorganizados durante a rotina matinal.",i:"A SAFE reconhece as rotinas matinais (banhos, limpeza, trocas de fralda) e não presume negligência.",cls:"Sem penalidade automática",pill:"navy",next:"A SAFE avalia frequência, duração e impacto no cuidado ao residente.",term:"Nenhum encerramento a menos que reflita uma verdadeira falha de higiene recorrente."},
+{c:3,q:"Um residente foi encontrado com má higiene pessoal uma vez.",i:"A SAFE verifica se é um caso isolado ou parte de um padrão recorrente.",cls:"Feedback Intermediário",pill:"yellow",next:"Registrado; a recorrência aumenta a gravidade e ativa um monitoramento mais próximo.",term:"Encerramento após 5 Feedbacks Intermediários confirmados."},
+{c:3,q:"Falhas de higiene são relatadas repetidamente.",i:"A SAFE trata falhas de higiene recorrentes como uma clara preocupação intermediária.",cls:"Feedback Intermediário",pill:"yellow",next:"Cada recorrência confirmada é registrada no histórico da instituição.",term:"Encerramento após 5 Feedbacks Intermediários confirmados."},
+{c:3,q:"As áreas comuns estavam sujas durante um período de limpeza.",i:"A SAFE considera a desordem temporária durante a limpeza ativa como operação normal.",cls:"Sem penalidade automática",pill:"navy",next:"Avaliado por frequência e duração; apenas sujeira persistente conta.",term:"Nenhum encerramento por desordem temporária no período de limpeza."},
+{c:3,q:"Um residente desenvolveu irritação de pele recorrente.",i:"A SAFE trata a irritação de pele recorrente como uma questão intermediária de higiene/cuidado.",cls:"Feedback Intermediário",pill:"yellow",next:"Registrado; a SAFE monitora o residente e revisa as rotinas de cuidado.",term:"Encerramento após 5 Feedbacks Intermediários confirmados."},
+{c:3,q:"Havia um mau cheiro no quarto de um residente.",i:"A SAFE avalia se o cheiro reflete um evento isolado ou negligência recorrente.",cls:"Feedback Intermediário",pill:"yellow",next:"Registrado; a recorrência e o impacto no residente são avaliados.",term:"Encerramento após 5 Feedbacks Intermediários confirmados."},
+{c:3,q:"As roupas de cama ou enxoval não são trocados com frequência suficiente.",i:"A SAFE vê trocas de enxoval pouco frequentes como um problema de higiene recorrente no atendimento.",cls:"Feedback Intermediário",pill:"yellow",next:"Registrado; a instituição deve demonstrar rotinas corrigidas.",term:"Encerramento após 5 Feedbacks Intermediários confirmados."},
+{c:3,q:"Uma troca de fralda foi adiada durante uma manhã movimentada.",i:"A SAFE leva em conta a carga de trabalho matinal, mas avalia o impacto sobre o residente.",cls:"Sem penalidade automática",pill:"navy",next:"Avaliado por frequência, duração e impacto no cuidado; a recorrência eleva o caso.",term:"Nenhum encerramento por atrasos isolados; a recorrência pode chegar a Intermediário e ao encerramento aos 5 confirmados."},
+{c:3,q:"Um residente desenvolveu uma lesão por pressão (escara) dentro da instituição, estágio 2 ou superior.",i:"A SAFE classifica lesões por pressão como Graves apenas quando desenvolvidas dentro da instituição e com gravidade significativa.",cls:"Feedback Grave",pill:"orange",next:"Investigação interna sobre reposicionamento, higiene e protocolos de cuidado.",term:"Encerramento após 3 Feedbacks Graves confirmados."},
+{c:3,q:"Um residente chegou com uma vermelhidão de pele leve pré-existente.",i:"A SAFE distingue condições pré-existentes de lesões causadas pela instituição.",cls:"Sem penalidade automática",pill:"navy",next:"Documentado como pré-existente; monitorado para garantir que não piore.",term:"Nenhum encerramento a menos que a condição piore devido ao cuidado da instituição, o que pode reclassificá-la."},
+
+/* CATEGORY 4 — Cuidado e Saúde */
+{c:4,q:"Ocorreu um erro de medicação sem dano grave.",i:"A SAFE trata erros de medicação sem consequências graves como falhas sérias de cuidado.",cls:"Feedback Grave",pill:"orange",next:"Investigação interna sobre os protocolos de medicação e os procedimentos da equipe.",term:"Encerramento após 3 Feedbacks Graves confirmados."},
+{c:4,q:"Um erro de medicação levou à hospitalização ou a consequências graves de saúde.",i:"A SAFE trata erros de medicação com desfechos graves como uma violação gravíssima.",cls:"Feedback Gravíssimo",pill:"red",next:"Investigação interna imediata para confirmar os fatos e as circunstâncias.",term:"Se confirmado, encerramento imediato da parceria."},
+{c:4,q:"Um erro de medicação causou um episódio psicótico ou morte.",i:"A SAFE classifica os desfechos mais graves de medicação como gravíssimos.",cls:"Feedback Gravíssimo",pill:"red",next:"Investigação imediata; as autoridades e a família são envolvidas conforme necessário.",term:"Encerramento imediato da parceria mediante confirmação."},
+{c:4,q:"Um residente deixou de receber uma dose de medicação programada.",i:"A SAFE trata uma dose não administrada como uma falha de medicação/cuidado mesmo sem dano imediato.",cls:"Feedback Grave",pill:"orange",next:"Registrado e investigado; os protocolos são revisados quanto à recorrência.",term:"Encerramento após 3 Feedbacks Graves confirmados; eleva-se a Gravíssimo se resultar em dano grave."},
+{c:4,q:"Negligência no cuidado foi relatada por um familiar.",i:"A SAFE investiga a negligência em vez de agir com base em uma única opinião.",cls:"Feedback Grave",pill:"orange",next:"Cruzado com evidências, histórico, inspeções e monitoramento do residente.",term:"Encerramento após 3 Feedbacks Graves confirmados; negligência severa é Gravíssima e encerra imediatamente."},
+{c:4,q:"Uma condição crônica de um residente parece mal controlada.",i:"A SAFE avalia se as rotinas de cuidado e a documentação sustentam o manejo adequado.",cls:"Feedback Grave",pill:"orange",next:"Investigação interna com revisão da documentação médica.",term:"Encerramento após 3 Feedbacks Graves confirmados."},
+{c:4,q:"Um residente perdeu peso de forma notável sem explicação.",i:"A SAFE trata a perda de peso inexplicada como uma possível preocupação de cuidado ou nutrição que exige investigação.",cls:"Feedback Grave",pill:"orange",next:"A SAFE revisa registros de nutrição, monitoramento e histórico médico.",term:"Encerramento após 3 Feedbacks Graves confirmados; se causada por privação de alimentos, torna-se Gravíssima e encerra imediatamente."},
+{c:4,q:"Um residente não foi levado a uma consulta médica agendada.",i:"A SAFE vê uma consulta médica perdida como uma falha de cuidado a ser investigada.",cls:"Feedback Grave",pill:"orange",next:"Registrado e investigado quanto à causa e à recorrência.",term:"Encerramento após 3 Feedbacks Graves confirmados."},
+{c:4,q:"A documentação de cuidado está incompleta ou inconsistente.",i:"A SAFE avalia as falhas de documentação pelo impacto na qualidade do cuidado e na rastreabilidade.",cls:"Feedback Intermediário",pill:"yellow",next:"Registrado; a instituição deve corrigir suas práticas de documentação.",term:"Encerramento após 5 Feedbacks Intermediários confirmados; eleva-se caso cause uma falha de cuidado."},
+{c:4,q:"A dor ou o desconforto de um residente foi supostamente ignorado.",i:"A SAFE trata necessidades de saúde ignoradas como uma preocupação de negligência no cuidado a ser confirmada.",cls:"Feedback Grave",pill:"orange",next:"São iniciados investigação interna e monitoramento do residente.",term:"Encerramento após 3 Feedbacks Graves confirmados; negligência severa é Gravíssima."},
+
+/* CATEGORY 5 — Segurança */
+{c:5,q:"Um residente sofreu uma única queda.",i:"A SAFE trata uma queda como um evento grave de segurança, mesmo quando isolado.",cls:"Feedback Grave",pill:"orange",next:"Investigação interna sobre a supervisão e a segurança do ambiente.",term:"Encerramento após 3 Feedbacks Graves confirmados."},
+{c:5,q:"Um residente tentou sair da instituição, mas foi impedido.",i:"A SAFE trata uma tentativa de saída como uma preocupação de segurança/supervisão de nível intermediário.",cls:"Feedback Intermediário",pill:"yellow",next:"Registrado; os protocolos de supervisão são revisados.",term:"Encerramento após 5 Feedbacks Intermediários confirmados."},
+{c:5,q:"Um residente conseguiu sair da instituição sem supervisão.",i:"A SAFE trata uma saída sem supervisão (evasão) como uma falha grave de segurança.",cls:"Feedback Grave",pill:"orange",next:"Investigação interna sobre supervisão, portas e monitoramento.",term:"Encerramento após 3 Feedbacks Graves confirmados."},
+{c:5,q:"Um risco de segurança foi identificado durante uma inspeção.",i:"A SAFE avalia os riscos pelo perigo real à segurança dos residentes.",cls:"Feedback Grave",pill:"orange",next:"A instituição deve sanar o risco; a recorrência e o impacto são acompanhados.",term:"Encerramento após 3 Feedbacks Graves confirmados."},
+{c:5,q:"Um equipamento danificado criou um risco, mas ninguém se feriu.",i:"A SAFE classifica danos de equipamento arriscados, mas sem dano, como intermediários.",cls:"Feedback Intermediário",pill:"yellow",next:"Registrado; a instituição deve consertar ou remover o equipamento.",term:"Encerramento após 5 Feedbacks Intermediários confirmados; uma lesão elevaria o caso a Grave."},
+{c:5,q:"Um equipamento danificado causou uma lesão.",i:"A SAFE eleva o caso a Grave quando o equipamento causa dano físico.",cls:"Feedback Grave",pill:"orange",next:"Investigação interna sobre manutenção e supervisão.",term:"Encerramento após 3 Feedbacks Graves confirmados."},
+{c:5,q:"A segurança contra incêndio ou as saídas de emergência são inadequadas.",i:"A SAFE trata deficiências de segurança em emergências como uma falha grave de conformidade e segurança.",cls:"Feedback Grave",pill:"orange",next:"A instituição deve corrigir imediatamente; o impacto é avaliado.",term:"Encerramento após 3 Feedbacks Graves confirmados."},
+{c:5,q:"Um residente entrou em uma área insegura dentro da instituição.",i:"A SAFE avalia a supervisão interna e se o residente ficou exposto a perigo.",cls:"Feedback Intermediário",pill:"yellow",next:"Registrado; se o residente chegou a um perigo real ou saiu sem supervisão, eleva-se a Grave.",term:"Encerramento após 5 Feedbacks Intermediários confirmados, ou 3 Graves se houve perigo real ou evasão."},
+{c:5,q:"Várias quedas ocorreram em um curto período.",i:"A SAFE vê quedas repetidas como um padrão de falha de segurança.",cls:"Feedback Grave",pill:"orange",next:"Cada queda confirmada conta; a supervisão e o ambiente são investigados.",term:"Encerramento após 3 Feedbacks Graves confirmados."},
+{c:5,q:"Um quase-acidente de segurança foi relatado.",i:"A SAFE registra quase-acidentes para avaliar os riscos de segurança subjacentes antes que o dano ocorra.",cls:"Feedback Intermediário",pill:"yellow",next:"Registrado e revisado; quase-acidentes recorrentes ou dano real elevam o caso.",term:"Encerramento após 5 Feedbacks Intermediários confirmados; eleva-se a Grave se houver dano."},
+
+/* CATEGORY 6 — Abuso e Negligência */
+{c:6,q:"Uma família relata abuso, mas não tem evidências.",i:"A SAFE nunca descarta um relato de abuso e nunca age apenas com base em opinião.",cls:"Investigação de Feedback Gravíssimo",pill:"red",next:"A SAFE inicia uma investigação imediatamente, reunindo evidências e monitorando o residente.",term:"Se o abuso for confirmado, encerramento imediato da parceria."},
+{c:6,q:"Uma família registra um boletim de ocorrência oficial contra a instituição.",i:"A SAFE trata um boletim de ocorrência oficial como uma questão de nível gravíssimo que exige investigação completa.",cls:"Investigação de Feedback Gravíssimo",pill:"red",next:"A SAFE trata a situação como uma investigação de Feedback Gravíssimo e coopera com as autoridades.",term:"Se o abuso for confirmado, encerramento imediato da parceria."},
+{c:6,q:"Agressão física contra um residente é relatada.",i:"A SAFE trata a agressão física como uma violação gravíssima.",cls:"Feedback Gravíssimo",pill:"red",next:"Investigação interna imediata para confirmar os fatos.",term:"Se confirmado, encerramento imediato da parceria."},
+{c:6,q:"Abuso psicológico, humilhação ou ameaças são relatados.",i:"A SAFE classifica o abuso psicológico como gravíssimo, distinto da rudeza comum.",cls:"Feedback Gravíssimo",pill:"red",next:"Investigação imediata, monitoramento do residente e análise de evidências.",term:"Se confirmado, encerramento imediato da parceria."},
+{c:6,q:"Um residente foi privado de alimentos.",i:"A SAFE trata a privação de alimentos como uma forma gravíssima de abuso e negligência severa.",cls:"Feedback Gravíssimo",pill:"red",next:"Investigação imediata; as autoridades e a família são envolvidas conforme necessário.",term:"Se confirmado, encerramento imediato da parceria."},
+{c:6,q:"Negligência severa é alegada.",i:"A SAFE distingue a negligência severa das falhas comuns de cuidado.",cls:"Feedback Gravíssimo",pill:"red",next:"Investigação interna imediata cruzando evidências e histórico.",term:"Se confirmado, encerramento imediato da parceria."},
+{c:6,q:"Alega-se que uma morte foi causada por negligência.",i:"A SAFE trata uma morte relacionada à negligência como a violação mais grave possível.",cls:"Feedback Gravíssimo",pill:"red",next:"Investigação imediata em cooperação com as autoridades.",term:"Se confirmado, encerramento imediato da parceria."},
+{c:6,q:"Abuso comprovado é documentado com evidências claras.",i:"A SAFE age de forma decisiva quando o abuso é comprovado.",cls:"Feedback Gravíssimo",pill:"red",next:"A confirmação encerra a investigação.",term:"Encerramento imediato da parceria."},
+{c:6,q:"Suspeita de negligência sem provas é relatada.",i:"A SAFE nunca ignora uma suspeita e nunca remove uma instituição com base em uma única opinião.",cls:"Em investigação",pill:"navy",next:"A SAFE abre uma investigação usando evidências, histórico, recorrência e inspeções; é classificada quando os fatos são estabelecidos.",term:"O encerramento depende da classificação confirmada — limites de Grave aos 3, ou imediato se confirmado como Gravíssimo."},
+{c:6,q:"Um relato de abuso é posteriormente considerado sem fundamento.",i:"A SAFE registra todo relato, mas confirma os fatos antes de qualquer penalidade.",cls:"Registrado, sem confirmação",pill:"navy",next:"O relato permanece no histórico da instituição; nenhuma penalidade se aplica sem confirmação.",term:"Nenhum encerramento a menos que evidências confirmem posteriormente uma violação qualificável."}
+];
+
+const CAT_NAMES={1:"Comunicação e Atendimento",2:"Estrutura Física",3:"Higiene e Organização",4:"Cuidado e Saúde",5:"Segurança",6:"Abuso e Negligência"};
+
+const container=document.getElementById('faqContainer');
+const noResults=document.getElementById('noResults');
+
+function render(cat,search){
+  container.innerHTML='';
+  search=(search||'').toLowerCase().trim();
+  let total=0;
+  for(let c=1;c<=6;c++){
+    if(cat!=='all' && String(cat)!==String(c)) continue;
+    const items=FAQ.filter(f=>f.c===c && (search===''|| (f.q.toLowerCase().includes(search)||f.cls.toLowerCase().includes(search)||f.i.toLowerCase().includes(search))));
+    if(items.length===0) continue;
+    total+=items.length;
+    const block=document.createElement('div');
+    block.className='faq-cat-block';
+    block.innerHTML=`<div class="faq-cat-title"><span class="n">${c}</span> ${CAT_NAMES[c]}</div>`;
+    items.forEach(f=>{
+      const item=document.createElement('div');
+      item.className='faq-item';
+      item.innerHTML=`
+        <button class="faq-q">${f.q}
+          <svg class="ic" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg>
+        </button>
+        <div class="faq-a">
+          <div class="row"><span class="k">A SAFE interpreta</span><span class="v">${f.i}</span></div>
+          <div class="row"><span class="k">Classificação</span><span class="v"><span class="pill ${f.pill}">${f.cls}</span></span></div>
+          <div class="row"><span class="k">O que acontece em seguida</span><span class="v">${f.next}</span></div>
+          <div class="row"><span class="k">Quando ocorre o encerramento</span><span class="v">${f.term}</span></div>
+        </div>`;
+      block.appendChild(item);
+    });
+    container.appendChild(block);
+  }
+  noResults.style.display=total===0?'block':'none';
+}
+
+/* accordion — one open at a time */
+container.addEventListener('click',e=>{
+  const btn=e.target.closest('.faq-q');
+  if(!btn) return;
+  const item=btn.parentElement;
+  const wasOpen=item.classList.contains('open');
+  document.querySelectorAll('.faq-item.open').forEach(i=>i.classList.remove('open'));
+  if(!wasOpen) item.classList.add('open');
+});
+
+/* categories */
+let currentCat='all';
+document.getElementById('faqCats').addEventListener('click',e=>{
+  const btn=e.target.closest('.cat-btn');
+  if(!btn) return;
+  document.querySelectorAll('.cat-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  currentCat=btn.dataset.cat;
+  render(currentCat,document.getElementById('faqSearch').value);
+});
+
+/* search */
+document.getElementById('faqSearch').addEventListener('input',e=>{
+  render(currentCat,e.target.value);
+});
+
+/* burger */
+document.getElementById('burger').addEventListener('click',()=>{
+  document.getElementById('navLinks').classList.toggle('show');
+});
+document.querySelectorAll('#navLinks a').forEach(a=>a.addEventListener('click',()=>{
+  document.getElementById('navLinks').classList.remove('show');
+}));
+
+render('all','');
+</script>
+</body>
+</html>
