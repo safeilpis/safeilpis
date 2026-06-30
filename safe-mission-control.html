@@ -1489,7 +1489,7 @@ function renderDashboard(){
     </div>
     <div class="card"><div class="metric-lbl" style="text-align:left;font-weight:700;margin-bottom:8px">Variação do despertar · 30 dias${_wakeAvg?' · média '+_wakeAvg:''}</div>${wakeMonthChartSVG()}</div>
 
-    <div class="section-label">Energia, foco, humor e ansiedade · 14 dias</div>
+    <div class="section-label">Ansiedade · 14 dias</div>
     <div class="card card-lg chart-wrap">${renderChart()}</div>
 
     <div class="countdown" id="countdown">
@@ -1821,7 +1821,7 @@ function renderDailyTaskRow(x){
       </div>
     </div>`;
   }
-  const created = (x.createdAt && /T\d{2}:\d{2}/.test(x.createdAt)) ? x.createdAt.slice(11,16) : null;
+  const created = x.createdAt ? hhmmBR(x.createdAt) : null;
   const act = taskActualMin(x);
   return `<div class="ntask">
     <button class="sub-check ${x.done?'on':''}" onclick="toggleDailyTask('${x.id}')" aria-label="Concluir tarefa">
@@ -2003,6 +2003,7 @@ function dayEstActual(d){
   return { estMin, actMin, hasAct };
 }
 function fmtDur(min){ if(min==null) return '—'; min=Math.round(min); const h=Math.floor(min/60), m=min%60; return h?`${h}h${m?(' '+m+'m'):''}`:`${m}m`; }
+function hhmmBR(iso){ if(!iso) return null; try{ return new Date(iso).toLocaleTimeString('pt-BR',{timeZone:'America/Sao_Paulo',hour:'2-digit',minute:'2-digit'}); }catch(e){ return null; } } /* horário de Brasília, independente do timezone do dispositivo */
 function avgWorkHours(n){
   const t=todayISO(); let sum=0,c=0;
   for(let i=1;i<=n;i++){ const l=S.dailyLogs[addDays(t,-i)]; if(l&&l.deepWork!=null&&l.deepWork!==''){ sum+=Number(l.deepWork)||0; c++; } }
@@ -2088,7 +2089,7 @@ function dayTimelineHTML(){
   const done=dayTasks(todayISO()).filter(x=>x.done&&x.completedAt&&/T\d{2}:\d{2}/.test(x.completedAt))
     .sort((a,b)=>a.completedAt.localeCompare(b.completedAt));
   if(!done.length) return '<div class="muted small" style="padding:6px 0">Conclua tarefas para construir a linha do tempo do dia.</div>';
-  return `<div class="timeline">${done.map(x=>`<div class="tl-item"><span class="tl-time">${x.completedAt.slice(11,16)}</span><span class="tl-dot"></span><span class="tl-task">${esc(x.name)}</span></div>`).join('')}</div>`;
+  return `<div class="timeline">${done.map(x=>`<div class="tl-item"><span class="tl-time">${hhmmBR(x.completedAt)}</span><span class="tl-dot"></span><span class="tl-task">${esc(x.name)}</span></div>`).join('')}</div>`;
 }
 function anxietyHealth(){
   let score=0;
@@ -2185,9 +2186,6 @@ function perfDashboardHTML(){
       </div>
       <div class="muted small" style="flex:1">Qualidade média dos últimos 30 dias — leia pelas cores, não pelos números.</div>
     </div>
-    ${qualRow(moodEmoji(mood),'Humor',mood,'#16A34A')}
-    ${qualRow(moodEmoji(energy),'Energia',energy,'#081A58')}
-    ${qualRow(moodEmoji(focus),'Foco',focus,'#2563EB')}
     ${qualRow(anxEmoji(anx),'Ansiedade',anx,'#B4660A')}
   </div>
   ${ins.length ? `<div>${ins.map(([ic,txt])=>`<div class="insight"><span class="ic">${ic}</span><span>${txt}</span></div>`).join('')}</div>` : '<div class="muted small">Continue registrando — os insights automáticos aparecem com ~6 dias de dados.</div>'}`;
@@ -2324,14 +2322,14 @@ function renderKpis(){
     <div class="section-label">Performance pessoal · 30 dias</div>
     ${perfDashboardHTML()}
 
-    <div class="section-label">Energia, foco, humor e ansiedade · 14 dias</div>
+    <div class="section-label">Ansiedade · 14 dias</div>
     <div class="card card-lg chart-wrap">${renderChart()}</div>`;
 }
 
 function renderChart(){
   const t = todayISO(), days = [];
   for(let i=13;i>=0;i--) days.push(addDays(t,-i));
-  const series = [['energy','#081A58','Energia'],['focus','#16A34A','Foco'],['mood','#F59E0B','Humor'],['anxiety','#7C3AED','Ansiedade']];
+  const series = [['anxiety','#7C3AED','Ansiedade']];
   const W=640,H=200,P=28, x=i=>P+i*(W-2*P)/13, y=v=>H-P-(v-0)*(H-2*P)/10;
   let svg = `<svg viewBox="0 0 ${W} ${H+30}" style="width:100%;min-width:480px;height:auto">`;
   for(let g=2;g<=10;g+=2) svg += `<line x1="${P}" y1="${y(g)}" x2="${W-P}" y2="${y(g)}" stroke="#E6EAF0"/><text x="${P-8}" y="${y(g)+4}" font-size="10" fill="#5B6472" text-anchor="end">${g}</text>`;
@@ -2345,7 +2343,7 @@ function renderChart(){
     pts.forEach(p=>{ if(p) svg += `<circle cx="${p[0]}" cy="${p[1]}" r="3.4" fill="${color}"/>`; });
   }
   svg += '</svg>';
-  if(!hasData) return '<div class="muted" style="text-align:center;padding:24px">Registre energia, foco e humor na aba <b>Hoje</b> para gerar o gráfico.</div>';
+  if(!hasData) return '<div class="muted" style="text-align:center;padding:24px">Sem dados de ansiedade registrados ainda.</div>';
   return svg + `<div class="legend">${series.map(([f,c,l])=>`<span><i style="background:${c}"></i>${l}</span>`).join('')}</div>`;
 }
 /* ---------- CAIXA (financeiro v5) ---------- */
