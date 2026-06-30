@@ -555,6 +555,92 @@ input,select,textarea{font:inherit;color:inherit}
 .stat-note{font-size:.8rem}
 .ia-hint{font-size:.8rem}
 @media(min-width:1024px){.metric-lbl{font-size:.84rem}}
+
+/* ============================================================
+   UX REFINEMENT (v11) — breathing room + premium visuals
+   ============================================================ */
+.card{margin-bottom:18px}
+.section-label{margin:26px 0 12px}
+.pbar.thick{height:16px;border-radius:9px}
+.pbar.thick>i{border-radius:9px}
+.qbar{display:flex;gap:3px}
+.qbar span{flex:1;height:9px;border-radius:3px;background:var(--surface);transition:background .3s}
+.qrow{margin-bottom:15px}
+.qrow-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:7px}
+.qrow-top .lbl{font-weight:700;font-size:.96rem}
+.qrow-top .num{color:var(--muted);font-size:.85rem;font-weight:600;font-variant-numeric:tabular-nums}
+.spark{width:100%;height:auto;display:block}
+@media(min-width:1024px){.card{margin-bottom:20px}}
+
+/* ============================================================
+   TODAY-FIRST (v12) — inline, fast, no modals
+   ============================================================ */
+.today-top{background:#fff;border-radius:var(--r-lg);box-shadow:var(--shadow);padding:18px 20px;margin-bottom:18px}
+.today-top-row{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:10px}
+.today-top-lbl{font-size:.8rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--muted)}
+.today-top-pct{font-size:1.7rem;font-weight:800;color:var(--navy);letter-spacing:-.02em}
+.today-top-meta{font-size:.85rem;color:var(--muted);margin-top:10px}
+.dt-add{display:flex;gap:8px;margin:4px 0 14px;flex-wrap:wrap}
+.dt-add-name{flex:1;min-width:130px;min-height:48px;border:1.5px solid var(--line);border-radius:12px;padding:0 12px;font-size:1rem;outline:none;background:#fff}
+.dt-add-name:focus{border-color:var(--navy)}
+.dt-add-h{width:58px;min-height:48px;border:1.5px solid var(--line);border-radius:12px;padding:0 6px;font-size:1rem;text-align:center;outline:none;background:#fff}
+.dt-add-cat{min-height:48px;border:1.5px solid var(--line);border-radius:12px;padding:0 8px;font-size:.86rem;background:#fff;outline:none}
+.dt-add .btn{flex-shrink:0;min-width:48px}
+.dt-cat-pill{border:none;border-radius:99px;font-size:.74rem;font-weight:700;padding:4px 22px 4px 9px;outline:none;-webkit-appearance:none;appearance:none;cursor:pointer;background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 24 24' fill='none' stroke='%235B6472' stroke-width='3'><path d='M6 9l6 6 6-6'/></svg>");background-repeat:no-repeat;background-position:right 7px center}
+.dt-editing{flex-direction:column;align-items:stretch}
+.dt-edit-name{width:100%;min-height:46px;border:1.5px solid var(--line);border-radius:11px;padding:0 12px;font-size:1rem;margin-bottom:8px;outline:none}
+.dt-edit-name:focus{border-color:var(--navy)}
+.dt-edit-row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.dt-edit-h{width:66px;min-height:44px;border:1.5px solid var(--line);border-radius:11px;text-align:center;outline:none}
+.dt-edit-cat{min-height:44px;border:1.5px solid var(--line);border-radius:11px;padding:0 8px;background:#fff;outline:none}
+.qinput{margin-bottom:16px}
+.qsegs{display:flex;gap:4px}
+.qseg{flex:1;height:32px;border-radius:7px;border:1.5px solid var(--line);background:var(--surface);transition:.12s}
+.work-input-row{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.work-input-row input{width:120px;min-height:52px;border:1.5px solid var(--line);border-radius:13px;padding:0 14px;font-size:1.25rem;font-weight:800;text-align:center;outline:none;color:var(--navy)}
+.work-input-row input:focus{border-color:var(--navy)}
+.work-unit{font-weight:600;color:var(--muted)}
+.kpi2{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;text-align:center}
+.kpi2-val{font-size:1.5rem;font-weight:800;color:var(--navy);letter-spacing:-.02em;line-height:1.05}
+.kpi2-lbl{font-size:.74rem;font-weight:600;color:var(--muted);margin-top:3px}
+.estact{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;text-align:center}
+.estact-lbl{display:block;font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);margin-bottom:3px}
+.estact-val{font-size:1.15rem;font-weight:800;color:var(--navy);font-variant-numeric:tabular-nums}
+.estact-val.good{color:var(--success)}.estact-val.bad{color:var(--danger)}
+.op-flow{display:flex;flex-direction:column;align-items:center;gap:5px;text-align:center}
+.op-step{display:flex;flex-direction:column;gap:2px}
+.op-lbl{font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--muted)}
+.op-val{font-size:1.05rem;font-weight:800;color:var(--navy)}
+.op-mid .op-val{color:#B4660A}
+.op-arrow{color:#AEB6C4;font-weight:800;line-height:1}
+
+/* ============================================================
+   BEHAVIORAL INTELLIGENCE (v13)
+   ============================================================ */
+.streak-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:18px}
+.streak-card,.health-card{background:#fff;border-radius:var(--r-lg);box-shadow:var(--shadow);padding:16px;display:flex;align-items:center;gap:12px}
+.streak-fire{font-size:1.9rem;line-height:1}
+.streak-num{font-size:1.7rem;font-weight:800;color:var(--navy);line-height:1}
+.streak-lbl{font-size:.72rem;font-weight:600;color:var(--muted);margin-top:3px;line-height:1.2}
+.health-card{border:1.5px solid var(--line)}
+.health-dot{font-size:1.6rem;line-height:1}
+.health-lbl2{font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--muted)}
+.health-state{font-weight:800;font-size:1.02rem;margin-top:2px}
+.mission-card{border:2px solid var(--info-bg);background:linear-gradient(180deg,#FBFCFF,#fff)}
+.mission-head{font-weight:800;font-size:1.1rem;color:var(--navy);margin-bottom:4px}
+.mission-sub{font-size:.9rem;color:var(--muted);margin-bottom:8px}
+.mission-done{font-weight:700;color:var(--success);padding:6px 0}
+.feel-row{display:flex;gap:8px;justify-content:space-between}
+.feel-btn{flex:1;min-height:60px;border-radius:16px;border:1.5px solid var(--line);background:#fff;font-size:1.8rem;line-height:1;transition:.15s}
+.feel-btn.sel{background:var(--info-bg);border-color:var(--navy);transform:scale(1.05)}
+.dw-chip{margin-top:12px;background:var(--surface);border-radius:12px;padding:10px 14px;font-weight:600;font-size:.92rem;color:var(--navy)}
+.timeline{display:flex;flex-direction:column}
+.tl-item{display:flex;align-items:center;gap:12px;padding:9px 0}
+.tl-time{font-variant-numeric:tabular-nums;font-weight:800;color:var(--navy);font-size:.92rem;min-width:46px}
+.tl-dot{width:11px;height:11px;border-radius:50%;background:var(--success);flex-shrink:0;box-shadow:0 0 0 3px var(--success-bg)}
+.tl-task{font-weight:600;font-size:.96rem}
+.kpi2{grid-template-columns:repeat(2,1fr)}
+@media(max-width:380px){.feel-btn{min-height:52px;font-size:1.5rem}}
 </style>
 </head>
 <body>
@@ -754,7 +840,7 @@ function defaultState(){
     priority: 'Média', bottleneck: false, difficulty: null
   });
   return {
-    version: 6,
+    version: 8,
     createdAt: start,
     targetUnits: 10,
     targetDate: cursor,              // final mission deadline (user-editable)
@@ -838,6 +924,21 @@ function migrate(s){
        Logs antigos são preservados; novos campos são opcionais. */
     if (s.cashflow && s.cashflow.openingBalance == null) s.cashflow.openingBalance = 0;
     s.version = 6;
+  }
+  if (s.version < 7){
+    /* v7: Tarefas do Dia ganham categoria + carimbo de criação/conclusão.
+       Dados antigos preservados; sem completedAt fabricado (real fica — até concluir de novo). */
+    (s.dailyTasks||[]).forEach(t => {
+      if (t.category == null) t.category = 'Atendimento';
+      if (t.createdAt == null) t.createdAt = (t.date||todayISO())+'T12:00:00.000Z';
+      if (t.completedAt === undefined) t.completedAt = null;
+    });
+    s.version = 7;
+  }
+  if (s.version < 8){
+    /* v8: camada comportamental (feeling de 1 toque, deep work, streak, estresse).
+       Todos os novos campos são opcionais e calculados — nada a migrar. */
+    s.version = 8;
   }
   return s;
 }
@@ -944,7 +1045,8 @@ function msEffectiveStatus(m){
    which EXTENDS the deadline (never counts as real delay). */
 const HOURS_PER_OP_DAY = 9;
 function operationalHoursTotal(){ return (S.dailyTasks||[]).reduce((a,t)=>a+(Number(t.hours)||0),0); }
-function operationalDays(){ return Math.floor(operationalHoursTotal() / HOURS_PER_OP_DAY); }
+function operationalDays(){ return Math.floor(operationalHoursTotal() / 24); } /* v13: extensão em horas reais de calendário (regra de 9h removida) */
+function opMinutesTotal(){ return Math.round(operationalHoursTotal() * 60); }
 function justifiedTotal(){ return operationalDays(); }           // deadline extension, in days
 function dayOpHours(d){ return (S.dailyTasks||[]).filter(t=>t.date===d).reduce((a,t)=>a+(Number(t.hours)||0),0); }
 
@@ -1061,6 +1163,21 @@ function engine(){
            plannedSpanDays, dtDone, dtPending: dts.length - dtDone, dtCount: dts.length,
            firstUnitDate, pace, paceDate, requiredPace, doneWeek, doneMonth, overdue, overdueSubs, remaining,
            hasNecessaryToday: (S.dailyTasks||[]).some(t => t.date === todayISO()) };
+}
+
+/* ---- Roadmap forecast (v13) ----
+   Combines completion pace, operational extension and observed delay into a
+   single predictive date. Allows "ahead of schedule" when the pace beats the plan. */
+function roadmapForecast(){
+  const e = engine();
+  let date = e.projectedEnd;                 /* base: original + atraso real + operação */
+  if (e.done > 0 && e.remaining > 0 && e.paceDate){
+    const paced = e.paceDate < e.projectedRealEnd ? e.paceDate : e.projectedRealEnd;
+    const op = operationalDays();
+    date = op > 0 ? addDays(paced, op) : paced;
+  }
+  const delta = diffDays(e.originalEnd, date); /* <0 adiantado · >0 atrasado */
+  return { date, delta };
 }
 
 /* projected end of a milestone accounting for cumulative delay of itself + predecessors */
@@ -1295,7 +1412,10 @@ function journeySVG(pct){
 }
 
 function renderDashboard(){
-  const e = engine(), h = projectHealth(), tasks = topTasks();
+  const e = engine(), h = projectHealth(), tasks = topTasks(), bn = bottleneck();
+  const _wk = weeklyWorkTrend();
+  const _lifeDisc = disciplineRange(Math.max(1, Math.min(400, diffDays(S.createdAt, todayISO())+1)));
+  const _wakeAvg = avgTimeOf(logsArray(30),'wake');
   const today = todayISO();
   const dailyToday = (S.dailyTasks||[]).filter(x => x.date === today);
   const opHours = operationalHoursTotal(), opDays = operationalDays();
@@ -1339,18 +1459,19 @@ function renderDashboard(){
     <div class="card">
       <div class="ms-dates" style="grid-template-columns:repeat(2,1fr);margin-bottom:12px">
         <div class="dt blue"><b>Prazo original</b><span>${fmt(e.originalEnd)}</span></div>
-        <div class="dt ${e.justifiedDelay>0?'amber':'blue'}"><b>Prazo ajustado</b><span>${fmt(e.projectedEnd)}</span></div>
+        <div class="dt ${opMinutesTotal()>0?'amber':'blue'}"><b>Prazo ajustado</b><span>${fmt(e.projectedEnd)}</span></div>
       </div>
       <div class="sub-meta">
         ${e.realDelay>0?`<span class="badge ${delayClass(e.realDelay)}">${e.realDelay}d atraso real</span>`:`<span class="badge b-blue">No prazo</span>`}
-        ${e.justifiedDelay>0?`<span class="badge b-amber">+${e.justifiedDelay}d operação · ${opDays} ${opDays===1?'dia':'dias'} (${opHours.toLocaleString('pt-BR')}h)</span>`:''}
+        ${opMinutesTotal()>0?`<span class="badge b-amber">+${fmtDur(opMinutesTotal())} de operação</span>`:''}
       </div>
     </div>
 
-    <!-- Rings: progresso + disciplina -->
-    <div class="kpi-hero" style="grid-template-columns:repeat(2,1fr)">
-      <div class="kpi-circle">${donutSVG(e.progress, '#081A58', 116, 11, e.progress+'%', e.done+'/'+e.total+' marcos')}<span class="stat-label">Roadmap</span></div>
-      <div class="kpi-circle">${donutSVG(disciplineToday(), '#16A34A', 116, 11, disciplineToday()+'%', 'hoje')}<span class="stat-label">Disciplina</span></div>
+    <!-- Rings: progresso + disciplina + conclusão de tarefas -->
+    <div class="kpi-hero" style="grid-template-columns:repeat(3,1fr)">
+      <div class="kpi-circle">${donutSVG(e.progress, '#081A58', 96, 10, e.progress+'%', e.done+'/'+e.total)}<span class="stat-label">Roadmap</span></div>
+      <div class="kpi-circle">${donutSVG(disciplineRange(30), '#16A34A', 96, 10, disciplineRange(30)+'%', '30d')}<span class="stat-label">Disciplina</span></div>
+      <div class="kpi-circle">${donutSVG(dailyCompletion30(), '#2563EB', 96, 10, dailyCompletion30()+'%', '30d')}<span class="stat-label">Tarefas/dia</span></div>
     </div>
     <!-- Snapshot financeiro + clínicas -->
     <div class="grid" style="grid-template-columns:repeat(2,1fr)">
@@ -1361,6 +1482,12 @@ function renderDashboard(){
 
     <div class="section-label">Performance · 30 dias</div>
     ${perfDashboardHTML()}
+
+    <div class="grid" style="grid-template-columns:repeat(2,1fr)">
+      <div class="stat"><span class="stat-label">Trabalho semanal</span><span class="stat-value" style="font-size:1.5rem">${_wk.cur.toFixed(0)}h ${_wk.trend}</span><span class="stat-note">média/semana (28 dias)</span></div>
+      <div class="stat"><span class="stat-label">Disciplina 90 dias</span><span class="stat-value" style="font-size:1.5rem">${disciplineRange(90)}%</span><span class="stat-note">vitalícia ${_lifeDisc}%</span></div>
+    </div>
+    <div class="card"><div class="metric-lbl" style="text-align:left;font-weight:700;margin-bottom:8px">Variação do despertar · 30 dias${_wakeAvg?' · média '+_wakeAvg:''}</div>${wakeMonthChartSVG()}</div>
 
     <div class="section-label">Energia, foco, humor e ansiedade · 14 dias</div>
     <div class="card card-lg chart-wrap">${renderChart()}</div>
@@ -1375,19 +1502,19 @@ function renderDashboard(){
       <div class="field-hint" id="cd-hint" style="margin-top:10px">Tempo restante até o prazo final da missão.</div>
     </div>
 
-    <div class="section-label">Tarefas de hoje</div>
+    <div class="section-label">Gargalo atual</div>
     <div class="card card-lg">
-      ${tasks.length ? tasks.map((t,i)=>`
-        <div class="task-pick">
-          <div class="tp-rank">${i+1}</div>
-          <div style="flex:1;min-width:0">
-            <div class="sub-name">${esc(t.s.name)}</div>
-            <div class="sub-meta"><span>${esc(t.m.name)}</span><span class="badge prio-${t.s.priority}">${t.s.priority}</span>${t.delay>0?`<span class="badge b-red">Atrasada ${t.delay}d</span>`:''}</div>
+      <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap">
+        <span style="font-size:1.6rem">🚧</span>
+        <div style="flex:1;min-width:140px">
+          <div class="sub-name" style="font-size:1.05rem">${bn?esc(bn.m.name):'Nenhum gargalo ativo'}</div>
+          <div class="sub-meta" style="margin-top:6px">
+            ${bn&&bn.manual?`<span class="badge b-red">Marcado manualmente</span>`:''}
+            ${bn&&bn.delay>0?`<span class="badge ${delayClass(bn.delay)}">Atrasado ${bn.delay} ${bn.delay===1?'dia':'dias'}</span>`:bn?`<span class="badge b-blue">Marco ativo</span>`:''}
           </div>
-          <button class="sub-check" style="margin-top:0" onclick="toggleSubtask('${t.m.id}','${t.s.id}')" aria-label="Concluir"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13l4 4L19 7"/></svg></button>
-        </div>`).join('') : '<div class="muted small">Nenhuma tarefa pendente — adicione subtarefas no Roadmap.</div>'}
-      ${dailyToday.length?`<div class="divider"></div><div class="muted small" style="margin-bottom:8px">Operação de hoje: ${dailyToday.reduce((a,x)=>a+(Number(x.hours)||0),0)}h em ${dailyToday.length} ${dailyToday.length===1?'tarefa':'tarefas'}</div>`:''}
-      <button class="btn btn-soft btn-sm btn-block" style="margin-top:12px" onclick="nav('hoje')">Abrir operação do dia</button>
+        </div>
+        <button class="btn btn-soft btn-sm" onclick="nav('roadmap')">Ver roadmap</button>
+      </div>
     </div>
 
     <div class="btn-row" style="margin-top:20px">
@@ -1408,28 +1535,42 @@ function renderRoadmap(){
   const activeCount = S.milestones.filter(m => !m.pinned && m.status === 'Em andamento').length;
   const _reals = S.milestones.filter(m => !m.pinned);
   const nextStart = _reals.length ? _reals[_reals.length-1].originalEnd : todayISO();
+  const opHours = operationalHoursTotal(), opDays = operationalDays();
+  const fc = roadmapForecast();
   $('#view-roadmap').innerHTML = `
     <div class="page-head">
       <div class="page-title">Roadmap Estratégico</div>
       <div class="page-sub">${e.done} de ${e.total} marcos concluídos · ${e.remaining} restantes</div>
     </div>
-    <div class="rm-kpis">
-      <div class="metric"><div class="metric-val">${e.progress}%</div><div class="metric-lbl">Progresso estratégico</div></div>
-      <div class="metric"><div class="metric-val">${activeCount}</div><div class="metric-lbl">Projetos ativos</div></div>
-      <div class="metric"><div class="metric-val">${e.remaining}</div><div class="metric-lbl">Marcos restantes</div></div>
-      <div class="metric"><div class="metric-val" style="font-size:1.05rem">${fmt(e.projectedEnd)}</div><div class="metric-lbl">Conclusão prevista</div></div>
-    </div>
-    <div class="card">
-      ${pbar(e.progress, e.realDelay>0?(e.realDelay<=30?'amber':'red'):'green')}
-      <div class="sub-meta" style="margin-top:10px">
-        ${e.realDelay>0?`<span class="badge ${delayClass(e.realDelay)}">${e.realDelay} ${e.realDelay===1?'dia':'dias'} de atraso real</span>`:`<span class="badge b-blue">No prazo</span>`}
-        ${e.justifiedDelay>0?`<span class="badge b-amber">+${e.justifiedDelay}d operação</span>`:''}
-        <span>Prazo ${fmt(e.originalEnd)} → <b>${fmt(e.projectedEnd)}</b></span>
+    <div class="card card-lg" style="display:flex;align-items:center;gap:20px;flex-wrap:wrap">
+      ${donutSVG(e.progress, e.realDelay>0?(e.realDelay<=30?'#F59E0B':'#DC2626'):'#081A58', 128, 13, e.progress+'%', e.done+'/'+e.total)}
+      <div style="flex:1;min-width:180px">
+        ${pbarThick(e.progress, e.realDelay>0?(e.realDelay<=30?'amber':'red'):'green')}
+        <div class="sub-meta" style="margin-top:12px">
+          <span class="badge b-blue">${activeCount} ativos</span>
+          <span class="badge b-grey" style="background:var(--surface)">${e.remaining} restantes</span>
+          ${e.realDelay>0?`<span class="badge ${delayClass(e.realDelay)}">${e.realDelay}d atraso</span>`:`<span class="badge b-green">No prazo</span>`}
+        </div>
+        <div class="ms-when" style="margin-top:12px">Conclusão prevista <b>${fmt(e.projectedEnd)}</b></div>
       </div>
-      <div class="field-hint" style="margin-top:8px">⚡ Agendamento automático: cada marco começa quando o anterior termina. Mudar a duração de um marco recalcula todos os seguintes. Arraste pelo ⠿ para reordenar.</div>
     </div>
+    <div class="card" style="display:flex;align-items:center;gap:12px;flex-wrap:wrap">
+      <span style="font-size:1.6rem">${fc.delta<0?'🚀':fc.delta>0?'⏳':'🎯'}</span>
+      <div style="flex:1;min-width:150px">
+        <div class="op-lbl">Previsão de conclusão</div>
+        <div style="font-weight:800;font-size:1.15rem;color:var(--navy)">${fmt(fc.date)}</div>
+      </div>
+      <span class="badge ${fc.delta<0?'b-green':fc.delta>0?(fc.delta<=30?'b-amber':'b-red'):'b-blue'}">${fc.delta<0?Math.abs(fc.delta)+' dias adiantado':fc.delta>0?'+'+fc.delta+' dias':'no prazo'}</span>
+    </div>
+    ${opMinutesTotal()>0?`<div class="card op-flow">
+      <div class="op-step"><span class="op-lbl">Prazo original</span><span class="op-val">${fmt(e.originalEnd)}</span></div>
+      <div class="op-arrow">↓</div>
+      <div class="op-step op-mid"><span class="op-lbl">Extensão operacional</span><span class="op-val">+${fmtDur(opMinutesTotal())}</span></div>
+      <div class="op-arrow">↓</div>
+      <div class="op-step"><span class="op-lbl">Prazo ajustado</span><span class="op-val">${fmt(e.projectedEnd)}</span></div>
+    </div>`:''}
     <div class="section-label">Marcos</div>
-    ${S.milestones.map((m,i)=>renderMilestone(m,i)).join('') || '<div class="empty">Nenhum marco criado. Crie o primeiro abaixo.</div>'}
+    ${S.milestones.map((m,i)=>m.pinned?'':renderMilestone(m,i)).join('') || '<div class="empty">Nenhum marco criado. Crie o primeiro abaixo.</div>'}
     <div class="card">
       <strong style="font-size:.95rem">Novo marco</strong>
       <div class="inline-add" style="margin-top:10px">
@@ -1555,99 +1696,152 @@ function toggleMs(id){ openBodies.has(id) ? openBodies.delete(id) : openBodies.a
 
 /* ---------- HOJE ---------- */
 function renderHoje(){
-  const e = engine(), h = projectHealth(), bn = bottleneck(), tasks = topTasks();
-  const cls = h.cls==='green'?'forte':h.cls==='amber'?'medio':'fraco';
-  const _tm = todayMomentum();
-  const opHours = operationalHoursTotal(), opDays = operationalDays();
+  const t = todayISO();
+  const log = S.dailyLogs[t] || {};
+  const dts = dayTasks(t);
+  const doneN = dts.filter(x=>x.done).length;
+  const pct = dts.length ? Math.round(doneN/dts.length*100) : 0;
+  const tasks = topTasks();
+  const k = todayKPIs();
+  const mission = todayMission();
+  const streak = routineStreak();
+  const anx = anxietyHealth();
   $('#view-hoje').innerHTML = `
     <div class="page-head">
-      <div class="page-title">Operação do dia</div>
-      <div class="page-sub">${fmtLong(todayISO())}</div>
+      <div class="page-title">Hoje</div>
+      <div class="page-sub">${fmtLong(t)}</div>
     </div>
 
-    <div class="card card-lg" style="display:flex;align-items:center;gap:18px;flex-wrap:wrap">
-      ${donutSVG(_tm.score, h.cls==='green'?'#16A34A':h.cls==='amber'?'#F59E0B':'#DC2626', 122, 12, _tm.score+'%', 'hoje')}
-      <div style="flex:1;min-width:150px">
-        <div style="font-weight:800;font-size:1.2rem;color:var(--navy)">${h.dot} ${h.state}</div>
-        <div class="sub-meta" style="margin-top:10px">
-          <span class="badge b-blue">Tarefas ${_tm.dtDone}/${_tm.dtTotal}</span>
-          <span class="badge b-green">Hábitos ${_tm.habDone}/${_tm.habTotal}</span>
-          <span class="badge ${_tm.checkin?'b-green':'b-grey'}">Check-in ${_tm.checkin?'feito':'pendente'}</span>
-        </div>
+    <div class="streak-row">
+      <div class="streak-card">
+        <span class="streak-fire">🔥</span>
+        <div><div class="streak-num">${streak}</div><div class="streak-lbl">${streak===1?'dia de sequência':'dias de sequência'}</div></div>
+      </div>
+      <div class="health-card" style="border-color:${anx.color}40">
+        <span class="health-dot">${anx.dot}</span>
+        <div><div class="health-lbl2">Bem-estar</div><div class="health-state" style="color:${anx.color}">${anx.label}</div></div>
       </div>
     </div>
 
-    <div class="card card-lg">
-      <h3>Top 3 prioridades do roadmap</h3>
-      ${tasks.length ? tasks.map((t,i)=>`
+    <div class="today-top">
+      <div class="today-top-row"><span class="today-top-lbl">Progresso do dia</span><span class="today-top-pct">${pct}%</span></div>
+      <div class="pbar ${pct>=80?'green':pct>=40?'':'amber'}"><i style="width:${pct}%"></i></div>
+      <div class="today-top-meta">${doneN}/${dts.length} ${dts.length===1?'tarefa concluída':'tarefas concluídas'}${k.workedH?` · ${k.workedH}h trabalhadas`:''}</div>
+    </div>
+
+    <div class="card card-lg mission-card">
+      <div class="mission-head">🎯 Missão de Hoje</div>
+      ${mission.length ? `<div class="mission-sub">Conclua ${mission.length===1?'esta tarefa':`estas ${mission.length} tarefas`} e o dia já é vitorioso.</div>
+      ${mission.map(x=>`<div class="task-pick" style="border:none;padding:9px 0">
+        <button class="sub-check ${x.done?'on':''}" style="margin-top:0" onclick="toggleDailyTask('${x.id}')" aria-label="Concluir"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13l4 4L19 7"/></svg></button>
+        <div style="flex:1;min-width:0"><div class="sub-name">${esc(x.name)}</div><div class="sub-meta"><span class="badge ${CAT_CLS[x.category||'Atendimento']||'b-grey'}">${x.category||'Atendimento'}</span>${Number(x.hours)?`<span>${x.hours}h</span>`:''}</div></div>
+      </div>`).join('')}`
+      : (dts.length ? `<div class="mission-done">✅ Missão cumprida! As ${dts.length} tarefas de hoje estão concluídas.</div>` : `<div class="muted small">Crie as tarefas do dia abaixo — as 3 mais importantes viram sua missão.</div>`)}
+    </div>
+
+    ${renderDailyTasksCard()}
+
+    ${tasks.length?`<div class="section-label">Prioridades do roadmap</div>
+    <div class="card">
+      ${tasks.map((tk,i)=>`
         <div class="task-pick">
           <div class="tp-rank">${i+1}</div>
           <div style="flex:1;min-width:0">
-            <div class="sub-name">${esc(t.s.name)}</div>
-            <div class="sub-meta"><span>${esc(t.m.name)}</span><span class="badge prio-${t.s.priority}">${t.s.priority}</span>${t.delay>0?`<span class="badge b-red">Atrasada em ${t.delay} ${t.delay===1?'dia':'dias'}</span>`:''}</div>
+            <div class="sub-name">${esc(tk.s.name)}</div>
+            <div class="sub-meta"><span>${esc(tk.m.name)}</span><span class="badge prio-${tk.s.priority}">${tk.s.priority}</span>${tk.delay>0?`<span class="badge b-red">Atrasada ${tk.delay}d</span>`:''}</div>
           </div>
-          <button class="sub-check" style="margin-top:0" onclick="toggleSubtask('${t.m.id}','${t.s.id}')" aria-label="Concluir"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13l4 4L19 7"/></svg></button>
-        </div>`).join('') : '<div class="muted">Nenhuma tarefa pendente — adicione subtarefas no Roadmap.</div>'}
+          <button class="sub-check" style="margin-top:0" onclick="toggleSubtask('${tk.m.id}','${tk.s.id}')" aria-label="Concluir"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13l4 4L19 7"/></svg></button>
+        </div>`).join('')}
+    </div>`:''}
+
+    <div class="section-label">Rotina</div>
+    <div class="card card-lg">
+      <div class="field" style="margin-bottom:10px"><label>🌅 Hora de acordar</label></div>
+      ${wakeSelectorHTML(log)}
     </div>
-
-    <div class="section-label">Tarefas do dia · operação</div>
-    ${renderDailyTasksCard()}
-
-    <div class="section-label">Rotina de hoje</div>
-    ${renderLogCard()}
-    <div class="card" style="margin-bottom:14px"><div class="metric-lbl" style="text-align:left;font-weight:700;margin-bottom:8px">Disciplina de hoje</div>${pbar(disciplineToday(), disciplineToday()>=80?'green':disciplineToday()>=50?'':'amber')}</div>
     ${habitsListHTML()}
 
-    <div class="section-label">Tempo operacional necessário</div>
+    <div class="section-label">Trabalho de hoje</div>
     <div class="card">
-      <div class="grid" style="grid-template-columns:repeat(3,1fr);gap:10px">
-        <div class="dt"><b>Horas acumuladas</b><span>${opHours.toLocaleString('pt-BR')} h</span></div>
-        <div class="dt"><b>Dias equivalentes</b><span>${opDays} ${opDays===1?'dia':'dias'}</span></div>
-        <div class="dt ${e.justifiedDelay>0?'amber':'blue'}"><b>Impacto no prazo</b><span>+${e.justifiedDelay} ${e.justifiedDelay===1?'dia':'dias'}</span></div>
+      <div class="work-input-row">
+        <input type="number" min="0" max="16" step="0.5" value="${log.deepWork??''}" placeholder="0" onchange="setLog('deepWork',this.value)" aria-label="Horas trabalhadas hoje">
+        <span class="work-unit">horas trabalhadas</span>
+        ${k.workTrend?`<span class="trend ${k.workTrendCls}">${k.workTrend}</span>`:''}
       </div>
-      <div class="field-hint" style="margin-top:10px">Regra: cada 9 horas de Tarefas do Dia = 1 dia operacional, que <b>estende o prazo</b> (não é atraso real).</div>
+      <div class="dw-chip">🧠 Deep work hoje: <b>${k.deep?k.deep+'h':'—'}</b> <span class="muted small">· estimado pelas tarefas concluídas</span></div>
+      <div class="field-hint" style="margin-top:8px">Um registro por dia, editável depois.${k.avgWorkH!=null?` Média recente: ${k.avgWorkH}h.`:''}</div>
     </div>
 
-    <div class="section-label">Gargalo atual</div>
+    <div class="section-label">Como você se sente hoje</div>
+    <div class="card card-lg" style="text-align:center">
+      ${feelingSelectorHTML(log)}
+      <div class="muted small" style="margin-top:10px">${log.feeling!=null?'Registrado ✅ — um toque para mudar.':'Um toque, sem números.'}</div>
+    </div>
+
+    <div class="section-label">Linha do tempo do dia</div>
+    <div class="card">${dayTimelineHTML()}</div>
+
     <div class="card">
-      <div class="sub-name">${bn?esc(bn.m.name):'—'}</div>
-      <div class="sub-meta" style="margin-top:4px">
-        ${bn&&bn.manual?`<span class="badge b-red">Gargalo marcado</span>`:''}
-        ${bn&&bn.delay>0?`<span class="badge ${delayClass(bn.delay)}">Atrasado em ${bn.delay} ${bn.delay===1?'dia':'dias'}</span>`:`<span class="badge b-blue">Marco ativo</span>`}
-      </div>
-    </div>`;
+      <div class="field" style="margin:0"><label>Notas do dia</label>
+        <textarea placeholder="O que moveu a SAFE hoje?" onchange="setLog('notes',this.value)">${esc(log.notes||'')}</textarea></div>
+    </div>
+
+    <div class="section-label">Indicadores do dia</div>
+    ${todayKpiCardHTML(k, pct, doneN, dts.length)}`;
 }
 
-/* necessary daily tasks card (Hoje) */
-/* necessary daily tasks card (Hoje) */
+/* daily tasks card — fully inline (v12) */
 function renderDailyTasksCard(){
   const t = todayISO();
-  const list = (S.dailyTasks||[]).filter(x => x.date === t);
+  const list = dayTasks(t);
   const dayHours = list.reduce((a,x)=>a+(Number(x.hours)||0),0);
   return `
   <div class="card card-lg">
-    <div class="list-head">
-      <h3 style="margin:0">Tarefas do Dia</h3>
-      <button class="btn btn-soft btn-sm" onclick="openDailyTaskForm()">+ Tarefa</button>
+    <div class="list-head"><h3 style="margin:0">Tarefas do dia</h3>${list.length?`<span class="muted small">${dayHours}h estimadas</span>`:''}</div>
+    <div class="dt-add">
+      <input id="ia-dt-name" class="dt-add-name" type="text" placeholder="Nova tarefa…" onkeydown="if(event.key==='Enter')addDailyTaskInline()">
+      <input id="ia-dt-hours" class="dt-add-h" type="number" min="0" step="0.5" placeholder="h">
+      <select id="ia-dt-cat" class="dt-add-cat">${CATS.map(cc=>`<option>${cc}</option>`).join('')}</select>
+      <button class="btn btn-primary btn-sm" onclick="addDailyTaskInline()" aria-label="Adicionar tarefa">+</button>
     </div>
-    <div class="muted small" style="margin-bottom:6px">Obrigações reais da operação, medidas em horas. Elas estendem o prazo — não contam como falha pessoal.</div>
-    ${list.length ? list.map(x => `
-      <div class="ntask">
-        <button class="sub-check ${x.done?'on':''}" onclick="toggleDailyTask('${x.id}')" aria-label="Concluir tarefa">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13l4 4L19 7"/></svg>
-        </button>
-        <div class="sub-main">
-          <div class="sub-name" style="${x.done?'text-decoration:line-through;color:var(--muted)':''}">${esc(x.name)}</div>
-          <div class="sub-meta">
-            ${Number(x.hours)?`<span class="badge b-amber">${x.hours}h</span>`:''}
-            ${x.notes?`<span>· ${esc(x.notes)}</span>`:''}
-          </div>
-        </div>
-        <button class="icon-btn" onclick="openDailyTaskForm('${x.id}')" aria-label="Editar tarefa">
-          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 3a2.8 2.8 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5z"/></svg>
-        </button>
-      </div>`).join('') : '<div class="muted small" style="padding:6px 0">Nenhuma tarefa operacional registrada hoje.</div>'}
-    ${list.length ? `<div class="justified-note">⏱️ ${dayHours}h de operação hoje. A cada 9h acumuladas, +1 dia é somado ao prazo ajustado (tempo operacional necessário, não atraso).</div>` : ''}
+    ${list.length ? list.map(renderDailyTaskRow).join('') : '<div class="muted small" style="padding:8px 0">Nenhuma tarefa hoje. Crie a primeira acima.</div>'}
+    ${list.length ? `<div class="justified-note">⏱️ ${dayHours}h estimadas hoje · estende o roadmap em +${fmtDur(opMinutesTotal())} no total (trabalho operacional, não atraso).</div>` : ''}
+  </div>`;
+}
+function renderDailyTaskRow(x){
+  const cat = x.category || 'Atendimento';
+  if(dtEdit.has(x.id)){
+    return `<div class="ntask dt-editing">
+      <input class="dt-edit-name" id="dte-name-${x.id}" value="${esc(x.name)}" placeholder="Nome da tarefa">
+      <div class="dt-edit-row">
+        <input class="dt-edit-h" id="dte-h-${x.id}" type="number" min="0" step="0.5" value="${x.hours!=null?x.hours:''}" placeholder="h">
+        <select class="dt-edit-cat" id="dte-cat-${x.id}">${CATS.map(cc=>`<option ${cc===cat?'selected':''}>${cc}</option>`).join('')}</select>
+        <button class="btn btn-primary btn-sm" onclick="saveDailyTaskInline('${x.id}')">Salvar</button>
+        <button class="btn btn-ghost btn-sm" onclick="toggleDtEdit('${x.id}')">Cancelar</button>
+      </div>
+    </div>`;
+  }
+  const created = (x.createdAt && /T\d{2}:\d{2}/.test(x.createdAt)) ? x.createdAt.slice(11,16) : null;
+  const act = taskActualMin(x);
+  return `<div class="ntask">
+    <button class="sub-check ${x.done?'on':''}" onclick="toggleDailyTask('${x.id}')" aria-label="Concluir tarefa">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13l4 4L19 7"/></svg>
+    </button>
+    <div class="sub-main">
+      <div class="sub-name" style="${x.done?'text-decoration:line-through;color:var(--muted)':''}">${esc(x.name)}</div>
+      <div class="sub-meta">
+        <select class="dt-cat-pill ${CAT_CLS[cat]||'b-grey'}" onchange="setDailyTaskField('${x.id}','category',this.value)">${CATS.map(cc=>`<option ${cc===cat?'selected':''}>${cc}</option>`).join('')}</select>
+        ${Number(x.hours)?`<span class="badge b-grey" style="background:var(--surface)">${x.hours}h est.</span>`:''}
+        ${act!=null?`<span class="badge b-green">real ${fmtDur(act)}</span>`:''}
+        ${created?`<span>· criada ${created}</span>`:''}
+      </div>
+    </div>
+    <button class="icon-btn" onclick="toggleDtEdit('${x.id}')" aria-label="Editar tarefa">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 3a2.8 2.8 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5z"/></svg>
+    </button>
+    <button class="icon-btn" style="color:var(--danger)" onclick="deleteDailyTaskInline('${x.id}')" aria-label="Excluir tarefa">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h16M9 7V5a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2M6 7l1 13a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1l1-13"/></svg>
+    </button>
   </div>`;
 }
 
@@ -1740,6 +1934,177 @@ function habitsListHTML(){
   }).join('') || '<div class="empty">Nenhum hábito ainda. Crie o primeiro para medir sua disciplina.</div>');
 }
 
+/* ---------- Visual helpers (v11) ---------- */
+function moodEmoji(v){ if(v==null) return '⚪'; if(v>=8.5) return '😄'; if(v>=7) return '🙂'; if(v>=5) return '😐'; if(v>=3) return '😕'; return '😣'; }
+function anxEmoji(v){ if(v==null) return '⚪'; if(v<=2.5) return '😌'; if(v<=4) return '🙂'; if(v<=6) return '😐'; if(v<=8) return '😟'; return '😰'; }
+function qualBar(v, color){
+  const filled = v==null ? 0 : Math.round(v);
+  let s=''; for(let i=1;i<=10;i++) s+=`<span style="${i<=filled?'background:'+color:''}"></span>`;
+  return `<div class="qbar">${s}</div>`;
+}
+function qualRow(emoji,label,v,color,suffix){
+  return `<div class="qrow"><div class="qrow-top"><span class="lbl">${emoji} ${label}</span><span class="num">${v==null?'—':(Math.round(v*10)/10)+(suffix||'')}</span></div>${qualBar(v,color)}</div>`;
+}
+function pbarThick(pct,cls){ return `<div class="pbar thick ${cls||''}"><i style="width:${pct}%"></i></div>`; }
+function weeklyWorkHours(offsetWeeks){
+  const t=todayISO(); let sum=0; const back=(offsetWeeks||0)*28;
+  for(let i=back;i<back+28;i++){ const l=S.dailyLogs[addDays(t,-i)]; if(l&&l.deepWork!=null) sum+=Number(l.deepWork)||0; }
+  return sum/4; /* average per week over 28 days */
+}
+function weeklyWorkTrend(){
+  const cur=weeklyWorkHours(0), prev=weeklyWorkHours(1);
+  const trend = cur>prev+0.5?'↑':cur<prev-0.5?'↓':'→';
+  return { cur, prev, trend };
+}
+function wakeMonthChartSVG(){
+  const t=todayISO(); const days=[]; for(let i=29;i>=0;i--) days.push(addDays(t,-i));
+  const pts=days.map((d,i)=>{ const l=S.dailyLogs[d]; const w=l?timeToMin(l.wake):null; return w!=null?[i,w]:null; }).filter(Boolean);
+  if(pts.length<2) return '<div class="muted small" style="padding:10px 0">Registre o horário de acordar por alguns dias para ver a variação.</div>';
+  const W=320,H=72,P=8;
+  const ys=pts.map(p=>p[1]); let minY=Math.min(...ys)-15, maxY=Math.max(...ys)+15; if(maxY-minY<30){minY-=15;maxY+=15;}
+  const x=i=>P+i*(W-2*P)/29, y=v=>H-P-(v-minY)/(maxY-minY)*(H-2*P);
+  let path=''; pts.forEach((p,i)=>path+=(i?'L':'M')+x(p[0]).toFixed(1)+' '+y(p[1]).toFixed(1)+' ');
+  const dots=pts.map(p=>`<circle cx="${x(p[0]).toFixed(1)}" cy="${y(p[1]).toFixed(1)}" r="2.6" fill="#081A58"/>`).join('');
+  return `<svg viewBox="0 0 ${W} ${H}" class="spark"><path d="${path}" fill="none" stroke="#081A58" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>${dots}</svg>`;
+}
+function donutPie(parts, size, centerTop, centerSub){
+  const total=parts.reduce((a,p)=>a+p.value,0); if(!total) return '';
+  const stroke=Math.round(size*0.16), r=(size-stroke)/2, circ=2*Math.PI*r;
+  let off=0, segs='';
+  parts.forEach(p=>{ if(!p.value) return; const len=p.value/total*circ;
+    segs+=`<circle cx="${size/2}" cy="${size/2}" r="${r}" fill="none" stroke="${p.color}" stroke-width="${stroke}" stroke-dasharray="${len.toFixed(2)} ${(circ-len).toFixed(2)}" stroke-dashoffset="${(-off).toFixed(2)}" transform="rotate(-90 ${size/2} ${size/2})"/>`;
+    off+=len; });
+  return `<svg width="${size}" height="${size}" viewBox="0 0 ${size} ${size}">${segs}<text x="50%" y="${size/2-1}" text-anchor="middle" font-size="${Math.round(size/3.4)}" font-weight="800" fill="#081A58" font-family="Inter,sans-serif">${centerTop}</text><text x="50%" y="${size/2+16}" text-anchor="middle" font-size="11" font-weight="600" fill="#5B6472" font-family="Inter,sans-serif">${centerSub||''}</text></svg>`;
+}
+function clinicThermo(){
+  const cs=(S.clinics||[]); if(!cs.length) return '';
+  const avg=clinicAvgScore();
+  const pct=Math.max(4,Math.min(100,(avg+5)/20*100));
+  const col=avg>=10?'#2563EB':avg>=5?'#16A34A':avg>=1?'#B4660A':avg>=-4?'#6B7686':'#DC2626';
+  const lbl=avg>=10?'Muito quente':avg>=5?'Quente':avg>=1?'Morna':avg>=-4?'Fria':'Muito fria';
+  return `<div style="display:flex;align-items:center;gap:12px">
+    <div style="flex:1;height:16px;border-radius:9px;background:var(--surface);overflow:hidden"><div style="height:100%;width:${pct.toFixed(0)}%;background:${col};border-radius:9px;transition:width .4s"></div></div>
+    <span style="font-weight:800;color:${col};white-space:nowrap">${lbl} · ${avg}</span></div>`;
+}
+
+/* ---------- Today engine (v12) ---------- */
+const CATS = ['Atendimento','Pessoal','Trabalho Extra'];
+const CAT_CLS = {'Atendimento':'b-blue','Pessoal':'b-green','Trabalho Extra':'b-amber'};
+const dtEdit = new Set();
+function dayTasks(d){ return (S.dailyTasks||[]).filter(x=>x.date===d); }
+function taskActualMin(t){
+  if(!t.done || !t.completedAt || !t.createdAt) return null;
+  const ms = new Date(t.completedAt) - new Date(t.createdAt);
+  return ms>0 ? Math.round(ms/60000) : null;
+}
+function dayEstActual(d){
+  const list = dayTasks(d); let estMin=0, actMin=0, hasAct=false;
+  list.forEach(t=>{ estMin += (Number(t.hours)||0)*60; const a=taskActualMin(t); if(a!=null){ actMin+=a; hasAct=true; } });
+  return { estMin, actMin, hasAct };
+}
+function fmtDur(min){ if(min==null) return '—'; min=Math.round(min); const h=Math.floor(min/60), m=min%60; return h?`${h}h${m?(' '+m+'m'):''}`:`${m}m`; }
+function avgWorkHours(n){
+  const t=todayISO(); let sum=0,c=0;
+  for(let i=1;i<=n;i++){ const l=S.dailyLogs[addDays(t,-i)]; if(l&&l.deepWork!=null&&l.deepWork!==''){ sum+=Number(l.deepWork)||0; c++; } }
+  return c?Math.round(sum/c*10)/10:null;
+}
+function dailyCompletion30(){
+  const t=todayISO(); let done=0,total=0;
+  for(let i=0;i<30;i++){ const list=dayTasks(addDays(t,-i)); total+=list.length; done+=list.filter(x=>x.done).length; }
+  return total?Math.round(done/total*100):0;
+}
+function emoScore(log){
+  if(log.feeling!=null && log.feeling!=='') return Number(log.feeling)*2;   /* v13: 1 toque → 0-10 */
+  const vals=[log.mood,log.energy,log.focus].filter(v=>v!=null&&v!=='').map(Number);
+  const inv = (log.anxiety!=null&&log.anxiety!=='') ? (11-Number(log.anxiety)) : null;
+  const all = inv!=null ? vals.concat(inv) : vals;
+  return all.length ? Math.round(all.reduce((a,b)=>a+b,0)/all.length*10)/10 : null;
+}
+function todayKPIs(){
+  const t=todayISO(), log=S.dailyLogs[t]||{};
+  const hasWork = (log.deepWork!=null && log.deepWork!=='');
+  const workedH = hasWork ? Number(log.deepWork) : 0;
+  const avgWorkH = avgWorkHours(14);
+  let workTrend='', workTrendCls='flat';
+  if(avgWorkH!=null && hasWork){
+    if(workedH>avgWorkH+0.5){ workTrend='↑ Acima da média'; workTrendCls='up'; }
+    else if(workedH<avgWorkH-0.5){ workTrend='↓ Abaixo da média'; workTrendCls='down'; }
+    else { workTrend='→ Na média'; workTrendCls='flat'; }
+  }
+  const ea=dayEstActual(t);
+  return { workedH, avgWorkH, workTrend, workTrendCls, estMin:ea.estMin, actMin:ea.actMin, hasAct:ea.hasAct,
+           emo:emoScore(log), deep:deepWorkHours(t), feeling:(log.feeling!=null?Number(log.feeling):null) };
+}
+function qualInput(field, emoji, label, color, val){
+  const v = (val==null||val==='') ? 0 : Number(val);
+  let seg=''; for(let i=1;i<=10;i++) seg+=`<button class="qseg" style="${i<=v?'background:'+color+';border-color:'+color:''}" onclick="setLog('${field}',${i})" aria-label="${label} ${i}"></button>`;
+  return `<div class="qinput"><div class="qrow-top"><span class="lbl">${emoji} ${label}</span><span class="num">${(val==null||val==='')?'—':v}</span></div><div class="qsegs">${seg}</div></div>`;
+}
+function todayKpiCardHTML(k, pct, doneN, totalN){
+  const diff = k.hasAct ? (k.actMin - k.estMin) : null;
+  const diffStr = diff==null ? '—' : ((diff>=0?'+':'−')+fmtDur(Math.abs(diff)));
+  const emo=k.emo, emoColor = emo==null?'#5B6472':emo>=7?'#16A34A':emo>=5?'#B4660A':'#DC2626';
+  return `<div class="card card-lg">
+    <div class="kpi2">
+      <div class="kpi2-cell"><div class="kpi2-val">${pct}%</div><div class="kpi2-lbl">Conclusão do dia</div></div>
+      <div class="kpi2-cell"><div class="kpi2-val">${doneN}/${totalN}</div><div class="kpi2-lbl">Tarefas</div></div>
+      <div class="kpi2-cell"><div class="kpi2-val">${k.workedH||0}h</div><div class="kpi2-lbl">Trabalhadas</div></div>
+      <div class="kpi2-cell"><div class="kpi2-val">${k.deep||0}h</div><div class="kpi2-lbl">Deep work</div></div>
+    </div>
+    <div class="divider"></div>
+    <div class="estact">
+      <div><span class="estact-lbl">Estimado</span><span class="estact-val">${k.estMin?fmtDur(k.estMin):'—'}</span></div>
+      <div><span class="estact-lbl">Real</span><span class="estact-val">${k.hasAct?fmtDur(k.actMin):'—'}</span></div>
+      <div><span class="estact-lbl">Diferença</span><span class="estact-val ${diff!=null&&diff>0?'bad':'good'}">${diffStr}</span></div>
+    </div>
+    <div class="field-hint" style="margin-top:8px">“Real” = tempo entre criar e concluir cada tarefa (automático, sem digitar).</div>
+    <div class="divider"></div>
+    <div class="qrow"><div class="qrow-top"><span class="lbl">Qualidade emocional</span><span class="num">${k.feeling!=null?['😞','😐','🙂','😄','🚀'][k.feeling-1]:(emo==null?'—':emo+'/10')}</span></div>${qualBar(emo,emoColor)}</div>
+    ${k.workTrend?`<div style="margin-top:8px"><span class="trend ${k.workTrendCls}">${k.workTrend}${k.avgWorkH!=null?` · média ${k.avgWorkH}h`:''}</span></div>`:''}
+  </div>`;
+}
+
+/* ---------- Behavioral engine (v13) ---------- */
+function dayDiscipline(d){ if(!S.habits.length) return 0; const done=S.habits.filter(h=>h.history[d]).length; return done/S.habits.length; }
+function routineStreak(){
+  const MIN=0.6;                       /* "rotina mínima" = 60% dos hábitos no dia */
+  const t=todayISO(); let d=t;
+  if(dayDiscipline(t)<MIN) d=addDays(t,-1); /* hoje ainda em aberto não quebra a sequência */
+  let s=0; while(dayDiscipline(d)>=MIN){ s++; d=addDays(d,-1); }
+  return s;
+}
+function todayMission(){
+  const inc=dayTasks(todayISO()).filter(x=>!x.done);
+  inc.sort((a,b)=>(Number(b.hours)||0)-(Number(a.hours)||0) || String(a.createdAt||'').localeCompare(String(b.createdAt||'')));
+  return inc.slice(0,3);
+}
+function deepWorkHours(d){ return Math.round(dayTasks(d).filter(x=>x.done).reduce((a,x)=>a+(Number(x.hours)||0),0)*10)/10; }
+function feelingSelectorHTML(log){
+  const cur = (log && log.feeling!=null) ? Number(log.feeling) : null;
+  const opts=[[1,'😞'],[2,'😐'],[3,'🙂'],[4,'😄'],[5,'🚀']];
+  return `<div class="feel-row">${opts.map(([v,e])=>`<button class="feel-btn ${cur===v?'sel':''}" onclick="setFeeling(${v})" aria-label="Sentimento ${v}">${e}</button>`).join('')}</div>`;
+}
+function dayTimelineHTML(){
+  const done=dayTasks(todayISO()).filter(x=>x.done&&x.completedAt&&/T\d{2}:\d{2}/.test(x.completedAt))
+    .sort((a,b)=>a.completedAt.localeCompare(b.completedAt));
+  if(!done.length) return '<div class="muted small" style="padding:6px 0">Conclua tarefas para construir a linha do tempo do dia.</div>';
+  return `<div class="timeline">${done.map(x=>`<div class="tl-item"><span class="tl-time">${x.completedAt.slice(11,16)}</span><span class="tl-dot"></span><span class="tl-task">${esc(x.name)}</span></div>`).join('')}</div>`;
+}
+function anxietyHealth(){
+  let score=0;
+  const aw=avgWorkHours(7);
+  if(aw!=null && aw>9) score++;                                   /* excesso de trabalho */
+  if((S.dailyTasks||[]).length && dailyCompletion30()<40) score++; /* baixa conclusão */
+  if(routineStreak()===0) score++;                                /* sem recuperação/rotina */
+  let fs=0,fc=0; const t=todayISO();
+  for(let i=0;i<7;i++){ const l=S.dailyLogs[addDays(t,-i)]; if(l&&l.feeling!=null){ fs+=Number(l.feeling); fc++; } }
+  if(fc>=2 && fs/fc<=2.4) score++;                                /* sentimento recente baixo */
+  if(score>=3) return { label:'Estresse alto', color:'#DC2626', dot:'🔴' };
+  if(score===2) return { label:'Sob pressão',  color:'#B4660A', dot:'🟠' };
+  if(score===1) return { label:'Atenção',      color:'#F59E0B', dot:'🟡' };
+  return            { label:'Saudável',     color:'#16A34A', dot:'🟢' };
+}
+
 /* ---------- UX helpers (v10) ---------- */
 function wakeSelectorHTML(log){
   const hours = ['04','05','06','07','08','09'];
@@ -1787,26 +2152,45 @@ function perfInsights(){
   if(early.length>=3&&late.length>=3){ const e=avgOf(early,'focus'),l=avgOf(late,'focus'); if(e!=null&&l!=null&&e-l>=0.5) out.push(['🌅',`Seu foco é maior quando você acorda até 05:45 (${e.toFixed(1)} vs ${l.toFixed(1)}).`]); }
   const eBed=A.filter(x=>{const b=timeToMin(x.bed);return b!=null&&b<=1350;}), lBed=A.filter(x=>{const b=timeToMin(x.bed);return b!=null&&b>1350;});
   if(eBed.length>=3&&lBed.length>=3){ const e=avgOf(eBed,'anxiety'),l=avgOf(lBed,'anxiety'); if(e!=null&&l!=null&&l-e>=0.5) out.push(['😌',`Sua ansiedade é menor quando você dorme antes das 22:30 (${e.toFixed(1)} vs ${l.toFixed(1)}).`]); }
+  /* behavioral: best wake window for focus (30-min buckets) */
+  const buckets={}; A.forEach(x=>{ const w=timeToMin(x.wake); if(w!=null&&x.focus!=null){ const b=Math.floor(w/30)*30; (buckets[b]=buckets[b]||[]).push(Number(x.focus)); } });
+  let bw=null,bv=-1; Object.keys(buckets).forEach(k=>{ if(buckets[k].length>=2){ const m=buckets[k].reduce((a,b)=>a+b,0)/buckets[k].length; if(m>bv){bv=m;bw=Number(k);} } });
+  if(bw!=null&&bv>=6) out.unshift(['🌅',`Seu foco mais alto acontece quando você acorda entre ${minToTime(bw)} e ${minToTime(bw+30)} (média ${bv.toFixed(1)}/10).`]);
   const names=['no domingo','na segunda-feira','na terça-feira','na quarta-feira','na quinta-feira','na sexta-feira','no sábado'];
   const byDow={}; A.forEach(x=>{ const s=[x.focus,x.energy].filter(v=>v!=null).map(Number); if(s.length){ (byDow[x.dow]=byDow[x.dow]||[]).push(s.reduce((a,b)=>a+b,0)/s.length); }});
   let bestD=null,bestV=-1; Object.keys(byDow).forEach(k=>{ if(byDow[k].length>=2){ const m=byDow[k].reduce((a,b)=>a+b,0)/byDow[k].length; if(m>bestV){bestV=m;bestD=Number(k);} }});
   if(bestD!=null) out.push(['📈',`Sua melhor performance costuma acontecer ${names[bestD]}.`]);
+  /* v13 behavioral: acordar cedo vs horas trabalhadas */
+  const ew=A.filter(x=>{const w=timeToMin(x.wake);return w!=null&&w<350;});   /* < 05:50 */
+  const lw=A.filter(x=>{const w=timeToMin(x.wake);return w!=null&&w>=350;});
+  if(ew.length>=3&&lw.length>=3){ const a=avgOf(ew,'deepWork'),b=avgOf(lw,'deepWork');
+    if(a!=null&&b!=null&&b>0&&a-b>=0.5){ const pct=Math.round((a-b)/b*100); out.unshift(['⏰',`Você trabalha ~${pct}% mais quando acorda antes das 05:50.`]); } }
+  /* v13 behavioral: muitas horas vs bem-estar */
+  const hi=A.filter(x=>x.deepWork!=null&&Number(x.deepWork)>8), lo=A.filter(x=>x.deepWork!=null&&Number(x.deepWork)<=8);
+  if(hi.length>=3&&lo.length>=3){ const a=avgOf(hi,'mood'),b=avgOf(lo,'mood');
+    if(a!=null&&b!=null&&b-a>=0.6) out.push(['🧠',`Trabalhar mais de 8h tende a reduzir seu bem-estar (${a.toFixed(1)} vs ${b.toFixed(1)}).`]); }
   return out;
 }
 function perfDashboardHTML(){
   const A=logsArray(30);
-  if(!A.length) return '<div class="empty">Faça o check-in diário na aba <b>Hoje</b> (sono, humor, energia, foco, ansiedade) para liberar sua análise de performance.</div>';
-  const m=(v,suf='')=> v==null?'—':(Math.round(v*10)/10)+suf;
+  if(!A.length) return '<div class="empty">Faça o check-in diário na aba <b>Hoje</b> (acordar, humor, energia, foco, ansiedade) para liberar sua análise de performance.</div>';
+  const mood=avgOf(A,'mood'), energy=avgOf(A,'energy'), focus=avgOf(A,'focus'), anx=avgOf(A,'anxiety');
   const ins=perfInsights();
   return `
-  <div class="metric-row" style="grid-template-columns:repeat(3,1fr)">
-    <div class="metric"><div class="metric-val" style="font-size:1.15rem">${avgTimeOf(A,'wake')||'—'}</div><div class="metric-lbl">Acordar médio</div></div>
-    <div class="metric"><div class="metric-val">${m(avgOf(A,'mood'))}</div><div class="metric-lbl">Humor</div></div>
-    <div class="metric"><div class="metric-val">${m(avgOf(A,'energy'))}</div><div class="metric-lbl">Energia</div></div>
-    <div class="metric"><div class="metric-val">${m(avgOf(A,'focus'))}</div><div class="metric-lbl">Foco</div></div>
-    <div class="metric"><div class="metric-val">${m(avgOf(A,'anxiety'))}</div><div class="metric-lbl">Ansiedade</div></div>
+  <div class="card card-lg">
+    <div style="display:flex;gap:14px;align-items:center;margin-bottom:18px">
+      <div style="background:var(--surface);border-radius:14px;padding:12px 18px;text-align:center;flex-shrink:0">
+        <div style="font-weight:800;font-size:1.3rem;color:var(--navy)">${avgTimeOf(A,'wake')||'—'}</div>
+        <div class="metric-lbl">Acordar médio</div>
+      </div>
+      <div class="muted small" style="flex:1">Qualidade média dos últimos 30 dias — leia pelas cores, não pelos números.</div>
+    </div>
+    ${qualRow(moodEmoji(mood),'Humor',mood,'#16A34A')}
+    ${qualRow(moodEmoji(energy),'Energia',energy,'#081A58')}
+    ${qualRow(moodEmoji(focus),'Foco',focus,'#2563EB')}
+    ${qualRow(anxEmoji(anx),'Ansiedade',anx,'#B4660A')}
   </div>
-  ${ins.length ? `<div style="margin-top:14px">${ins.map(([ic,txt])=>`<div class="insight"><span class="ic">${ic}</span><span>${txt}</span></div>`).join('')}</div>` : '<div class="muted small" style="margin-top:10px">Continue registrando — os insights automáticos aparecem com ~6 dias de dados.</div>'}`;
+  ${ins.length ? `<div>${ins.map(([ic,txt])=>`<div class="insight"><span class="ic">${ic}</span><span>${txt}</span></div>`).join('')}</div>` : '<div class="muted small">Continue registrando — os insights automáticos aparecem com ~6 dias de dados.</div>'}`;
 }
 
 /* ---------- KPIs ---------- */
@@ -1982,10 +2366,10 @@ function renderCaixa(){
     </div>
 
     <div class="grid" style="grid-template-columns:repeat(2,1fr)">
-      <div class="stat"><span class="stat-label">Resultado do dia</span><span class="stat-value" style="font-size:1.2rem">${money(day.net)}</span><span class="stat-note">+${fmtMoney(day.rev)} · −${fmtMoney(day.exp)}</span></div>
-      <div class="stat"><span class="stat-label">Acumulado do mês</span><span class="stat-value" style="font-size:1.2rem">${money(month.net)}</span><span class="stat-note">+${fmtMoney(month.rev)} · −${fmtMoney(month.exp)}</span></div>
-      <div class="stat"><span class="stat-label">Acumulado do ano</span><span class="stat-value" style="font-size:1.2rem">${money(year.net)}</span><span class="stat-note">+${fmtMoney(year.rev)} · −${fmtMoney(year.exp)}</span></div>
-      <div class="stat"><span class="stat-label">Saldo total (lifetime)</span><span class="stat-value" style="font-size:1.2rem">${money(life.net)}</span><span class="stat-note">inclui saldo inicial ${fmtMoney(life.opening)}</span></div>
+      <div class="stat"><span class="stat-label">Receita hoje</span><span class="stat-value good" style="font-size:1.3rem">${fmtMoney(day.rev)}</span></div>
+      <div class="stat"><span class="stat-label">Despesa hoje</span><span class="stat-value bad" style="font-size:1.3rem">${fmtMoney(day.exp)}</span></div>
+      <div class="stat"><span class="stat-label">Receita total</span><span class="stat-value good" style="font-size:1.3rem">${fmtMoney(life.rev)}</span></div>
+      <div class="stat"><span class="stat-label">Despesa total</span><span class="stat-value bad" style="font-size:1.3rem">${fmtMoney(life.exp)}</span><span class="stat-note">Saldo ${fmtMoney(life.net)}</span></div>
     </div>
 
     <div class="section-label">Acumulado do mês · receitas x despesas</div>
@@ -2115,21 +2499,21 @@ function renderClinicas(){
       <div class="page-sub">${total} ${total===1?'clínica':'clínicas'} · ${clinicsHot()} quentes (5+ pts)</div>
     </div>
 
-    <div class="metric-row" style="grid-template-columns:repeat(2,1fr)">
+    <div class="metric-row" style="grid-template-columns:repeat(3,1fr)">
       <div class="metric"><div class="metric-val">${clinicMonthlyAdmissions()}</div><div class="metric-lbl">Hospedagens no mês</div></div>
-      <div class="metric"><div class="metric-val">${total}</div><div class="metric-lbl">Total de clínicas</div></div>
       <div class="metric"><div class="metric-val">${clinicConversion()}%</div><div class="metric-lbl">Conversão</div></div>
       <div class="metric"><div class="metric-val">${clinicAvgScore()}</div><div class="metric-lbl">Pontuação média</div></div>
     </div>
 
     <div class="card card-lg">
       <h3>Temperatura da carteira</h3>
-      ${total ? `<div style="display:flex;gap:22px;align-items:center;flex-wrap:wrap">
-        ${pieSVG(breakdown.map(b=>({value:b.value,color:b.color})), 150)}
-        <div class="legend" style="flex-direction:column;align-items:flex-start;gap:8px;margin-top:0">
-          ${breakdown.map(b=>`<span><i style="background:${b.color}"></i>${b.label}: <b>${b.value}</b>${total?` · ${Math.round(b.value/total*100)}%`:''}</span>`).join('')}
+      ${total ? `<div style="display:flex;gap:22px;align-items:center;flex-wrap:wrap;justify-content:center">
+        ${donutPie(breakdown.map(b=>({value:b.value,color:b.color})), 168, String(total), total===1?'clínica':'clínicas')}
+        <div class="legend" style="flex-direction:column;align-items:flex-start;gap:8px;margin-top:0;flex:1;min-width:160px">
+          ${breakdown.filter(b=>b.value>0).map(b=>`<span><i style="background:${b.color}"></i>${b.label}: <b>${b.value}</b> · ${Math.round(b.value/total*100)}%</span>`).join('')}
         </div>
-      </div>` : '<div class="muted small">Cadastre clínicas para ver a distribuição de temperatura.</div>'}
+      </div>
+      <div style="margin-top:18px"><div class="metric-lbl" style="text-align:left;font-weight:700;margin-bottom:8px">Saúde da carteira</div>${clinicThermo()}</div>` : '<div class="muted small">Cadastre clínicas para ver a distribuição de temperatura.</div>'}
     </div>
 
     <div class="card">
@@ -2407,7 +2791,37 @@ function moveMilestone(id, action){
 
 /* ---- necessary daily tasks ---- */
 function toggleDailyTask(id){
-  mutate(()=>{ const t = S.dailyTasks.find(x=>x.id===id); if (t) t.done = !t.done; });
+  mutate(()=>{
+    const t = S.dailyTasks.find(x=>x.id===id); if(!t) return;
+    t.done = !t.done;
+    if(t.done){ if(!t.createdAt) t.createdAt = new Date().toISOString(); t.completedAt = new Date().toISOString(); }
+    else t.completedAt = null;
+  });
+}
+function setFeeling(n){
+  mutate(()=>{ const t=todayISO(); if(!S.dailyLogs[t]) S.dailyLogs[t]={}; const L=S.dailyLogs[t]; L.feeling=n; L.mood=n*2; });
+}
+function addDailyTaskInline(){
+  const n=document.getElementById('ia-dt-name'), hh=document.getElementById('ia-dt-hours'), cc=document.getElementById('ia-dt-cat');
+  const name=(n&&n.value||'').trim(); if(!name){ toast('Informe o nome da tarefa'); return; }
+  const hours=Math.max(0, Number(hh&&hh.value)||0), category=(cc&&cc.value)||'Atendimento';
+  mutate(()=>{ S.dailyTasks.push({ id:uid(), name, date:todayISO(), hours, category, notes:'', done:false, createdAt:new Date().toISOString(), completedAt:null }); });
+  toast('Tarefa criada');
+}
+function toggleDtEdit(id){ dtEdit.has(id)?dtEdit.delete(id):dtEdit.add(id); render(); }
+function saveDailyTaskInline(id){
+  const n=document.getElementById('dte-name-'+id), hh=document.getElementById('dte-h-'+id), cc=document.getElementById('dte-cat-'+id);
+  const name=(n&&n.value||'').trim(); if(!name){ toast('Informe o nome'); return; }
+  const hours=Math.max(0, Number(hh&&hh.value)||0), category=(cc&&cc.value)||'Atendimento';
+  mutate(()=>{ const t=S.dailyTasks.find(x=>x.id===id); if(!t) return; t.name=name; t.hours=hours; t.category=category; });
+  dtEdit.delete(id); toast('Tarefa atualizada');
+}
+function setDailyTaskField(id, field, value){
+  mutate(()=>{ const t=S.dailyTasks.find(x=>x.id===id); if(t) t[field]=value; });
+}
+function deleteDailyTaskInline(id){
+  mutate(()=>{ S.dailyTasks=(S.dailyTasks||[]).filter(x=>x.id!==id); dtEdit.delete(id); });
+  toast('Tarefa excluída');
 }
 function deleteDailyTask(id){
   if (!confirm('Excluir esta tarefa necessária?')) return;
@@ -2813,7 +3227,7 @@ setInterval(tickCountdown, 1000);
   const saved = await StorageAdapter.load();
   S = migrate(saved) || defaultState();
   if (!saved) persist();
-  nav('dashboard');
+  nav('hoje');
 
   /* Cross-device sync: pull newer cloud state when the tab refocuses or every 60s,
      but never while a local edit is still pending (avoids clobbering in-progress work). */
