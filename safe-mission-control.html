@@ -673,6 +673,35 @@ input,select,textarea{font:inherit;color:inherit}
 .anx-btn small{font-size:.64rem;font-weight:700;color:var(--muted)}
 .anx-btn.sel{border-color:var(--navy);background:var(--info-bg);transform:scale(1.03)}
 @media(max-width:380px){.wt-dot{width:22px;height:22px}.tc-val{font-size:1.05rem}.anx-btn{min-height:54px;font-size:1.1rem}}
+
+/* ============================================================
+   PREMIUM DASH (v16) — cockpit, spacing, no clutter
+   ============================================================ */
+#view-dashboard .card{margin-bottom:24px;padding:20px}
+#view-dashboard .card-lg{padding:22px}
+#view-dashboard .section-label{margin:32px 0 14px}
+.wm-ring-wrap{display:flex;align-items:center;gap:20px;flex-wrap:wrap}
+.wm-side{flex:1;min-width:170px}
+.wm-goal-row{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:6px}
+.wm-remaining{font-size:.92rem;color:var(--muted);font-weight:600;margin-top:10px;line-height:1.5}
+.wm-remaining b{color:var(--navy)}
+.day-bars{display:flex;align-items:flex-end;gap:8px;height:88px;margin-top:18px}
+.db-col{flex:1;display:flex;flex-direction:column;align-items:center;gap:5px;height:100%;justify-content:flex-end}
+.db-bar{width:100%;max-width:34px;border-radius:7px 7px 3px 3px;background:var(--navy);min-height:4px;transition:height .3s}
+.db-bar.muted{background:var(--line)}
+.db-lbl{font-size:.66rem;font-weight:700;color:var(--muted);text-transform:uppercase}
+.db-val{font-size:.72rem;font-weight:700;color:var(--navy);font-variant-numeric:tabular-nums;min-height:14px}
+.trend-row{display:flex;align-items:center;gap:14px;padding:13px 0;border-bottom:1px solid var(--line)}
+.trend-row:last-of-type{border-bottom:none}
+.trend-info{flex:1;min-width:0}
+.trend-lbl{font-size:.82rem;font-weight:700;color:var(--muted)}
+.trend-val{font-size:1.15rem;font-weight:800;color:var(--navy);font-variant-numeric:tabular-nums;margin-top:1px}
+.trend-spark{width:110px;flex-shrink:0}
+.smart-insight{background:var(--navy);color:#fff;border-radius:var(--r-lg);padding:20px 22px;box-shadow:var(--shadow);display:flex;gap:14px;align-items:flex-start;margin-bottom:24px}
+.smart-insight .ic{font-size:1.5rem;line-height:1.2;flex-shrink:0}
+.smart-insight .tx{font-weight:600;font-size:.98rem;line-height:1.5}
+.hero-bn{display:flex;align-items:center;gap:8px;margin-top:14px;flex-wrap:wrap;position:relative;z-index:1}
+.hero-chip{display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,.14);border-radius:99px;padding:6px 13px;font-size:.82rem;font-weight:700}
 </style>
 </head>
 <body>
@@ -872,7 +901,8 @@ function defaultState(){
     priority: 'Média', bottleneck: false, difficulty: null
   });
   return {
-    version: 9,
+    version: 10,
+    weeklyGoalHours: 50,
     createdAt: start,
     targetUnits: 10,
     targetDate: cursor,              // final mission deadline (user-editable)
@@ -978,6 +1008,11 @@ function migrate(s){
        "horas trabalhadas" (deepWork) é preservado e usado como fallback nos dias sem registros. */
     if (!Array.isArray(s.timeEntries)) s.timeEntries = [];
     s.version = 9;
+  }
+  if (s.version < 10){
+    /* v10: meta semanal de horas (padrão 50h, editável no Dash). */
+    if (s.weeklyGoalHours == null) s.weeklyGoalHours = 50;
+    s.version = 10;
   }
   return s;
 }
@@ -1451,14 +1486,26 @@ function journeySVG(pct){
 }
 
 function renderDashboard(){
-  const e = engine(), h = projectHealth(), tasks = topTasks(), bn = bottleneck();
-  const _wk = weeklyWorkTrend();
-  const _lifeDisc = disciplineRange(Math.max(1, Math.min(400, diffDays(S.createdAt, todayISO())+1)));
-  const _wakeAvg = avgTimeOf(logsArray(30),'wake');
+  const e = engine(), h = projectHealth(), bn = bottleneck(), fc = roadmapForecast();
   const today = todayISO();
-  const dailyToday = (S.dailyTasks||[]).filter(x => x.date === today);
-  const opHours = operationalHoursTotal(), opDays = operationalDays();
-  const monthNet = cashPeriod('month').net;
+  const wk = weekWorked(0), prevWk = weekWorked(1);
+  const goalMin = (Number(S.weeklyGoalHours)||50)*60;
+  const wkPct = goalMin ? Math.min(100, Math.round(wk.total/goalMin*100)) : 0;
+  const dow = pISO(today).getDay(); const remDays = 7-((dow+6)%7);
+  const remaining = Math.max(0, goalMin - wk.total);
+  const needAvg = remaining>0 ? Math.ceil(remaining/remDays) : 0;
+  const catTot = Object.values(wk.byCat).reduce((a,b)=>a+b,0);
+  const monthNet = cashPeriod('month').net, life = cashLifetime(), monthP = cashPeriod('month');
+  const insight = smartInsightHTML();
+  const trends = (function(){
+    const days=[]; for(let i=13;i>=0;i--) days.push(addDays(today,-i));
+    const wakeV = days.map(d=>{ const l=S.dailyLogs[d]; return l&&l.wake?timeToMin(l.wake):null; });
+    const workV = days.map(d=>{ const m=workedMin(d); return m>0?m:null; });
+    const taskV = days.map(d=>{ const l=dayTasks(d); return l.length?Math.round(l.filter(x=>x.done).length/l.length*100):null; });
+    const routV = days.map(d=>{ const any=S.habits.some(hh=>hh.history[d]); return any?Math.round(dayDiscipline(d)*100):null; });
+    const wkAvgMin = (function(){ const v=workV.filter(x=>x!=null); return v.length?Math.round(v.reduce((a,b)=>a+b,0)/v.length):null; })();
+    return { wakeV, workV, taskV, routV, wkAvgMin };
+  })();
   const cells = Array.from({length: S.targetUnits}, (_,i) => {
     if (i < e.units) return '<div class="unit-cell open"></div>';
     if (i === e.units && e.progress > 0 && e.units < S.targetUnits){
@@ -1474,104 +1521,102 @@ function renderDashboard(){
       <div class="page-sub">${fmtLong(today)}</div>
     </div>
 
-    <!-- JORNADA: elemento visual principal da Home -->
+    <!-- 1 · MISSÃO ESTRATÉGICA -->
     <div class="hero">
       <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:12px;flex-wrap:wrap">
         <div>
-          <div class="hero-label">Meta · 10 Unidades SAFE Plus</div>
+          <div class="hero-label">Missão Estratégica · 10 Unidades SAFE Plus</div>
           <div class="hero-big"><span class="hero-pct">${e.progress}%</span><span class="hero-units">${e.units} de ${S.targetUnits} unidades</span></div>
         </div>
-        <span class="health-pill ${h.cls}" style="background:rgba(255,255,255,.14);color:#fff">${h.dot} ${h.state}</span>
+        <span class="health-pill" style="background:rgba(255,255,255,.14);color:#fff">${h.dot} ${h.state}</span>
       </div>
       <div style="margin:14px -8px 0">${journeySVG(e.progress)}</div>
       <div class="unit-track" style="margin-top:6px">${cells}</div>
-      <div class="journey-cap" style="color:#fff;opacity:.92">Início → caminho → meta. Você está ${e.progress}% do percurso.</div>
-    </div>
-
-    <!-- SAÚDE DO PROJETO (substitui o SAFE Score) -->
-    <div class="card" style="display:flex;align-items:center;gap:14px;flex-wrap:wrap">
-      <span class="health-pill ${h.cls}">${h.dot} Saúde do Projeto: ${h.state}</span>
-      <span class="muted small" style="flex:1;min-width:180px">${h.note}</span>
-    </div>
-
-    <!-- Prazo: visão enxuta -->
-    <div class="card">
-      <div class="ms-dates" style="grid-template-columns:repeat(2,1fr);margin-bottom:12px">
-        <div class="dt blue"><b>Prazo original</b><span>${fmt(e.originalEnd)}</span></div>
-        <div class="dt ${opMinutesTotal()>0?'amber':'blue'}"><b>Prazo ajustado</b><span>${fmt(e.projectedEnd)}</span></div>
-      </div>
-      <div class="sub-meta">
-        ${e.realDelay>0?`<span class="badge ${delayClass(e.realDelay)}">${e.realDelay}d atraso real</span>`:`<span class="badge b-blue">No prazo</span>`}
-        ${opMinutesTotal()>0?`<span class="badge b-amber">+${fmtDur(opMinutesTotal())} de operação</span>`:''}
+      <div class="hero-bn">
+        <span class="hero-chip">${fc.delta<0?'🚀 '+Math.abs(fc.delta)+'d adiantado':fc.delta>0?'⏳ +'+fc.delta+'d':'🎯 No prazo'} · ${fmt(fc.date)}</span>
+        ${bn?`<span class="hero-chip">🚧 ${esc(bn.m.name)}</span>`:''}
+        ${opMinutesTotal()>0?`<span class="hero-chip">⚙️ +${fmtDur(opMinutesTotal())} operação</span>`:''}
       </div>
     </div>
 
-    <!-- Rings: progresso + disciplina + conclusão de tarefas -->
-    <div class="kpi-hero" style="grid-template-columns:repeat(3,1fr)">
-      <div class="kpi-circle">${donutSVG(e.progress, '#081A58', 96, 10, e.progress+'%', e.done+'/'+e.total)}<span class="stat-label">Roadmap</span></div>
-      <div class="kpi-circle">${donutSVG(disciplineRange(30), '#16A34A', 96, 10, disciplineRange(30)+'%', '30d')}<span class="stat-label">Disciplina</span></div>
-      <div class="kpi-circle">${donutSVG(dailyCompletion30(), '#2563EB', 96, 10, dailyCompletion30()+'%', '30d')}<span class="stat-label">Tarefas/dia</span></div>
-    </div>
-    <!-- Snapshot financeiro + clínicas -->
-    <div class="grid" style="grid-template-columns:repeat(2,1fr)">
-      <div class="stat"><span class="stat-label">Caixa do mês</span><span class="stat-value ${monthNet>=0?'good':'bad'}" style="font-size:1.2rem">${fmtMoney(monthNet)}</span><span class="stat-note">Total ${fmtMoney(cashLifetime().net)}</span></div>
-      <div class="stat"><span class="stat-label">Clínicas quentes</span><span class="stat-value" style="font-size:1.35rem">${clinicsHot()}</span><span class="stat-note">de ${(S.clinics||[]).length} · média ${clinicAvgScore()}</span></div>
-    </div>
-    ${(S.clinics||[]).length?`<div class="card"><div class="metric-lbl" style="text-align:left;font-weight:700;margin-bottom:8px">Temperatura da carteira</div>${clinicTempBar()}</div>`:''}
-
-    <div class="section-label">Tempo · esta semana</div>
-    ${(function(){
-      const wk=weekWorked(0), prev=weekWorked(1);
-      const avg = wk.days ? Math.round(wk.total/wk.days) : 0;
-      const tot=Object.values(wk.byCat).reduce((a,b)=>a+b,0);
-      let cmp='';
-      if(prev.total>0){
-        const d=wk.total-prev.total;
-        cmp = d>30?`<span class="trend up">▲ +${fmtDur(d)} vs semana passada</span>`:d<-30?`<span class="trend down">▼ −${fmtDur(-d)} vs semana passada</span>`:`<span class="trend flat">— estável vs semana passada</span>`;
-      }
-      if(!wk.total) return '<div class="card"><div class="muted small">Sem dados suficientes ainda. Registre tempo na aba <b>Hoje</b>.</div></div>';
-      return `<div class="card card-lg">
-        <div class="tc-stats">
-          <div class="tc-cell"><div class="tc-val">${fmtDur(wk.total)}</div><div class="tc-lbl">Total (seg → hoje)</div></div>
-          <div class="tc-cell"><div class="tc-val">${avg?fmtDur(avg):'—'}</div><div class="tc-lbl">Média/dia</div></div>
-        </div>
-        ${catBarHTML(wk.byCat, tot)}
-        ${cmp?`<div style="margin-top:10px">${cmp}</div>`:''}
-      </div>`;
-    })()}
-
-    <div class="section-label">Performance do mês</div>
-    ${(function(){
-      const mw=monthWorked(), tc=monthTaskCompletion(), ra=monthRoutineAvg();
-      if(!mw.total && tc==null && ra==null) return '<div class="card"><div class="muted small">Sem dados suficientes ainda.</div></div>';
-      return `<div class="card card-lg"><div class="tc-stats">
-        <div class="tc-cell"><div class="tc-val">${mw.total?fmtDur(mw.total):'—'}</div><div class="tc-lbl">Horas no mês</div></div>
-        <div class="tc-cell"><div class="tc-val">${mw.days?fmtDur(Math.round(mw.total/mw.days)):'—'}</div><div class="tc-lbl">Média/dia</div></div>
-        <div class="tc-cell"><div class="tc-val">${tc!=null?tc+'%':'—'}</div><div class="tc-lbl">Conclusão de tarefas</div></div>
-        <div class="tc-cell"><div class="tc-val">${ra!=null?ra+'%':'—'}</div><div class="tc-lbl">Rotina média</div></div>
-      </div></div>`;
-    })()}
-
-    <div class="section-label">Despertar</div>
+    <!-- 2/3 · MISSÃO SEMANAL DE TRABALHO + HISTÓRICO POR DIA -->
+    <div class="section-label">Missão semanal de trabalho</div>
     <div class="card card-lg">
-      <div class="tc-stats" style="grid-template-columns:repeat(3,1fr)">
-        <div class="tc-cell"><div class="tc-val">${avgWakeOver(7)||'—'}</div><div class="tc-lbl">Semana</div></div>
-        <div class="tc-cell"><div class="tc-val">${avgWakeOver(30)||'—'}</div><div class="tc-lbl">Mês</div></div>
-        <div class="tc-cell"><div class="tc-val">${avgWakeOver(null)||'—'}</div><div class="tc-lbl">Geral</div></div>
+      <div class="wm-ring-wrap">
+        ${donutSVG(wkPct, wkPct>=100?'#16A34A':'#081A58', 128, 13, fmtDur(wk.total), 'de '+fmtDur(goalMin))}
+        <div class="wm-side">
+          <div class="wm-goal-row"><span class="stat-label">Meta da semana</span><button class="btn btn-ghost btn-sm" onclick="openWeeklyGoalForm()">Editar</button></div>
+          ${pbarThick(wkPct, wkPct>=100?'green':wkPct>=50?'':'amber')}
+          <div class="wm-remaining">${remaining>0?`Faltam <b>${fmtDur(remaining)}</b> · precisa de <b>${fmtDur(needAvg)}/dia</b> até domingo`:`<b>Meta batida</b> 🏆 ${fmtDur(wk.total)} nesta semana`}</div>
+        </div>
       </div>
-      ${wakeMonthChartSVG()}
+      ${weekDayBarsHTML()}
     </div>
 
-    <div class="grid" style="grid-template-columns:repeat(2,1fr)">
-      <div class="stat"><span class="stat-label">Disciplina 90 dias</span><span class="stat-value" style="font-size:1.5rem">${disciplineRange(90)}%</span><span class="stat-note">vitalícia ${_lifeDisc}%</span></div>
-      <div class="stat"><span class="stat-label">Sequência de rotina</span><span class="stat-value" style="font-size:1.5rem">🔥 ${routineStreak()}</span><span class="stat-note">dias consecutivos ≥60%</span></div>
+    <!-- 4 · DISTRIBUIÇÃO DO TEMPO -->
+    <div class="section-label">Para onde foi meu tempo</div>
+    <div class="card card-lg">
+      ${catTot>0 ? catBarHTML(wk.byCat, catTot) : '<div class="muted small">Sem dados suficientes ainda. Registre tempo por categoria na aba <b>Hoje</b>.</div>'}
+      ${prevWk.total>0?`<div style="margin-top:12px">${wk.total>prevWk.total+30?`<span class="trend up">▲ +${fmtDur(wk.total-prevWk.total)} vs semana passada</span>`:wk.total<prevWk.total-30?`<span class="trend down">▼ −${fmtDur(prevWk.total-wk.total)} vs semana passada</span>`:`<span class="trend flat">— estável vs semana passada</span>`}</div>`:''}
     </div>
 
-    <div class="section-label">Performance · 30 dias</div>
-    ${perfDashboardHTML()}
+    <!-- 5 · TENDÊNCIAS PESSOAIS -->
+    <div class="section-label">Tendências pessoais · 14 dias</div>
+    <div class="card card-lg">
+      <div class="trend-row">
+        <div class="trend-info"><div class="trend-lbl">🌅 Despertar médio</div><div class="trend-val">${avgWakeOver(7)||'—'}</div></div>
+        <div class="trend-spark">${sparkSVG(trends.wakeV.map(v=>v!=null?-v:null), '#081A58')}</div>
+      </div>
+      <div class="trend-row">
+        <div class="trend-info"><div class="trend-lbl">💼 Horas trabalhadas/dia</div><div class="trend-val">${trends.wkAvgMin!=null?fmtDur(trends.wkAvgMin):'—'}</div></div>
+        <div class="trend-spark">${sparkSVG(trends.workV, '#2563EB')}</div>
+      </div>
+      <div class="trend-row">
+        <div class="trend-info"><div class="trend-lbl">✅ Conclusão de tarefas</div><div class="trend-val">${monthTaskCompletion()!=null?monthTaskCompletion()+'%':'—'}<span class="muted small" style="font-weight:600"> no mês</span></div></div>
+        <div class="trend-spark">${sparkSVG(trends.taskV, '#16A34A')}</div>
+      </div>
+      <div class="trend-row">
+        <div class="trend-info"><div class="trend-lbl">🔁 Rotina cumprida</div><div class="trend-val">${monthRoutineAvg()!=null?monthRoutineAvg()+'%':'—'}<span class="muted small" style="font-weight:600"> no mês</span></div></div>
+        <div class="trend-spark">${sparkSVG(trends.routV, '#B4660A')}</div>
+      </div>
+    </div>
 
-    <div class="section-label">Ansiedade · 14 dias</div>
-    <div class="card card-lg chart-wrap">${renderChart()}</div>
+    <!-- 6 · INTELIGÊNCIA DO ROADMAP -->
+    <div class="section-label">Inteligência do roadmap</div>
+    <div class="card card-lg" style="display:flex;align-items:center;gap:18px;flex-wrap:wrap">
+      <span style="font-size:2rem">${fc.delta<0?'🚀':fc.delta>0?'⏳':'🎯'}</span>
+      <div style="flex:1;min-width:170px">
+        <div class="op-lbl">No ritmo atual, você termina em</div>
+        <div style="font-weight:800;font-size:1.35rem;color:var(--navy)">${fmt(fc.date)}</div>
+        ${pbarThick(e.progress, fc.delta>30?'red':fc.delta>0?'amber':'green')}
+      </div>
+      <span class="badge ${fc.delta<0?'b-green':fc.delta>0?(fc.delta<=30?'b-amber':'b-red'):'b-blue'}">${fc.delta<0?Math.abs(fc.delta)+' dias adiantado':fc.delta>0?'+'+fc.delta+' dias':'no prazo'}</span>
+    </div>
+
+    <!-- 7 · SAÚDE DAS CLÍNICAS -->
+    ${(S.clinics||[]).length?`<div class="section-label">Saúde da carteira de clínicas</div>
+    <div class="card card-lg">
+      <div style="display:flex;gap:20px;align-items:center;flex-wrap:wrap;justify-content:center">
+        ${donutPie(clinicTempBreakdown().map(b=>({value:b.value,color:b.color})), 140, String((S.clinics||[]).length), 'clínicas')}
+        <div style="flex:1;min-width:170px">${clinicThermo()}
+          <div class="legend" style="margin-top:12px;flex-direction:column;align-items:flex-start;gap:7px">${clinicTempBreakdown().filter(b=>b.value>0).map(b=>`<span><i style="background:${b.color}"></i>${b.label}: <b>${b.value}</b></span>`).join('')}</div>
+        </div>
+      </div>
+    </div>`:''}
+
+    <!-- 8 · FINANÇAS -->
+    <div class="section-label">Finanças do mês</div>
+    <div class="card card-lg">
+      ${cashCumulativeBars(monthP)}
+      <div style="display:flex;justify-content:space-between;align-items:baseline;margin-top:14px;flex-wrap:wrap;gap:8px">
+        <span class="stat-label">Saldo do mês</span>
+        <span style="font-weight:800;font-size:1.3rem" class="${monthNet>=0?'money-pos':'money-neg'}">${fmtMoney(monthNet)}</span>
+      </div>
+      <div class="stat-note" style="margin-top:2px">Saldo total ${fmtMoney(life.net)}</div>
+    </div>
+
+    <!-- 9 · INSIGHT INTELIGENTE -->
+    ${insight?`<div class="smart-insight"><span class="ic">${insight[0]}</span><span class="tx">${insight[1]}</span></div>`:''}
 
     <div class="countdown" id="countdown">
       <div class="cd-head">
@@ -1581,21 +1626,6 @@ function renderDashboard(){
       <div class="cd-over" id="cd-over" style="display:none">Prazo final ultrapassado</div>
       <div class="cd-line" id="cd-line">—</div>
       <div class="field-hint" id="cd-hint" style="margin-top:10px">Tempo restante até o prazo final da missão.</div>
-    </div>
-
-    <div class="section-label">Gargalo atual</div>
-    <div class="card card-lg">
-      <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap">
-        <span style="font-size:1.6rem">🚧</span>
-        <div style="flex:1;min-width:140px">
-          <div class="sub-name" style="font-size:1.05rem">${bn?esc(bn.m.name):'Nenhum gargalo ativo'}</div>
-          <div class="sub-meta" style="margin-top:6px">
-            ${bn&&bn.manual?`<span class="badge b-red">Marcado manualmente</span>`:''}
-            ${bn&&bn.delay>0?`<span class="badge ${delayClass(bn.delay)}">Atrasado ${bn.delay} ${bn.delay===1?'dia':'dias'}</span>`:bn?`<span class="badge b-blue">Marco ativo</span>`:''}
-          </div>
-        </div>
-        <button class="btn btn-soft btn-sm" onclick="nav('roadmap')">Ver roadmap</button>
-      </div>
     </div>
 
     <div class="btn-row" style="margin-top:20px">
@@ -2260,6 +2290,63 @@ function anxietySelectorHTML(log){
   const cur=(log&&log.anxietyLevel!=null)?Number(log.anxietyLevel):null;
   const opts=[[1,'🟢','Calmo'],[2,'🟡','Atenção'],[3,'🟠','Pressão'],[4,'🔴','Estresse']];
   return `<div class="anx-row">${opts.map(([v,e,l])=>`<button class="anx-btn ${cur===v?'sel':''}" onclick="setAnxietyLevel(${v})" aria-label="${l}">${e}<small>${l}</small></button>`).join('')}</div>`;
+}
+
+/* ---------- Premium Dash helpers (v16) ---------- */
+function sparkSVG(vals, color){ /* vals: array of number|null */
+  const pts=vals.map((v,i)=>v!=null?[i,v]:null).filter(Boolean);
+  if(pts.length<2) return '<span class="muted small">Sem dados suficientes ainda.</span>';
+  const W=110,H=34,P=3;
+  const ys=pts.map(p=>p[1]); let mn=Math.min(...ys), mx=Math.max(...ys); if(mx-mn<1){mn-=1;mx+=1;}
+  const x=i=>P+i*(W-2*P)/(vals.length-1), y=v=>H-P-(v-mn)/(mx-mn)*(H-2*P);
+  let d=''; pts.forEach((p,i)=>d+=(i?'L':'M')+x(p[0]).toFixed(1)+' '+y(p[1]).toFixed(1)+' ');
+  const last=pts[pts.length-1];
+  return `<svg viewBox="0 0 ${W} ${H}" class="spark"><path d="${d}" fill="none" stroke="${color}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="${x(last[0]).toFixed(1)}" cy="${y(last[1]).toFixed(1)}" r="2.8" fill="${color}"/></svg>`;
+}
+function weekDayBarsHTML(){
+  const t=todayISO(), mon=mondayOf(t), lbl=['Seg','Ter','Qua','Qui','Sex','Sáb','Dom'];
+  const vals=[]; let mx=60;
+  for(let i=0;i<7;i++){ const d=addDays(mon,i); const v=d>t?null:workedMin(d); vals.push([d,v]); if(v!=null&&v>mx) mx=v; }
+  return `<div class="day-bars">${vals.map(([d,v],i)=>`
+    <div class="db-col">
+      <span class="db-val">${v?fmtDur(v):(v===0&&d<t?'0':'')}</span>
+      <div class="db-bar ${v==null||!v?'muted':''}" style="height:${v?Math.max(6,v/mx*62):4}px"></div>
+      <span class="db-lbl">${lbl[i]}</span>
+    </div>`).join('')}</div>`;
+}
+function avgWakeWindow(offset,n){
+  const t=todayISO(); const v=[];
+  for(let i=offset;i<offset+n;i++){ const l=S.dailyLogs[addDays(t,-i)]; if(l&&l.wake){ const m=timeToMin(l.wake); if(m!=null) v.push(m); } }
+  return v.length>=3 ? v.reduce((a,b)=>a+b,0)/v.length : null;
+}
+function taskCompletionForMonth(ym){
+  let done=0,total=0;
+  (S.dailyTasks||[]).forEach(x=>{ if((x.date||'').slice(0,7)===ym){ total++; if(x.done) done++; } });
+  return total>=3 ? Math.round(done/total*100) : null;
+}
+function smartInsightHTML(){
+  const t=todayISO(), wk=weekWorked(0), goal=(Number(S.weeklyGoalHours)||50)*60;
+  const tot=Object.values(wk.byCat).reduce((a,b)=>a+b,0);
+  /* 1: maior categoria da semana */
+  if(tot>0){
+    let bk=null,bv=0; TIME_CATS.forEach(k=>{ if((wk.byCat[k]||0)>bv){bv=wk.byCat[k];bk=k;} });
+    if(bk && bv/tot>=0.4) return ['🎯',`Você dedicou ${Math.round(bv/tot*100)}% do seu tempo de trabalho a ${bk} esta semana.`];
+  }
+  /* 2: ritmo vs meta semanal */
+  if(wk.total>0 && wk.total<goal){
+    const dow=pISO(t).getDay(); const remDays=7-((dow+6)%7);
+    const need=Math.ceil((goal-wk.total)/remDays);
+    return ['⏱️',`Você trabalhou ${fmtDur(wk.total)} esta semana. Para chegar a ${fmtDur(goal)}, precisa de ${fmtDur(need)}/dia até domingo.`];
+  }
+  if(wk.total>=goal && goal>0) return ['🏆',`Meta semanal batida: ${fmtDur(wk.total)} de ${fmtDur(goal)}. Semana vencida.`];
+  /* 3: melhora do despertar mês vs mês anterior */
+  const wNow=avgWakeWindow(0,30), wPrev=avgWakeWindow(30,30);
+  if(wNow!=null&&wPrev!=null&&wPrev-wNow>=10) return ['🌅',`Seu horário médio de acordar melhorou ${Math.round(wPrev-wNow)} minutos neste mês.`];
+  /* 4: conclusão de tarefas mês vs mês anterior */
+  const ym=t.slice(0,7), prevYm=addDays(ym+'-01',-1).slice(0,7);
+  const cNow=taskCompletionForMonth(ym), cPrev=taskCompletionForMonth(prevYm);
+  if(cNow!=null&&cPrev!=null&&cNow>cPrev) return ['📈',`Sua média de conclusão de tarefas subiu de ${cPrev}% para ${cNow}% em relação ao mês passado.`];
+  return null;
 }
 
 /* ---------- Behavioral engine (v13) ---------- */
@@ -3122,6 +3209,18 @@ function openTargetForm(){
       <button class="btn btn-primary btn-block" onclick="saveTarget()">Salvar prazo</button>
     </div>
     <button class="btn btn-ghost btn-block" style="margin-top:8px" onclick="closeModal()">Cancelar</button>`);
+}
+function openWeeklyGoalForm(){
+  openModal(`
+    <div class="modal-title">Meta semanal de horas</div>
+    <div class="field"><label>Horas por semana (seg a dom)</label><input id="f-wgoal" type="number" min="1" max="120" value="${Number(S.weeklyGoalHours)||50}"></div>
+    <div class="btn-row"><button class="btn btn-primary btn-block" onclick="saveWeeklyGoal()">Salvar meta</button></div>
+    <button class="btn btn-ghost btn-block" style="margin-top:8px" onclick="closeModal()">Cancelar</button>`);
+}
+function saveWeeklyGoal(){
+  const v=Number($('#f-wgoal').value)||50;
+  mutate(()=>{ S.weeklyGoalHours=Math.max(1,Math.min(120,v)); });
+  closeModal(); toast('Meta semanal atualizada');
 }
 function saveTarget(){
   const v = $('#f-target').value;
