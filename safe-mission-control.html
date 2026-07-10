@@ -702,6 +702,77 @@ input,select,textarea{font:inherit;color:inherit}
 .smart-insight .tx{font-weight:600;font-size:.98rem;line-height:1.5}
 .hero-bn{display:flex;align-items:center;gap:8px;margin-top:14px;flex-wrap:wrap;position:relative;z-index:1}
 .hero-chip{display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,.14);border-radius:99px;padding:6px 13px;font-size:.82rem;font-weight:700}
+
+/* ============================================================
+   VISUAL KPI UPGRADE (v17) — ring-led cards, discipline meter
+   ============================================================ */
+.kpi-ring-card{display:flex;align-items:center;gap:18px;flex-wrap:wrap}
+.kpi-ring-side{flex:1;min-width:150px}
+.kpi-ring-title{font-weight:800;font-size:1.05rem;color:var(--navy)}
+.kpi-ring-sub{font-size:.86rem;color:var(--muted);margin-top:2px}
+.mini-stat-row{display:flex;gap:10px;flex-wrap:wrap;margin-top:6px}
+.mini-stat{background:var(--surface);border-radius:11px;padding:8px 12px;text-align:center;flex:1;min-width:64px}
+.mini-stat b{display:block;font-size:1.02rem;font-weight:800;color:var(--navy);font-variant-numeric:tabular-nums}
+.mini-stat span{font-size:.68rem;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.03em}
+.discipline-meter{display:flex;align-items:center;gap:18px;flex-wrap:wrap}
+.disc-side{flex:1;min-width:150px}
+.disc-title{font-weight:800;color:var(--navy);font-size:1.02rem}
+.disc-sub{font-size:.85rem;color:var(--muted);margin-top:3px;line-height:1.4}
+
+/* ============================================================
+   TODAY HERO + TIME-TRAVEL CALENDAR (v18)
+   ============================================================ */
+.today-hero{background:#fff;border-radius:var(--r-lg);box-shadow:var(--shadow);padding:22px;margin-bottom:22px;display:flex;align-items:center;gap:20px;flex-wrap:wrap;justify-content:center}
+.today-hero-side{flex:1;min-width:150px}
+.today-hero-title{font-weight:800;font-size:1.15rem;color:var(--navy)}
+.today-hero-sub{font-size:.9rem;color:var(--muted);margin-top:3px;line-height:1.4}
+.view-banner{background:var(--info-bg);border-radius:var(--r-md);padding:12px 16px;margin-bottom:18px;font-weight:600;font-size:.9rem;color:var(--navy);display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.view-banner .btn{margin-left:auto}
+.wt-day{border:none;background:#fff;width:100%;font:inherit;cursor:pointer;border-radius:14px;box-shadow:var(--shadow);padding:10px 2px;text-align:center;transition:transform .12s}
+.wt-day:active{transform:scale(.96)}
+.wt-dot.mid{background:#3B82F6;border-color:#3B82F6}
+.wt-dot.low{background:#DC2626;border-color:#DC2626}
+.wt-dot.sel{box-shadow:0 0 0 3px var(--navy)}
+
+/* ============================================================
+   TODAY SIMPLIFICATION + TREND EXPLORER (v19)
+   ============================================================ */
+.disc-rings{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:22px}
+.disc-ring{background:#fff;border-radius:var(--r-lg);box-shadow:var(--shadow);padding:18px 12px;display:flex;flex-direction:column;align-items:center;gap:8px;text-align:center}
+.disc-ring-lbl{font-weight:700;font-size:.92rem;color:var(--navy)}
+.disc-ring-sub{font-size:.72rem;color:var(--muted);font-weight:600}
+.qh-entry{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.qh-entry input[type=text]{flex:1;min-width:96px;min-height:48px;border:1.5px solid var(--line);border-radius:12px;padding:0 12px;font-size:1rem;outline:none;background:#fff}
+.qh-entry input:focus,.qh-entry select:focus{border-color:var(--navy)}
+.qh-entry select{flex:1;min-width:120px;min-height:48px;border:1.5px solid var(--line);border-radius:12px;padding:0 10px;font-size:.92rem;background:#fff;outline:none}
+.qh-entry .btn{flex-shrink:0}
+.qh-list{margin-top:12px}
+.qh-row{display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid var(--line)}
+.qh-row:last-child{border-bottom:none}
+.qh-dot{width:9px;height:9px;border-radius:50%;flex-shrink:0}
+.qh-main{flex:1;min-width:0;font-weight:600;font-size:.92rem}
+.qh-acts{display:flex;gap:2px;flex-shrink:0}
+.chip-row{display:flex;gap:8px;flex-wrap:wrap}
+.chip{border:1.5px solid var(--line);background:#fff;border-radius:99px;padding:8px 15px;font-weight:700;font-size:.85rem;color:var(--muted);min-height:42px}
+.chip.sm{padding:6px 13px;font-size:.8rem;min-height:38px}
+.chip.on{background:var(--navy);border-color:var(--navy);color:#fff}
+#view-dashboard .hero{padding:20px 20px 14px}
+#view-dashboard .hero-pct{font-size:2.6rem}
+
+/* ============================================================
+   TASK PROGRESS + ALL-TIME PANEL (v20)
+   ============================================================ */
+.task-prog{margin:2px 0 16px}
+.task-prog-top{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:8px}
+.task-prog-lbl{font-size:.82rem;font-weight:700;color:var(--muted)}
+.task-prog-pct{font-size:1.05rem;font-weight:800;color:var(--navy);font-variant-numeric:tabular-nums}
+.alltime{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.at-card{background:#fff;border-radius:var(--r-lg);box-shadow:var(--shadow);padding:20px 16px;display:flex;align-items:center;gap:14px}
+.at-ic{width:46px;height:46px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:1.4rem;flex-shrink:0}
+.at-info{min-width:0}
+.at-val{font-size:1.5rem;font-weight:800;color:var(--navy);letter-spacing:-.02em;line-height:1.05;font-variant-numeric:tabular-nums}
+.at-lbl{font-size:.76rem;font-weight:600;color:var(--muted);margin-top:2px}
+@media(max-width:380px){.at-card{padding:16px 12px;gap:10px}.at-val{font-size:1.25rem}.at-ic{width:40px;height:40px;font-size:1.2rem}}
 </style>
 </head>
 <body>
@@ -1435,6 +1506,10 @@ function cashLifetime(){
 /* ================= LAYER 3 — UI ================= */
 let S = null;
 let currentView = 'dashboard';
+let viewDate = null; /* dia visualizado na aba Hoje (null = hoje). Permite viajar no histórico. */
+function curDay(){ return viewDate || todayISO(); }
+function goToDay(d){ viewDate = (d===todayISO()) ? null : d; nav('hoje'); }
+function backToToday(){ viewDate = null; render(); }
 const $ = sel => document.querySelector(sel);
 const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 
@@ -1561,25 +1636,8 @@ function renderDashboard(){
     </div>
 
     <!-- 5 · TENDÊNCIAS PESSOAIS -->
-    <div class="section-label">Tendências pessoais · 14 dias</div>
-    <div class="card card-lg">
-      <div class="trend-row">
-        <div class="trend-info"><div class="trend-lbl">🌅 Despertar médio</div><div class="trend-val">${avgWakeOver(7)||'—'}</div></div>
-        <div class="trend-spark">${sparkSVG(trends.wakeV.map(v=>v!=null?-v:null), '#081A58')}</div>
-      </div>
-      <div class="trend-row">
-        <div class="trend-info"><div class="trend-lbl">💼 Horas trabalhadas/dia</div><div class="trend-val">${trends.wkAvgMin!=null?fmtDur(trends.wkAvgMin):'—'}</div></div>
-        <div class="trend-spark">${sparkSVG(trends.workV, '#2563EB')}</div>
-      </div>
-      <div class="trend-row">
-        <div class="trend-info"><div class="trend-lbl">✅ Conclusão de tarefas</div><div class="trend-val">${monthTaskCompletion()!=null?monthTaskCompletion()+'%':'—'}<span class="muted small" style="font-weight:600"> no mês</span></div></div>
-        <div class="trend-spark">${sparkSVG(trends.taskV, '#16A34A')}</div>
-      </div>
-      <div class="trend-row">
-        <div class="trend-info"><div class="trend-lbl">🔁 Rotina cumprida</div><div class="trend-val">${monthRoutineAvg()!=null?monthRoutineAvg()+'%':'—'}<span class="muted small" style="font-weight:600"> no mês</span></div></div>
-        <div class="trend-spark">${sparkSVG(trends.routV, '#B4660A')}</div>
-      </div>
-    </div>
+    <div class="section-label">Sua evolução · tudo acumulado</div>
+    ${allTimePanelHTML()}
 
     <!-- 6 · INTELIGÊNCIA DO ROADMAP -->
     <div class="section-label">Inteligência do roadmap</div>
@@ -1807,150 +1865,74 @@ function toggleMs(id){ openBodies.has(id) ? openBodies.delete(id) : openBodies.a
 
 /* ---------- HOJE ---------- */
 function renderHoje(){
-  const t = todayISO();
+  const t = curDay();
+  const isViewingPast = (t !== todayISO());
   const log = S.dailyLogs[t] || {};
   const dts = dayTasks(t);
-  const doneN = dts.filter(x=>x.done).length;
-  const pct = dts.length ? Math.round(doneN/dts.length*100) : 0;
-  const tasks = topTasks();
-  const k = todayKPIs();
-  const mission = todayMission();
-  const streak = routineStreak();
-  const anxLv = log.anxietyLevel!=null ? Number(log.anxietyLevel) : null;
-  const anxMap = {1:['🟢','Calmo','#16A34A'],2:['🟡','Atenção','#F59E0B'],3:['🟠','Pressão','#B4660A'],4:['🔴','Estresse','#DC2626']};
+  const hasHabits = S.habits.length>0;
+  const hasRec = dayHasRoutineRecord(t);
+  const dayPct = (hasHabits && hasRec) ? Math.round(dayDiscipline(t)*100) : null;
+  const habDone = S.habits.filter(hh=>hh.history[t]).length;
+  const wa = weekDisciplineAvg();
+  const dd = pISO(t);
+  const dias=['Domingo','Segunda-feira','Terça-feira','Quarta-feira','Quinta-feira','Sexta-feira','Sábado'];
+  const meses=['jan','fev','mar','abr','mai','jun','jul','ago','set','out','nov','dez'];
+  const titleDate = `${dias[dd.getDay()]}, ${dd.getDate()} de ${meses[dd.getMonth()]}`;
   $('#view-hoje').innerHTML = `
     <div class="page-head">
-      <div class="page-title">Hoje</div>
-      <div class="page-sub">${fmtLong(t)}</div>
+      <div class="page-title">${isViewingPast?'Histórico':'Hoje'}</div>
+      <div class="page-sub">${titleDate}</div>
     </div>
+
+    ${isViewingPast?`<div class="view-banner">📅 Vendo um dia anterior — tudo editável.<button class="btn btn-soft btn-sm" onclick="backToToday()">Voltar para hoje</button></div>`:''}
 
     ${weekTrackerHTML()}
 
-    <div class="streak-row">
-      <div class="streak-card">
-        <span class="streak-fire">🔥</span>
-        <div><div class="streak-num">${streak}</div><div class="streak-lbl">${streak===1?'dia de sequência':'dias de sequência'}</div></div>
-      </div>
-      <div class="health-card" style="border-color:${anxLv?anxMap[anxLv][2]:'var(--line)'}40">
-        <span class="health-dot">${anxLv?anxMap[anxLv][0]:'⚪'}</span>
-        <div><div class="health-lbl2">Ansiedade hoje</div><div class="health-state" style="color:${anxLv?anxMap[anxLv][2]:'var(--muted)'}">${anxLv?anxMap[anxLv][1]:'Não registrada'}</div></div>
-      </div>
+    <div class="disc-rings">
+      ${discRingHTML(isViewingPast?'Disciplina do dia':'Disciplina de hoje', dayPct, hasHabits?(habDone+'/'+S.habits.length+' hábitos'):'sem hábitos')}
+      ${discRingHTML('Média da semana', wa.pct, wa.days?(wa.days+(wa.days===1?' dia registrado':' dias registrados')):'sem registro')}
     </div>
 
-    <div class="today-top">
-      <div class="today-top-row"><span class="today-top-lbl">Progresso do dia</span><span class="today-top-pct">${pct}%</span></div>
-      <div class="pbar ${pct>=80?'green':pct>=40?'':'amber'}"><i style="width:${pct}%"></i></div>
-      <div class="today-top-meta">${doneN}/${dts.length} ${dts.length===1?'tarefa concluída':'tarefas concluídas'}${k.workedH?` · ${k.workedH}h trabalhadas`:''}</div>
-    </div>
-
-    <div class="card card-lg mission-card">
-      <div class="mission-head">🎯 Missão de Hoje</div>
-      ${mission.length ? `<div class="mission-sub">Conclua ${mission.length===1?'esta tarefa':`estas ${mission.length} tarefas`} e o dia já é vitorioso.</div>
-      ${mission.map(x=>`<div class="task-pick" style="border:none;padding:9px 0">
-        <button class="sub-check ${x.done?'on':''}" style="margin-top:0" onclick="toggleDailyTask('${x.id}')" aria-label="Concluir"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13l4 4L19 7"/></svg></button>
-        <div style="flex:1;min-width:0"><div class="sub-name">${esc(x.name)}</div><div class="sub-meta"><span class="badge ${CAT_CLS[x.category||'Atendimento']||'b-grey'}">${x.category||'Atendimento'}</span>${Number(x.hours)?`<span>${x.hours}h</span>`:''}</div></div>
-      </div>`).join('')}`
-      : (dts.length ? `<div class="mission-done">✅ Missão cumprida! As ${dts.length} tarefas de hoje estão concluídas.</div>` : `<div class="muted small">Crie as tarefas do dia abaixo — as 3 mais importantes viram sua missão.</div>`)}
-    </div>
-
+    <div class="section-label">Tarefas do dia</div>
     ${renderDailyTasksCard()}
 
-    ${tasks.length?`<div class="section-label">Prioridades do roadmap</div>
-    <div class="card">
-      ${tasks.map((tk,i)=>`
-        <div class="task-pick">
-          <div class="tp-rank">${i+1}</div>
-          <div style="flex:1;min-width:0">
-            <div class="sub-name">${esc(tk.s.name)}</div>
-            <div class="sub-meta"><span>${esc(tk.m.name)}</span><span class="badge prio-${tk.s.priority}">${tk.s.priority}</span>${tk.delay>0?`<span class="badge b-red">Atrasada ${tk.delay}d</span>`:''}</div>
-          </div>
-          <button class="sub-check" style="margin-top:0" onclick="toggleSubtask('${tk.m.id}','${tk.s.id}')" aria-label="Concluir"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13l4 4L19 7"/></svg></button>
-        </div>`).join('')}
-    </div>`:''}
-
     <div class="section-label">Rotina</div>
-    <div class="card card-lg">
-      <div class="field" style="margin-bottom:10px"><label>🌅 Hora de acordar</label></div>
-      ${wakeSelectorHTML(log)}
-    </div>
     ${habitsListHTML()}
 
-    <div class="section-label">Controle de tempo</div>
+    <div class="section-label">Hora de acordar</div>
+    <div class="card">${wakeSelectorHTML(log)}</div>
+
+    <div class="section-label">Tempo trabalhado</div>
     <div class="card card-lg">
-      ${(function(){
-        const wToday=workedMin(t), wYest=workedMin(addDays(t,-1));
-        const wk=weekWorked(0);
-        const avg = wk.days ? Math.round(wk.total/wk.days) : 0;
-        return `<div class="tc-stats">
-          <div class="tc-cell"><div class="tc-val">${wToday?fmtDur(wToday):'—'}</div><div class="tc-lbl">Hoje</div></div>
-          <div class="tc-cell"><div class="tc-val">${wYest?fmtDur(wYest):'—'}</div><div class="tc-lbl">Ontem</div></div>
-          <div class="tc-cell"><div class="tc-val">${wk.total?fmtDur(wk.total):'—'}</div><div class="tc-lbl">Semana (desde seg)</div></div>
-          <div class="tc-cell"><div class="tc-val">${avg?fmtDur(avg):'—'}</div><div class="tc-lbl">Média/dia</div></div>
-        </div>
-        ${catBarHTML(wk.byCat, Object.values(wk.byCat).reduce((a,b)=>a+b,0)) || '<div class="muted small">Registre tempo por categoria para ver a distribuição da semana.</div>'}`;
-      })()}
-      <div class="divider"></div>
-      <div class="te-add">
-        <input id="te-h" type="number" min="0" step="0.25" placeholder="h" aria-label="Duração em horas">
-        <select id="te-cat">${TIME_CATS.map(k=>`<option>${k}</option>`).join('')}</select>
-        <input id="te-note" type="text" placeholder="Nota (opcional)" onkeydown="if(event.key==='Enter')addTimeEntryInline()">
+      <div class="qh-entry">
+        <input id="te-dur" type="text" placeholder="2h30" onkeydown="if(event.key==='Enter')addTimeEntryInline()" aria-label="Duração trabalhada">
+        <select id="te-cat" aria-label="Categoria">${TIME_CATS.map(k=>`<option>${k}</option>`).join('')}</select>
         <button class="btn btn-primary btn-sm" onclick="addTimeEntryInline()">+ Registrar</button>
       </div>
-      ${(function(){
-        const es=entriesOn(t);
-        if(!es.length) return '<div class="muted small" style="padding:4px 0">Nenhum registro de tempo hoje.</div>';
-        return es.map(e=>`<div class="te-row">
-          <span class="te-cat-dot" style="background:${TIME_CAT_COLORS[e.category]||'#5B6472'}"></span>
-          <div class="te-main">${esc(e.category)}${e.note?` <span class="muted small">· ${esc(e.note)}</span>`:''}<div class="muted small">${hhmmBR(e.createdAt)||''}</div></div>
-          <span class="te-min">${fmtDur(e.minutes)}</span>
-          <button class="icon-btn" style="width:34px;height:34px" onclick="deleteTimeEntry('${e.id}')" aria-label="Excluir registro"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h16M9 7V5a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2M6 7l1 13a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1l1-13"/></svg></button>
-        </div>`).join('');
-      })()}
-      <div class="dw-chip">🧠 Deep work hoje: <b>${k.deep?k.deep+'h':'—'}</b> <span class="muted small">· estimado pelas tarefas concluídas</span></div>
+      <div class="qh-list">${timeEntriesListHTML(t)}</div>
     </div>
 
-    <div class="section-label">Ansiedade de hoje</div>
-    <div class="card card-lg">
-      ${anxietySelectorHTML(log)}
-      <div class="muted small" style="margin-top:10px;text-align:center">${log.anxietyLevel!=null?'Registrada ✅ — um toque para mudar.':'Um toque. Sem registro, nada é calculado.'}</div>
-    </div>
-
-    <div class="section-label">Como você se sente hoje</div>
+    <div class="section-label">Como estou me sentindo?</div>
     <div class="card card-lg" style="text-align:center">
       ${feelingSelectorHTML(log)}
-      <div class="muted small" style="margin-top:10px">${log.feeling!=null?'Registrado ✅ — um toque para mudar.':'Um toque, sem números.'}</div>
-    </div>
-
-    <div class="section-label">Linha do tempo do dia</div>
-    <div class="card">${dayTimelineHTML()}</div>
-
-    <div class="card">
-      <div class="field" style="margin:0"><label>Notas do dia</label>
-        <textarea placeholder="O que moveu a SAFE hoje?" onchange="setLog('notes',this.value)">${esc(log.notes||'')}</textarea></div>
-    </div>
-
-    <div class="section-label">Desempenho de tarefas</div>
-    ${todayKpiCardHTML(k, pct, doneN, dts.length)}
-
-    <div class="section-label">Disciplina do dia</div>
-    <div class="card card-lg">
-      <div class="qrow"><div class="qrow-top"><span class="lbl">Rotina de hoje</span><span class="num">${Math.round(dayDiscipline(t)*100)}%</span></div>${qualBar(dayDiscipline(t)*10, dayDiscipline(t)>=1?'#2563EB':dayDiscipline(t)>=0.6?'#16A34A':'#B4660A')}</div>
-      <div style="margin:14px -2px 4px">${weekTrackerHTML()}</div>
-      <div class="tc-stats" style="grid-template-columns:repeat(2,1fr);margin-bottom:0">
-        <div class="tc-cell"><div class="tc-val">${log.wake||'—'}</div><div class="tc-lbl">Acordou hoje</div></div>
-        <div class="tc-cell"><div class="tc-val">${avgWakeOver(7)||'—'}</div><div class="tc-lbl">Média da semana</div></div>
-      </div>
     </div>`;
 }
 
 /* daily tasks card — fully inline (v12) */
 function renderDailyTasksCard(){
-  const t = todayISO();
+  const t = curDay();
   const list = dayTasks(t);
   const dayHours = list.reduce((a,x)=>a+(Number(x.hours)||0),0);
+  const doneN = list.filter(x=>x.done).length;
+  const pPct = list.length ? Math.round(doneN/list.length*100) : 0;
+  const pCls = pPct>=100?'green':pPct>=40?'':'amber';
   return `
   <div class="card card-lg">
     <div class="list-head"><h3 style="margin:0">Tarefas do dia</h3>${list.length?`<span class="muted small">${dayHours}h estimadas</span>`:''}</div>
+    ${list.length?`<div class="task-prog">
+      <div class="task-prog-top"><span class="task-prog-lbl">${doneN} de ${list.length} concluídas${pPct>=100?' · dia completo 🎉':''}</span><span class="task-prog-pct">${pPct}%</span></div>
+      <div class="pbar ${pCls}"><i style="width:${pPct}%"></i></div>
+    </div>`:''}
     <div class="dt-add">
       <input id="ia-dt-name" class="dt-add-name" type="text" placeholder="Nova tarefa…" onkeydown="if(event.key==='Enter')addDailyTaskInline()">
       <input id="ia-dt-hours" class="dt-add-h" type="number" min="0" step="0.5" placeholder="h">
@@ -1974,8 +1956,6 @@ function renderDailyTaskRow(x){
       </div>
     </div>`;
   }
-  const created = x.createdAt ? hhmmBR(x.createdAt) : null;
-  const act = taskActualMin(x);
   return `<div class="ntask">
     <button class="sub-check ${x.done?'on':''}" onclick="toggleDailyTask('${x.id}')" aria-label="Concluir tarefa">
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13l4 4L19 7"/></svg>
@@ -1984,9 +1964,7 @@ function renderDailyTaskRow(x){
       <div class="sub-name" style="${x.done?'text-decoration:line-through;color:var(--muted)':''}">${esc(x.name)}</div>
       <div class="sub-meta">
         <select class="dt-cat-pill ${CAT_CLS[cat]||'b-grey'}" onchange="setDailyTaskField('${x.id}','category',this.value)">${CATS.map(cc=>`<option ${cc===cat?'selected':''}>${cc}</option>`).join('')}</select>
-        ${Number(x.hours)?`<span class="badge b-grey" style="background:var(--surface)">${x.hours}h est.</span>`:''}
-        ${act!=null?`<span class="badge b-green">real ${fmtDur(act)}</span>`:''}
-        ${created?`<span>· criada ${created}</span>`:''}
+        ${Number(x.hours)?`<span class="badge b-grey" style="background:var(--surface)">${x.hours}h</span>`:''}
       </div>
     </div>
     <button class="icon-btn" onclick="toggleDtEdit('${x.id}')" aria-label="Editar tarefa">
@@ -2048,8 +2026,8 @@ function renderRotina(){
         <div class="habit-main">
           <div class="habit-name">${esc(h.name)}</div>
           <div class="habit-stats">
-            <span class="streak">🔥 ${st.streak} ${st.streak===1?'dia':'dias'}</span>
-            <span>Recorde: ${st.best}</span>
+            
+            
             <span>Semana: ${st.week}%</span>
             <span>Mês: ${st.month}%</span>
           </div>
@@ -2074,8 +2052,8 @@ function habitsListHTML(){
       <div class="habit-main">
         <div class="habit-name">${esc(h.name)}</div>
         <div class="habit-stats">
-          <span class="streak">🔥 ${st.streak} ${st.streak===1?'dia':'dias'}</span>
-          <span>Recorde: ${st.best}</span>
+          
+          
           <span>Semana: ${st.week}%</span>
           <span>Mês: ${st.month}%</span>
         </div>
@@ -2174,8 +2152,8 @@ function emoScore(log){
   const all = inv!=null ? vals.concat(inv) : vals;
   return all.length ? Math.round(all.reduce((a,b)=>a+b,0)/all.length*10)/10 : null;
 }
-function todayKPIs(){
-  const t=todayISO(), log=S.dailyLogs[t]||{};
+function todayKPIs(dateArg){
+  const t=dateArg||todayISO(), log=S.dailyLogs[t]||{};
   const wMin = workedMin(t);
   const hasWork = wMin > 0;
   const workedH = Math.round(wMin/60*10)/10;
@@ -2199,12 +2177,18 @@ function todayKpiCardHTML(k, pct, doneN, totalN){
   const diff = k.hasAct ? (k.actMin - k.estMin) : null;
   const diffStr = diff==null ? '—' : ((diff>=0?'+':'−')+fmtDur(Math.abs(diff)));
   const emo=k.emo, emoColor = emo==null?'#5B6472':emo>=7?'#16A34A':emo>=5?'#B4660A':'#DC2626';
+  const ringColor = pct>=80?'#16A34A':pct>=40?'#081A58':'#B4660A';
   return `<div class="card card-lg">
-    <div class="kpi2">
-      <div class="kpi2-cell"><div class="kpi2-val">${pct}%</div><div class="kpi2-lbl">Conclusão do dia</div></div>
-      <div class="kpi2-cell"><div class="kpi2-val">${doneN}/${totalN}</div><div class="kpi2-lbl">Tarefas</div></div>
-      <div class="kpi2-cell"><div class="kpi2-val">${k.workedH||0}h</div><div class="kpi2-lbl">Trabalhadas</div></div>
-      <div class="kpi2-cell"><div class="kpi2-val">${k.deep||0}h</div><div class="kpi2-lbl">Deep work</div></div>
+    <div class="kpi-ring-card">
+      ${donutSVG(pct, ringColor, 110, 11, pct+'%', doneN+'/'+totalN)}
+      <div class="kpi-ring-side">
+        <div class="kpi-ring-title">Execução do dia</div>
+        <div class="kpi-ring-sub">${doneN} de ${totalN} tarefas concluídas</div>
+        <div class="mini-stat-row">
+          <div class="mini-stat"><b>${k.workedH||0}h</b><span>Trabalhadas</span></div>
+          <div class="mini-stat"><b>${k.deep||0}h</b><span>Deep work</span></div>
+        </div>
+      </div>
     </div>
     <div class="divider"></div>
     <div class="estact">
@@ -2213,8 +2197,8 @@ function todayKpiCardHTML(k, pct, doneN, totalN){
       <div><span class="estact-lbl">Diferença</span><span class="estact-val ${diff!=null&&diff>0?'bad':'good'}">${diffStr}</span></div>
     </div>
     <div class="field-hint" style="margin-top:8px">“Real” = tempo entre criar e concluir cada tarefa (automático, sem digitar).</div>
-    <div class="divider"></div>
-    <div class="qrow"><div class="qrow-top"><span class="lbl">Qualidade emocional</span><span class="num">${k.feeling!=null?['😞','😐','🙂','😄','🚀'][k.feeling-1]:(emo==null?'—':emo+'/10')}</span></div>${qualBar(emo,emoColor)}</div>
+    ${(k.feeling!=null||emo!=null) ? `<div class="divider"></div>
+    <div class="qrow"><div class="qrow-top"><span class="lbl">Qualidade emocional</span><span class="num">${k.feeling!=null?['😞','😐','🙂','😄','🚀'][k.feeling-1]:emo+'/10'}</span></div>${qualBar(emo,emoColor)}</div>` : ''}
     ${k.workTrend?`<div style="margin-top:8px"><span class="trend ${k.workTrendCls}">${k.workTrend}${k.avgWorkH!=null?` · média ${k.avgWorkH}h`:''}</span></div>`:''}
   </div>`;
 }
@@ -2275,14 +2259,23 @@ function catBarHTML(byCat, totalMin){
   return `<div class="cat-bar">${seg}</div><div class="legend" style="margin-top:8px">${leg}</div>`;
 }
 function weekTrackerHTML(){
-  const t=todayISO(), mon=mondayOf(t);
+  const t=todayISO(), sel=curDay(), mon=mondayOf(t);
   const lbl=['Seg','Ter','Qua','Qui','Sex','Sáb','Dom'];
   let out='';
   for(let i=0;i<7;i++){
     const d=addDays(mon,i), future=d>t;
     const disc=future?0:dayDiscipline(d);
-    const cls = future?'future':(disc>=1?'blue':disc>=0.6?'green':'');
-    out+=`<div class="wt-day"><div class="wt-lbl">${lbl[i]}</div><div class="wt-dot ${cls} ${d===t?'today':''}">${!future&&disc>=0.6?'✓':''}</div></div>`;
+    /* "registro" = houve rotina/log/tarefa naquele dia. Nunca marca por abrir o app. */
+    const hasRec = !future && (S.habits.some(hh=>hh.history[d]) || !!S.dailyLogs[d] || dayTasks(d).length>0);
+    let cls='';
+    if(future) cls='future';                 /* dia futuro: apagado */
+    else if(!hasRec) cls='';                  /* sem registro: cinza */
+    else if(disc>=1) cls='blue';              /* 100%: azul forte */
+    else if(disc>=0.6) cls='mid';             /* 60-99%: azul */
+    else cls='low';                           /* <60% com registro: vermelho */
+    const mark = future?'':(disc>=0.6?'✓':(hasRec?'·':''));
+    const tap = future?'':`onclick="goToDay('${d}')"`;
+    out+=`<button class="wt-day" ${tap} aria-label="${lbl[i]} ${d}"><div class="wt-lbl">${lbl[i]}</div><div class="wt-dot ${cls} ${d===t?'today':''} ${d===sel?'sel':''}">${mark}</div></button>`;
   }
   return `<div class="week-track">${out}</div>`;
 }
@@ -2290,6 +2283,117 @@ function anxietySelectorHTML(log){
   const cur=(log&&log.anxietyLevel!=null)?Number(log.anxietyLevel):null;
   const opts=[[1,'🟢','Calmo'],[2,'🟡','Atenção'],[3,'🟠','Pressão'],[4,'🔴','Estresse']];
   return `<div class="anx-row">${opts.map(([v,e,l])=>`<button class="anx-btn ${cur===v?'sel':''}" onclick="setAnxietyLevel(${v})" aria-label="${l}">${e}<small>${l}</small></button>`).join('')}</div>`;
+}
+
+/* ---------- Today v19 helpers ---------- */
+let trendMetric='wake', trendPeriod=30;
+const teEdit = new Set();
+function setTrend(m,p){ if(m) trendMetric=m; if(p!=null) trendPeriod=Number(p); render(); }
+function toggleTeEdit(id){ teEdit.has(id)?teEdit.delete(id):teEdit.add(id); render(); }
+function parseDuration(s){
+  s=String(s||'').trim().toLowerCase().replace(',','.'); if(!s) return null; let m;
+  if(m=s.match(/^(\d{1,2}):(\d{2})$/)) return (+m[1])*60+(+m[2]);
+  if(m=s.match(/^(\d+)h(\d{1,2})$/)) return (+m[1])*60+(+m[2]);
+  if(m=s.match(/^(\d+(?:\.\d+)?)h$/)) return Math.round((+m[1])*60);
+  if(m=s.match(/^(\d+)m(?:in)?$/)) return (+m[1]);
+  if(m=s.match(/^(\d+(?:\.\d+)?)$/)) return Math.round((+m[1])*60);
+  return null;
+}
+function dayHasRoutineRecord(d){ return S.habits.some(h=>h.history[d]) || !!S.dailyLogs[d] || dayTasks(d).length>0; }
+function weekDisciplineAvg(){
+  if(!S.habits.length) return { pct:null, days:0 };
+  const t=todayISO(), mon=mondayOf(t); let sum=0,cnt=0;
+  for(let d=mon; d<=t; d=addDays(d,1)){ if(dayHasRoutineRecord(d)){ sum+=dayDiscipline(d); cnt++; } if(d===t) break; }
+  return { pct: cnt?Math.round(sum/cnt*100):null, days:cnt };
+}
+function discColor(pct){ if(pct==null) return '#9AA3B2'; if(pct>=100) return '#2563EB'; if(pct>=60) return '#16A34A'; if(pct>=40) return '#F59E0B'; return '#DC2626'; }
+function discRingHTML(title, pct, sub){
+  return `<div class="disc-ring">${donutSVG(pct==null?0:pct, discColor(pct), 96, 10, pct==null?'—':pct+'%', '')}<div class="disc-ring-lbl">${title}</div>${sub?`<div class="disc-ring-sub">${sub}</div>`:''}</div>`;
+}
+function timeEntriesListHTML(d){
+  const es=entriesOn(d);
+  if(!es.length) return '<div class="muted small">Nenhum registro neste dia.</div>';
+  return es.map(e=>{
+    if(teEdit.has(e.id)){
+      return `<div class="qh-row" style="flex-wrap:wrap;gap:8px">
+        <input id="tee-dur-${e.id}" type="text" value="${fmtDur(e.minutes)}" style="width:96px;min-height:44px;border:1.5px solid var(--line);border-radius:11px;padding:0 10px;outline:none">
+        <select id="tee-cat-${e.id}" style="min-height:44px;border:1.5px solid var(--line);border-radius:11px;padding:0 8px;flex:1;min-width:120px;background:#fff;outline:none">${TIME_CATS.map(k=>`<option ${k===e.category?'selected':''}>${k}</option>`).join('')}</select>
+        <button class="btn btn-primary btn-sm" onclick="saveTimeEntryInline('${e.id}')">Salvar</button>
+        <button class="btn btn-ghost btn-sm" onclick="toggleTeEdit('${e.id}')">Cancelar</button>
+      </div>`;
+    }
+    return `<div class="qh-row">
+      <span class="qh-dot" style="background:${TIME_CAT_COLORS[e.category]||'#5B6472'}"></span>
+      <div class="qh-main">${fmtDur(e.minutes)} · ${esc(e.category)}${e.note?` <span class="muted small">${esc(e.note)}</span>`:''}</div>
+      <div class="qh-acts">
+        <button class="btn btn-ghost btn-sm" onclick="toggleTeEdit('${e.id}')">Editar</button>
+        <button class="btn btn-ghost btn-sm" style="color:var(--danger)" onclick="deleteTimeEntry('${e.id}')">Excluir</button>
+      </div>
+    </div>`;
+  }).join('');
+}
+function saveTimeEntryInline(id){
+  const dd=document.getElementById('tee-dur-'+id), cc=document.getElementById('tee-cat-'+id);
+  const minutes=parseDuration(dd&&dd.value);
+  if(!minutes||minutes<=0){ toast('Duração inválida. Ex: 2h30'); return; }
+  const category=(cc&&cc.value)||'SAFE';
+  mutate(()=>{ const e=(S.timeEntries||[]).find(x=>x.id===id); if(!e) return; e.minutes=minutes; e.category=category; });
+  teEdit.delete(id); toast('Registro atualizado');
+}
+/* Trend explorer (Dash) */
+function trendChartHTML(){
+  const metric=trendMetric;
+  const n = trendPeriod>0 ? trendPeriod : Math.min(365, diffDays(S.createdAt||todayISO(), todayISO())+1);
+  const t=todayISO(), days=[]; for(let i=n-1;i>=0;i--) days.push(addDays(t,-i));
+  let vals, color, fmtVal;
+  if(metric==='wake'){ color='#081A58'; vals=days.map(d=>{const l=S.dailyLogs[d];return l&&l.wake?timeToMin(l.wake):null;}); fmtVal=minToTime; }
+  else if(metric==='discipline'){ color='#16A34A'; vals=days.map(d=>dayHasRoutineRecord(d)?Math.round(dayDiscipline(d)*100):null); fmtVal=v=>Math.round(v)+'%'; }
+  else { color='#2563EB'; vals=days.map(d=>{const m=workedMin(d);return m>0?m:null;}); fmtVal=fmtDur; }
+  const pts=vals.map((v,i)=>v!=null?[i,v]:null).filter(Boolean);
+  if(pts.length<2) return '<div class="empty" style="box-shadow:none;background:var(--surface)">Registre mais dias para visualizar sua evolução.</div>';
+  const avg=pts.reduce((a,p)=>a+p[1],0)/pts.length;
+  const W=640,H=190,P=36;
+  const ys=pts.map(p=>p[1]); let mn=Math.min(...ys),mx=Math.max(...ys); if(mx-mn<1){mn-=1;mx+=1;} const pd=(mx-mn)*0.18; mn-=pd; mx+=pd;
+  const x=i=>P+i*(W-2*P)/(n-1), y=v=>H-P-(v-mn)/(mx-mn)*(H-2*P);
+  let path=''; pts.forEach((p,i)=>path+=(i?'L':'M')+x(p[0]).toFixed(1)+' '+y(p[1]).toFixed(1)+' ');
+  const dots=pts.map(p=>`<circle cx="${x(p[0]).toFixed(1)}" cy="${y(p[1]).toFixed(1)}" r="3" fill="${color}"/>`).join('');
+  const avgY=y(avg).toFixed(1);
+  const dir = pts[pts.length-1][1]>pts[0][1]?'▲':pts[pts.length-1][1]<pts[0][1]?'▼':'—';
+  return `<svg viewBox="0 0 ${W} ${H+20}" style="width:100%;height:auto">
+    <line x1="${P}" y1="${avgY}" x2="${W-P}" y2="${avgY}" stroke="#C7CEDC" stroke-width="1.5" stroke-dasharray="5 5"/>
+    <text x="${W-P}" y="${(Number(avgY)-6)}" text-anchor="end" font-size="10.5" fill="#5B6472" font-family="Inter,sans-serif">média ${fmtVal(avg)}</text>
+    <path d="${path}" fill="none" stroke="${color}" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>${dots}
+    <text x="${P}" y="${H+14}" font-size="10" fill="#5B6472" font-family="Inter,sans-serif">${fmt(days[pts[0][0]]).slice(0,5)}</text>
+    <text x="${W-P}" y="${H+14}" text-anchor="end" font-size="10" fill="#5B6472" font-family="Inter,sans-serif">${fmt(days[pts[pts.length-1][0]]).slice(0,5)}</text>
+  </svg>
+  <div style="display:flex;justify-content:space-between;margin-top:6px"><span class="muted small">${dir} tendência</span><span class="muted small">${pts.length} dias registrados</span></div>`;
+}
+function allTimePanelHTML(){
+  const t=todayISO(), start=S.createdAt||t;
+  const span=Math.max(1, diffDays(start, t)+1);
+  let totalMin=0, workDays=0, discSum=0, discDays=0, wakeSum=0, wakeDays=0;
+  for(let i=0;i<span;i++){
+    const d=addDays(t,-i);
+    const wm=workedMin(d); if(wm>0){ totalMin+=wm; workDays++; }
+    if(S.habits.some(h=>h.history[d])){ discSum+=dayDiscipline(d); discDays++; } /* só dias com rotina realmente marcada */
+    const l=S.dailyLogs[d]; if(l&&l.wake){ const m=timeToMin(l.wake); if(m!=null){ wakeSum+=m; wakeDays++; } }
+  }
+  const discPct = discDays? Math.round(discSum/discDays*100) : null;
+  const wakeAvg = wakeDays? minToTime(wakeSum/wakeDays) : null;
+  const dcol = discPct==null?'#9AA3B2':discPct>=100?'#2563EB':discPct>=60?'#16A34A':discPct>=40?'#F59E0B':'#DC2626';
+  return `<div class="alltime">
+    <div class="at-card"><div class="at-ic" style="background:#EEF1FB;color:#2563EB">💼</div><div class="at-info"><div class="at-val">${totalMin?fmtDur(totalMin):'—'}</div><div class="at-lbl">Horas trabalhadas no total</div></div></div>
+    <div class="at-card"><div class="at-ic" style="background:${dcol}1a;color:${dcol}">🔁</div><div class="at-info"><div class="at-val">${discPct!=null?discPct+'%':'—'}</div><div class="at-lbl">Disciplina média</div></div></div>
+    <div class="at-card"><div class="at-ic" style="background:#EAF7EF;color:#16A34A">🌅</div><div class="at-info"><div class="at-val">${wakeAvg||'—'}</div><div class="at-lbl">Acordar médio</div></div></div>
+    <div class="at-card"><div class="at-ic" style="background:var(--surface);color:var(--navy)">📅</div><div class="at-info"><div class="at-val">${workDays}</div><div class="at-lbl">Dias com trabalho</div></div></div>
+  </div>`;
+}
+function trendExplorerHTML(){
+  const metrics=[['wake','🌅 Acordar'],['discipline','🔁 Disciplina'],['worked','💼 Horas']];
+  const periods=[['7','7 dias'],['30','30 dias'],['90','90 dias'],['0','Tudo']];
+  return `<div class="chip-row">${metrics.map(([k,l])=>`<button class="chip ${trendMetric===k?'on':''}" onclick="setTrend('${k}',null)">${l}</button>`).join('')}</div>
+  <div class="chip-row" style="margin-top:8px">${periods.map(([k,l])=>`<button class="chip sm ${String(trendPeriod)===k?'on':''}" onclick="setTrend(null,${k})">${l}</button>`).join('')}</div>
+  <div style="margin-top:16px">${trendChartHTML()}</div>`;
 }
 
 /* ---------- Premium Dash helpers (v16) ---------- */
@@ -2358,19 +2462,19 @@ function routineStreak(){
   let s=0; while(dayDiscipline(d)>=MIN){ s++; d=addDays(d,-1); }
   return s;
 }
-function todayMission(){
-  const inc=dayTasks(todayISO()).filter(x=>!x.done);
+function todayMission(dateArg){
+  const inc=dayTasks(dateArg||todayISO()).filter(x=>!x.done);
   inc.sort((a,b)=>(Number(b.hours)||0)-(Number(a.hours)||0) || String(a.createdAt||'').localeCompare(String(b.createdAt||'')));
   return inc.slice(0,3);
 }
 function deepWorkHours(d){ return Math.round(dayTasks(d).filter(x=>x.done).reduce((a,x)=>a+(Number(x.hours)||0),0)*10)/10; }
 function feelingSelectorHTML(log){
   const cur = (log && log.feeling!=null) ? Number(log.feeling) : null;
-  const opts=[[1,'😞'],[2,'😐'],[3,'🙂'],[4,'😄'],[5,'🚀']];
+  const opts=[[1,'😞'],[2,'😕'],[3,'😐'],[4,'🙂'],[5,'😄']];
   return `<div class="feel-row">${opts.map(([v,e])=>`<button class="feel-btn ${cur===v?'sel':''}" onclick="setFeeling(${v})" aria-label="Sentimento ${v}">${e}</button>`).join('')}</div>`;
 }
 function dayTimelineHTML(){
-  const done=dayTasks(todayISO()).filter(x=>x.done&&x.completedAt&&/T\d{2}:\d{2}/.test(x.completedAt))
+  const done=dayTasks(curDay()).filter(x=>x.done&&x.completedAt&&/T\d{2}:\d{2}/.test(x.completedAt))
     .sort((a,b)=>a.completedAt.localeCompare(b.completedAt));
   if(!done.length) return '<div class="muted small" style="padding:6px 0">Conclua tarefas para construir a linha do tempo do dia.</div>';
   return `<div class="timeline">${done.map(x=>`<div class="tl-item"><span class="tl-time">${hhmmBR(x.completedAt)}</span><span class="tl-dot"></span><span class="tl-task">${esc(x.name)}</span></div>`).join('')}</div>`;
@@ -2949,11 +3053,11 @@ function deleteMilestone(id){
 }
 function toggleHabit(id){
   mutate(()=>{ const h=S.habits.find(x=>x.id===id); if(!h) return;
-    const t=todayISO(); h.history[t] ? delete h.history[t] : h.history[t]=true; });
+    const t=curDay(); h.history[t] ? delete h.history[t] : h.history[t]=true; });
 }
 function setLog(field, value){
   mutate(()=>{
-    const t=todayISO();
+    const t=curDay();
     if(!S.dailyLogs[t]) S.dailyLogs[t]={};
     const L=S.dailyLogs[t];
     if(field==='notes'||field==='wake'||field==='bed') L[field]=value;
@@ -3081,28 +3185,28 @@ function toggleDailyTask(id){
   });
 }
 function addTimeEntryInline(){
-  const hh=document.getElementById('te-h'), cc=document.getElementById('te-cat'), nn=document.getElementById('te-note');
-  const hours=Number(hh&&hh.value)||0;
-  if(hours<=0){ toast('Informe a duração em horas'); return; }
-  const minutes=Math.round(hours*60), category=(cc&&cc.value)||'SAFE', note=(nn&&nn.value||'').trim();
-  mutate(()=>{ if(!Array.isArray(S.timeEntries)) S.timeEntries=[]; S.timeEntries.push({ id:uid(), date:todayISO(), createdAt:new Date().toISOString(), minutes, category, note }); });
-  toast('Tempo registrado');
+  const dd=document.getElementById('te-dur'), cc=document.getElementById('te-cat');
+  const minutes=parseDuration(dd&&dd.value);
+  if(!minutes||minutes<=0){ toast('Duração inválida. Ex: 2h30'); return; }
+  const category=(cc&&cc.value)||'SAFE';
+  mutate(()=>{ if(!Array.isArray(S.timeEntries)) S.timeEntries=[]; S.timeEntries.push({ id:uid(), date:curDay(), createdAt:new Date().toISOString(), minutes, category, note:'' }); });
+  if(dd) dd.value=''; toast('Tempo registrado');
 }
 function deleteTimeEntry(id){
   mutate(()=>{ S.timeEntries=(S.timeEntries||[]).filter(e=>e.id!==id); });
   toast('Registro excluído');
 }
 function setAnxietyLevel(n){
-  mutate(()=>{ const t=todayISO(); if(!S.dailyLogs[t]) S.dailyLogs[t]={}; const L=S.dailyLogs[t]; L.anxietyLevel=n; L.anxiety=[1,4,7,10][n-1]; });
+  mutate(()=>{ const t=curDay(); if(!S.dailyLogs[t]) S.dailyLogs[t]={}; const L=S.dailyLogs[t]; L.anxietyLevel=n; L.anxiety=[1,4,7,10][n-1]; });
 }
 function setFeeling(n){
-  mutate(()=>{ const t=todayISO(); if(!S.dailyLogs[t]) S.dailyLogs[t]={}; const L=S.dailyLogs[t]; L.feeling=n; L.mood=n*2; });
+  mutate(()=>{ const t=curDay(); if(!S.dailyLogs[t]) S.dailyLogs[t]={}; const L=S.dailyLogs[t]; L.feeling=n; L.mood=n*2; });
 }
 function addDailyTaskInline(){
   const n=document.getElementById('ia-dt-name'), hh=document.getElementById('ia-dt-hours'), cc=document.getElementById('ia-dt-cat');
   const name=(n&&n.value||'').trim(); if(!name){ toast('Informe o nome da tarefa'); return; }
   const hours=Math.max(0, Number(hh&&hh.value)||0), category=(cc&&cc.value)||'Atendimento';
-  mutate(()=>{ S.dailyTasks.push({ id:uid(), name, date:todayISO(), hours, category, notes:'', done:false, createdAt:new Date().toISOString(), completedAt:null }); });
+  mutate(()=>{ S.dailyTasks.push({ id:uid(), name, date:curDay(), hours, category, notes:'', done:false, createdAt:new Date().toISOString(), completedAt:null }); });
   toast('Tarefa criada');
 }
 function toggleDtEdit(id){ dtEdit.has(id)?dtEdit.delete(id):dtEdit.add(id); render(); }
