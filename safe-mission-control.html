@@ -756,16 +756,17 @@ input,select,textarea{font:inherit;color:inherit}
 .chip{border:1.5px solid var(--line);background:#fff;border-radius:99px;padding:8px 15px;font-weight:700;font-size:.85rem;color:var(--muted);min-height:42px}
 .chip.sm{padding:6px 13px;font-size:.8rem;min-height:38px}
 .chip.on{background:var(--navy);border-color:var(--navy);color:#fff}
-#view-dashboard .hero{padding:20px 20px 14px}
-#view-dashboard .hero-pct{font-size:2.6rem}
+#view-dashboard .hero{padding:18px 20px 10px}
+#view-dashboard .hero-pct{font-size:2.3rem}
+#view-dashboard .hero .unit-track{margin:12px 0 10px}
 
 /* ============================================================
    TASK PROGRESS + ALL-TIME PANEL (v20)
    ============================================================ */
-.task-prog{margin:2px 0 16px}
-.task-prog-top{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:8px}
-.task-prog-lbl{font-size:.82rem;font-weight:700;color:var(--muted)}
-.task-prog-pct{font-size:1.05rem;font-weight:800;color:var(--navy);font-variant-numeric:tabular-nums}
+.task-prog{margin:4px 0 20px}
+.task-prog-top{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:10px}
+.task-prog-lbl{font-size:.92rem;font-weight:700;color:var(--text)}
+.task-prog-pct{font-size:1.7rem;font-weight:800;color:var(--navy);font-variant-numeric:tabular-nums;letter-spacing:-.02em}
 .alltime{display:grid;grid-template-columns:1fr 1fr;gap:14px}
 .at-card{background:#fff;border-radius:var(--r-lg);box-shadow:var(--shadow);padding:20px 16px;display:flex;align-items:center;gap:14px}
 .at-ic{width:46px;height:46px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:1.4rem;flex-shrink:0}
@@ -1313,6 +1314,12 @@ function engine(){
 /* ---- Roadmap forecast (v13) ----
    Combines completion pace, operational extension and observed delay into a
    single predictive date. Allows "ahead of schedule" when the pace beats the plan. */
+function roadmapPostponePct(){
+  const e = engine();
+  const ext = operationalDays();                 /* dias adicionados pelas tarefas do dia */
+  if (!e.plannedSpanDays || ext<=0) return 0;
+  return Math.round(ext / e.plannedSpanDays * 100);
+}
 function roadmapForecast(){
   const e = engine();
   let date = e.projectedEnd;                 /* base: original + atraso real + operação */
@@ -1605,7 +1612,7 @@ function renderDashboard(){
         </div>
         <span class="health-pill" style="background:rgba(255,255,255,.14);color:#fff">${h.dot} ${h.state}</span>
       </div>
-      <div style="margin:14px -8px 0">${journeySVG(e.progress)}</div>
+      <div style="margin:6px -8px 0">${journeySVG(e.progress)}</div>
       <div class="unit-track" style="margin-top:6px">${cells}</div>
       <div class="hero-bn">
         <span class="hero-chip">${fc.delta<0?'🚀 '+Math.abs(fc.delta)+'d adiantado':fc.delta>0?'⏳ +'+fc.delta+'d':'🎯 No prazo'} · ${fmt(fc.date)}</span>
@@ -1720,24 +1727,17 @@ function renderRoadmap(){
           <span class="badge b-grey" style="background:var(--surface)">${e.remaining} restantes</span>
           ${e.realDelay>0?`<span class="badge ${delayClass(e.realDelay)}">${e.realDelay}d atraso</span>`:`<span class="badge b-green">No prazo</span>`}
         </div>
-        <div class="ms-when" style="margin-top:12px">Conclusão prevista <b>${fmt(e.projectedEnd)}</b></div>
       </div>
     </div>
     <div class="card" style="display:flex;align-items:center;gap:12px;flex-wrap:wrap">
-      <span style="font-size:1.6rem">${fc.delta<0?'🚀':fc.delta>0?'⏳':'🎯'}</span>
+      <span style="font-size:1.7rem">${fc.delta<0?'🚀':fc.delta>0?'⏳':'🎯'}</span>
       <div style="flex:1;min-width:150px">
         <div class="op-lbl">Previsão de conclusão</div>
-        <div style="font-weight:800;font-size:1.15rem;color:var(--navy)">${fmt(fc.date)}</div>
+        <div style="font-weight:800;font-size:1.3rem;color:var(--navy)">${fmt(fc.date)}</div>
+        ${opMinutesTotal()>0?`<div class="muted small" style="margin-top:4px">Tarefas do dia adiam ~${roadmapPostponePct()}% do prazo</div>`:''}
       </div>
       <span class="badge ${fc.delta<0?'b-green':fc.delta>0?(fc.delta<=30?'b-amber':'b-red'):'b-blue'}">${fc.delta<0?Math.abs(fc.delta)+' dias adiantado':fc.delta>0?'+'+fc.delta+' dias':'no prazo'}</span>
     </div>
-    ${opMinutesTotal()>0?`<div class="card op-flow">
-      <div class="op-step"><span class="op-lbl">Prazo original</span><span class="op-val">${fmt(e.originalEnd)}</span></div>
-      <div class="op-arrow">↓</div>
-      <div class="op-step op-mid"><span class="op-lbl">Extensão operacional</span><span class="op-val">+${fmtDur(opMinutesTotal())}</span></div>
-      <div class="op-arrow">↓</div>
-      <div class="op-step"><span class="op-lbl">Prazo ajustado</span><span class="op-val">${fmt(e.projectedEnd)}</span></div>
-    </div>`:''}
     <div class="section-label">Marcos</div>
     ${S.milestones.map((m,i)=>m.pinned?'':renderMilestone(m,i)).join('') || '<div class="empty">Nenhum marco criado. Crie o primeiro abaixo.</div>'}
     <div class="card">
@@ -1773,12 +1773,11 @@ function renderMilestone(m, i){
           ${m.bottleneck?`<span class="badge b-red">Gargalo</span>`:''}
           ${!m.pinned && delay>0 && st!=='Concluída'?`<span class="badge ${delayClass(delay)}">Atrasado ${delay}${delay===1?' dia':' dias'}</span>`:''}
           ${!m.pinned && delay>0 && st==='Concluída'?`<span class="badge ${delayClass(delay)}">Concluído +${delay}d</span>`:''}
-          <span class="badge b-grey" style="background:var(--surface)">${all.filter(s=>s.status==='Concluída').length}/${all.length} subtarefas</span>
         </div>
       </div>
       <svg class="chev" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
     </div>
-    <div class="ms-prog">${pbar(prog, !m.pinned && st==='Atrasada'?'red':st==='Concluída'&&!m.pinned?'green':'')}${m.pinned?'':ganttBar(m,_rmRange)}</div>
+    <div class="ms-prog">${pbar(prog, !m.pinned && st==='Atrasada'?'red':st==='Concluída'&&!m.pinned?'green':'')}</div>
     <div class="ms-body">
       ${m.pinned?'':`<div class="ms-dates">
         <div class="dt"><b>Data inicial</b><span>${fmt(m.startDate)}</span></div>
@@ -1931,7 +1930,7 @@ function renderDailyTasksCard(){
     <div class="list-head"><h3 style="margin:0">Tarefas do dia</h3>${list.length?`<span class="muted small">${dayHours}h estimadas</span>`:''}</div>
     ${list.length?`<div class="task-prog">
       <div class="task-prog-top"><span class="task-prog-lbl">${doneN} de ${list.length} concluídas${pPct>=100?' · dia completo 🎉':''}</span><span class="task-prog-pct">${pPct}%</span></div>
-      <div class="pbar ${pCls}"><i style="width:${pPct}%"></i></div>
+      <div class="pbar thick ${pCls}"><i style="width:${pPct}%"></i></div>
     </div>`:''}
     <div class="dt-add">
       <input id="ia-dt-name" class="dt-add-name" type="text" placeholder="Nova tarefa…" onkeydown="if(event.key==='Enter')addDailyTaskInline()">
@@ -2371,21 +2370,25 @@ function trendChartHTML(){
 function allTimePanelHTML(){
   const t=todayISO(), start=S.createdAt||t;
   const span=Math.max(1, diffDays(start, t)+1);
-  let totalMin=0, workDays=0, discSum=0, discDays=0, wakeSum=0, wakeDays=0;
+  let totalMin=0, workDays=0, discSum=0, discDays=0, wakeSum=0, wakeDays=0, taskSum=0, taskDays=0;
   for(let i=0;i<span;i++){
     const d=addDays(t,-i);
     const wm=workedMin(d); if(wm>0){ totalMin+=wm; workDays++; }
     if(S.habits.some(h=>h.history[d])){ discSum+=dayDiscipline(d); discDays++; } /* só dias com rotina realmente marcada */
+    const dt=dayTasks(d); if(dt.length){ taskSum+=dt.filter(x=>x.done).length/dt.length; taskDays++; }
     const l=S.dailyLogs[d]; if(l&&l.wake){ const m=timeToMin(l.wake); if(m!=null){ wakeSum+=m; wakeDays++; } }
   }
+  const avgWorkMin = workDays? Math.round(totalMin/workDays) : null;
   const discPct = discDays? Math.round(discSum/discDays*100) : null;
+  const taskPct = taskDays? Math.round(taskSum/taskDays*100) : null;
   const wakeAvg = wakeDays? minToTime(wakeSum/wakeDays) : null;
   const dcol = discPct==null?'#9AA3B2':discPct>=100?'#2563EB':discPct>=60?'#16A34A':discPct>=40?'#F59E0B':'#DC2626';
+  const tcol = taskPct==null?'#9AA3B2':taskPct>=100?'#2563EB':taskPct>=60?'#16A34A':taskPct>=40?'#F59E0B':'#DC2626';
   return `<div class="alltime">
-    <div class="at-card"><div class="at-ic" style="background:#EEF1FB;color:#2563EB">💼</div><div class="at-info"><div class="at-val">${totalMin?fmtDur(totalMin):'—'}</div><div class="at-lbl">Horas trabalhadas no total</div></div></div>
+    <div class="at-card"><div class="at-ic" style="background:#EEF1FB;color:#2563EB">💼</div><div class="at-info"><div class="at-val">${avgWorkMin?fmtDur(avgWorkMin):'—'}</div><div class="at-lbl">Média de horas por dia</div></div></div>
+    <div class="at-card"><div class="at-ic" style="background:${tcol}1a;color:${tcol}">✅</div><div class="at-info"><div class="at-val">${taskPct!=null?taskPct+'%':'—'}</div><div class="at-lbl">Tarefas do dia concluídas</div></div></div>
     <div class="at-card"><div class="at-ic" style="background:${dcol}1a;color:${dcol}">🔁</div><div class="at-info"><div class="at-val">${discPct!=null?discPct+'%':'—'}</div><div class="at-lbl">Disciplina média</div></div></div>
     <div class="at-card"><div class="at-ic" style="background:#EAF7EF;color:#16A34A">🌅</div><div class="at-info"><div class="at-val">${wakeAvg||'—'}</div><div class="at-lbl">Acordar médio</div></div></div>
-    <div class="at-card"><div class="at-ic" style="background:var(--surface);color:var(--navy)">📅</div><div class="at-info"><div class="at-val">${workDays}</div><div class="at-lbl">Dias com trabalho</div></div></div>
   </div>`;
 }
 function trendExplorerHTML(){
@@ -3618,13 +3621,9 @@ function tickCountdown(){
   let sec = Math.floor(ms/1000);
   const months = Math.floor(sec / 2592000); sec -= months * 2592000;
   const days = Math.floor(sec / 86400);    sec -= days * 86400;
-  const hours = Math.floor(sec / 3600);    sec -= hours * 3600;
-  const mins = Math.floor(sec / 60);       sec -= mins * 60;
   const parts = [];
   if (months) parts.push(months + (months===1 ? ' mês' : ' meses'));
   if (months || days) parts.push(days + (days===1 ? ' dia' : ' dias'));
-  if (months || days || hours) parts.push(hours + ' h');
-  if (months || days || hours || mins) parts.push(mins + ' min');
   parts.push(sec + ' s');
   line.textContent = parts.join(' · ');
   const ov = document.getElementById('cd-over'), cd = document.getElementById('countdown'), hint = document.getElementById('cd-hint');
