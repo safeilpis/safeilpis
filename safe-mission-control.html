@@ -833,6 +833,13 @@ input,select,textarea{font:inherit;color:inherit}
 .routine-val{font-size:.84rem;color:var(--muted);font-weight:700;font-variant-numeric:tabular-nums;flex-shrink:0}
 .sub-name.trunc{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .show-all-link{display:block;text-align:center;padding:10px 0 2px;font-weight:700;color:var(--navy);font-size:.9rem}
+
+/* ============================================================
+   DASH — seções ocultáveis (v20)
+   ============================================================ */
+.dash-sec-label{display:flex;align-items:center;justify-content:space-between}
+.dash-hide-btn{background:none;border:none;padding:4px 6px;font-size:1.15rem;line-height:1;color:var(--muted);opacity:.32;cursor:pointer;flex-shrink:0}
+.dash-hide-btn:hover{opacity:.9}
 </style>
 </head>
 <body>
@@ -1032,8 +1039,9 @@ function defaultState(){
     priority: 'Média', bottleneck: false, difficulty: null
   });
   return {
-    version: 12,
+    version: 13,
     weeklyGoalHours: 45,
+    dashboardHidden: [], // chaves de seções do Dashboard ocultadas pelo usuário
     students: [], // alunos a receber (Aulas) {id,name,amount,dueDate,paid}
     createdAt: start,
     targetUnits: 10,
@@ -1161,6 +1169,11 @@ function migrate(s){
     });
     s.version = 12;
   }
+  if (s.version < 13){
+    /* v13: seções do Dashboard podem ser ocultadas individualmente pelo usuário. */
+    if (!Array.isArray(s.dashboardHidden)) s.dashboardHidden = [];
+    s.version = 13;
+  }
   return s;
 }
 
@@ -1171,20 +1184,36 @@ function taskExpectedEnd(t){
   if (t.expectedEnd) return t.expectedEnd;
   return t.startDate ? addDays(t.startDate, Number(t.plannedDuration)||0) : null;
 }
+/* Para encadear a PRÓXIMA subtarefa: se esta já terminou, usa a data REAL de término (mesmo que atrasada).
+   taskExpectedEnd continua retornando o prazo planejado original (usado para medir atraso). */
+function taskRealEnd(t){
+  if (t.status === 'Concluída' && t.completedAt) return t.completedAt;
+  return taskExpectedEnd(t);
+}
 function taskPlannedDays(t){
   if (t.plannedDuration != null && t.plannedDuration !== '') return Number(t.plannedDuration)||0;
   const end = taskExpectedEnd(t);
   return (t.startDate && end) ? Math.max(0, diffDays(t.startDate, end)) : 0;
 }
-/* v16: cada subtarefa (e sub-subtarefa) SOMA seus dias ao prazo do marco.
-   Escrever um novo processo estende o prazo final — isso é escopo planejado, não atraso. */
+/* v21 (correção): as subtarefas SÃO o detalhamento real do marco — uma vez que existem, elas
+   definem o prazo por completo (para mais OU para menos), substituindo a estimativa original.
+   Cada peça usa sua duração REAL se já concluída, ou a duração PLANEJADA se ainda não. Assim,
+   terminar uma subtarefa mais rápido do que o previsto encolhe o prazo total automaticamente —
+   e o mesmo vale para o marco só usar sua própria duração quando ainda não tem nenhuma subtarefa. */
+function taskRealDays(t){
+  if (t.status === 'Concluída' && t.completedAt && t.startDate) return Math.max(0, diffDays(t.startDate, t.completedAt));
+  return Math.max(0, Number(t.plannedDuration)||0);
+}
 function subtreeDays(t){
-  let d = Math.max(0, Number(t.plannedDuration)||0);
-  (t.children||[]).forEach(k => { d += subtreeDays(k); });
-  return d;
+  const kids = t.children||[];
+  if (!kids.length) return taskRealDays(t);
+  return kids.reduce((a,k)=> a + subtreeDays(k), 0); /* filhos existem: eles definem o total, não a estimativa antiga do pai */
 }
 function msContentDays(m){ return (m.subtasks||[]).reduce((a,s)=> a + subtreeDays(s), 0); }
-function msEffectiveDays(m){ return Math.max(0, Number(m.plannedDuration)||0) + msContentDays(m); }
+function msEffectiveDays(m){
+  const hasSubtasks = (m.subtasks||[]).length > 0;
+  return hasSubtasks ? msContentDays(m) : Math.max(0, Number(m.plannedDuration)||0);
+}
 /* delay rules (v3):
    - pending + past expected date  -> provisional delay (today - expected); returns to 0 if finished on time
    - completed after expected date -> PERMANENT real delay (completedAt - expected)
@@ -1291,14 +1320,14 @@ function chainKids(node){
       k.expectedEnd = addDays(cursor, Math.max(0, Number(k.plannedDuration)||0));
       chainKids(k);
     }
-    cursor = taskExpectedEnd(k) || cursor;
+    cursor = taskRealEnd(k) || cursor; /* concluída atrasada empurra a próxima de verdade */
   }
 }
 function rechainSiblings(list, fromIdx){
   for (let j = Math.max(0, fromIdx); j < (list||[]).length; j++){
     const t = list[j];
     if (t.status !== 'Concluída'){
-      if (j > fromIdx) t.startDate = taskExpectedEnd(list[j-1]) || t.startDate; /* edited task keeps its start */
+      if (j > fromIdx) t.startDate = taskRealEnd(list[j-1]) || t.startDate; /* edited task keeps its start */
       t.expectedEnd = addDays(t.startDate, Math.max(0, Number(t.plannedDuration)||0));
       chainKids(t);
     }
@@ -1311,7 +1340,7 @@ function rechainMilestones(fromIdx){
     const m = M[i];
     if (m.pinned) continue; /* fixed container: outside the sequential chain */
     if (i >= Math.max(0, fromIdx) && m.status !== 'Concluída'){
-      if (prev && i > fromIdx) m.startDate = prev.originalEnd;
+      if (prev && i > fromIdx) m.startDate = (prev.status==='Concluída' && prev.actualEnd) ? prev.actualEnd : prev.originalEnd;
       m.originalEnd = addDays(m.startDate, msEffectiveDays(m)); /* base + subtarefas: escopo estende o prazo */
       chainKids({ startDate: m.startDate, children: m.subtasks });
     }
@@ -1677,7 +1706,6 @@ function renderDashboard(){
   const remaining = Math.max(0, goalMin - wk.safeMin);
   const needAvg = remaining>0 ? Math.ceil(remaining/remDays) : 0;
   const catTot = Object.values(wk.byCat).reduce((a,b)=>a+b,0);
-  const monthNet = cashPeriod('month').net, life = cashLifetime(), monthP = cashPeriod('month');
   const insight = smartInsightHTML();
   const fund = fundoExpansao();
   const impact = roadmapImpactByCategory();
@@ -1690,8 +1718,7 @@ function renderDashboard(){
       <div class="page-sub">${fmtLong(today)}</div>
     </div>
 
-    <!-- 1 · MISSÃO SEMANAL DE TRABALHO -->
-    <div class="section-label">Missão semanal de trabalho</div>
+    ${dashSection('weekly','Missão semanal de trabalho', `
     <div class="card card-lg">
       <div class="wm-ring-wrap">
         ${donutSVG(wkPct, wkPct>=100?'#16A34A':'#081A58', 128, 13, fmtDur(wk.safeMin), 'de '+fmtDur(goalMin))}
@@ -1702,17 +1729,15 @@ function renderDashboard(){
         </div>
       </div>
       ${weekDayBarsHTML()}
-    </div>
+    </div>`)}
 
-    <!-- 2 · PARA ONDE FOI MEU TEMPO -->
-    <div class="section-label">Para onde foi meu tempo</div>
+    ${dashSection('time','Para onde foi meu tempo', `
     <div class="card card-lg">
       ${catTot>0 ? catBarHTML(wk.byCat, catTot) : '<div class="muted small">Sem dados suficientes ainda. Registre tempo por categoria na aba <b>Hoje</b>.</div>'}
       ${prevWk.total>0?`<div style="margin-top:12px">${wk.total>prevWk.total+30?`<span class="trend up">▲ +${fmtDur(wk.total-prevWk.total)} vs semana passada</span>`:wk.total<prevWk.total-30?`<span class="trend down">▼ −${fmtDur(prevWk.total-wk.total)} vs semana passada</span>`:`<span class="trend flat">— estável vs semana passada</span>`}</div>`:''}
-    </div>
+    </div>`)}
 
-    <!-- 3 · TRAJETÓRIA SAFE PLUS (simplificada) -->
-    <div class="section-label">Trajetória SAFE PLUS</div>
+    ${dashSection('trajectory','Trajetória SAFE PLUS', `
     <div class="hero">
       <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:12px;flex-wrap:wrap;position:relative;z-index:1">
         <div>
@@ -1729,30 +1754,26 @@ function renderDashboard(){
       <div class="hero-bn">
         <span class="hero-chip">Próxima etapa: ${nextMs?esc(nextMs.name):'—'}</span>
       </div>
-    </div>
+    </div>`)}
 
-    <!-- 4 · FUNDO DE EXPANSÃO PLUS -->
-    <div class="section-label">Fundo de expansão PLUS</div>
+    ${dashSection('fund','Fundo de expansão PLUS', `
     <div class="fund-card">
       ${fund.started ? `
         <div class="fund-top"><span class="fund-val"><b>${fmtMoney(fund.total)}</b> de ${fmtMoney(fund.goal)}</span><span class="fund-pct">${fund.pct}%</span></div>
         ${pbarThick(Math.min(100,fund.pct), 'green')}
         <div class="stat-note" style="margin-top:10px">${fmtMoney(fund.monthlyNow)}/mês atualmente</div>
       ` : `<div class="muted small">O fundo começa a acumular quando a 1ª unidade PLUS estiver operando.</div>`}
-    </div>
+    </div>`)}
 
-    <!-- 5 · IMPACTO DAS TAREFAS DO DIA NO ROADMAP -->
-    <div class="section-label">Impacto das tarefas do dia no Roadmap</div>
+    ${dashSection('impact','Impacto das tarefas do dia no Roadmap', `
     <div class="card">
       ${impact.total>0 ? `
         <div class="cat-bar">${impact.parts.map(p=>`<div style="flex:${p.hours};background:${TASK_CAT_COLORS[p.key]||'#6B7686'}" title="${esc(p.key)}: ${p.pct}%"></div>`).join('')}</div>
         <div class="legend" style="margin-top:8px">${impact.parts.map(p=>`<span><i style="background:${TASK_CAT_COLORS[p.key]||'#6B7686'}"></i>${esc(p.key)} ${p.pct}%</span>`).join('')}</div>
       ` : `<div class="muted small">Nenhum impacto registrado.</div>`}
-    </div>
+    </div>`)}
 
-    <!-- 6 · SUA EVOLUÇÃO · TUDO ACUMULADO -->
-    <div class="section-label">Sua evolução · tudo acumulado</div>
-    ${(function(){
+    ${dashSection('evolution','Sua evolução · tudo acumulado', (function(){
       const t=today, start=S.createdAt||t; const span=Math.max(1, diffDays(start,t)+1);
       let discSum=0, discDays=0, taskSum=0, taskDays=0, wakeSum=0, wakeDays=0;
       for(let i=0;i<span;i++){
@@ -1771,10 +1792,9 @@ function renderDashboard(){
         <div class="at-card"><div class="at-ic" style="background:var(--surface);color:var(--navy)">✅</div><div class="at-info"><div class="at-val">${taskPct!=null?taskPct+'%':'Sem tarefas'}</div><div class="at-lbl">Tarefas cumpridas</div></div></div>
         <div class="at-card"><div class="at-ic" style="background:#F1EBFC;color:#7C3AED">${moodEmoji(avgFeel)}</div><div class="at-info"><div class="at-val">${moodStr||'Sem registros'}</div><div class="at-lbl">Humor médio</div></div></div>
       </div>`;
-    })()}
+    })())}
 
-    <!-- INTELIGÊNCIA DO ROADMAP -->
-    <div class="section-label">Inteligência do roadmap</div>
+    ${dashSection('roadmap-intel','Inteligência do roadmap', `
     <div class="card card-lg" style="display:flex;align-items:center;gap:18px;flex-wrap:wrap">
       <span style="font-size:2rem">${fc.delta<0?'🚀':fc.delta>0?'⏳':'🎯'}</span>
       <div style="flex:1;min-width:170px">
@@ -1783,10 +1803,9 @@ function renderDashboard(){
         ${pbarThick(e.progress, fc.delta>30?'red':fc.delta>0?'amber':'green')}
       </div>
       <span class="badge ${fc.delta<0?'b-green':fc.delta>0?(fc.delta<=30?'b-amber':'b-red'):'b-blue'}">${fc.delta<0?Math.abs(fc.delta)+' dias adiantado':fc.delta>0?'+'+fc.delta+' dias':'no prazo'}</span>
-    </div>
+    </div>`)}
 
-    <!-- SAÚDE DAS CLÍNICAS -->
-    ${(S.clinics||[]).length?`<div class="section-label">Saúde da carteira de clínicas</div>
+    ${(S.clinics||[]).length ? dashSection('clinics','Saúde da carteira de clínicas', `
     <div class="card card-lg">
       <div style="display:flex;gap:20px;align-items:center;flex-wrap:wrap;justify-content:center">
         ${donutPie(clinicTempBreakdown().map(b=>({value:b.value,color:b.color})), 140, String((S.clinics||[]).length), 'clínicas')}
@@ -1794,22 +1813,11 @@ function renderDashboard(){
           <div class="legend" style="margin-top:12px;flex-direction:column;align-items:flex-start;gap:7px">${clinicTempBreakdown().filter(b=>b.value>0).map(b=>`<span><i style="background:${b.color}"></i>${b.label}: <b>${b.value}</b></span>`).join('')}</div>
         </div>
       </div>
-    </div>`:''}
+    </div>`) : ''}
 
-    <!-- FINANÇAS -->
-    <div class="section-label">Finanças do mês</div>
-    <div class="card card-lg">
-      ${cashCumulativeBars(monthP)}
-      <div style="display:flex;justify-content:space-between;align-items:baseline;margin-top:14px;flex-wrap:wrap;gap:8px">
-        <span class="stat-label">Saldo do mês</span>
-        <span style="font-weight:800;font-size:1.3rem" class="${monthNet>=0?'money-pos':'money-neg'}">${fmtMoney(monthNet)}</span>
-      </div>
-      <div class="stat-note" style="margin-top:2px">Saldo total ${fmtMoney(life.net)}</div>
-    </div>
-
-    <!-- INSIGHT INTELIGENTE -->
     ${insight?`<div class="smart-insight"><span class="ic">${insight[0]}</span><span class="tx">${insight[1]}</span></div>`:''}
 
+    ${dashSection('countdown','Prazo final da missão', `
     <div class="countdown" id="countdown">
       <div class="cd-head">
         <span class="cd-title">Prazo final da missão · ${fmt(S.targetDate)}</span>
@@ -1818,7 +1826,7 @@ function renderDashboard(){
       <div class="cd-over" id="cd-over" style="display:none">Prazo final ultrapassado</div>
       <div class="cd-line" id="cd-line">—</div>
       <div class="field-hint" id="cd-hint" style="margin-top:10px">Tempo restante até o prazo final da missão.</div>
-    </div>
+    </div>`)}
 
     <div class="btn-row" style="margin-top:20px">
       <button class="btn btn-soft btn-sm" onclick="exportBackup()">Exportar backup</button>
@@ -2592,6 +2600,16 @@ function trendExplorerHTML(){
   return `<div class="chip-row">${metrics.map(([k,l])=>`<button class="chip ${trendMetric===k?'on':''}" onclick="setTrend('${k}',null)">${l}</button>`).join('')}</div>
   <div class="chip-row" style="margin-top:8px">${periods.map(([k,l])=>`<button class="chip sm ${String(trendPeriod)===k?'on':''}" onclick="setTrend(null,${k})">${l}</button>`).join('')}</div>
   <div style="margin-top:16px">${trendChartHTML()}</div>`;
+}
+
+/* ---------- Dashboard: seções ocultáveis (v20) ---------- */
+function hideDashSection(key){
+  mutate(()=>{ if(!Array.isArray(S.dashboardHidden)) S.dashboardHidden=[]; if(!S.dashboardHidden.includes(key)) S.dashboardHidden.push(key); });
+}
+function restoreDashSections(){ mutate(()=>{ S.dashboardHidden=[]; }); }
+function dashSection(key, label, bodyHtml){
+  if ((S.dashboardHidden||[]).includes(key)) return '';
+  return `<div class="section-label dash-sec-label">${label}<button class="dash-hide-btn" onclick="hideDashSection('${key}')" aria-label="Ocultar ${label}" title="Ocultar">×</button></div>${bodyHtml}`;
 }
 
 /* ---------- Trajetória / Fundo / Impacto helpers (v18) ---------- */
@@ -3373,6 +3391,8 @@ function toggleSubtask(mid, sid){
     syncTaskTree(m.subtasks);
     if (m.status==='Não iniciada' && r.node.status==='Concluída') m.status='Em andamento';
     syncLinkedFromSubtask(mid, sid, willBeDone); /* reflete em Hoje se a tarefa estiver vinculada */
+    rechainSiblings(r.siblings, r.siblings.indexOf(r.node)); /* empurra/puxa o próximo pela data real */
+    rechainMilestones(0); /* recalcula o prazo do marco (encolhe ou estica) e propaga aos próximos */
   });
 }
 function startMilestone(id){ mutate(()=>{ const m=S.milestones.find(x=>x.id===id); if(m) m.status='Em andamento'; }); toast('Marco iniciado'); }
@@ -3380,10 +3400,11 @@ function completeMilestone(id){
   mutate(()=>{ const m=S.milestones.find(x=>x.id===id); if(!m) return;
     m.status='Concluída'; m.actualEnd=todayISO();
     m.subtasks.forEach(s=>setTaskDone(s, true));
+    rechainMilestones(0); /* propaga a data real de conclusão para o próximo marco */
   });
   toast('Marco concluído 🎉');
 }
-function reopenMilestone(id){ mutate(()=>{ const m=S.milestones.find(x=>x.id===id); if(m){ m.status='Em andamento'; m.actualEnd=null; } }); }
+function reopenMilestone(id){ mutate(()=>{ const m=S.milestones.find(x=>x.id===id); if(m){ m.status='Em andamento'; m.actualEnd=null; } rechainMilestones(0); }); }
 function deleteMilestone(id){
   const m = S.milestones.find(x=>x.id===id);
   if (!m || m.pinned) return; /* the fixed container cannot be deleted */
