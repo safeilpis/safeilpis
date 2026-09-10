@@ -1201,8 +1201,15 @@ function taskPlannedDays(t){
    terminar uma subtarefa mais rápido do que o previsto encolhe o prazo total automaticamente —
    e o mesmo vale para o marco só usar sua própria duração quando ainda não tem nenhuma subtarefa. */
 function taskRealDays(t){
-  if (t.status === 'Concluída' && t.completedAt && t.startDate) return Math.max(0, diffDays(t.startDate, t.completedAt));
-  return Math.max(0, Number(t.plannedDuration)||0);
+  const planned = Math.max(0, Number(t.plannedDuration)||0);
+  if (t.status === 'Concluída' && t.completedAt && t.startDate){
+    const elapsed = Math.max(0, diffDays(t.startDate, t.completedAt));
+    /* Terminar mais rápido encolhe o prazo — mas terminar "tarde no calendário" (só marcado
+       depois, sem ter realmente ocupado todo esse tempo) nunca INFLA além do planejado.
+       Atraso de verdade já é sinalizado à parte pelo sistema de "Atrasada" (taskDelay/msDelay). */
+    return Math.min(planned, elapsed);
+  }
+  return planned;
 }
 function subtreeDays(t){
   const kids = t.children||[];
