@@ -1340,22 +1340,45 @@ function opMinutesTotal(){ return Math.round(operationalHoursTotal() * 60); }
 /* v22: fonte única do impacto das Tarefas do Dia sobre o Roadmap. Precisão em minutos —
    nunca descarta horas por arredondamento; só vira "dias" no momento de gerar uma DATA. */
 function roadmapOperationalExtensionMin(){ return opMinutesTotal(); }
-function justifiedTotal(){ return operationalDays(); }           // deadline extension, in days
+function justifiedTotal(){ return operationalDays(); }           // deadline extension, in days (legado, mantido por compatibilidade)
+
+/* v23 (correção de raiz): fonte única do impacto operacional real sobre o Roadmap.
+   - Exclui tarefas já VINCULADAS ao Roadmap (roadmapRef) — já fazem parte do próprio prazo,
+     contá-las de novo seria contar o mesmo trabalho duas vezes.
+   - Exclui duração inválida/zero.
+   - Usa a capacidade real de trabalho (9h/dia, a mesma referência do Trabalho SAFE), não 24h.
+   - Preserva precisão em minutos internamente; só vira "dias" ao gerar uma DATA. */
+const ROADMAP_WORK_HOURS_PER_DAY = 9;
+function getExternalDailyTaskImpactMinutes(){
+  return (S.dailyTasks||[]).reduce((sum, t) => {
+    if (!t || t.roadmapRef) return sum;               // já contado dentro do próprio Roadmap
+    const h = Number(t.hours);
+    if (!h || h <= 0 || !isFinite(h)) return sum;      // duração inválida ou zero
+    return sum + h*60;
+  }, 0);
+}
+function getExternalDailyTaskImpactDays(){ return getExternalDailyTaskImpactMinutes() / (ROADMAP_WORK_HOURS_PER_DAY*60); } // fracionário, sem arredondar
 function dayOpHours(d){ return (S.dailyTasks||[]).filter(t=>t.date===d).reduce((a,t)=>a+(Number(t.hours)||0),0); }
 
 /* ---- Sequential chain engine (v3) ----
    The mission is sequential: each task starts when the previous one ends.
    Completed items are FROZEN — history is never re-dated by the cascade. */
+/* v23 (correção de raiz): quando um item tem filhos, o fim efetivo dele é o fim efetivo do
+   ÚLTIMO filho da árvore — não sua própria duração nominal. Sem isso, o PRÓXIMO IRMÃO começava
+   na data (errada) do pai em vez de esperar a subárvore inteira terminar. */
 function chainKids(node){
+  const kids = node.children || [];
+  if (!kids.length) return; /* folha: nada a encadear, o próprio nó já teve start/end definidos pelo chamador */
   let cursor = node.startDate;
-  for (const k of (node.children||[])){
+  for (const k of kids){
     if (k.status !== 'Concluída'){
       k.startDate = cursor;
       k.expectedEnd = addDays(cursor, Math.max(0, Number(k.plannedDuration)||0));
-      chainKids(k);
+      chainKids(k); /* recursivo: se k também tiver filhos, isto reescreve k.expectedEnd com o fim real da SUA subárvore */
     }
-    cursor = taskRealEnd(k) || cursor; /* concluída atrasada empurra a próxima de verdade */
+    cursor = taskRealEnd(k) || cursor; /* concluída atrasada empurra a próxima de verdade; cedo puxa pra trás */
   }
+  node.expectedEnd = cursor; /* o pai passa a refletir o fim real de toda a sua subárvore */
 }
 function rechainSiblings(list, fromIdx){
   for (let j = Math.max(0, fromIdx); j < (list||[]).length; j++){
@@ -1461,22 +1484,21 @@ function engine(){
 /* ---- Roadmap forecast (v13) ----
    Combines completion pace, operational extension and observed delay into a
    single predictive date. Allows "ahead of schedule" when the pace beats the plan. */
-/* Percentual de quanto as Tarefas do Dia (isoladamente) adiam o prazo — só informativo, nunca
-   confundido com atraso real. Sem marcos reais para comparar, o percentual não tem significado. */
+/* Percentual de quanto as Tarefas do Dia EXTERNAS (isoladamente) adiam o prazo — só informativo,
+   nunca confundido com atraso real. Sem marcos reais para comparar, não tem significado. */
 function roadmapPostponePct(){
   const e = engine();
-  const extMin = roadmapOperationalExtensionMin();
-  if (e.total<=0 || !e.plannedSpanDays || extMin<=0) return 0;
-  const extDays = extMin/1440;
+  const extDays = getExternalDailyTaskImpactDays();
+  if (e.total<=0 || !e.plannedSpanDays || extDays<=0) return 0;
   return Math.round(extDays / e.plannedSpanDays * 100);
 }
-/* v22 (correção): "Previsão de conclusão" + "+X dias" do card geral representam EXCLUSIVAMENTE
-   a extensão operacional causada pelas Tarefas do Dia — nunca o atraso real (msDelay/rawDelay).
-   Sem nenhuma Tarefa do Dia com impacto: extensão = 0, badge = "No prazo", sempre. */
+/* v23 (correção de raiz): "Previsão de conclusão" + "+X dias" do card geral representam
+   EXCLUSIVAMENTE a extensão operacional causada por Tarefas do Dia EXTERNAS ao Roadmap —
+   nunca o atraso real (msDelay/rawDelay), e nunca tarefas já vinculadas (roadmapRef), que
+   contariam o mesmo trabalho duas vezes. Sem nenhum impacto externo: extensão = 0, "No prazo". */
 function roadmapForecast(){
   const e = engine();
-  const extMin = roadmapOperationalExtensionMin();
-  const extDays = Math.floor(extMin/1440); /* só converte pra dias aqui, ao gerar a data */
+  const extDays = Math.round(getExternalDailyTaskImpactDays()); /* só converte pra dias inteiros aqui, ao gerar a data */
   const date = addDays(e.originalEnd, extDays);
   const delta = extDays; /* nunca derivado de today-originalEnd, msDelay ou rawDelay */
   return { date, delta };
