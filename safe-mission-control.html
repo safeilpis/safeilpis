@@ -1055,7 +1055,7 @@ function defaultState(){
     priority: 'Média', bottleneck: false, difficulty: null
   });
   return {
-    version: 13,
+    version: 14,
     weeklyGoalHours: 45,
     dashboardHidden: [], // chaves de seções do Dashboard ocultadas pelo usuário
     students: [], // alunos a receber (Aulas) {id,name,amount,dueDate,paid}
@@ -1189,6 +1189,12 @@ function migrate(s){
     /* v13: seções do Dashboard podem ser ocultadas individualmente pelo usuário. */
     if (!Array.isArray(s.dashboardHidden)) s.dashboardHidden = [];
     s.version = 13;
+  }
+  if (s.version < 14){
+    /* v14: limpeza pedida pelo usuário — histórico de Tarefas do Dia acumulado de testes
+       estava inflando o prazo do Roadmap mesmo sem nenhum marco real. Zera uma única vez. */
+    s.dailyTasks = [];
+    s.version = 14;
   }
   return s;
 }
@@ -1488,8 +1494,9 @@ function engine(){
    nunca confundido com atraso real. Sem marcos reais para comparar, não tem significado. */
 function roadmapPostponePct(){
   const e = engine();
+  if (e.total<=0) return 0; /* sem marco real, percentual não tem significado */
   const extDays = getExternalDailyTaskImpactDays();
-  if (e.total<=0 || !e.plannedSpanDays || extDays<=0) return 0;
+  if (!e.plannedSpanDays || extDays<=0) return 0;
   return Math.round(extDays / e.plannedSpanDays * 100);
 }
 /* v23 (correção de raiz): "Previsão de conclusão" + "+X dias" do card geral representam
@@ -1498,6 +1505,7 @@ function roadmapPostponePct(){
    contariam o mesmo trabalho duas vezes. Sem nenhum impacto externo: extensão = 0, "No prazo". */
 function roadmapForecast(){
   const e = engine();
+  if (e.total <= 0) return { date: todayISO(), delta: 0 }; /* sem nenhum marco real: nada a projetar, nunca inventa +X */
   const extDays = Math.round(getExternalDailyTaskImpactDays()); /* só converte pra dias inteiros aqui, ao gerar a data */
   const date = addDays(e.originalEnd, extDays);
   const delta = extDays; /* nunca derivado de today-originalEnd, msDelay ou rawDelay */
@@ -1779,12 +1787,12 @@ function renderDashboard(){
     ${dashSection('weekly','Missão semanal de trabalho', `
     <div class="card card-lg">
       <div class="wm-ring-wrap">
-        ${donutSVG(wkPct, wkPct>=100?'#16A34A':'#081A58', 128, 13, fmtDur(wk.safeMin), 'de '+fmtDur(goalMin), 21)}
+        ${donutSVG(wkPct, wkPct>=100?'#16A34A':'#081A58', 128, 13, Math.floor(wk.safeMin/60)+'h', 'de '+Math.floor(goalMin/60)+'h', 21)}
         <div class="wm-side">
-          <div class="wm-goal-row"><span class="stat-label">Meta da semana · Trabalho SAFE</span><button class="btn btn-ghost btn-sm" onclick="openWeeklyGoalForm()">Editar</button></div>
+          <div class="wm-goal-row" style="justify-content:flex-end"><button class="btn btn-ghost btn-sm" onclick="openWeeklyGoalForm()">Editar</button></div>
+          ${remaining>0?`<div class="wm-remaining">Faltam <b>${fmtDur(needAvg)}</b> por dia até sábado</div>`:''}
           ${pbarThick(wkPct, wkPct>=100?'green':wkPct>=50?'':'amber')}
           <div class="wm-remaining">${wkPct>=100?'Meta semanal atingida':wkPct+'% da meta já atingida'}</div>
-          ${remaining>0?`<div class="wm-remaining">Faltam <b>${fmtDur(needAvg)}</b> por dia até sábado</div>`:''}
         </div>
       </div>
       ${weekDayBarsHTML()}
@@ -1883,13 +1891,7 @@ function renderDashboard(){
       <div class="cd-over" id="cd-over" style="display:none">Prazo final ultrapassado</div>
       <div class="cd-line" id="cd-line">—</div>
       <div class="field-hint" id="cd-hint" style="margin-top:10px">Tempo restante até o prazo final da missão.</div>
-    </div>`)}
-
-    <div class="btn-row" style="margin-top:20px">
-      <button class="btn btn-soft btn-sm" onclick="exportBackup()">Exportar backup</button>
-      <button class="btn btn-soft btn-sm" onclick="$('#importFile').click()">Importar backup</button>
-      <input type="file" id="importFile" accept=".json" style="display:none" onchange="importBackup(this)">
-    </div>`;
+    </div>`)}`;
   tickCountdown();
 }
 
@@ -3458,6 +3460,7 @@ function deleteMilestone(id){
     const fr = S.milestones.find(x=>!x.pinned);
     const anchor = fr ? fr.startDate : todayISO();
     S.milestones = S.milestones.filter(x=>x.id!==id);
+    S.dailyTasks = (S.dailyTasks||[]).filter(x => !(x.roadmapRef && x.roadmapRef.mid===id)); /* remove vínculos órfãos em Hoje */
     const nf = S.milestones.find(x=>!x.pinned);
     if (nf){
       if (nf.status !== 'Concluída') nf.startDate = anchor;
@@ -3990,6 +3993,7 @@ function deleteSubtask(mid, sid){
   mutate(()=>{
     const m = S.milestones.find(x=>x.id===mid);
     removeTask(m.subtasks, sid);
+    S.dailyTasks = (S.dailyTasks||[]).filter(x => !(x.roadmapRef && x.roadmapRef.mid===mid && x.roadmapRef.sid===sid)); /* remove vínculo órfão em Hoje */
     chainKids({ startDate: m.startDate, children: m.subtasks }); /* close the sequential gap */
     syncTaskTree(m.subtasks);
     syncMilestoneCompletion(m);
