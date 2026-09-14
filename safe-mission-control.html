@@ -1225,8 +1225,11 @@ function taskExpectedEnd(t){
 /* Para encadear a PRÓXIMA subtarefa: se esta já terminou, usa a data REAL de término (mesmo que atrasada).
    taskExpectedEnd continua retornando o prazo planejado original (usado para medir atraso). */
 function taskRealEnd(t){
-  if (t.status === 'Concluída' && t.completedAt) return t.completedAt;
-  return taskExpectedEnd(t);
+  const cur = (t.status === 'Concluída' && t.completedAt) ? t.completedAt : taskExpectedEnd(t);
+  const observed = Math.max(0, Number(t.maxObservedDelayDays)||0);
+  if (!observed || !t.startDate) return cur;
+  const floor = addDays(t.startDate, Math.max(0, Number(t.plannedDuration)||0) + observed); /* pior atraso já visto, nunca regride */
+  return (cur && cur > floor) ? cur : floor;
 }
 function taskPlannedDays(t){
   if (t.plannedDuration != null && t.plannedDuration !== '') return Number(t.plannedDuration)||0;
@@ -1300,9 +1303,20 @@ function removeTask(list, id){
   return (list||[]).some(t => removeTask(t.children||[], id));
 }
 function setTaskDone(t, done){
-  t.status = done ? 'Concluída' : 'Em andamento';
-  t.completedAt = done ? todayISO() : null;
-  if (done) (t.children||[]).forEach(k => setTaskDone(k, true));
+  if (done){
+    const plannedEnd = taskExpectedEnd(t); /* prazo vigente no momento da conclusão */
+    const completedAt = todayISO();
+    if (plannedEnd){
+      const observed = Math.max(0, diffDays(plannedEnd, completedAt));
+      t.maxObservedDelayDays = Math.max(Number(t.maxObservedDelayDays)||0, observed); /* nunca diminui */
+    }
+    t.status = 'Concluída';
+    t.completedAt = completedAt;
+    (t.children||[]).forEach(k => setTaskDone(k, true));
+  } else {
+    t.status = 'Em andamento';
+    t.completedAt = null; /* reabrir NÃO apaga maxObservedDelayDays — o atraso histórico permanece */
+  }
 }
 /* keep parent status consistent with children (post-order sweep) */
 function syncTaskTree(list){
