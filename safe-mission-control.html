@@ -1055,7 +1055,7 @@ function defaultState(){
     priority: 'Média', bottleneck: false, difficulty: null
   });
   return {
-    version: 14,
+    version: 15,
     weeklyGoalHours: 45,
     dashboardHidden: [], // chaves de seções do Dashboard ocultadas pelo usuário
     students: [], // alunos a receber (Aulas) {id,name,amount,dueDate,paid}
@@ -1195,6 +1195,22 @@ function migrate(s){
        estava inflando o prazo do Roadmap mesmo sem nenhum marco real. Zera uma única vez. */
     s.dailyTasks = [];
     s.version = 14;
+  }
+  if (s.version < 15){
+    /* v15: marco especial "SAFE Plus" — um marco SEQUENCIAL normal (NÃO pinned), identificado
+       por specialRole (não pelo nome editável), criado UMA ÚNICA VEZ nesta migração. Se o
+       usuário excluir depois, nunca é recriado (o gate é a versão, não uma checagem de existência). */
+    const already = s.milestones.some(m => m.specialRole === 'safe-plus-first-unit');
+    if (!already){
+      s.milestones.push({
+        id: uid(), name: 'SAFE Plus', description: '', specialRole: 'safe-plus-first-unit',
+        status: 'Não iniciada', plannedDuration: 30, startDate: todayISO(), originalEnd: addDays(todayISO(),30),
+        actualEnd: null, notes: '', subtasks: [], priority: 'Média', bottleneck: false, difficulty: null
+      });
+    }
+    /* seções ocultadas do Dashboard voltam a aparecer todas; o botão de ocultar foi removido. */
+    s.dashboardHidden = [];
+    s.version = 15;
   }
   return s;
 }
@@ -1769,14 +1785,11 @@ function renderDashboard(){
   const wk = weekWorked(0), prevWk = weekWorked(1);
   const goalMin = (Number(S.weeklyGoalHours)||45)*60;
   const wkPct = goalMin ? Math.min(100, Math.round(wk.safeMin/goalMin*100)) : 0;
-  const dow = pISO(today).getDay(); const remDays = 7-((dow+6)%7);
-  const remaining = Math.max(0, goalMin - wk.safeMin);
-  const needAvg = remaining>0 ? Math.ceil(remaining/remDays) : 0;
+  const dailyTargetMin = Math.round(goalMin/6); /* meta semanal ÷ 6 dias úteis (seg-sáb) — fixo, não depende do dia atual nem do quanto já foi feito */
   const catTot = Object.values(wk.byCat).reduce((a,b)=>a+b,0);
   const fund = fundoExpansao(); /* smartInsightHTML() preservada mas não renderizada — card azul removido do Dashboard */
   const impact = roadmapImpactByCategory();
   const avgFeel = avgFeelingAllTime();
-  const nextMs = S.milestones.find(m=>!m.pinned && m.status!=='Concluída');
 
   $('#view-dashboard').innerHTML = `
     <div class="page-head">
@@ -1790,18 +1803,12 @@ function renderDashboard(){
         ${donutSVG(wkPct, wkPct>=100?'#16A34A':'#081A58', 128, 13, Math.floor(wk.safeMin/60)+'h', 'de '+Math.floor(goalMin/60)+'h', 21)}
         <div class="wm-side">
           <div class="wm-goal-row" style="justify-content:flex-end"><button class="btn btn-ghost btn-sm" onclick="openWeeklyGoalForm()">Editar</button></div>
-          ${remaining>0?`<div class="wm-remaining">Faltam <b>${fmtDur(needAvg)}</b> por dia até sábado</div>`:''}
+          <div class="wm-remaining">${fmtDur(dailyTargetMin)} por dia</div>
           ${pbarThick(wkPct, wkPct>=100?'green':wkPct>=50?'':'amber')}
-          <div class="wm-remaining">${wkPct>=100?'Meta semanal atingida':wkPct+'% da meta já atingida'}</div>
+          <div class="wm-remaining">${wkPct}% feito</div>
         </div>
       </div>
       ${weekDayBarsHTML()}
-    </div>`)}
-
-    ${dashSection('time','Para onde foi meu tempo', `
-    <div class="card card-lg">
-      ${catTot>0 ? catBarHTML(wk.byCat, catTot) : '<div class="muted small">Sem dados suficientes ainda. Registre tempo por categoria na aba <b>Hoje</b>.</div>'}
-      ${prevWk.total>0?`<div style="margin-top:12px">${wk.total>prevWk.total+30?`<span class="trend up">▲ +${fmtDur(wk.total-prevWk.total)} vs semana passada</span>`:wk.total<prevWk.total-30?`<span class="trend down">▼ −${fmtDur(prevWk.total-wk.total)} vs semana passada</span>`:`<span class="trend flat">— estável vs semana passada</span>`}</div>`:''}
     </div>`)}
 
     ${dashSection('trajectory','Trajetória SAFE PLUS', `
@@ -1814,30 +1821,9 @@ function renderDashboard(){
         ${e.realDelay>0?`<span class="health-pill" style="background:rgba(255,255,255,.14);color:#fff">🟠 Atraso ${e.realDelay} ${e.realDelay===1?'dia':'dias'}</span>`:`<span class="health-pill" style="background:rgba(255,255,255,.14);color:#fff">🟢 No prazo</span>`}
       </div>
       ${staircaseSVG(e.progress)}
-      <div class="stair-lvl-lbls">
-        <span>Nível 1 · 200 clínicas + 1ª unidade PLUS</span>
-        <span style="text-align:right">Nível 2 · 400 clínicas + 10 unidades</span>
-      </div>
       <div class="hero-bn">
-        <span class="hero-chip">Próxima etapa: ${nextMs?esc(nextMs.name):'—'}</span>
+        <span class="hero-chip">${safePlusLineHTML()}</span>
       </div>
-    </div>`)}
-
-    ${dashSection('fund','Fundo de expansão PLUS', `
-    <div class="fund-card">
-      ${fund.started ? `
-        <div class="fund-top"><span class="fund-val"><b>${fmtMoney(fund.total)}</b> de ${fmtMoney(fund.goal)}</span><span class="fund-pct">${fund.pct}%</span></div>
-        ${pbarThick(Math.min(100,fund.pct), 'green')}
-        <div class="stat-note" style="margin-top:10px">${fmtMoney(fund.monthlyNow)}/mês atualmente</div>
-      ` : `<div class="muted small">O fundo começa a acumular quando a 1ª unidade PLUS estiver operando.</div>`}
-    </div>`)}
-
-    ${dashSection('impact','Impacto das tarefas do dia no Roadmap', `
-    <div class="card">
-      ${impact.total>0 ? `
-        <div class="cat-bar">${impact.parts.map(p=>`<div style="flex:${p.hours};background:${TASK_CAT_COLORS[p.key]||'#6B7686'}" title="${esc(p.key)}: ${p.pct}%"></div>`).join('')}</div>
-        <div class="legend" style="margin-top:8px">${impact.parts.map(p=>`<span><i style="background:${TASK_CAT_COLORS[p.key]||'#6B7686'}"></i>${esc(p.key)} ${p.pct}%</span>`).join('')}</div>
-      ` : `<div class="muted small">Nenhum impacto registrado.</div>`}
     </div>`)}
 
     ${dashSection('evolution','Sua evolução · tudo acumulado', (function(){
@@ -1861,17 +1847,6 @@ function renderDashboard(){
       </div>`;
     })())}
 
-    ${dashSection('roadmap-intel','Inteligência do roadmap', `
-    <div class="card card-lg" style="display:flex;align-items:center;gap:18px;flex-wrap:wrap">
-      <span style="font-size:2rem">${fc.delta<0?'🚀':fc.delta>0?'⏳':'🎯'}</span>
-      <div style="flex:1;min-width:170px">
-        <div class="op-lbl">No ritmo atual, você termina em</div>
-        <div style="font-weight:800;font-size:1.35rem;color:var(--navy)">${fmt(fc.date)}</div>
-        ${pbarThick(e.progress, fc.delta>30?'red':fc.delta>0?'amber':'green')}
-      </div>
-      <span class="badge ${fc.delta<0?'b-green':fc.delta>0?(fc.delta<=30?'b-amber':'b-red'):'b-blue'}">${fc.delta<0?Math.abs(fc.delta)+' dias adiantado':fc.delta>0?'+'+fc.delta+' dias':'no prazo'}</span>
-    </div>`)}
-
     ${(S.clinics||[]).length ? dashSection('clinics','Saúde da carteira de clínicas', `
     <div class="card card-lg">
       <div style="display:flex;gap:20px;align-items:center;flex-wrap:wrap;justify-content:center">
@@ -1882,17 +1857,7 @@ function renderDashboard(){
       </div>
     </div>`) : ''}
 
-    ${dashSection('countdown','Prazo final da missão', `
-    <div class="countdown" id="countdown">
-      <div class="cd-head">
-        <span class="cd-title">Prazo final da missão · ${fmt(S.targetDate)}</span>
-        <button class="btn btn-ghost btn-sm" onclick="openTargetForm()">Editar prazo</button>
-      </div>
-      <div class="cd-over" id="cd-over" style="display:none">Prazo final ultrapassado</div>
-      <div class="cd-line" id="cd-line">—</div>
-      <div class="field-hint" id="cd-hint" style="margin-top:10px">Tempo restante até o prazo final da missão.</div>
-    </div>`)}`;
-  tickCountdown();
+`;
 }
 
 /* ---------- ROADMAP ---------- */
@@ -1917,9 +1882,8 @@ function renderRoadmap(){
       <div style="flex:1;min-width:180px">
         ${pbarThick(e.progress, e.realDelay>0?(e.realDelay<=30?'amber':'red'):'green')}
         <div class="sub-meta" style="margin-top:12px">
-          <span class="badge b-blue">${activeCount} ativos</span>
-          <span class="badge b-grey" style="background:var(--surface)">${e.remaining} restantes</span>
-          ${e.realDelay>0?`<span class="badge ${delayClass(e.realDelay)}">${e.realDelay}d atraso</span>`:`<span class="badge b-green">No prazo</span>`}
+          <span class="badge b-blue">${e.done} concluídos</span>
+          <span class="badge ${e.realDelay>0?delayClass(e.realDelay):'b-green'}">${e.realDelay}d atraso</span>
         </div>
       </div>
     </div>
@@ -1928,7 +1892,7 @@ function renderRoadmap(){
       <div style="flex:1;min-width:150px">
         <div class="op-lbl">Previsão de conclusão</div>
         <div style="font-weight:800;font-size:1.3rem;color:var(--navy)">${fmt(fc.date)}</div>
-        ${opMinutesTotal()>0?`<div class="muted small" style="margin-top:4px">Tarefas do dia adiam ~${roadmapPostponePct()}% do prazo</div>`:''}
+        <div class="muted small" style="margin-top:4px">${roadmapPostponePct()}% Atraso - tarefas do dia</div>
       </div>
       <span class="badge ${fc.delta<0?'b-green':fc.delta>0?(fc.delta<=30?'b-amber':'b-red'):'b-blue'}">${fc.delta<0?Math.abs(fc.delta)+' dias adiantado':fc.delta>0?'+'+fc.delta+' dias':'no prazo'}</span>
     </div>
@@ -1944,7 +1908,6 @@ function renderRoadmap(){
         <input class="ia-days" id="ia-ms-days" type="number" min="1" placeholder="dias" onkeydown="if(event.key==='Enter')inlineCreateMilestone()">
         <button class="btn btn-primary btn-sm" onclick="inlineCreateMilestone()">+ Criar</button>
       </div>
-      <div class="ia-hint">Nome, data inicial e duração → a data final é calculada sozinha. O próximo marco já sugere começar quando este terminar.</div>
     </div>`;
 }
 
@@ -2653,8 +2616,7 @@ function hideDashSection(key){
 }
 function restoreDashSections(){ mutate(()=>{ S.dashboardHidden=[]; }); }
 function dashSection(key, label, bodyHtml){
-  if ((S.dashboardHidden||[]).includes(key)) return '';
-  return `<div class="section-label dash-sec-label">${label}<button class="dash-hide-btn" onclick="hideDashSection('${key}')" aria-label="Ocultar ${label}" title="Ocultar">×</button></div>${bodyHtml}`;
+  return `<div class="section-label">${label}</div>${bodyHtml}`;
 }
 
 /* ---------- Trajetória / Fundo / Impacto helpers (v18) ---------- */
@@ -2666,6 +2628,22 @@ function staircaseSVG(pct){
   const w = 100/n;
   let bars=''; heights.forEach((hgt,i)=>{ bars += `<div class="stair-step ${i<on?'on':''}" style="height:${hgt}%"></div>`; });
   return `<div class="stair-wrap">${bars}</div>`;
+}
+function getSafePlusMilestone(){ return S.milestones.find(m => m.specialRole === 'safe-plus-first-unit') || null; }
+function getSafePlusTargetDate(){ const m = getSafePlusMilestone(); if (!m) return null; return m.status==='Concluída' ? m.actualEnd : msProjectedEnd(m); }
+function getSafePlusDaysRemaining(){
+  const m = getSafePlusMilestone();
+  if (!m) return null;
+  if (m.status==='Concluída') return 0;
+  const target = getSafePlusTargetDate();
+  return target ? Math.max(0, diffDays(todayISO(), target)) : null;
+}
+function safePlusLineHTML(){
+  const m = getSafePlusMilestone();
+  if (!m) return '1ª unidade Plus sem prazo';
+  if (m.status==='Concluída') return '1ª unidade Plus concluída';
+  const d = getSafePlusDaysRemaining();
+  return d==null ? '1ª unidade Plus sem prazo' : `1ª unidade Plus em ${d} ${d===1?'dia':'dias'}`;
 }
 function firstUnitDate(){
   const unitMap = [['Abrir Unidade Plus 1',1],['Abrir mais 2 Unidades Plus',2],['Abrir mais 3 Unidades Plus',3],['Abrir mais 4 Unidades Plus',4]];
@@ -3806,7 +3784,12 @@ function openMilestoneForm(id){
     <div class="modal-title">${m?'Editar marco':'Novo marco'}</div>
     <div class="field"><label>Nome</label><input id="f-name" value="${m?esc(m.name):''}" placeholder="Ex.: Abrir Unidade Plus 1"></div>
     <div class="field"><label>Descrição</label><input id="f-desc" value="${m?esc(m.description):''}" placeholder="Resultado esperado"></div>
+    ${m && m.specialRole ? `
+    <div class="field"><label>Data inicial</label><input id="f-start" type="date" value="${m.startDate}" disabled style="opacity:.6"></div>
+    <div class="field-hint" style="margin-top:-8px;margin-bottom:16px">Automática — definida pela posição deste marco no Roadmap.</div>
+    ` : `
     <div class="field"><label>Data inicial</label><input id="f-start" type="date" value="${m?m.startDate:todayISO()}" onchange="calcDates('start')"></div>
+    `}
     <div class="field-row">
       <div class="field"><label>Dias planejados</label><input id="f-dur" type="number" min="0" value="${m?m.plannedDuration:30}" oninput="calcDates('dur')"></div>
       <div class="field"><label>Data prevista</label><input id="f-end" type="date" value="${endVal}" onchange="calcDates('end')"></div>
@@ -3885,7 +3868,7 @@ function saveMilestone(id){
       applyBottleneck(m);
       if (m.status==='Concluída' && !m.actualEnd) m.actualEnd = todayISO();
       if (m.status!=='Concluída') m.actualEnd = null;
-      rechainMilestones(S.milestones.indexOf(m)); /* cascade: edited dates push the following milestones */
+      rechainMilestones(m.specialRole ? 0 : S.milestones.indexOf(m)); /* SAFE Plus: recalcula do zero pra sua própria data vir 100% da posição */
     } else {
       const m2 = { id:uid(), name, description:$('#f-desc').value.trim(), status:$('#f-status').value,
         plannedDuration:dur, startDate:start, originalEnd:end, actualEnd:null,
