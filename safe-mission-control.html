@@ -1834,7 +1834,7 @@ function renderDashboard(){
         </div>
         ${e.realDelay>0?`<span class="health-pill" style="background:rgba(255,255,255,.14);color:#fff">🟠 Atraso ${e.realDelay} ${e.realDelay===1?'dia':'dias'}</span>`:`<span class="health-pill" style="background:rgba(255,255,255,.14);color:#fff">🟢 No prazo</span>`}
       </div>
-      ${staircaseSVG(e.progress)}
+      ${staircaseSVG(Math.min(100, safePlusUnitsCompleted()/7*100))}
       <div class="hero-bn">
         <span class="hero-chip">${safePlusLineHTML()}</span>
       </div>
@@ -1860,16 +1860,6 @@ function renderDashboard(){
         <div class="at-card"><div class="at-ic" style="background:#F1EBFC;color:#7C3AED">${moodEmoji(avgFeel)}</div><div class="at-info"><div class="at-val">${moodStr||'Sem registros'}</div><div class="at-lbl">Humor médio</div></div></div>
       </div>`;
     })())}
-
-    ${(S.clinics||[]).length ? dashSection('clinics','Saúde da carteira de clínicas', `
-    <div class="card card-lg">
-      <div style="display:flex;gap:20px;align-items:center;flex-wrap:wrap;justify-content:center">
-        ${donutPie(clinicTempBreakdown().map(b=>({value:b.value,color:b.color})), 140, String((S.clinics||[]).length), 'clínicas')}
-        <div style="flex:1;min-width:170px">${clinicThermo()}
-          <div class="legend" style="margin-top:12px;flex-direction:column;align-items:flex-start;gap:7px">${clinicTempBreakdown().filter(b=>b.value>0).map(b=>`<span><i style="background:${b.color}"></i>${b.label}: <b>${b.value}</b></span>`).join('')}</div>
-        </div>
-      </div>
-    </div>`) : ''}
 
 `;
 }
@@ -2654,10 +2644,17 @@ function getSafePlusDaysRemaining(){
 }
 function safePlusLineHTML(){
   const m = getSafePlusMilestone();
-  if (!m) return '1ª unidade Plus sem prazo';
-  if (m.status==='Concluída') return '1ª unidade Plus concluída';
+  if (!m) return 'Unidade Plus sem prazo';
+  if (m.status==='Concluída') return 'Unidade Plus concluída';
   const d = getSafePlusDaysRemaining();
-  return d==null ? '1ª unidade Plus sem prazo' : `1ª unidade Plus em ${d} ${d===1?'dia':'dias'}`;
+  if (d==null) return 'Unidade Plus sem prazo';
+  if (d < 30) return `Unidade Plus em ${d} ${d===1?'dia':'dias'}`;
+  const months = Math.floor(d/30);
+  return `Unidade Plus em ${months} ${months===1?'mês':'meses'}`;
+}
+/* Cada barra da escada = uma "Unidade Safe Plus" concluída no Roadmap (nome exato da tarefa). */
+function safePlusUnitsCompleted(){
+  return S.milestones.filter(m => (m.name||'').trim().toLowerCase() === 'unidade safe plus' && m.status==='Concluída').length;
 }
 function firstUnitDate(){
   const unitMap = [['Abrir Unidade Plus 1',1],['Abrir mais 2 Unidades Plus',2],['Abrir mais 3 Unidades Plus',3],['Abrir mais 4 Unidades Plus',4]];
