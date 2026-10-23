@@ -1,0 +1,263 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Visitas | SAFE ILPIS</title>
+<meta name="robots" content="noindex, nofollow">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap">
+<style>
+/* Layout: coluna única estreita, mobile-first, muito respiro entre blocos. Branco predominante, azul-marinho como cor de ação. */
+:root {
+  --bg: #ffffff;
+  --surface: #ffffff;
+  --soft: #f4f6fa;
+  --ink: #0c1f3d;
+  --muted: #5d6b82;
+  --line: #e6eaf1;
+  --navy: #0c2a52;
+  --on-navy: #ffffff;
+  --ok: #1f7a4d;
+  --font: "Manrope", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #09121f; --surface: #0e1a2b; --soft: #142239; --ink: #eaf0f9; --muted: #93a2ba;
+    --line: #1f2f48; --navy: #dbe6f8; --on-navy: #0a1a33; --ok: #5fcf98; color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #09121f; --surface: #0e1a2b; --soft: #142239; --ink: #eaf0f9; --muted: #93a2ba;
+  --line: #1f2f48; --navy: #dbe6f8; --on-navy: #0a1a33; --ok: #5fcf98; color-scheme: dark;
+}
+* { box-sizing: border-box; }
+html { color-scheme: light dark; }
+body {
+  margin: 0;
+  background: var(--bg); color: var(--ink); font-family: var(--font); font-size: 16px; line-height: 1.55;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  padding-block: 40px 72px; -webkit-font-smoothing: antialiased;
+}
+main { max-width: 460px; margin: 0 auto; display: flex; flex-direction: column; gap: 56px; }
+header { display: flex; flex-direction: column; gap: 12px; padding-top: 8px; }
+.eyebrow { font-size: 12px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); }
+h1 { margin: 0; font-size: 40px; line-height: 1.08; font-weight: 800; letter-spacing: -.02em; text-wrap: balance; }
+.date { color: var(--muted); font-size: 17px; margin: 0; }
+.arrive { margin: 8px 0 0; color: var(--muted); font-size: 15px; max-width: 38ch; }
+
+.visits { display: flex; flex-direction: column; gap: 24px; }
+.card { background: var(--surface); border: 1px solid var(--line); border-radius: 24px; padding: 28px 24px; display: flex; flex-direction: column; gap: 24px; }
+.top { display: flex; flex-direction: column; gap: 6px; }
+.time { font-size: 32px; font-weight: 800; letter-spacing: -.02em; line-height: 1.1; font-variant-numeric: tabular-nums; }
+.name { font-size: 18px; font-weight: 700; margin: 6px 0 0; }
+.place { color: var(--muted); font-size: 15px; margin: 0; }
+
+button, .btn { font-family: inherit; font-size: 16px; font-weight: 700; border: 0; border-radius: 16px; min-height: 52px; padding: 0 22px; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; text-decoration: none; transition: transform .12s ease, opacity .12s ease; -webkit-tap-highlight-color: transparent; }
+button:active, .btn:active { transform: scale(.98); }
+:focus-visible { outline: 3px solid var(--navy); outline-offset: 3px; }
+.primary { background: var(--navy); color: var(--on-navy); width: 100%; }
+.ghost { background: var(--soft); color: var(--ink); }
+.link { background: none; color: var(--muted); min-height: 44px; padding: 0; font-size: 15px; font-weight: 600; justify-content: flex-start; text-decoration: underline; text-underline-offset: 4px; }
+
+.reveal { display: flex; flex-direction: column; gap: 28px; }
+.reveal[hidden] { display: none !important; }
+.block { display: flex; flex-direction: column; gap: 10px; }
+.label { font-size: 12px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); }
+.value { font-size: 17px; line-height: 1.5; margin: 0; user-select: all; -webkit-user-select: all; }
+.actions { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 6px; }
+.actions > * { flex: 1 1 140px; }
+.hint { margin: 0; color: var(--muted); font-size: 14px; padding: 16px 18px; background: var(--soft); border-radius: 16px; }
+.about { display: flex; flex-direction: column; gap: 10px; }
+.about p { margin: 0; color: var(--muted); font-size: 15px; padding: 16px 18px; background: var(--soft); border-radius: 16px; }
+.about p[hidden] { display: none !important; }
+
+.prep { display: flex; flex-direction: column; gap: 8px; }
+.prep h2 { font-size: 22px; font-weight: 800; letter-spacing: -.01em; margin: 0 0 16px; }
+details { border-top: 1px solid var(--line); }
+details:last-of-type { border-bottom: 1px solid var(--line); }
+summary { list-style: none; cursor: pointer; padding: 22px 0; font-weight: 600; font-size: 17px; display: flex; justify-content: space-between; align-items: center; gap: 16px; }
+summary::-webkit-details-marker { display: none; }
+summary::after { content: ""; width: 9px; height: 9px; border-right: 2px solid var(--muted); border-bottom: 2px solid var(--muted); transform: rotate(45deg); transition: transform .2s ease; flex: none; margin-right: 4px; }
+details[open] summary::after { transform: rotate(-135deg); }
+.body { padding: 0 0 26px; display: flex; flex-direction: column; gap: 16px; color: var(--muted); font-size: 16px; }
+.body p { margin: 0; }
+.body ul { margin: 0; padding-left: 20px; display: flex; flex-direction: column; gap: 12px; }
+.body strong { color: var(--ink); font-weight: 700; }
+
+footer { color: var(--muted); font-size: 13px; text-align: center; }
+.toast { position: fixed; left: 50%; bottom: calc(24px + env(safe-area-inset-bottom, 0px)); transform: translate(-50%, 20px); background: var(--navy); color: var(--on-navy); padding: 14px 22px; border-radius: 999px; font-weight: 700; font-size: 15px; opacity: 0; pointer-events: none; transition: all .22s ease; z-index: 20; }
+.toast.show { opacity: 1; transform: translate(-50%, 0); }
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+</style>
+
+</head>
+<body>
+<main>
+  <header>
+    <span class="eyebrow">SAFE ILPIS · Assessoria Sênior</span>
+    <h1>Suas visitas</h1>
+    <p class="date">Quinta-feira, 29 de outubro</p>
+    <p class="arrive">Chegue até 10 min antes. Há tolerância de 20 min depois do horário. Se atrasar, ligue para a casa.</p>
+  </header>
+
+  <section class="visits" id="visits" aria-label="Visitas confirmadas"></section>
+
+  <section class="prep">
+    <h2>Para se preparar</h2>
+
+    <details>
+      <summary>Dicas para sua visita</summary>
+      <div class="body">
+        <ul>
+          <li>Pergunte como é a rotina da casa e se ela é flexível para o seu familiar.</li>
+          <li>Conte como ele se comporta e do que gosta.</li>
+          <li>Pergunte como a casa trata a adaptação de hóspedes lúcidos.</li>
+          <li>Converse primeiro, conheça os cômodos depois.</li>
+          <li>Fique bastante tempo no local.</li>
+          <li>Converse com hóspedes 100% lúcidos.</li>
+          <li>Diga todas as suas preocupações.</li>
+          <li>Peça para ler o contrato.</li>
+          <li>Pergunte como é a comunicação da casa e em quanto tempo ela responde mensagens e ligações.</li>
+          <li>Dê um prazo honesto de retorno. Quanto mais rápido você responder, maior a chance de negociar desconto.</li>
+        </ul>
+      </div>
+    </details>
+
+    <details>
+      <summary>Como escolher</summary>
+      <div class="body">
+        <p>Pense na experiência do seu familiar, não na sua. Isso torna a escolha mais certeira.</p>
+        <p>Teste 30 dias e observe se há uma pequena evolução na adaptação. Uma pessoa lúcida leva cerca de 8 meses e meio para se adaptar de verdade.</p>
+        <p>O horário das visitas é combinado para organização. Depois de um tempo de hospedagem, as visitas ficam livres, e a casa não pode restringir seu acesso. Deixe isso claro desde o início.</p>
+      </div>
+    </details>
+
+    <details>
+      <summary>Durante a hospedagem</summary>
+      <div class="body">
+        <p>A relação com a direção da casa influencia muito a sua experiência. Conheça essas pessoas e converse com elas.</p>
+        <p>Para decisões importantes, como mudança no quarto ou reajuste de valores, marque uma reunião presencial. <strong>93%</strong> dos problemas do dia a dia se resolvem assim.</p>
+        <p>A equipe SAFE ILPIS acompanha toda a hospedagem e avalia as casas continuamente, inclusive as de melhor histórico.</p>
+      </div>
+    </details>
+
+    <details>
+      <summary>Cancelamento e reagendamento</summary>
+      <div class="body">
+        <p>Cancelar ou reagendar mais de 2 vezes faz perder o desconto mensal de <strong>R$ 50,00</strong> já aplicado, em qualquer unidade.</p>
+        <p>A regra respeita a agenda dos profissionais que vão receber você. Prefira reagendar a cancelar.</p>
+      </div>
+    </details>
+  </section>
+
+  <footer>Seu assessor fica à disposição durante todo o período de visitas.</footer>
+</main>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script>
+var VISITS = [
+  { id: "r36", time: "09:00", name: "Residencial 36", place: "Vargem Grande Paulista",
+    address: "R. Capivara, 1225 – Bairro Remanso, Vargem Grande Paulista – SP, 06730-000",
+    house: "Fonte de Vida · Unidade 3", contact: "Beth", phone: "+55 11 95080-3070",
+    about: "Acesso por cerca de 10 m de estrada de terra firme, totalmente acessível, conferida pela Anvisa local e pela nossa equipe. Pronto-socorro a 7 min, com protocolo de emergência de histórico positivo. São cerca de 14 hospedagens conosco, todas avaliadas entre 9,8 e 10. Casa simples, muito qualificada e com ótima gestão." },
+  { id: "r55", time: "10:15", name: "Residencial 55", place: "Vargem Grande Paulista",
+    address: "Clínica IMAI – Estr. do Pôsto, 855 – Chácara Santa Mônica, Vargem Grande Paulista – SP, 06730-000",
+    contact: "Cida", phone: "+55 11 99824-7599" },
+  { id: "r128", time: "11:30", name: "Residencial 128", place: "Cotia",
+    address: "Elohei Casa de Repouso – Rua Santo Antônio, 185 – Vila Santo Antônio, Cotia – SP, 06708-370",
+    contact: "Fernanda", phone: "+55 11 93285-3022" }
+];
+
+var toastEl = document.getElementById("toast"), toastTimer;
+function toast(msg) {
+  toastEl.textContent = msg; toastEl.classList.add("show");
+  clearTimeout(toastTimer); toastTimer = setTimeout(function () { toastEl.classList.remove("show"); }, 1800);
+}
+function copyText(text, node) {
+  function fallback() {
+    try {
+      var r = document.createRange(); r.selectNodeContents(node);
+      var s = window.getSelection(); s.removeAllRanges(); s.addRange(r);
+      document.execCommand("copy");
+      toast("Copiado");
+    } catch (e) { toast("Selecione e copie o texto"); }
+  }
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(text).then(function () { toast("Copiado"); }, fallback);
+  } else { fallback(); }
+}
+function el(tag, cls, text) {
+  var n = document.createElement(tag);
+  if (cls) n.className = cls;
+  if (text != null) n.textContent = text;
+  return n;
+}
+function block(label, valueText) {
+  var b = el("div", "block");
+  b.appendChild(el("span", "label", label));
+  var v = el("p", "value", valueText); b.appendChild(v);
+  return { block: b, value: v };
+}
+
+var root = document.getElementById("visits");
+VISITS.forEach(function (v) {
+  var card = el("article", "card");
+  var top = el("div", "top");
+  top.appendChild(el("div", "time", v.time));
+  top.appendChild(el("h3", "name", v.name));
+  top.appendChild(el("p", "place", v.place));
+  card.appendChild(top);
+
+  var start = el("button", "primary", "Iniciar visita e ver endereço");
+  start.type = "button";
+  card.appendChild(start);
+
+  var reveal = el("div", "reveal"); reveal.hidden = true;
+  var addr = block("Endereço", v.address);
+  reveal.appendChild(addr.block);
+  var acts = el("div", "actions");
+  var copy = el("button", "primary", "Copiar endereço"); copy.type = "button";
+  copy.addEventListener("click", function () { copyText(v.address, addr.value); });
+  var map = el("a", "btn ghost", "Abrir no mapa");
+  map.href = "https://www.google.com/maps/search/?api=1&query=" + encodeURIComponent(v.address);
+  map.target = "_blank"; map.rel = "noopener";
+  acts.appendChild(copy); acts.appendChild(map);
+  addr.block.appendChild(acts);
+
+  var ct = block("Contato · " + v.contact, v.phone);
+  var cacts = el("div", "actions");
+  var cc = el("button", "ghost", "Copiar número"); cc.type = "button";
+  cc.addEventListener("click", function () { copyText(v.phone, ct.value); });
+  var call = el("a", "btn ghost", "Ligar");
+  call.href = "tel:" + v.phone.replace(/[^+\d]/g, "");
+  cacts.appendChild(cc); cacts.appendChild(call);
+  ct.block.appendChild(cacts);
+  reveal.appendChild(ct.block);
+
+  reveal.appendChild(el("p", "hint", "Antes de sair, envie uma mensagem aos donos com seu horário de chegada."));
+  card.appendChild(reveal);
+
+  start.addEventListener("click", function () {
+    reveal.hidden = false; start.hidden = true;
+    reveal.scrollIntoView({ behavior: "smooth", block: "nearest" });
+  });
+
+  if (v.about) {
+    var ab = el("div", "about");
+    var tg = el("button", "link", "Sobre esta casa"); tg.type = "button";
+    tg.setAttribute("aria-expanded", "false");
+    var tx = el("p", null, v.about); tx.hidden = true;
+    tg.addEventListener("click", function () {
+      tx.hidden = !tx.hidden; tg.setAttribute("aria-expanded", String(!tx.hidden));
+    });
+    ab.appendChild(tg); ab.appendChild(tx);
+    card.appendChild(ab);
+  }
+  root.appendChild(card);
+});
+</script>
+
+</body>
+</html>
