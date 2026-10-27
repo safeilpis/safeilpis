@@ -20,13 +20,13 @@
   --forest: #123524;
   --forest-2: #1c4a34;
   --leaf: #b7dba9;
-  --leaf-soft: #e7f1de;
+  --leaf-soft: #e9f2e1;
   --leaf-line: #cfe3c4;
   --cream: #f7f3e8;
   --paper: #fffefa;
   --ink: #14241b;
   --muted: #6a766d;
-  --line: #e8e2d1;
+  --line: #ece6d6;
 
   --amber: #c98a1b;
   --amber-soft: #fbf1d8;
@@ -34,9 +34,8 @@
   --ok: #2f8f52;
   --ok-soft: #e3f2e3;
 
-  --serif: 'Montserrat', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  --sans: 'Montserrat', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  --radius: 26px;
+  --font: 'Montserrat', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --radius: 24px;
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -47,7 +46,7 @@ html { -webkit-text-size-adjust: 100%; }
 body {
   background: var(--cream);
   color: var(--ink);
-  font-family: var(--sans);
+  font-family: var(--font);
   font-size: 15px;
   line-height: 1.5;
   -webkit-font-smoothing: antialiased;
@@ -62,7 +61,7 @@ body {
   overflow: hidden;
   background: var(--forest);
   color: var(--cream);
-  padding: max(44px, calc(env(safe-area-inset-top) + 28px)) 16px 104px;
+  padding: max(40px, calc(env(safe-area-inset-top) + 24px)) 16px 96px;
 }
 
 .hero__quadra {
@@ -78,17 +77,16 @@ body {
 
 .hero__inner {
   position: relative;
-  max-width: 560px;
+  max-width: 480px;
   margin: 0 auto;
-  padding: 0 6px;
+  padding: 0 4px;
 }
 
 .hero h1 {
-  font-family: var(--serif);
-  font-weight: 700;
-  font-size: clamp(26px, 7.6vw, 42px);
-  line-height: 1.08;
-  letter-spacing: .02em;
+  font-weight: 800;
+  font-size: clamp(26px, 7.6vw, 34px);
+  line-height: 1.1;
+  letter-spacing: .01em;
   text-transform: uppercase;
 }
 .hero h1 span { display: block; color: var(--leaf); }
@@ -97,10 +95,10 @@ body {
   display: flex;
   align-items: center;
   gap: 12px;
-  margin-top: 20px;
+  margin-top: 16px;
   font-size: 12px;
   font-weight: 800;
-  letter-spacing: .22em;
+  letter-spacing: .2em;
   text-transform: uppercase;
   color: var(--leaf);
 }
@@ -112,21 +110,20 @@ body {
 }
 
 .hero__texto {
-  margin-top: 22px;
-  max-width: 40ch;
+  margin-top: 18px;
   padding-left: 14px;
   border-left: 2px solid var(--leaf);
   font-size: 14px;
-  line-height: 1.65;
+  line-height: 1.6;
   color: rgba(247, 243, 232, .84);
 }
 
-/* ---------- CONTEÚDO ---------- */
+/* ---------- CONTEÚDO (sempre 1 coluna) ---------- */
 
 .wrap {
-  max-width: 560px;
+  max-width: 480px;
   margin: 0 auto;
-  padding: 0 16px 56px;
+  padding: 0 16px 48px;
 }
 
 /* ---------- DATAS ---------- */
@@ -134,11 +131,21 @@ body {
 .datas {
   position: relative;
   z-index: 2;
-  margin-top: -68px;
+  margin-top: -64px;
   background: var(--paper);
   border-radius: var(--radius);
-  padding: 18px 16px 16px;
+  padding: 16px 14px 14px;
   box-shadow: 0 0 0 1px var(--line), 0 22px 40px -22px rgba(18, 53, 36, .5);
+}
+
+.datas__titulo {
+  margin-bottom: 10px;
+  text-align: center;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  color: var(--muted);
 }
 
 .datas__lista {
@@ -152,30 +159,16 @@ body {
   min-width: 0;
   text-align: center;
   background: var(--leaf-soft);
-  border-radius: 16px;
-  padding: 10px 2px 9px;
-}
-.data__sem {
-  display: block;
-  font-size: 9.5px;
-  font-weight: 800;
-  letter-spacing: .16em;
-  color: var(--forest-2);
-  opacity: .7;
-}
-.data__num {
-  display: block;
-  margin-top: 2px;
-  font-family: var(--serif);
-  font-variant-numeric: lining-nums;
+  border-radius: 14px;
+  padding: 10px 2px;
   color: var(--forest);
   white-space: nowrap;
 }
-.data__num strong { font-size: 22px; font-weight: 700; line-height: 1; }
-.data__num small { font-size: 11px; font-weight: 600; color: var(--forest-2); }
+.data strong { font-size: 20px; font-weight: 800; line-height: 1; }
+.data small { font-size: 11px; font-weight: 600; color: var(--forest-2); }
 
 .datas__nota {
-  margin-top: 14px;
+  margin-top: 12px;
   text-align: center;
   font-size: 12.5px;
   font-weight: 600;
@@ -199,23 +192,20 @@ body {
 
 .planos {
   display: grid;
-  gap: 20px;
-  margin-top: 22px;
+  gap: 16px;
+  margin-top: 20px;
 }
 
 .card {
   overflow: hidden;
   background: var(--paper);
   border-radius: var(--radius);
-  box-shadow: 0 0 0 1px var(--line), 0 16px 34px -24px rgba(18, 53, 36, .5);
-  animation: subir .6s cubic-bezier(.2, .7, .2, 1) both;
-  animation-delay: calc(var(--i, 0) * 90ms);
+  box-shadow: 0 0 0 1px var(--line), 0 14px 30px -24px rgba(18, 53, 36, .55);
+  animation: subir .5s cubic-bezier(.2, .7, .2, 1) both;
+  animation-delay: calc(var(--i, 0) * 80ms);
 }
 
-.card--intenso {
-  background: linear-gradient(180deg, #f1f7ec 0%, var(--paper) 42%);
-  box-shadow: 0 0 0 1.5px var(--leaf-line), 0 16px 34px -24px rgba(18, 53, 36, .5);
-}
+.card--intenso { box-shadow: 0 0 0 1.5px var(--forest), 0 14px 30px -24px rgba(18, 53, 36, .55); }
 
 .card__faixa {
   padding: 9px 12px;
@@ -224,261 +214,213 @@ body {
   text-align: center;
   font-size: 10.5px;
   font-weight: 800;
-  letter-spacing: .2em;
+  letter-spacing: .16em;
 }
 
-.card__corpo { padding: 24px 20px 20px; }
+.card__corpo { padding: 20px 18px 18px; }
 
-.card__topo {
+/* 1. horário + preço */
+
+.card__head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.card__horario {
+  font-size: 32px;
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: -.02em;
+  color: var(--forest);
+  white-space: nowrap;
+}
+
+.card__preco { text-align: right; flex: none; }
+.preco__valor {
+  display: block;
+  font-size: 26px;
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: -.02em;
+  color: var(--forest);
+  white-space: nowrap;
+}
+.preco__mes {
+  display: block;
+  margin-top: 4px;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--muted);
+}
+
+/* 2. quadra */
+
+.locais {
+  list-style: none;
+  display: grid;
+  gap: 8px;
+  margin-top: 16px;
+}
+.local {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--ink);
+}
+.local__ico {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+}
+.local__ico svg {
+  width: 16px;
+  height: 16px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.9;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.local--descoberta .local__ico { background: var(--leaf-soft); color: var(--forest); box-shadow: inset 0 0 0 1.5px var(--leaf-line); }
+.local--coberta .local__ico { background: var(--forest); color: var(--leaf); }
+.local__hora {
+  min-width: 58px;
+  font-size: 13px;
+  font-weight: 800;
+  color: var(--muted);
+}
+
+.card__detalhe {
+  margin-top: 14px;
+  font-size: 13px;
+  color: var(--muted);
+}
+.card__detalhe b { font-weight: 800; color: var(--forest); }
+
+/* 3. vagas */
+
+.vagas {
+  margin-top: 18px;
+  padding-top: 16px;
+  border-top: 1px solid var(--line);
+}
+
+.vagas__topo {
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 10px;
 }
-.card__dia {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  font-size: 12px;
-  font-weight: 800;
-  letter-spacing: .24em;
-  text-transform: uppercase;
-  color: var(--forest-2);
-}
-.card__dia::before {
-  content: "";
-  width: 18px;
-  height: 1.5px;
-  background: var(--leaf);
-}
+.vagas__num { font-size: 14px; font-weight: 700; color: var(--muted); white-space: nowrap; }
+.vagas__num b { font-size: 18px; font-weight: 800; color: var(--forest); }
 
-.selo {
-  padding: 5px 11px;
-  border-radius: 99px;
-  border: 1px solid var(--leaf-line);
-  background: var(--leaf-soft);
-  color: var(--forest-2);
-  font-size: 11px;
-  font-weight: 700;
-  letter-spacing: .03em;
-}
-
-.card__horario {
-  margin: 14px 0 10px;
-  font-family: var(--serif);
-  font-variant-numeric: lining-nums;
-  font-weight: 700;
-  font-size: 40px;
-  line-height: 1;
-  letter-spacing: -.02em;
-  color: var(--forest);
-}
-
-.card__locais {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 6px;
-}
-.local {
+.chip {
+  flex: none;
   display: inline-flex;
   align-items: center;
-  gap: 8px;
-  max-width: 100%;
-  padding: 8px 14px 8px 11px;
+  gap: 6px;
+  padding: 5px 10px;
   border-radius: 99px;
-  font-size: 12px;
-  font-weight: 800;
-  letter-spacing: .04em;
-  line-height: 1.25;
-  text-transform: uppercase;
-}
-.local__ico { flex: none; display: block; width: 18px; height: 18px; }
-.local__ico svg {
-  display: block;
-  width: 18px;
-  height: 18px;
-  fill: none;
-  stroke: currentColor;
-  stroke-width: 1.8;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-}
-.local--descoberta {
-  background: var(--leaf-soft);
-  color: var(--forest);
-  box-shadow: inset 0 0 0 1.5px var(--leaf-line);
-}
-.local--coberta { background: var(--forest); color: var(--cream); }
-.local--coberta .local__ico { color: var(--leaf); }
-.card__locais .mais {
-  margin-left: 15px;
-  font-size: 14px;
-  font-weight: 800;
-  line-height: 1;
-  color: var(--forest-2);
-}
-
-/* preço */
-
-.preco {
-  margin-top: 22px;
-  padding-top: 20px;
-  border-top: 1px dashed var(--line);
-}
-.preco__rotulo {
-  display: block;
-  margin-bottom: 6px;
   font-size: 10.5px;
   font-weight: 800;
-  letter-spacing: .2em;
+  letter-spacing: .06em;
   text-transform: uppercase;
-  color: var(--muted);
+  white-space: nowrap;
 }
-.preco__valor {
-  display: block;
-  font-family: var(--serif);
-  font-variant-numeric: lining-nums;
-  font-weight: 700;
-  font-size: 46px;
-  line-height: 1;
-  letter-spacing: -.02em;
-  color: var(--forest);
-}
-.preco__lado { margin-top: 12px; }
-.preco__aula { display: block; font-size: 14px; font-weight: 600; color: var(--ink); }
-.preco__aula b { font-weight: 800; color: var(--forest); }
-.preco__qtd { display: block; margin-top: 2px; font-size: 12.5px; color: var(--muted); }
-
-/* vagas */
-
-.vagas {
-  margin-top: 22px;
-  padding: 16px;
-  border-radius: 20px;
-  background: var(--cream);
-}
-
-.status {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  padding: 12px 14px;
-  border-radius: 14px;
-}
-.status__dot {
-  flex: none;
-  width: 11px;
-  height: 11px;
-  border-radius: 50%;
-}
-.status strong {
-  display: block;
-  font-size: 12px;
-  font-weight: 800;
-  letter-spacing: .14em;
-}
-.status span { font-size: 12.5px; }
-
-.status--formacao { background: var(--amber-soft); color: var(--amber-ink); }
-.status--formacao .status__dot { background: var(--amber); box-shadow: 0 0 0 4px rgba(201, 138, 27, .22); }
-.status--ok { background: var(--ok-soft); color: var(--forest); }
-.status--ok .status__dot { background: var(--ok); box-shadow: 0 0 0 4px rgba(47, 143, 82, .22); }
-
-.vagas__titulo {
-  margin: 16px 0 8px;
-  font-size: 14px;
-  color: var(--muted);
-}
-.vagas__titulo b {
-  margin-right: 3px;
-  font-family: var(--serif);
-  font-variant-numeric: lining-nums;
-  font-size: 22px;
-  font-weight: 700;
-  line-height: 1;
-  color: var(--forest);
-  vertical-align: -2px;
-}
+.chip::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: currentColor; }
+.chip--formacao { background: var(--amber-soft); color: var(--amber-ink); }
+.chip--ok { background: var(--ok-soft); color: var(--ok); }
 
 .segs {
   display: grid;
   grid-template-columns: repeat(6, 1fr);
-  gap: 5px;
-  height: 10px;
+  gap: 4px;
+  height: 8px;
 }
-.seg { border-radius: 99px; background: #dde6d0; }
+.seg { border-radius: 99px; background: #e2e8d8; }
 .seg--on { background: var(--forest); }
 
+.barra { margin-top: 10px; }
 .barra-linha {
   display: grid;
-  grid-template-columns: 74px 1fr 32px;
+  grid-template-columns: 56px 1fr 28px;
   align-items: center;
   gap: 10px;
-  margin-bottom: 9px;
+  margin-top: 10px;
 }
 .barra-linha__rot { font-size: 12px; font-weight: 700; color: var(--muted); }
 .barra-linha__num { text-align: right; font-size: 12px; font-weight: 800; color: var(--forest); }
 
-.vagas__grupo {
-  margin-top: 12px;
+.vagas__info {
+  margin-top: 10px;
   font-size: 12.5px;
   color: var(--muted);
 }
 
-.lista {
-  list-style: none;
-  margin-top: 14px;
-  border-top: 1px solid var(--line);
-}
-.aluno {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  padding: 9px 0;
-  border-bottom: 1px solid var(--line);
-  font-size: 13px;
-}
-.aluno:last-child { border-bottom: 0; padding-bottom: 0; }
-.aluno__txt { flex: 1; min-width: 0; }
+/* nomes confirmados */
 
-.marca {
+.nomes { margin-top: 14px; }
+.nomes__titulo {
+  font-size: 10.5px;
+  font-weight: 800;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+.nomes__lista {
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 8px;
+}
+.nome {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  max-width: 100%;
+  padding: 5px 10px 5px 6px;
+  border-radius: 99px;
+  background: var(--leaf-soft);
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--forest);
+}
+.nome__check {
   flex: none;
   display: grid;
   place-items: center;
-  width: 20px;
-  height: 20px;
+  width: 18px;
+  height: 18px;
   border-radius: 50%;
-  font-size: 11px;
-  font-weight: 800;
-  line-height: 1;
+  background: var(--forest);
+  color: #fff;
+  font-size: 10px;
 }
-.aluno--ok .marca { background: var(--forest); color: #fff; }
-.aluno--ok .aluno__txt { color: var(--muted); }
-.aluno--ok .aluno__txt b { color: var(--ink); font-weight: 700; }
-.aluno--livre { color: var(--muted); }
-.aluno--livre .marca { border: 1.5px solid #c3cdb6; }
-
-.tag {
-  margin-left: auto;
-  flex: none;
-  padding: 3px 8px;
+.nome__tag {
+  padding: 1px 6px;
   border-radius: 99px;
-  background: var(--leaf-soft);
-  color: var(--forest-2);
-  font-size: 10.5px;
+  background: var(--paper);
+  font-size: 10px;
   font-weight: 800;
-  letter-spacing: .04em;
+  color: var(--forest-2);
 }
 
-/* botão */
+/* 4. botão */
 
 .btn {
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 12px;
-  min-height: 58px;
+  min-height: 56px;
   margin-top: 18px;
   padding: 0 14px;
   border-radius: 16px;
@@ -503,28 +445,27 @@ body {
 .btn--off:active { transform: none; background: #e9e5d8; }
 
 .card__nota {
-  margin-top: 10px;
+  margin-top: 8px;
   text-align: center;
   font-size: 12px;
   color: var(--muted);
 }
 
 .card--lotada .card__horario,
-.card--lotada .preco__valor { color: #5f6e64; }
+.card--lotada .preco__valor { color: #7d887f; }
 
 /* ---------- REGRAS ---------- */
 
 .regras {
-  margin-top: 34px;
-  padding: 28px 22px 26px;
+  margin-top: 28px;
+  padding: 24px 20px;
   background: var(--paper);
   border-radius: var(--radius);
   box-shadow: 0 0 0 1px var(--line);
 }
 .regras h2 {
-  font-family: var(--serif);
-  font-size: 22px;
-  font-weight: 700;
+  font-size: 18px;
+  font-weight: 800;
   letter-spacing: .08em;
   text-transform: uppercase;
   color: var(--forest);
@@ -532,7 +473,7 @@ body {
 .regras h2::after {
   content: "";
   display: block;
-  width: 36px;
+  width: 32px;
   height: 2px;
   margin-top: 10px;
   background: var(--leaf);
@@ -540,22 +481,22 @@ body {
 .regras ul {
   list-style: none;
   display: grid;
-  gap: 14px;
-  margin-top: 20px;
+  gap: 12px;
+  margin-top: 18px;
 }
 .regras li {
   position: relative;
-  padding-left: 24px;
-  font-size: 14px;
+  padding-left: 22px;
+  font-size: 13.5px;
   line-height: 1.6;
 }
 .regras li::before {
   content: "";
   position: absolute;
   left: 2px;
-  top: .55em;
-  width: 8px;
-  height: 8px;
+  top: .6em;
+  width: 7px;
+  height: 7px;
   border-radius: 50%;
   background: var(--leaf);
   box-shadow: 0 0 0 3px var(--leaf-soft);
@@ -564,7 +505,7 @@ body {
 /* ---------- ANIMAÇÃO ---------- */
 
 @keyframes subir {
-  from { opacity: 0; transform: translateY(14px); }
+  from { opacity: 0; transform: translateY(12px); }
   to   { opacity: 1; transform: none; }
 }
 @media (prefers-reduced-motion: reduce) {
@@ -575,24 +516,10 @@ body {
 /* ---------- TELAS MUITO PEQUENAS ---------- */
 
 @media (max-width: 350px) {
-  .data__num strong { font-size: 18px; }
-  .data__num small { font-size: 10px; }
-  .card__horario { font-size: 34px; }
-  .preco__valor { font-size: 38px; }
-  .local { font-size: 11px; }
-}
-
-/* ---------- DESKTOP (secundário) ---------- */
-
-@media (min-width: 960px) {
-  .wrap { max-width: 1100px; }
-  .datas, .regras, .aviso { max-width: 640px; margin-left: auto; margin-right: auto; }
-  .planos {
-    grid-template-columns: repeat(3, 1fr);
-    align-items: start;
-  }
-  .card__horario { font-size: 40px; }
-  .preco__valor { font-size: 46px; }
+  .data strong { font-size: 17px; }
+  .data small { font-size: 10px; }
+  .card__horario { font-size: 27px; }
+  .preco__valor { font-size: 22px; }
 }
 </style>
 </head>
@@ -618,6 +545,7 @@ body {
   <main class="wrap">
 
     <section class="datas" aria-label="Datas das aulas">
+      <p class="datas__titulo">Aulas aos domingos</p>
       <ul class="datas__lista" id="datas"></ul>
       <p class="datas__nota">Sua reserva mensal inclui todas as datas acima.</p>
     </section>
@@ -703,35 +631,31 @@ const PLANOS = [
     faixas: ["11-12"],
     precoAula: 80,
     aulas: 5,
-    unidade: "aula",
     nomeZap: "plano mensal",
     horaZap: "das 11h às 12h",
   },
   {
     id: "12-13",
     horario: "12h – 13h",
-    locais: [{ tipo: "coberta", texto: "Quadra coberta — saibro" }],
+    locais: [{ tipo: "coberta", texto: "Quadra coberta · saibro" }],
     faixas: ["12-13"],
     precoAula: 70,
     aulas: 5,
-    unidade: "aula",
     nomeZap: "plano mensal",
     horaZap: "das 12h às 13h",
   },
   {
     id: "11-13",
     intenso: true,
-    faixaTopo: "AULA INTENSA — 2 HORAS",
-    selo: "2 horas de treino",
+    faixaTopo: "AULA INTENSA · 2 HORAS DE TREINO",
     horario: "11h – 13h",
     locais: [
-      { tipo: "descoberta", texto: "1h quadra descoberta" },
-      { tipo: "coberta", texto: "1h quadra coberta" },
+      { tipo: "descoberta", hora: "11h–12h", texto: "Quadra descoberta" },
+      { tipo: "coberta", hora: "12h–13h", texto: "Quadra coberta" },
     ],
     faixas: ["11-12", "12-13"],
     precoAula: 150,
     aulas: 5,
-    unidade: "aula",
     nomeZap: "plano mensal intenso (2 horas de treino)",
     horaZap: "das 11h às 13h",
   },
@@ -779,7 +703,7 @@ Object.keys(FAIXAS).forEach((f) => {
    RENDER
    --------------------------------------------------------------------- */
 
-// Ícones dos selos de quadra (sol = descoberta, telhado = coberta)
+// Ícones de quadra (sol = descoberta, telhado = coberta)
 const ICONES = {
   descoberta:
     '<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2.5v2.2M12 19.3v2.2M2.5 12h2.2M19.3 12h2.2M5.3 5.3l1.6 1.6M17.1 17.1l1.6 1.6M5.3 18.7l1.6-1.6M17.1 6.9l1.6-1.6"/></svg>',
@@ -820,7 +744,6 @@ function criarCard(plano, indice) {
   const ocupMin = Math.min(...ocup);
   const lotada = ocupMax >= MAXIMO;
   const confirmada = ocupMin >= MINIMO;
-  const livres = Math.max(0, MAXIMO - ocupMax);
   const alunos = multi
     ? pagas.filter((r) => r.plano === plano.id)
     : ocupantes(plano.faixas[0]);
@@ -835,92 +758,90 @@ function criarCard(plano, indice) {
 
   const corpo = el("div", "card__corpo");
 
-  /* 1. HORÁRIO */
-  const topo = el("div", "card__topo");
-  topo.append(el("span", "card__dia", "Domingo"));
-  if (plano.selo) topo.append(el("span", "selo", plano.selo));
-  corpo.append(topo);
+  /* 1. HORÁRIO + PREÇO */
+  const head = el("div", "card__head");
+  head.append(el("h2", "card__horario", plano.horario));
+  const preco = el("div", "card__preco");
+  preco.append(el("span", "preco__valor", `R$ ${mensal}`));
+  preco.append(el("span", "preco__mes", "por mês"));
+  head.append(preco);
+  corpo.append(head);
 
-  corpo.append(el("h2", "card__horario", plano.horario));
-
-  const locais = el("p", "card__locais");
-  plano.locais.forEach((l, i) => {
-    if (i > 0) locais.append(el("span", "mais", "+"));
-    const selo = el("span", "local local--" + l.tipo);
+  /* 2. QUADRA */
+  const locais = el("ul", "locais");
+  plano.locais.forEach((l) => {
+    const li = el("li", "local local--" + l.tipo);
+    if (l.hora) li.append(el("span", "local__hora", l.hora));
     const ico = el("span", "local__ico");
     ico.innerHTML = ICONES[l.tipo];
-    selo.append(ico, el("span", null, l.texto));
-    locais.append(selo);
+    li.append(ico, el("span", null, l.texto));
+    locais.append(li);
   });
   corpo.append(locais);
 
-  /* 2. PREÇO */
-  const preco = el("div", "preco");
-  const esq = el("div");
-  esq.append(el("span", "preco__rotulo", "Mensalidade"));
-  esq.append(el("span", "preco__valor", `R$ ${mensal}`));
-  const dir = el("div", "preco__lado");
-  const porAula = el("span", "preco__aula");
-  porAula.append(`R$ ${plano.precoAula} por `, el("b", null, `${plano.unidade} + quadra`));
-  dir.append(porAula);
-  dir.append(el("span", "preco__qtd", `${plano.aulas} ${plano.unidade}s em ${MES}`));
-  preco.append(esq, dir);
-  corpo.append(preco);
+  const detalhe = el("p", "card__detalhe");
+  detalhe.append(
+    `R$ ${plano.precoAula} por `,
+    el("b", null, "aula + quadra"),
+    ` · ${plano.aulas} aulas`
+  );
+  corpo.append(detalhe);
 
   /* 3. VAGAS */
   const vagas = el("div", "vagas");
 
-  const status = el("div", "status " + (confirmada ? "status--ok" : "status--formacao"));
-  status.append(el("span", "status__dot"));
-  const stTxt = el("div");
-  stTxt.append(el("strong", null, confirmada ? "TURMA CONFIRMADA" : "TURMA EM FORMAÇÃO"));
-  stTxt.append(
+  const topo = el("div", "vagas__topo");
+  const num = el("p", "vagas__num");
+  if (multi) {
+    num.textContent = "Vagas";
+  } else {
+    num.append(el("b", null, String(ocup[0])), `/${MAXIMO} vagas`);
+  }
+  topo.append(num);
+  topo.append(
+    el("span", "chip " + (confirmada ? "chip--ok" : "chip--formacao"),
+      confirmada ? "Turma confirmada" : "Turma em formação")
+  );
+  vagas.append(topo);
+
+  if (multi) {
+    plano.faixas.forEach((f, i) => {
+      const linha = el("div", "barra-linha");
+      linha.append(el("span", "barra-linha__rot", FAIXAS[f]));
+      linha.append(criarBarra(ocup[i]));
+      linha.append(el("span", "barra-linha__num", `${ocup[i]}/${MAXIMO}`));
+      vagas.append(linha);
+    });
+  } else {
+    const b = el("div", "barra");
+    b.append(criarBarra(ocup[0]));
+    vagas.append(b);
+  }
+
+  vagas.append(
     el(
-      "span",
-      null,
+      "p",
+      "vagas__info",
       confirmada
-        ? `Mínimo de ${MINIMO} alunos atingido`
-        : `${ocupMin} de ${MINIMO} confirmações necessárias`
+        ? `Mínimo de ${MINIMO} alunos atingido · máximo ${MAXIMO}`
+        : `${ocupMin} de ${MINIMO} confirmações necessárias · máximo ${MAXIMO}`
     )
   );
-  status.append(stTxt);
-  vagas.append(status);
 
-  const titulo = el("p", "vagas__titulo");
-  if (multi) {
-    titulo.textContent = "Vagas ocupadas por horário";
-  } else {
-    titulo.append(el("b", null, String(ocup[0])), ` de ${MAXIMO} vagas ocupadas`);
+  if (alunos.length) {
+    const nomes = el("div", "nomes");
+    nomes.append(el("p", "nomes__titulo", "Reservas confirmadas"));
+    const lista = el("ul", "nomes__lista");
+    alunos.forEach((r) => {
+      const li = el("li", "nome");
+      li.append(el("span", "nome__check", "✓"), el("span", null, r.nome));
+      if (!multi && r.plano !== plano.id) li.append(el("span", "nome__tag", "2h"));
+      lista.append(li);
+    });
+    nomes.append(lista);
+    vagas.append(nomes);
   }
-  vagas.append(titulo);
 
-  plano.faixas.forEach((f, i) => {
-    const linha = el("div", multi ? "barra-linha" : "");
-    if (multi) linha.append(el("span", "barra-linha__rot", FAIXAS[f]));
-    linha.append(criarBarra(ocup[i]));
-    if (multi) linha.append(el("span", "barra-linha__num", `${ocup[i]}/${MAXIMO}`));
-    vagas.append(linha);
-  });
-
-  vagas.append(el("p", "vagas__grupo", `Grupo: mínimo ${MINIMO} · máximo ${MAXIMO} alunos`));
-
-  const lista = el("ul", "lista");
-  alunos.forEach((r) => {
-    const li = el("li", "aluno aluno--ok");
-    li.append(el("span", "marca", "✓"));
-    const txt = el("span", "aluno__txt");
-    txt.append(el("b", null, r.nome), " — Reserva confirmada");
-    li.append(txt);
-    if (!multi && r.plano !== plano.id) li.append(el("span", "tag", "2h"));
-    lista.append(li);
-  });
-  for (let i = 0; i < livres; i++) {
-    const li = el("li", "aluno aluno--livre");
-    li.append(el("span", "marca"));
-    li.append(el("span", null, "Vaga disponível"));
-    lista.append(li);
-  }
-  vagas.append(lista);
   corpo.append(vagas);
 
   /* 4. ESCOLHER */
@@ -953,10 +874,7 @@ function renderDatas() {
   DATAS.forEach((d) => {
     const [dia, mes] = d.split("/");
     const li = el("li", "data");
-    li.append(el("span", "data__sem", "DOM"));
-    const num = el("span", "data__num");
-    num.append(el("strong", null, dia), el("small", null, "/" + mes));
-    li.append(num);
+    li.append(el("strong", null, dia), el("small", null, "/" + mes));
     ul.append(li);
   });
 }
