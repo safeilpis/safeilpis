@@ -1,0 +1,984 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#123524">
+  <title>Planos mensais de tênis · Novembro</title>
+  <meta name="description" content="Turmas fixas de tênis aos domingos em novembro. Escolha seu horário e reserve pelo WhatsApp.">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🎾</text></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+/* =====================================================================
+   PLANOS MENSAIS DE TÊNIS — style.css
+   Paleta: creme · verde floresta · verde claro
+   ===================================================================== */
+
+:root {
+  --forest: #123524;
+  --forest-2: #1c4a34;
+  --leaf: #b7dba9;
+  --leaf-soft: #e7f1de;
+  --leaf-line: #cfe3c4;
+  --cream: #f7f3e8;
+  --paper: #fffefa;
+  --ink: #14241b;
+  --muted: #6a766d;
+  --line: #e8e2d1;
+
+  --amber: #c98a1b;
+  --amber-soft: #fbf1d8;
+  --amber-ink: #7b5410;
+  --ok: #2f8f52;
+  --ok-soft: #e3f2e3;
+
+  --serif: 'Montserrat', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --sans: 'Montserrat', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --radius: 26px;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+[hidden] { display: none !important; }
+
+html { -webkit-text-size-adjust: 100%; }
+
+body {
+  background: var(--cream);
+  color: var(--ink);
+  font-family: var(--sans);
+  font-size: 15px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  -webkit-tap-highlight-color: transparent;
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
+/* ---------- TOPO ---------- */
+
+.hero {
+  position: relative;
+  overflow: hidden;
+  background: var(--forest);
+  color: var(--cream);
+  padding: max(44px, calc(env(safe-area-inset-top) + 28px)) 16px 104px;
+}
+
+.hero__quadra {
+  position: absolute;
+  right: -56px;
+  top: -34px;
+  width: 270px;
+  color: var(--leaf);
+  opacity: .16;
+  transform: rotate(14deg);
+  pointer-events: none;
+}
+
+.hero__inner {
+  position: relative;
+  max-width: 560px;
+  margin: 0 auto;
+  padding: 0 6px;
+}
+
+.hero h1 {
+  font-family: var(--serif);
+  font-weight: 700;
+  font-size: clamp(26px, 7.6vw, 42px);
+  line-height: 1.08;
+  letter-spacing: .02em;
+  text-transform: uppercase;
+}
+.hero h1 span { display: block; color: var(--leaf); }
+
+.hero__sub {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 20px;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: .22em;
+  text-transform: uppercase;
+  color: var(--leaf);
+}
+.hero__sub::before {
+  content: "";
+  width: 28px;
+  height: 1.5px;
+  background: var(--leaf);
+}
+
+.hero__texto {
+  margin-top: 22px;
+  max-width: 40ch;
+  padding-left: 14px;
+  border-left: 2px solid var(--leaf);
+  font-size: 14px;
+  line-height: 1.65;
+  color: rgba(247, 243, 232, .84);
+}
+
+/* ---------- CONTEÚDO ---------- */
+
+.wrap {
+  max-width: 560px;
+  margin: 0 auto;
+  padding: 0 16px 56px;
+}
+
+/* ---------- DATAS ---------- */
+
+.datas {
+  position: relative;
+  z-index: 2;
+  margin-top: -68px;
+  background: var(--paper);
+  border-radius: var(--radius);
+  padding: 18px 16px 16px;
+  box-shadow: 0 0 0 1px var(--line), 0 22px 40px -22px rgba(18, 53, 36, .5);
+}
+
+.datas__lista {
+  list-style: none;
+  display: flex;
+  gap: 6px;
+}
+
+.data {
+  flex: 1 1 0;
+  min-width: 0;
+  text-align: center;
+  background: var(--leaf-soft);
+  border-radius: 16px;
+  padding: 10px 2px 9px;
+}
+.data__sem {
+  display: block;
+  font-size: 9.5px;
+  font-weight: 800;
+  letter-spacing: .16em;
+  color: var(--forest-2);
+  opacity: .7;
+}
+.data__num {
+  display: block;
+  margin-top: 2px;
+  font-family: var(--serif);
+  font-variant-numeric: lining-nums;
+  color: var(--forest);
+  white-space: nowrap;
+}
+.data__num strong { font-size: 22px; font-weight: 700; line-height: 1; }
+.data__num small { font-size: 11px; font-weight: 600; color: var(--forest-2); }
+
+.datas__nota {
+  margin-top: 14px;
+  text-align: center;
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--forest-2);
+}
+
+/* ---------- AVISO (só aparece se houver erro nas reservas) ---------- */
+
+.aviso {
+  margin-top: 16px;
+  padding: 14px 16px;
+  border-radius: 16px;
+  border: 1px solid #f3c4c0;
+  background: #fdeceb;
+  color: #8a1f17;
+  font-size: 13px;
+}
+.aviso ul { margin: 6px 0 0 18px; }
+
+/* ---------- CARDS ---------- */
+
+.planos {
+  display: grid;
+  gap: 20px;
+  margin-top: 22px;
+}
+
+.card {
+  overflow: hidden;
+  background: var(--paper);
+  border-radius: var(--radius);
+  box-shadow: 0 0 0 1px var(--line), 0 16px 34px -24px rgba(18, 53, 36, .5);
+  animation: subir .6s cubic-bezier(.2, .7, .2, 1) both;
+  animation-delay: calc(var(--i, 0) * 90ms);
+}
+
+.card--intenso {
+  background: linear-gradient(180deg, #f1f7ec 0%, var(--paper) 42%);
+  box-shadow: 0 0 0 1.5px var(--leaf-line), 0 16px 34px -24px rgba(18, 53, 36, .5);
+}
+
+.card__faixa {
+  padding: 9px 12px;
+  background: var(--forest);
+  color: var(--leaf);
+  text-align: center;
+  font-size: 10.5px;
+  font-weight: 800;
+  letter-spacing: .2em;
+}
+
+.card__corpo { padding: 24px 20px 20px; }
+
+.card__topo {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+.card__dia {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: .24em;
+  text-transform: uppercase;
+  color: var(--forest-2);
+}
+.card__dia::before {
+  content: "";
+  width: 18px;
+  height: 1.5px;
+  background: var(--leaf);
+}
+
+.selo {
+  padding: 5px 11px;
+  border-radius: 99px;
+  border: 1px solid var(--leaf-line);
+  background: var(--leaf-soft);
+  color: var(--forest-2);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: .03em;
+}
+
+.card__horario {
+  margin: 14px 0 10px;
+  font-family: var(--serif);
+  font-variant-numeric: lining-nums;
+  font-weight: 700;
+  font-size: 40px;
+  line-height: 1;
+  letter-spacing: -.02em;
+  color: var(--forest);
+}
+
+.card__locais {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 6px;
+}
+.local {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  max-width: 100%;
+  padding: 8px 14px 8px 11px;
+  border-radius: 99px;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: .04em;
+  line-height: 1.25;
+  text-transform: uppercase;
+}
+.local__ico { flex: none; display: block; width: 18px; height: 18px; }
+.local__ico svg {
+  display: block;
+  width: 18px;
+  height: 18px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.local--descoberta {
+  background: var(--leaf-soft);
+  color: var(--forest);
+  box-shadow: inset 0 0 0 1.5px var(--leaf-line);
+}
+.local--coberta { background: var(--forest); color: var(--cream); }
+.local--coberta .local__ico { color: var(--leaf); }
+.card__locais .mais {
+  margin-left: 15px;
+  font-size: 14px;
+  font-weight: 800;
+  line-height: 1;
+  color: var(--forest-2);
+}
+
+/* preço */
+
+.preco {
+  margin-top: 22px;
+  padding-top: 20px;
+  border-top: 1px dashed var(--line);
+}
+.preco__rotulo {
+  display: block;
+  margin-bottom: 6px;
+  font-size: 10.5px;
+  font-weight: 800;
+  letter-spacing: .2em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+.preco__valor {
+  display: block;
+  font-family: var(--serif);
+  font-variant-numeric: lining-nums;
+  font-weight: 700;
+  font-size: 46px;
+  line-height: 1;
+  letter-spacing: -.02em;
+  color: var(--forest);
+}
+.preco__lado { margin-top: 12px; }
+.preco__aula { display: block; font-size: 14px; font-weight: 600; color: var(--ink); }
+.preco__aula b { font-weight: 800; color: var(--forest); }
+.preco__qtd { display: block; margin-top: 2px; font-size: 12.5px; color: var(--muted); }
+
+/* vagas */
+
+.vagas {
+  margin-top: 22px;
+  padding: 16px;
+  border-radius: 20px;
+  background: var(--cream);
+}
+
+.status {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 14px;
+  border-radius: 14px;
+}
+.status__dot {
+  flex: none;
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
+}
+.status strong {
+  display: block;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: .14em;
+}
+.status span { font-size: 12.5px; }
+
+.status--formacao { background: var(--amber-soft); color: var(--amber-ink); }
+.status--formacao .status__dot { background: var(--amber); box-shadow: 0 0 0 4px rgba(201, 138, 27, .22); }
+.status--ok { background: var(--ok-soft); color: var(--forest); }
+.status--ok .status__dot { background: var(--ok); box-shadow: 0 0 0 4px rgba(47, 143, 82, .22); }
+
+.vagas__titulo {
+  margin: 16px 0 8px;
+  font-size: 14px;
+  color: var(--muted);
+}
+.vagas__titulo b {
+  margin-right: 3px;
+  font-family: var(--serif);
+  font-variant-numeric: lining-nums;
+  font-size: 22px;
+  font-weight: 700;
+  line-height: 1;
+  color: var(--forest);
+  vertical-align: -2px;
+}
+
+.segs {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 5px;
+  height: 10px;
+}
+.seg { border-radius: 99px; background: #dde6d0; }
+.seg--on { background: var(--forest); }
+
+.barra-linha {
+  display: grid;
+  grid-template-columns: 74px 1fr 32px;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 9px;
+}
+.barra-linha__rot { font-size: 12px; font-weight: 700; color: var(--muted); }
+.barra-linha__num { text-align: right; font-size: 12px; font-weight: 800; color: var(--forest); }
+
+.vagas__grupo {
+  margin-top: 12px;
+  font-size: 12.5px;
+  color: var(--muted);
+}
+
+.lista {
+  list-style: none;
+  margin-top: 14px;
+  border-top: 1px solid var(--line);
+}
+.aluno {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 9px 0;
+  border-bottom: 1px solid var(--line);
+  font-size: 13px;
+}
+.aluno:last-child { border-bottom: 0; padding-bottom: 0; }
+.aluno__txt { flex: 1; min-width: 0; }
+
+.marca {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  font-size: 11px;
+  font-weight: 800;
+  line-height: 1;
+}
+.aluno--ok .marca { background: var(--forest); color: #fff; }
+.aluno--ok .aluno__txt { color: var(--muted); }
+.aluno--ok .aluno__txt b { color: var(--ink); font-weight: 700; }
+.aluno--livre { color: var(--muted); }
+.aluno--livre .marca { border: 1.5px solid #c3cdb6; }
+
+.tag {
+  margin-left: auto;
+  flex: none;
+  padding: 3px 8px;
+  border-radius: 99px;
+  background: var(--leaf-soft);
+  color: var(--forest-2);
+  font-size: 10.5px;
+  font-weight: 800;
+  letter-spacing: .04em;
+}
+
+/* botão */
+
+.btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  min-height: 58px;
+  margin-top: 18px;
+  padding: 0 14px;
+  border-radius: 16px;
+  background: var(--forest);
+  color: #fff;
+  text-decoration: none;
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: .08em;
+  text-align: center;
+  transition: transform .15s ease, background .15s ease;
+}
+.btn:active { transform: scale(.98); background: var(--forest-2); }
+.btn:focus-visible { outline: 3px solid var(--leaf); outline-offset: 3px; }
+.btn__seta { color: var(--leaf); font-size: 17px; letter-spacing: 0; }
+
+.btn--off {
+  background: #e9e5d8;
+  color: #8b9187;
+  cursor: not-allowed;
+}
+.btn--off:active { transform: none; background: #e9e5d8; }
+
+.card__nota {
+  margin-top: 10px;
+  text-align: center;
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.card--lotada .card__horario,
+.card--lotada .preco__valor { color: #5f6e64; }
+
+/* ---------- REGRAS ---------- */
+
+.regras {
+  margin-top: 34px;
+  padding: 28px 22px 26px;
+  background: var(--paper);
+  border-radius: var(--radius);
+  box-shadow: 0 0 0 1px var(--line);
+}
+.regras h2 {
+  font-family: var(--serif);
+  font-size: 22px;
+  font-weight: 700;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: var(--forest);
+}
+.regras h2::after {
+  content: "";
+  display: block;
+  width: 36px;
+  height: 2px;
+  margin-top: 10px;
+  background: var(--leaf);
+}
+.regras ul {
+  list-style: none;
+  display: grid;
+  gap: 14px;
+  margin-top: 20px;
+}
+.regras li {
+  position: relative;
+  padding-left: 24px;
+  font-size: 14px;
+  line-height: 1.6;
+}
+.regras li::before {
+  content: "";
+  position: absolute;
+  left: 2px;
+  top: .55em;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--leaf);
+  box-shadow: 0 0 0 3px var(--leaf-soft);
+}
+
+/* ---------- ANIMAÇÃO ---------- */
+
+@keyframes subir {
+  from { opacity: 0; transform: translateY(14px); }
+  to   { opacity: 1; transform: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .card { animation: none; }
+  .btn { transition: none; }
+}
+
+/* ---------- TELAS MUITO PEQUENAS ---------- */
+
+@media (max-width: 350px) {
+  .data__num strong { font-size: 18px; }
+  .data__num small { font-size: 10px; }
+  .card__horario { font-size: 34px; }
+  .preco__valor { font-size: 38px; }
+  .local { font-size: 11px; }
+}
+
+/* ---------- DESKTOP (secundário) ---------- */
+
+@media (min-width: 960px) {
+  .wrap { max-width: 1100px; }
+  .datas, .regras, .aviso { max-width: 640px; margin-left: auto; margin-right: auto; }
+  .planos {
+    grid-template-columns: repeat(3, 1fr);
+    align-items: start;
+  }
+  .card__horario { font-size: 40px; }
+  .preco__valor { font-size: 46px; }
+}
+</style>
+</head>
+<body>
+
+  <header class="hero">
+    <svg class="hero__quadra" viewBox="0 0 200 400" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6">
+      <rect x="10" y="10" width="180" height="380"/>
+      <line x1="32" y1="10" x2="32" y2="390"/>
+      <line x1="168" y1="10" x2="168" y2="390"/>
+      <line x1="32" y1="108" x2="168" y2="108"/>
+      <line x1="32" y1="292" x2="168" y2="292"/>
+      <line x1="100" y1="108" x2="100" y2="292"/>
+      <line x1="2" y1="200" x2="198" y2="200" stroke-dasharray="4 5"/>
+    </svg>
+    <div class="hero__inner">
+      <h1>Planos mensais <span>de tênis</span></h1>
+      <p class="hero__sub">Turmas fixas • Novembro</p>
+      <p class="hero__texto">As aulas avulsas serão suspensas neste período devido à dificuldade de disponibilidade das quadras. As vagas abaixo são para planos mensais com horário fixo.</p>
+    </div>
+  </header>
+
+  <main class="wrap">
+
+    <section class="datas" aria-label="Datas das aulas">
+      <ul class="datas__lista" id="datas"></ul>
+      <p class="datas__nota">Sua reserva mensal inclui todas as datas acima.</p>
+    </section>
+
+    <div id="aviso" class="aviso" hidden></div>
+
+    <noscript><p class="aviso">Ative o JavaScript para ver as turmas.</p></noscript>
+
+    <section class="planos" id="planos" aria-label="Planos mensais"></section>
+
+    <section class="regras" aria-labelledby="regras-titulo">
+      <h2 id="regras-titulo">Regras do plano</h2>
+      <ul>
+        <li>A turma é confirmada com mínimo de 4 alunos pagantes.</li>
+        <li>Caso o mínimo de 4 alunos não seja atingido, o valor pago será devolvido integralmente.</li>
+        <li>As vagas são preenchidas por ordem de pagamento.</li>
+        <li>O pagamento reserva o horário fixo durante todo o mês.</li>
+        <li>Falta do aluno não gera crédito ou reembolso.</li>
+        <li>Em caso de chuva que impossibilite o uso da quadra descoberta, a aula afetada será reagendada.</li>
+        <li>A academia poderá solicitar a quadra de 1 a 3 vezes no mês. Nesses casos, a aula poderá ser reagendada ou o valor correspondente à quadra/aula não realizada será tratado conforme a opção aplicável.</li>
+        <li>Prazo para pagamento e garantia da vaga: sexta-feira anterior ao início do plano.</li>
+        <li>O plano já começa neste domingo.</li>
+      </ul>
+    </section>
+
+  </main>
+
+  <script>
+/* =====================================================================
+   PLANOS MENSAIS DE TÊNIS — script.js
+   ===================================================================== */
+
+/* ---------------------------------------------------------------------
+   1) SEU WHATSAPP
+   Só números: 55 + DDD + número.   Exemplo: "5511987654321"
+   --------------------------------------------------------------------- */
+const WHATSAPP_NUMBER = "5511940388414";
+
+
+/* ---------------------------------------------------------------------
+   2) RESERVAS   <<<  É AQUI QUE VOCÊ ADICIONA / REMOVE ALUNOS  >>>
+
+   Para ADICIONAR um aluno: copie uma linha, cole no FIM da lista e edite.
+   Para REMOVER: apague a linha.
+
+   nome  → como vai aparecer na página
+   plano → "11-12"  (domingo 11h às 12h  · R$ 400)
+           "12-13"  (domingo 12h às 13h  · R$ 350)
+           "11-13"  (2 horas, 11h às 13h · R$ 750)  ← ocupa as DUAS turmas
+   pago  → true  = pagou: aparece na lista e ocupa vaga
+           false = ainda não pagou: NÃO aparece e NÃO ocupa vaga
+
+   A ordem da lista = ordem de pagamento (os novos entram no final).
+   --------------------------------------------------------------------- */
+const reservas = [
+  // { nome: "Lucas",   plano: "11-12", pago: true  },
+  // { nome: "Mariana", plano: "12-13", pago: true  },
+  // { nome: "Carlos",  plano: "11-13", pago: true  },
+];
+
+
+/* =====================================================================
+   DAQUI PRA BAIXO NORMALMENTE NÃO PRECISA MEXER
+   ===================================================================== */
+
+const MAXIMO = 6;   // máximo de alunos por horário
+const MINIMO = 4;   // mínimo de pagantes para a turma acontecer
+const MES = "novembro";
+const DATAS = ["01/11", "08/11", "15/11", "22/11", "29/11"];
+
+// Horários físicos (faixas). Cada um aceita no máximo MAXIMO alunos no total.
+const FAIXAS = {
+  "11-12": "11h–12h",
+  "12-13": "12h–13h",
+};
+
+// Planos. "faixas" diz quais horários o plano ocupa.
+const PLANOS = [
+  {
+    id: "11-12",
+    horario: "11h – 12h",
+    locais: [{ tipo: "descoberta", texto: "Quadra descoberta" }],
+    faixas: ["11-12"],
+    precoAula: 80,
+    aulas: 5,
+    unidade: "aula",
+    nomeZap: "plano mensal",
+    horaZap: "das 11h às 12h",
+  },
+  {
+    id: "12-13",
+    horario: "12h – 13h",
+    locais: [{ tipo: "coberta", texto: "Quadra coberta — saibro" }],
+    faixas: ["12-13"],
+    precoAula: 70,
+    aulas: 5,
+    unidade: "aula",
+    nomeZap: "plano mensal",
+    horaZap: "das 12h às 13h",
+  },
+  {
+    id: "11-13",
+    intenso: true,
+    faixaTopo: "AULA INTENSA — 2 HORAS",
+    selo: "2 horas de treino",
+    horario: "11h – 13h",
+    locais: [
+      { tipo: "descoberta", texto: "1h quadra descoberta" },
+      { tipo: "coberta", texto: "1h quadra coberta" },
+    ],
+    faixas: ["11-12", "12-13"],
+    precoAula: 150,
+    aulas: 5,
+    unidade: "aula",
+    nomeZap: "plano mensal intenso (2 horas de treino)",
+    horaZap: "das 11h às 13h",
+  },
+];
+
+
+/* ---------------------------------------------------------------------
+   CÁLCULO DE VAGAS
+   --------------------------------------------------------------------- */
+
+const planoPorId = {};
+PLANOS.forEach((p) => { planoPorId[p.id] = p; });
+
+// Avisos de erro (aparecem em vermelho no topo da página)
+const avisos = [];
+reservas.forEach((r, i) => {
+  if (!r || !r.nome) {
+    avisos.push(`Reserva ${i + 1}: falta o nome.`);
+  } else if (!planoPorId[r.plano]) {
+    avisos.push(`${r.nome}: plano "${r.plano}" não existe (use "11-12", "12-13" ou "11-13").`);
+  } else if (typeof r.pago !== "boolean") {
+    avisos.push(`${r.nome}: "pago" precisa ser true ou false.`);
+  }
+});
+
+// Só quem pagou ocupa vaga
+const pagas = reservas.filter(
+  (r) => r && r.nome && r.pago === true && planoPorId[r.plano]
+);
+
+// Quem ocupa cada horário (plano de 2h entra nos dois)
+function ocupantes(faixa) {
+  return pagas.filter((r) => planoPorId[r.plano].faixas.includes(faixa));
+}
+
+Object.keys(FAIXAS).forEach((f) => {
+  const n = ocupantes(f).length;
+  if (n > MAXIMO) {
+    avisos.push(`${FAIXAS[f]}: ${n} alunos — o máximo é ${MAXIMO}.`);
+  }
+});
+
+
+/* ---------------------------------------------------------------------
+   RENDER
+   --------------------------------------------------------------------- */
+
+// Ícones dos selos de quadra (sol = descoberta, telhado = coberta)
+const ICONES = {
+  descoberta:
+    '<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2.5v2.2M12 19.3v2.2M2.5 12h2.2M19.3 12h2.2M5.3 5.3l1.6 1.6M17.1 17.1l1.6 1.6M5.3 18.7l1.6-1.6M17.1 6.9l1.6-1.6"/></svg>',
+  coberta:
+    '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2.5 10.5 12 3.5l9.5 7z"/><path d="M6 11v9M18 11v9"/></svg>',
+};
+
+function el(tag, classe, texto) {
+  const n = document.createElement(tag);
+  if (classe) n.className = classe;
+  if (texto !== undefined) n.textContent = texto;
+  return n;
+}
+
+function linkWhatsApp(plano, mensal) {
+  const msg =
+    `Olá! Quero reservar minha vaga no ${plano.nomeZap} de domingo, ${plano.horaZap}, ` +
+    `no valor de R$ ${mensal} para ${MES}. Pode me enviar o PIX para confirmar minha reserva?`;
+  return `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(msg)}`;
+}
+
+function criarBarra(ocup) {
+  const barra = el("div", "segs");
+  barra.setAttribute("role", "img");
+  barra.setAttribute("aria-label", `${ocup} de ${MAXIMO} vagas ocupadas`);
+  for (let i = 0; i < MAXIMO; i++) {
+    barra.append(el("span", i < ocup ? "seg seg--on" : "seg"));
+  }
+  return barra;
+}
+
+function criarCard(plano, indice) {
+  const mensal = plano.precoAula * plano.aulas;
+  const multi = plano.faixas.length > 1;
+
+  const ocup = plano.faixas.map((f) => ocupantes(f).length);
+  const ocupMax = Math.max(...ocup);
+  const ocupMin = Math.min(...ocup);
+  const lotada = ocupMax >= MAXIMO;
+  const confirmada = ocupMin >= MINIMO;
+  const livres = Math.max(0, MAXIMO - ocupMax);
+  const alunos = multi
+    ? pagas.filter((r) => r.plano === plano.id)
+    : ocupantes(plano.faixas[0]);
+
+  const card = el(
+    "article",
+    "card" + (plano.intenso ? " card--intenso" : "") + (lotada ? " card--lotada" : "")
+  );
+  card.style.setProperty("--i", String(indice));
+
+  if (plano.faixaTopo) card.append(el("div", "card__faixa", plano.faixaTopo));
+
+  const corpo = el("div", "card__corpo");
+
+  /* 1. HORÁRIO */
+  const topo = el("div", "card__topo");
+  topo.append(el("span", "card__dia", "Domingo"));
+  if (plano.selo) topo.append(el("span", "selo", plano.selo));
+  corpo.append(topo);
+
+  corpo.append(el("h2", "card__horario", plano.horario));
+
+  const locais = el("p", "card__locais");
+  plano.locais.forEach((l, i) => {
+    if (i > 0) locais.append(el("span", "mais", "+"));
+    const selo = el("span", "local local--" + l.tipo);
+    const ico = el("span", "local__ico");
+    ico.innerHTML = ICONES[l.tipo];
+    selo.append(ico, el("span", null, l.texto));
+    locais.append(selo);
+  });
+  corpo.append(locais);
+
+  /* 2. PREÇO */
+  const preco = el("div", "preco");
+  const esq = el("div");
+  esq.append(el("span", "preco__rotulo", "Mensalidade"));
+  esq.append(el("span", "preco__valor", `R$ ${mensal}`));
+  const dir = el("div", "preco__lado");
+  const porAula = el("span", "preco__aula");
+  porAula.append(`R$ ${plano.precoAula} por `, el("b", null, `${plano.unidade} + quadra`));
+  dir.append(porAula);
+  dir.append(el("span", "preco__qtd", `${plano.aulas} ${plano.unidade}s em ${MES}`));
+  preco.append(esq, dir);
+  corpo.append(preco);
+
+  /* 3. VAGAS */
+  const vagas = el("div", "vagas");
+
+  const status = el("div", "status " + (confirmada ? "status--ok" : "status--formacao"));
+  status.append(el("span", "status__dot"));
+  const stTxt = el("div");
+  stTxt.append(el("strong", null, confirmada ? "TURMA CONFIRMADA" : "TURMA EM FORMAÇÃO"));
+  stTxt.append(
+    el(
+      "span",
+      null,
+      confirmada
+        ? `Mínimo de ${MINIMO} alunos atingido`
+        : `${ocupMin} de ${MINIMO} confirmações necessárias`
+    )
+  );
+  status.append(stTxt);
+  vagas.append(status);
+
+  const titulo = el("p", "vagas__titulo");
+  if (multi) {
+    titulo.textContent = "Vagas ocupadas por horário";
+  } else {
+    titulo.append(el("b", null, String(ocup[0])), ` de ${MAXIMO} vagas ocupadas`);
+  }
+  vagas.append(titulo);
+
+  plano.faixas.forEach((f, i) => {
+    const linha = el("div", multi ? "barra-linha" : "");
+    if (multi) linha.append(el("span", "barra-linha__rot", FAIXAS[f]));
+    linha.append(criarBarra(ocup[i]));
+    if (multi) linha.append(el("span", "barra-linha__num", `${ocup[i]}/${MAXIMO}`));
+    vagas.append(linha);
+  });
+
+  vagas.append(el("p", "vagas__grupo", `Grupo: mínimo ${MINIMO} · máximo ${MAXIMO} alunos`));
+
+  const lista = el("ul", "lista");
+  alunos.forEach((r) => {
+    const li = el("li", "aluno aluno--ok");
+    li.append(el("span", "marca", "✓"));
+    const txt = el("span", "aluno__txt");
+    txt.append(el("b", null, r.nome), " — Reserva confirmada");
+    li.append(txt);
+    if (!multi && r.plano !== plano.id) li.append(el("span", "tag", "2h"));
+    lista.append(li);
+  });
+  for (let i = 0; i < livres; i++) {
+    const li = el("li", "aluno aluno--livre");
+    li.append(el("span", "marca"));
+    li.append(el("span", null, "Vaga disponível"));
+    lista.append(li);
+  }
+  vagas.append(lista);
+  corpo.append(vagas);
+
+  /* 4. ESCOLHER */
+  if (lotada) {
+    const off = el("div", "btn btn--off", "TURMA LOTADA");
+    off.setAttribute("aria-disabled", "true");
+    corpo.append(off);
+  } else {
+    const cta = el("a", "btn");
+    cta.href = linkWhatsApp(plano, mensal);
+    cta.target = "_blank";
+    cta.rel = "noopener";
+    cta.append(el("span", null, "ESCOLHER ESTE MENSAL"), el("span", "btn__seta", "→"));
+    cta.addEventListener("click", (e) => {
+      if (!/^\d{10,15}$/.test(WHATSAPP_NUMBER)) {
+        e.preventDefault();
+        alert("Configure o WHATSAPP_NUMBER no início do index.html.");
+      }
+    });
+    corpo.append(cta);
+    corpo.append(el("p", "card__nota", "Você receberá o PIX pelo WhatsApp."));
+  }
+
+  card.append(corpo);
+  return card;
+}
+
+function renderDatas() {
+  const ul = document.getElementById("datas");
+  DATAS.forEach((d) => {
+    const [dia, mes] = d.split("/");
+    const li = el("li", "data");
+    li.append(el("span", "data__sem", "DOM"));
+    const num = el("span", "data__num");
+    num.append(el("strong", null, dia), el("small", null, "/" + mes));
+    li.append(num);
+    ul.append(li);
+  });
+}
+
+function renderAviso() {
+  if (!avisos.length) return;
+  const box = document.getElementById("aviso");
+  box.hidden = false;
+  box.append(el("strong", null, "Revise as reservas no index.html:"));
+  const ul = el("ul");
+  avisos.forEach((a) => ul.append(el("li", null, a)));
+  box.append(ul);
+}
+
+function init() {
+  renderDatas();
+  renderAviso();
+  const box = document.getElementById("planos");
+  PLANOS.forEach((p, i) => box.append(criarCard(p, i)));
+}
+
+init();
+</script>
+</body>
+</html>
