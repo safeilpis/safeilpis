@@ -506,6 +506,17 @@ body {
   .data__dia { font-size: 16px; }
   .selo { font-size: 11.5px; }
 }
+
+.datas__aviso {
+  margin-top: 12px;
+  padding: 12px 14px;
+  border-radius: 14px;
+  background: var(--sun-soft);
+  font-size: 12.5px;
+  font-weight: 600;
+  line-height: 1.5;
+  color: var(--sun);
+}
 </style>
 </head>
 <body>
@@ -524,12 +535,6 @@ body {
       <p class="eyebrow">Turmas fixas • Novembro</p>
       <h1>Planos mensais<br>de tênis</h1>
       <p class="hero__texto">As aulas avulsas serão suspensas neste período devido à dificuldade de disponibilidade das quadras. As vagas abaixo são para planos mensais com horário fixo.</p>
-
-      <ol class="passos" aria-label="Como funciona">
-        <li><span class="passo__n">1</span><span>Escolha o horário</span></li>
-        <li><span class="passo__n">2</span><span>Chame no WhatsApp</span></li>
-        <li><span class="passo__n">3</span><span>Pague o PIX</span></li>
-      </ol>
     </div>
   </header>
 
@@ -539,6 +544,7 @@ body {
       <h2 class="bloco__titulo" id="datas-titulo">5 domingos de aula</h2>
       <ul class="datas__lista" id="datas"></ul>
       <p class="datas__nota">Sua reserva mensal inclui todas as datas acima.</p>
+      <p class="datas__aviso">Os valores abaixo valem só para novembro, que tem 5 domingos. Nos outros meses o valor tende a ser menor, pois a maioria tem apenas 4 domingos.</p>
     </section>
 
     <div id="aviso" class="aviso" hidden></div>
@@ -546,7 +552,7 @@ body {
 
     <div class="secao">
       <h2 class="secao__titulo">Escolha seu horário</h2>
-      <p class="secao__sub">Turmas de 4 a 6 alunos</p>
+      <p class="secao__sub">Grupo de no mínimo 4 e no máximo 6 pessoas</p>
     </div>
 
     <section class="planos" id="planos" aria-label="Planos mensais"></section>
@@ -563,6 +569,7 @@ body {
         <li>A academia poderá solicitar a quadra de 1 a 3 vezes no mês. Nesses casos, a aula poderá ser reagendada ou descontado na próxima mensalidade.</li>
         <li>Prazo para pagamento e garantia da vaga: por ordem de pagamento até sexta-feira 30/10.</li>
         <li>O plano já começa neste domingo.</li>
+        <li>Todos os alunos do grupo serão da mesma categoria ou de nível parecido.</li>
       </ul>
     </section>
 
@@ -790,10 +797,11 @@ function criarCard(plano, indice) {
   /* 2. PREÇO */
   const preco = el("div", "preco");
   const linha = el("div", "preco__linha");
-  linha.append(el("span", "preco__valor", `R$ ${mensal}`), el("span", "preco__mes", "por mês"));
+  linha.append(el("span", "preco__valor", `R$ ${mensal}`), el("span", "preco__mes", "em novembro"));
   const det = el("p", "preco__det");
   det.append(`R$ ${plano.precoAula} por `, el("b", null, "aula + quadra"), ` · ${plano.aulas} aulas`);
-  preco.append(linha, det);
+  const novo = el("p", "preco__det", "Valor só de novembro (5 domingos)");
+  preco.append(linha, det, novo);
   card.append(preco);
 
   /* 3. VAGAS */
@@ -804,7 +812,7 @@ function criarCard(plano, indice) {
     el(
       "p",
       "vagas__restam",
-      lotada ? "Sem vagas" : `${plural(livres, "Resta", "Restam")} ${livres} ${plural(livres, "vaga", "vagas")}`
+      lotada ? "Sem vagas" : "Vaga disponível ainda"
     )
   );
   vagas.append(head);
@@ -821,8 +829,10 @@ function criarCard(plano, indice) {
     const b = el("div", "barra");
     b.append(criarBarra(ocup[0]));
     vagas.append(b);
-    vagas.append(el("p", "vagas__ocup", `${ocup[0]} de ${MAXIMO} vagas ocupadas`));
+    
   }
+
+  vagas.append(el("p", "vagas__ocup", `Grupo: mínimo ${MINIMO} e máximo ${MAXIMO} pessoas`));
 
   const status = el("p", "status " + (confirmada ? "status--ok" : "status--formacao"));
   const stTxt = el("span");
