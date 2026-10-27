@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <meta name="theme-color" content="#123524">
+  <meta name="theme-color" content="#f6f8fc">
   <title>Planos mensais de tênis · Novembro</title>
   <meta name="description" content="Turmas fixas de tênis aos domingos em novembro. Escolha seu horário e reserve pelo WhatsApp.">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🎾</text></svg>">
@@ -13,42 +13,43 @@
   <style>
 /* =====================================================================
    PLANOS MENSAIS DE TÊNIS — style.css
-   Paleta: creme · verde floresta · verde claro
+   Paleta: branco · azul-marinho · azul suave
    ===================================================================== */
 
 :root {
-  --forest: #123524;
-  --forest-2: #1c4a34;
-  --leaf: #b7dba9;
-  --leaf-soft: #e9f2e1;
-  --leaf-line: #cfe3c4;
-  --cream: #f7f3e8;
-  --paper: #fffefa;
-  --ink: #14241b;
-  --muted: #6a766d;
-  --line: #ece6d6;
+  --bg: #f6f8fc;
+  --white: #ffffff;
+  --navy: #0b1f3a;
+  --blue: #2d5bd3;
+  --blue-soft: #edf2fc;
+  --blue-line: #d9e3f6;
+  --ink: #0f1c2e;
+  --muted: #5f6b7d;
+  --line: #e5eaf2;
 
-  --amber: #c98a1b;
-  --amber-soft: #fbf1d8;
-  --amber-ink: #7b5410;
-  --ok: #2f8f52;
-  --ok-soft: #e3f2e3;
+  --sun: #8a5a00;
+  --sun-soft: #fff4dc;
+  --sun-line: #f6dfa8;
+
+  --green: #15803d;
+  --green-soft: #e8f6ee;
 
   --font: 'Montserrat', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  --radius: 24px;
+  --radius: 22px;
+  --shadow: 0 1px 2px rgba(11, 31, 58, .04), 0 12px 32px -18px rgba(11, 31, 58, .22);
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
 [hidden] { display: none !important; }
-
 html { -webkit-text-size-adjust: 100%; }
 
 body {
-  background: var(--cream);
+  background: var(--bg);
   color: var(--ink);
   font-family: var(--font);
   font-size: 15px;
   line-height: 1.5;
+  font-variant-numeric: tabular-nums;
   -webkit-font-smoothing: antialiased;
   -webkit-tap-highlight-color: transparent;
   padding-bottom: env(safe-area-inset-bottom);
@@ -59,120 +60,142 @@ body {
 .hero {
   position: relative;
   overflow: hidden;
-  background: var(--forest);
-  color: var(--cream);
-  padding: max(40px, calc(env(safe-area-inset-top) + 24px)) 16px 96px;
+  background: linear-gradient(180deg, #ffffff 0%, var(--bg) 100%);
+  padding: max(36px, calc(env(safe-area-inset-top) + 20px)) 20px 8px;
 }
 
 .hero__quadra {
   position: absolute;
-  right: -56px;
-  top: -34px;
-  width: 270px;
-  color: var(--leaf);
-  opacity: .16;
-  transform: rotate(14deg);
+  right: -70px;
+  top: -40px;
+  width: 250px;
+  color: #dbe4f4;
+  transform: rotate(16deg);
   pointer-events: none;
 }
 
 .hero__inner {
   position: relative;
-  max-width: 480px;
+  max-width: 460px;
   margin: 0 auto;
-  padding: 0 4px;
+}
+
+.eyebrow {
+  display: inline-block;
+  padding: 6px 12px;
+  border-radius: 99px;
+  background: var(--blue-soft);
+  color: var(--blue);
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: .12em;
+  text-transform: uppercase;
 }
 
 .hero h1 {
+  margin-top: 14px;
+  font-size: clamp(28px, 8.4vw, 36px);
   font-weight: 800;
-  font-size: clamp(26px, 7.6vw, 34px);
   line-height: 1.1;
-  letter-spacing: .01em;
-  text-transform: uppercase;
-}
-.hero h1 span { display: block; color: var(--leaf); }
-
-.hero__sub {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  margin-top: 16px;
-  font-size: 12px;
-  font-weight: 800;
-  letter-spacing: .2em;
-  text-transform: uppercase;
-  color: var(--leaf);
-}
-.hero__sub::before {
-  content: "";
-  width: 28px;
-  height: 1.5px;
-  background: var(--leaf);
+  letter-spacing: -.02em;
+  color: var(--navy);
 }
 
 .hero__texto {
-  margin-top: 18px;
-  padding-left: 14px;
-  border-left: 2px solid var(--leaf);
+  margin-top: 12px;
+  max-width: 38ch;
   font-size: 14px;
   line-height: 1.6;
-  color: rgba(247, 243, 232, .84);
+  color: var(--muted);
+}
+
+/* passo a passo */
+
+.passos {
+  list-style: none;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  margin-top: 22px;
+}
+.passos li {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 12px 10px;
+  border-radius: 16px;
+  background: var(--white);
+  box-shadow: 0 0 0 1px var(--line);
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1.3;
+  color: var(--navy);
+}
+.passo__n {
+  display: grid;
+  place-items: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: var(--navy);
+  color: #fff;
+  font-size: 12px;
+  font-weight: 800;
 }
 
 /* ---------- CONTEÚDO (sempre 1 coluna) ---------- */
 
 .wrap {
-  max-width: 480px;
+  max-width: 460px;
   margin: 0 auto;
-  padding: 0 16px 48px;
+  padding: 16px 20px 56px;
+}
+
+.bloco {
+  background: var(--white);
+  border-radius: var(--radius);
+  padding: 20px;
+  box-shadow: 0 0 0 1px var(--line), var(--shadow);
+}
+.bloco__titulo {
+  font-size: 16px;
+  font-weight: 800;
+  color: var(--navy);
 }
 
 /* ---------- DATAS ---------- */
-
-.datas {
-  position: relative;
-  z-index: 2;
-  margin-top: -64px;
-  background: var(--paper);
-  border-radius: var(--radius);
-  padding: 16px 14px 14px;
-  box-shadow: 0 0 0 1px var(--line), 0 22px 40px -22px rgba(18, 53, 36, .5);
-}
-
-.datas__titulo {
-  margin-bottom: 10px;
-  text-align: center;
-  font-size: 11px;
-  font-weight: 800;
-  letter-spacing: .16em;
-  text-transform: uppercase;
-  color: var(--muted);
-}
 
 .datas__lista {
   list-style: none;
   display: flex;
   gap: 6px;
+  margin-top: 14px;
 }
-
 .data {
   flex: 1 1 0;
   min-width: 0;
-  text-align: center;
-  background: var(--leaf-soft);
-  border-radius: 14px;
   padding: 10px 2px;
-  color: var(--forest);
+  border-radius: 14px;
+  background: var(--blue-soft);
+  text-align: center;
+  color: var(--navy);
   white-space: nowrap;
 }
-.data strong { font-size: 20px; font-weight: 800; line-height: 1; }
-.data small { font-size: 11px; font-weight: 600; color: var(--forest-2); }
+.data__sem {
+  display: block;
+  font-size: 9.5px;
+  font-weight: 800;
+  letter-spacing: .1em;
+  color: var(--blue);
+}
+.data__dia { display: block; margin-top: 2px; font-size: 19px; font-weight: 800; line-height: 1.1; }
+.data__mes { font-size: 11px; font-weight: 600; color: var(--muted); }
 
 .datas__nota {
   margin-top: 12px;
-  text-align: center;
-  font-size: 12.5px;
+  font-size: 13px;
   font-weight: 600;
-  color: var(--forest-2);
+  color: var(--muted);
 }
 
 /* ---------- AVISO (só aparece se houver erro nas reservas) ---------- */
@@ -188,192 +211,179 @@ body {
 }
 .aviso ul { margin: 6px 0 0 18px; }
 
+/* ---------- TÍTULO DA SEÇÃO ---------- */
+
+.secao { margin: 44px 4px 18px; }
+.secao__titulo {
+  font-size: 24px;
+  font-weight: 800;
+  letter-spacing: -.02em;
+  color: var(--navy);
+}
+.secao__sub { margin-top: 4px; font-size: 13px; color: var(--muted); }
+
 /* ---------- CARDS ---------- */
 
 .planos {
   display: grid;
-  gap: 16px;
-  margin-top: 20px;
+  gap: 28px;
 }
 
 .card {
-  overflow: hidden;
-  background: var(--paper);
+  background: var(--white);
   border-radius: var(--radius);
-  box-shadow: 0 0 0 1px var(--line), 0 14px 30px -24px rgba(18, 53, 36, .55);
+  padding: 24px 20px 20px;
+  box-shadow: 0 0 0 1px var(--line), var(--shadow);
   animation: subir .5s cubic-bezier(.2, .7, .2, 1) both;
   animation-delay: calc(var(--i, 0) * 80ms);
 }
+.card--intenso { box-shadow: 0 0 0 2px var(--blue), var(--shadow); }
 
-.card--intenso { box-shadow: 0 0 0 1.5px var(--forest), 0 14px 30px -24px rgba(18, 53, 36, .55); }
+/* selos (quadra / destaque) */
 
-.card__faixa {
-  padding: 9px 12px;
-  background: var(--forest);
-  color: var(--leaf);
-  text-align: center;
-  font-size: 10.5px;
-  font-weight: 800;
-  letter-spacing: .16em;
-}
-
-.card__corpo { padding: 20px 18px 18px; }
-
-/* 1. horário + preço */
-
-.card__head {
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  gap: 12px;
-}
-
-.card__horario {
-  font-size: 32px;
-  font-weight: 800;
-  line-height: 1;
-  letter-spacing: -.02em;
-  color: var(--forest);
-  white-space: nowrap;
-}
-
-.card__preco { text-align: right; flex: none; }
-.preco__valor {
-  display: block;
-  font-size: 26px;
-  font-weight: 800;
-  line-height: 1;
-  letter-spacing: -.02em;
-  color: var(--forest);
-  white-space: nowrap;
-}
-.preco__mes {
-  display: block;
-  margin-top: 4px;
-  font-size: 11px;
-  font-weight: 700;
-  color: var(--muted);
-}
-
-/* 2. quadra */
-
-.locais {
-  list-style: none;
-  display: grid;
-  gap: 8px;
-  margin-top: 16px;
-}
-.local {
-  display: flex;
+.selo {
+  display: inline-flex;
   align-items: center;
-  gap: 10px;
-  font-size: 14px;
+  gap: 7px;
+  padding: 7px 12px 7px 10px;
+  border-radius: 99px;
+  font-size: 12.5px;
   font-weight: 700;
-  color: var(--ink);
+  line-height: 1.2;
+  white-space: nowrap;
 }
-.local__ico {
+.selo svg {
   flex: none;
-  display: grid;
-  place-items: center;
-  width: 30px;
-  height: 30px;
-  border-radius: 50%;
-}
-.local__ico svg {
   width: 16px;
   height: 16px;
   fill: none;
   stroke: currentColor;
-  stroke-width: 1.9;
+  stroke-width: 2;
   stroke-linecap: round;
   stroke-linejoin: round;
 }
-.local--descoberta .local__ico { background: var(--leaf-soft); color: var(--forest); box-shadow: inset 0 0 0 1.5px var(--leaf-line); }
-.local--coberta .local__ico { background: var(--forest); color: var(--leaf); }
-.local__hora {
-  min-width: 58px;
-  font-size: 13px;
+.selo--descoberta { background: var(--sun-soft); color: var(--sun); box-shadow: inset 0 0 0 1px var(--sun-line); }
+.selo--coberta { background: var(--blue-soft); color: var(--navy); box-shadow: inset 0 0 0 1px var(--blue-line); }
+.selo--destaque { background: var(--blue); color: #fff; letter-spacing: .02em; }
+
+/* 1. horário */
+
+.card__hora {
+  margin-top: 14px;
+  font-size: 34px;
   font-weight: 800;
+  line-height: 1.05;
+  letter-spacing: -.03em;
+  color: var(--navy);
+}
+.card__sub {
+  margin-top: 6px;
+  font-size: 13.5px;
+  font-weight: 600;
   color: var(--muted);
 }
 
-.card__detalhe {
+.trechos {
+  list-style: none;
+  display: grid;
+  gap: 8px;
   margin-top: 14px;
-  font-size: 13px;
-  color: var(--muted);
 }
-.card__detalhe b { font-weight: 800; color: var(--forest); }
+.trecho {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.trecho__hora {
+  min-width: 62px;
+  font-size: 13px;
+  font-weight: 800;
+  color: var(--navy);
+}
+
+/* 2. preço */
+
+.preco {
+  margin-top: 20px;
+  padding: 16px;
+  border-radius: 16px;
+  background: var(--bg);
+}
+.preco__linha { display: flex; align-items: baseline; gap: 6px; }
+.preco__valor {
+  font-size: 30px;
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: -.02em;
+  color: var(--navy);
+}
+.preco__mes { font-size: 14px; font-weight: 700; color: var(--muted); }
+.preco__det { margin-top: 6px; font-size: 13px; color: var(--muted); }
+.preco__det b { font-weight: 800; color: var(--navy); }
 
 /* 3. vagas */
 
-.vagas {
-  margin-top: 18px;
-  padding-top: 16px;
-  border-top: 1px solid var(--line);
-}
+.vagas { margin-top: 22px; }
 
-.vagas__topo {
+.vagas__head {
   display: flex;
-  align-items: center;
+  align-items: baseline;
   justify-content: space-between;
   gap: 10px;
 }
-.vagas__num { font-size: 14px; font-weight: 700; color: var(--muted); white-space: nowrap; }
-.vagas__num b { font-size: 18px; font-weight: 800; color: var(--forest); }
-
-.chip {
-  flex: none;
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  padding: 5px 10px;
-  border-radius: 99px;
-  font-size: 10.5px;
-  font-weight: 800;
-  letter-spacing: .06em;
-  text-transform: uppercase;
-  white-space: nowrap;
-}
-.chip::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: currentColor; }
-.chip--formacao { background: var(--amber-soft); color: var(--amber-ink); }
-.chip--ok { background: var(--ok-soft); color: var(--ok); }
+.vagas__restam { font-size: 18px; font-weight: 800; color: var(--navy); white-space: nowrap; }
+.vagas__ocup { margin-top: 8px; font-size: 12.5px; font-weight: 600; color: var(--muted); }
 
 .segs {
   display: grid;
   grid-template-columns: repeat(6, 1fr);
-  gap: 4px;
-  height: 8px;
+  gap: 5px;
+  height: 10px;
 }
-.seg { border-radius: 99px; background: #e2e8d8; }
-.seg--on { background: var(--forest); }
+.seg { border-radius: 99px; background: #e3e9f3; }
+.seg--on { background: var(--blue); }
 
 .barra { margin-top: 10px; }
 .barra-linha {
   display: grid;
-  grid-template-columns: 56px 1fr 28px;
+  grid-template-columns: 58px 1fr 30px;
   align-items: center;
   gap: 10px;
   margin-top: 10px;
 }
 .barra-linha__rot { font-size: 12px; font-weight: 700; color: var(--muted); }
-.barra-linha__num { text-align: right; font-size: 12px; font-weight: 800; color: var(--forest); }
+.barra-linha__num { text-align: right; font-size: 12px; font-weight: 800; color: var(--navy); }
 
-.vagas__info {
-  margin-top: 10px;
-  font-size: 12.5px;
-  color: var(--muted);
+.status {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  margin-top: 14px;
+  padding: 12px 14px;
+  border-radius: 14px;
+  font-size: 13px;
+  line-height: 1.45;
 }
+.status::before {
+  content: "";
+  flex: none;
+  width: 8px;
+  height: 8px;
+  margin-top: 6px;
+  border-radius: 50%;
+  background: currentColor;
+}
+.status b { display: block; font-weight: 800; }
+.status span span { display: block; opacity: .85; }
+.status--formacao { background: var(--blue-soft); color: var(--navy); }
+.status--formacao::before { background: var(--blue); }
+.status--ok { background: var(--green-soft); color: #0e4f27; }
+.status--ok::before { background: var(--green); }
 
 /* nomes confirmados */
 
-.nomes { margin-top: 14px; }
-.nomes__titulo {
-  font-size: 10.5px;
-  font-weight: 800;
-  letter-spacing: .12em;
-  text-transform: uppercase;
-  color: var(--muted);
-}
+.nomes { margin-top: 16px; }
+.nomes__titulo { font-size: 12px; font-weight: 700; color: var(--muted); }
 .nomes__lista {
   list-style: none;
   display: flex;
@@ -386,32 +396,26 @@ body {
   align-items: center;
   gap: 6px;
   max-width: 100%;
-  padding: 5px 10px 5px 6px;
+  padding: 5px 11px 5px 5px;
   border-radius: 99px;
-  background: var(--leaf-soft);
+  background: var(--bg);
+  box-shadow: inset 0 0 0 1px var(--line);
   font-size: 13px;
   font-weight: 700;
-  color: var(--forest);
+  color: var(--navy);
 }
 .nome__check {
   flex: none;
   display: grid;
   place-items: center;
-  width: 18px;
-  height: 18px;
+  width: 20px;
+  height: 20px;
   border-radius: 50%;
-  background: var(--forest);
+  background: var(--green);
   color: #fff;
-  font-size: 10px;
+  font-size: 11px;
 }
-.nome__tag {
-  padding: 1px 6px;
-  border-radius: 99px;
-  background: var(--paper);
-  font-size: 10px;
-  font-weight: 800;
-  color: var(--forest-2);
-}
+.nome__tag { font-size: 10.5px; font-weight: 800; color: var(--blue); }
 
 /* 4. botão */
 
@@ -420,86 +424,65 @@ body {
   align-items: center;
   justify-content: center;
   gap: 12px;
-  min-height: 56px;
-  margin-top: 18px;
-  padding: 0 14px;
+  min-height: 58px;
+  margin-top: 22px;
+  padding: 0 16px;
   border-radius: 16px;
-  background: var(--forest);
+  background: var(--navy);
   color: #fff;
   text-decoration: none;
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 800;
-  letter-spacing: .08em;
+  letter-spacing: .06em;
   text-align: center;
   transition: transform .15s ease, background .15s ease;
 }
-.btn:active { transform: scale(.98); background: var(--forest-2); }
-.btn:focus-visible { outline: 3px solid var(--leaf); outline-offset: 3px; }
-.btn__seta { color: var(--leaf); font-size: 17px; letter-spacing: 0; }
+.btn:active { transform: scale(.98); background: #142d52; }
+.btn:focus-visible { outline: 3px solid var(--blue-line); outline-offset: 3px; }
+.btn__seta { font-size: 18px; letter-spacing: 0; }
 
 .btn--off {
-  background: #e9e5d8;
-  color: #8b9187;
+  background: #eef1f6;
+  color: #8a94a6;
   cursor: not-allowed;
 }
-.btn--off:active { transform: none; background: #e9e5d8; }
+.btn--off:active { transform: none; background: #eef1f6; }
 
 .card__nota {
-  margin-top: 8px;
+  margin-top: 10px;
   text-align: center;
   font-size: 12px;
   color: var(--muted);
 }
 
-.card--lotada .card__horario,
-.card--lotada .preco__valor { color: #7d887f; }
+.card--lotada .card__hora,
+.card--lotada .preco__valor { color: #8a94a6; }
 
 /* ---------- REGRAS ---------- */
 
-.regras {
-  margin-top: 28px;
-  padding: 24px 20px;
-  background: var(--paper);
-  border-radius: var(--radius);
-  box-shadow: 0 0 0 1px var(--line);
-}
-.regras h2 {
-  font-size: 18px;
-  font-weight: 800;
-  letter-spacing: .08em;
-  text-transform: uppercase;
-  color: var(--forest);
-}
-.regras h2::after {
-  content: "";
-  display: block;
-  width: 32px;
-  height: 2px;
-  margin-top: 10px;
-  background: var(--leaf);
-}
+.regras { margin-top: 44px; }
 .regras ul {
   list-style: none;
   display: grid;
-  gap: 12px;
-  margin-top: 18px;
+  gap: 14px;
+  margin-top: 16px;
 }
 .regras li {
   position: relative;
-  padding-left: 22px;
-  font-size: 13.5px;
+  padding-left: 20px;
+  font-size: 14px;
   line-height: 1.6;
+  color: var(--ink);
 }
 .regras li::before {
   content: "";
   position: absolute;
   left: 2px;
-  top: .6em;
+  top: .62em;
   width: 7px;
   height: 7px;
   border-radius: 50%;
-  background: var(--leaf);
-  box-shadow: 0 0 0 3px var(--leaf-soft);
+  background: var(--blue);
 }
 
 /* ---------- ANIMAÇÃO ---------- */
@@ -516,48 +499,60 @@ body {
 /* ---------- TELAS MUITO PEQUENAS ---------- */
 
 @media (max-width: 350px) {
-  .data strong { font-size: 17px; }
-  .data small { font-size: 10px; }
-  .card__horario { font-size: 27px; }
-  .preco__valor { font-size: 22px; }
+  .wrap, .hero { padding-left: 14px; padding-right: 14px; }
+  .card { padding-left: 16px; padding-right: 16px; }
+  .card__hora { font-size: 29px; }
+  .passos li { font-size: 11px; padding: 10px 8px; }
+  .data__dia { font-size: 16px; }
+  .selo { font-size: 11.5px; }
 }
 </style>
 </head>
 <body>
 
   <header class="hero">
-    <svg class="hero__quadra" viewBox="0 0 200 400" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6">
+    <svg class="hero__quadra" viewBox="0 0 200 400" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2">
       <rect x="10" y="10" width="180" height="380"/>
       <line x1="32" y1="10" x2="32" y2="390"/>
       <line x1="168" y1="10" x2="168" y2="390"/>
       <line x1="32" y1="108" x2="168" y2="108"/>
       <line x1="32" y1="292" x2="168" y2="292"/>
       <line x1="100" y1="108" x2="100" y2="292"/>
-      <line x1="2" y1="200" x2="198" y2="200" stroke-dasharray="4 5"/>
+      <line x1="2" y1="200" x2="198" y2="200" stroke-dasharray="5 6"/>
     </svg>
     <div class="hero__inner">
-      <h1>Planos mensais <span>de tênis</span></h1>
-      <p class="hero__sub">Turmas fixas • Novembro</p>
+      <p class="eyebrow">Turmas fixas • Novembro</p>
+      <h1>Planos mensais<br>de tênis</h1>
       <p class="hero__texto">As aulas avulsas serão suspensas neste período devido à dificuldade de disponibilidade das quadras. As vagas abaixo são para planos mensais com horário fixo.</p>
+
+      <ol class="passos" aria-label="Como funciona">
+        <li><span class="passo__n">1</span><span>Escolha o horário</span></li>
+        <li><span class="passo__n">2</span><span>Chame no WhatsApp</span></li>
+        <li><span class="passo__n">3</span><span>Pague o PIX</span></li>
+      </ol>
     </div>
   </header>
 
   <main class="wrap">
 
-    <section class="datas" aria-label="Datas das aulas">
-      <p class="datas__titulo">Aulas aos domingos</p>
+    <section class="bloco datas" aria-labelledby="datas-titulo">
+      <h2 class="bloco__titulo" id="datas-titulo">5 domingos de aula</h2>
       <ul class="datas__lista" id="datas"></ul>
       <p class="datas__nota">Sua reserva mensal inclui todas as datas acima.</p>
     </section>
 
     <div id="aviso" class="aviso" hidden></div>
-
     <noscript><p class="aviso">Ative o JavaScript para ver as turmas.</p></noscript>
+
+    <div class="secao">
+      <h2 class="secao__titulo">Escolha seu horário</h2>
+      <p class="secao__sub">Turmas de 4 a 6 alunos</p>
+    </div>
 
     <section class="planos" id="planos" aria-label="Planos mensais"></section>
 
-    <section class="regras" aria-labelledby="regras-titulo">
-      <h2 id="regras-titulo">Regras do plano</h2>
+    <section class="bloco regras" aria-labelledby="regras-titulo">
+      <h2 class="bloco__titulo" id="regras-titulo">Regras do plano</h2>
       <ul>
         <li>A turma é confirmada com mínimo de 4 alunos pagantes.</li>
         <li>Caso o mínimo de 4 alunos não seja atingido, o valor pago será devolvido integralmente.</li>
@@ -565,8 +560,8 @@ body {
         <li>O pagamento reserva o horário fixo durante todo o mês.</li>
         <li>Falta do aluno não gera crédito ou reembolso.</li>
         <li>Em caso de chuva que impossibilite o uso da quadra descoberta, a aula afetada será reagendada.</li>
-        <li>A academia poderá solicitar a quadra de 1 a 3 vezes no mês. Nesses casos, a aula poderá ser reagendada ou o valor correspondente à quadra/aula não realizada será tratado conforme a opção aplicável.</li>
-        <li>Prazo para pagamento e garantia da vaga: sexta-feira anterior ao início do plano.</li>
+        <li>A academia poderá solicitar a quadra de 1 a 3 vezes no mês. Nesses casos, a aula poderá ser reagendada ou descontado na próxima mensalidade.</li>
+        <li>Prazo para pagamento e garantia da vaga: por ordem de pagamento até sexta-feira 30/10.</li>
         <li>O plano já começa neste domingo.</li>
       </ul>
     </section>
@@ -626,7 +621,8 @@ const FAIXAS = {
 const PLANOS = [
   {
     id: "11-12",
-    horario: "11h – 12h",
+    horario: "11h às 12h",
+    duracao: "Domingo · 1 hora de aula",
     locais: [{ tipo: "descoberta", texto: "Quadra descoberta" }],
     faixas: ["11-12"],
     precoAula: 80,
@@ -636,7 +632,8 @@ const PLANOS = [
   },
   {
     id: "12-13",
-    horario: "12h – 13h",
+    horario: "12h às 13h",
+    duracao: "Domingo · 1 hora de aula",
     locais: [{ tipo: "coberta", texto: "Quadra coberta · saibro" }],
     faixas: ["12-13"],
     precoAula: 70,
@@ -647,8 +644,9 @@ const PLANOS = [
   {
     id: "11-13",
     intenso: true,
-    faixaTopo: "AULA INTENSA · 2 HORAS DE TREINO",
-    horario: "11h – 13h",
+    destaque: "Aula intensa · 2 horas de treino",
+    horario: "11h às 13h",
+    duracao: "Domingo · 2 horas de treino",
     locais: [
       { tipo: "descoberta", hora: "11h–12h", texto: "Quadra descoberta" },
       { tipo: "coberta", hora: "12h–13h", texto: "Quadra coberta" },
@@ -703,12 +701,14 @@ Object.keys(FAIXAS).forEach((f) => {
    RENDER
    --------------------------------------------------------------------- */
 
-// Ícones de quadra (sol = descoberta, telhado = coberta)
+// Ícones (sol = descoberta, telhado = coberta, estrela = destaque)
 const ICONES = {
   descoberta:
     '<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2.5v2.2M12 19.3v2.2M2.5 12h2.2M19.3 12h2.2M5.3 5.3l1.6 1.6M17.1 17.1l1.6 1.6M5.3 18.7l1.6-1.6M17.1 6.9l1.6-1.6"/></svg>',
   coberta:
     '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2.5 10.5 12 3.5l9.5 7z"/><path d="M6 11v9M18 11v9"/></svg>',
+  destaque:
+    '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M13 2 4 14h7l-1 8 9-12h-7z"/></svg>',
 };
 
 function el(tag, classe, texto) {
@@ -716,6 +716,17 @@ function el(tag, classe, texto) {
   if (classe) n.className = classe;
   if (texto !== undefined) n.textContent = texto;
   return n;
+}
+
+function selo(tipo, texto) {
+  const s = el("span", "selo selo--" + tipo);
+  s.innerHTML = ICONES[tipo];
+  s.append(el("span", null, texto));
+  return s;
+}
+
+function plural(n, um, varios) {
+  return n === 1 ? um : varios;
 }
 
 function linkWhatsApp(plano, mensal) {
@@ -744,6 +755,8 @@ function criarCard(plano, indice) {
   const ocupMin = Math.min(...ocup);
   const lotada = ocupMax >= MAXIMO;
   const confirmada = ocupMin >= MINIMO;
+  const livres = Math.max(0, MAXIMO - ocupMax);
+  const faltam = Math.max(0, MINIMO - ocupMin);
   const alunos = multi
     ? pagas.filter((r) => r.plano === plano.id)
     : ocupantes(plano.faixas[0]);
@@ -754,79 +767,75 @@ function criarCard(plano, indice) {
   );
   card.style.setProperty("--i", String(indice));
 
-  if (plano.faixaTopo) card.append(el("div", "card__faixa", plano.faixaTopo));
+  /* 1. HORÁRIO + QUADRA */
+  if (plano.destaque) {
+    card.append(selo("destaque", plano.destaque));
+  } else {
+    plano.locais.forEach((l) => card.append(selo(l.tipo, l.texto)));
+  }
 
-  const corpo = el("div", "card__corpo");
+  card.append(el("h2", "card__hora", plano.horario));
+  card.append(el("p", "card__sub", plano.duracao));
 
-  /* 1. HORÁRIO + PREÇO */
-  const head = el("div", "card__head");
-  head.append(el("h2", "card__horario", plano.horario));
-  const preco = el("div", "card__preco");
-  preco.append(el("span", "preco__valor", `R$ ${mensal}`));
-  preco.append(el("span", "preco__mes", "por mês"));
-  head.append(preco);
-  corpo.append(head);
+  if (multi) {
+    const trechos = el("ul", "trechos");
+    plano.locais.forEach((l) => {
+      const li = el("li", "trecho");
+      li.append(el("span", "trecho__hora", l.hora), selo(l.tipo, l.texto));
+      trechos.append(li);
+    });
+    card.append(trechos);
+  }
 
-  /* 2. QUADRA */
-  const locais = el("ul", "locais");
-  plano.locais.forEach((l) => {
-    const li = el("li", "local local--" + l.tipo);
-    if (l.hora) li.append(el("span", "local__hora", l.hora));
-    const ico = el("span", "local__ico");
-    ico.innerHTML = ICONES[l.tipo];
-    li.append(ico, el("span", null, l.texto));
-    locais.append(li);
-  });
-  corpo.append(locais);
-
-  const detalhe = el("p", "card__detalhe");
-  detalhe.append(
-    `R$ ${plano.precoAula} por `,
-    el("b", null, "aula + quadra"),
-    ` · ${plano.aulas} aulas`
-  );
-  corpo.append(detalhe);
+  /* 2. PREÇO */
+  const preco = el("div", "preco");
+  const linha = el("div", "preco__linha");
+  linha.append(el("span", "preco__valor", `R$ ${mensal}`), el("span", "preco__mes", "por mês"));
+  const det = el("p", "preco__det");
+  det.append(`R$ ${plano.precoAula} por `, el("b", null, "aula + quadra"), ` · ${plano.aulas} aulas`);
+  preco.append(linha, det);
+  card.append(preco);
 
   /* 3. VAGAS */
   const vagas = el("div", "vagas");
 
-  const topo = el("div", "vagas__topo");
-  const num = el("p", "vagas__num");
-  if (multi) {
-    num.textContent = "Vagas";
-  } else {
-    num.append(el("b", null, String(ocup[0])), `/${MAXIMO} vagas`);
-  }
-  topo.append(num);
-  topo.append(
-    el("span", "chip " + (confirmada ? "chip--ok" : "chip--formacao"),
-      confirmada ? "Turma confirmada" : "Turma em formação")
+  const head = el("div", "vagas__head");
+  head.append(
+    el(
+      "p",
+      "vagas__restam",
+      lotada ? "Sem vagas" : `${plural(livres, "Resta", "Restam")} ${livres} ${plural(livres, "vaga", "vagas")}`
+    )
   );
-  vagas.append(topo);
+  vagas.append(head);
 
   if (multi) {
     plano.faixas.forEach((f, i) => {
-      const linha = el("div", "barra-linha");
-      linha.append(el("span", "barra-linha__rot", FAIXAS[f]));
-      linha.append(criarBarra(ocup[i]));
-      linha.append(el("span", "barra-linha__num", `${ocup[i]}/${MAXIMO}`));
-      vagas.append(linha);
+      const l = el("div", "barra-linha");
+      l.append(el("span", "barra-linha__rot", FAIXAS[f]));
+      l.append(criarBarra(ocup[i]));
+      l.append(el("span", "barra-linha__num", `${ocup[i]}/${MAXIMO}`));
+      vagas.append(l);
     });
   } else {
     const b = el("div", "barra");
     b.append(criarBarra(ocup[0]));
     vagas.append(b);
+    vagas.append(el("p", "vagas__ocup", `${ocup[0]} de ${MAXIMO} vagas ocupadas`));
   }
 
-  vagas.append(
-    el(
-      "p",
-      "vagas__info",
-      confirmada
-        ? `Mínimo de ${MINIMO} alunos atingido · máximo ${MAXIMO}`
-        : `${ocupMin} de ${MINIMO} confirmações necessárias · máximo ${MAXIMO}`
-    )
-  );
+  const status = el("p", "status " + (confirmada ? "status--ok" : "status--formacao"));
+  const stTxt = el("span");
+  if (confirmada) {
+    stTxt.append(el("b", null, "Turma confirmada"), el("span", null, `Mínimo de ${MINIMO} alunos atingido`));
+  } else {
+    stTxt.append(
+      el("b", null, "Turma em formação"),
+      el("span", null, `${ocupMin} de ${MINIMO} confirmações necessárias`)
+    );
+  }
+  status.append(stTxt);
+  vagas.append(status);
 
   if (alunos.length) {
     const nomes = el("div", "nomes");
@@ -842,13 +851,13 @@ function criarCard(plano, indice) {
     vagas.append(nomes);
   }
 
-  corpo.append(vagas);
+  card.append(vagas);
 
   /* 4. ESCOLHER */
   if (lotada) {
     const off = el("div", "btn btn--off", "TURMA LOTADA");
     off.setAttribute("aria-disabled", "true");
-    corpo.append(off);
+    card.append(off);
   } else {
     const cta = el("a", "btn");
     cta.href = linkWhatsApp(plano, mensal);
@@ -861,11 +870,10 @@ function criarCard(plano, indice) {
         alert("Configure o WHATSAPP_NUMBER no início do index.html.");
       }
     });
-    corpo.append(cta);
-    corpo.append(el("p", "card__nota", "Você receberá o PIX pelo WhatsApp."));
+    card.append(cta);
+    card.append(el("p", "card__nota", "Abre o WhatsApp para você receber o PIX."));
   }
 
-  card.append(corpo);
   return card;
 }
 
@@ -874,7 +882,10 @@ function renderDatas() {
   DATAS.forEach((d) => {
     const [dia, mes] = d.split("/");
     const li = el("li", "data");
-    li.append(el("strong", null, dia), el("small", null, "/" + mes));
+    li.append(el("span", "data__sem", "DOM"));
+    const n = el("span", "data__dia", dia);
+    n.append(el("span", "data__mes", "/" + mes));
+    li.append(n);
     ul.append(li);
   });
 }
