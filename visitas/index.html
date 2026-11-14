@@ -1,14 +1,13 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Visitas | SAFE ILPIS</title>
 <meta name="robots" content="noindex, nofollow">
+<title>Visitas | SAFE ILPIS</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap">
 <style>
-/* Layout: coluna única estreita, mobile-first, muito respiro entre blocos. Branco predominante, azul-marinho como cor de ação. */
 :root {
   --bg: #ffffff;
   --surface: #ffffff;
@@ -18,24 +17,17 @@
   --line: #e6eaf1;
   --navy: #0c2a52;
   --on-navy: #ffffff;
-  --ok: #1f7a4d;
   --font: "Manrope", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
 }
 @media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) {
+  :root {
     --bg: #09121f; --surface: #0e1a2b; --soft: #142239; --ink: #eaf0f9; --muted: #93a2ba;
-    --line: #1f2f48; --navy: #dbe6f8; --on-navy: #0a1a33; --ok: #5fcf98; color-scheme: dark;
+    --line: #1f2f48; --navy: #dbe6f8; --on-navy: #0a1a33; color-scheme: dark;
   }
 }
-:root[data-theme="dark"] {
-  --bg: #09121f; --surface: #0e1a2b; --soft: #142239; --ink: #eaf0f9; --muted: #93a2ba;
-  --line: #1f2f48; --navy: #dbe6f8; --on-navy: #0a1a33; --ok: #5fcf98; color-scheme: dark;
-}
 * { box-sizing: border-box; }
-html { color-scheme: light dark; }
 body {
-  margin: 0;
-  background: var(--bg); color: var(--ink); font-family: var(--font); font-size: 16px; line-height: 1.55;
+  margin: 0; background: var(--bg); color: var(--ink); font-family: var(--font); font-size: 16px; line-height: 1.55;
   padding-left: max(16px, env(safe-area-inset-left, 0px));
   padding-right: max(16px, env(safe-area-inset-right, 0px));
   padding-block: 40px 72px; -webkit-font-smoothing: antialiased;
@@ -59,7 +51,6 @@ button:active, .btn:active { transform: scale(.98); }
 :focus-visible { outline: 3px solid var(--navy); outline-offset: 3px; }
 .primary { background: var(--navy); color: var(--on-navy); width: 100%; }
 .ghost { background: var(--soft); color: var(--ink); }
-.link { background: none; color: var(--muted); min-height: 44px; padding: 0; font-size: 15px; font-weight: 600; justify-content: flex-start; text-decoration: underline; text-underline-offset: 4px; }
 
 .reveal { display: flex; flex-direction: column; gap: 28px; }
 .reveal[hidden] { display: none !important; }
@@ -69,9 +60,6 @@ button:active, .btn:active { transform: scale(.98); }
 .actions { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 6px; }
 .actions > * { flex: 1 1 140px; }
 .hint { margin: 0; color: var(--muted); font-size: 14px; padding: 16px 18px; background: var(--soft); border-radius: 16px; }
-.about { display: flex; flex-direction: column; gap: 10px; }
-.about p { margin: 0; color: var(--muted); font-size: 15px; padding: 16px 18px; background: var(--soft); border-radius: 16px; }
-.about p[hidden] { display: none !important; }
 
 .prep { display: flex; flex-direction: column; gap: 8px; }
 .prep h2 { font-size: 22px; font-weight: 800; letter-spacing: -.01em; margin: 0 0 16px; }
@@ -91,15 +79,14 @@ footer { color: var(--muted); font-size: 13px; text-align: center; }
 .toast.show { opacity: 1; transform: translate(-50%, 0); }
 @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
 </style>
-
 </head>
 <body>
 <main>
   <header>
     <span class="eyebrow">SAFE ILPIS · Assessoria Sênior</span>
     <h1>Suas visitas</h1>
-    <p class="date">Quinta-feira, 29 de outubro</p>
-    <p class="arrive">Chegue até 10 min antes. Há tolerância de 20 min depois do horário. Se atrasar, ligue para a casa.</p>
+    <p class="date">Domingo, 15 de novembro</p>
+    <p class="arrive">Chegue até 10 min antes. Há tolerância de 20 min depois do horário. Se atrasar, ligue para o(a) proprietário(a) para avisar.</p>
   </header>
 
   <section class="visits" id="visits" aria-label="Visitas confirmadas"></section>
@@ -158,16 +145,15 @@ footer { color: var(--muted); font-size: 13px; text-align: center; }
 
 <script>
 var VISITS = [
-  { id: "r36", time: "09:00", name: "Residencial 36", place: "Vargem Grande Paulista",
-    address: "R. Capivara, 1225 – Bairro Remanso, Vargem Grande Paulista – SP, 06730-000",
-    house: "Fonte de Vida · Unidade 3", contact: "Beth", phone: "+55 11 95080-3070",
-    about: "Acesso por cerca de 10 m de estrada de terra firme, totalmente acessível, conferida pela Anvisa local e pela nossa equipe. Pronto-socorro a 7 min, com protocolo de emergência de histórico positivo. São cerca de 14 hospedagens conosco, todas avaliadas entre 9,8 e 10. Casa simples, muito qualificada e com ótima gestão." },
-  { id: "r55", time: "10:15", name: "Residencial 55", place: "Vargem Grande Paulista",
-    address: "Clínica IMAI – Estr. do Pôsto, 855 – Chácara Santa Mônica, Vargem Grande Paulista – SP, 06730-000",
-    contact: "Cida", phone: "+55 11 99824-7599" },
-  { id: "r128", time: "11:30", name: "Residencial 128", place: "Cotia",
-    address: "Elohei Casa de Repouso – Rua Santo Antônio, 185 – Vila Santo Antônio, Cotia – SP, 06708-370",
-    contact: "Fernanda", phone: "+55 11 93285-3022" }
+  { id: "r290", time: "12:00", name: "Residencial 290", place: "Lapa, São Paulo",
+    address: "Residencial Senior Amor e Vida – Rua Diogo Ortiz, 137 – Lapa, São Paulo – SP",
+    contact: "Cida", phone: "+55 11 94642-0942" },
+  { id: "r112", time: "13:00", name: "Residencial 112", place: "Vila Ipojuca, São Paulo",
+    address: "Casa de repouso Nonni & Vita – R. Ponta Porã, 600 – Vila Ipojuca, São Paulo – SP, 07941-110",
+    contact: "Ivo", phone: "+55 11 98626-3332" },
+  { id: "r82", time: "14:00", name: "Residenciais 82 e 49", place: "Instituto de Previdência, São Paulo",
+    address: "Casa de repouso Luz da Manhã – Rua Hugo Carotini, 567 – Instituto de Previdência, São Paulo – SP, 05532-020",
+    contact: "Bruno", phone: "+55 11 94325-1286" }
 ];
 
 var toastEl = document.getElementById("toast"), toastTimer;
@@ -244,20 +230,8 @@ VISITS.forEach(function (v) {
     reveal.scrollIntoView({ behavior: "smooth", block: "nearest" });
   });
 
-  if (v.about) {
-    var ab = el("div", "about");
-    var tg = el("button", "link", "Sobre esta casa"); tg.type = "button";
-    tg.setAttribute("aria-expanded", "false");
-    var tx = el("p", null, v.about); tx.hidden = true;
-    tg.addEventListener("click", function () {
-      tx.hidden = !tx.hidden; tg.setAttribute("aria-expanded", String(!tx.hidden));
-    });
-    ab.appendChild(tg); ab.appendChild(tx);
-    card.appendChild(ab);
-  }
   root.appendChild(card);
 });
 </script>
-
 </body>
 </html>
